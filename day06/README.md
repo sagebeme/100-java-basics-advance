@@ -192,3 +192,4 @@ After completing Day 6, you should be able to:
 
 **Ready for Day 7?** You'll build your first major game - Hangman!
 
+

@@ -246,3 +246,4 @@ After completing Day 20, you should be able to:
 
 **Ready for Day 21?** You'll continue building Snake Game with inheritance!
 
+

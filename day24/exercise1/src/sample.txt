@@ -1,0 +1,6 @@
+Java is a programming language.
+Java is object-oriented.
+Learn Java programming.
+Practice Java exercises.
+Java is fun to learn.
+

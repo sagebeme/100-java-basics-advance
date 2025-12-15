@@ -181,7 +181,16 @@ By the end of this course, you will:
    - Complete the exercises and projects
    - Commit your progress daily
 
-4. **Track your progress**
+4. **Exercise Structure**
+   - Most days include `exercise1/` and `exercise2/` folders
+   - Each exercise folder contains:
+     - `README.md` - Exercise requirements and instructions
+     - `src/` - Starter code files with TODO comments
+   - Navigate to `dayXX/exercise1/` or `dayXX/exercise2/` to start practicing
+   - Read the exercise README for specific requirements
+   - Implement solutions in the provided starter code files
+
+5. **Track your progress**
    - Update the progress badge in README
    - Document your learning journey
    - Share your projects

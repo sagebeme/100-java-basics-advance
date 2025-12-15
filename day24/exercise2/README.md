@@ -1,9 +1,15 @@
-# Exercise 2: File Writing
+# Exercise 2
 
 ## Objective
-Practice writing to files in Java, including creating new files, appending to existing files, and formatting output.
+File Writing
+Create programs that:
+- Write data to files
+- Append to existing files
+- Format output
+- Create multiple files
 
 ## Requirements
+File Writing
 Create programs that:
 - Write data to files
 - Append to existing files
@@ -11,60 +17,15 @@ Create programs that:
 - Create multiple files
 
 ## Instructions
-1. Create a Java class called `FileWriter`
-2. Write data to a new file
-3. Append data to an existing file
-4. Format the output nicely
-5. Create multiple files with different content
+1. Read the requirements above
+2. Create the necessary Java files
+3. Implement the solution
+4. Test your code
 
 ## Starter Code
-```java
-import java.io.FileWriter;
-import java.io.IOException;
-
-public class FileWriter {
-    public static void main(String[] args) {
-        // TODO: Write to a new file
-        try {
-            FileWriter writer = new FileWriter("output.txt");
-            writer.write("Hello, World!\n");
-            writer.write("This is line 2.\n");
-            writer.close();
-            System.out.println("File written successfully!");
-        } catch (IOException e) {
-            System.out.println("Error writing file!");
-        }
-        
-        // TODO: Append to existing file
-        try {
-            FileWriter appendWriter = new FileWriter("output.txt", true);
-            appendWriter.write("This is appended text.\n");
-            appendWriter.close();
-            System.out.println("Text appended successfully!");
-        } catch (IOException e) {
-            System.out.println("Error appending to file!");
-        }
-        
-        // TODO: Create multiple files with formatted output
-        // Create files: data1.txt, data2.txt, data3.txt
-    }
-}
-```
-
-## Expected Output
-```
-File written successfully!
-Text appended successfully!
-Created 3 files successfully!
-```
+Check the src/ directory for starter code files.
 
 ## Tips
-- Use `FileWriter` for writing
-- Use `FileWriter(filename, true)` for appending
-- Use `\n` for new lines
-- Format output with `String.format()` if needed
-
-## Solution Hints
-- `FileWriter writer = new FileWriter("output.txt");`
-- `FileWriter appendWriter = new FileWriter("output.txt", true);`
-- `writer.write(String.format("Line %d: %s\n", i, data));`
+- Follow Java best practices
+- Test your code thoroughly
+- Refer to the main day README for more context

@@ -217,6 +217,14 @@ public class StatesGame {
 - [ ] Completed U.S. States Game
 - [ ] Committed code to Git
 
+## 📂 Code Examples
+
+This day includes starter and completed code examples:
+- **`_start/`** - Starting code with TODO comments and learning notes
+- **`_end/`** - Completed solutions with detailed explanations
+
+Check these folders to see the progression from start to finish and learn from the learning curve notes!
+
 ## 🚀 Next Steps
 After completing Day 25, you should be able to:
 - Work with CSV files
@@ -225,6 +233,10 @@ After completing Day 25, you should be able to:
 - Analyze datasets
 
 **Ready for Day 26?** You'll learn about Streams and Lambda Expressions!
+
+
+
+
 
 
 

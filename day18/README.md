@@ -190,6 +190,14 @@ public class HirstPainting extends Application {
 - [ ] Completed Hirst Painting
 - [ ] Committed code to Git
 
+## 📂 Code Examples
+
+This day includes starter and completed code examples:
+- **`_start/`** - Starting code with TODO comments and learning notes
+- **`_end/`** - Completed solutions with detailed explanations
+
+Check these folders to see the progression from start to finish and learn from the learning curve notes!
+
 ## 🚀 Next Steps
 After completing Day 18, you should be able to:
 - Create graphical applications
@@ -198,6 +206,10 @@ After completing Day 18, you should be able to:
 - Build visual programs
 
 **Ready for Day 19?** You'll learn about inheritance and polymorphism!
+
+
+
+
 
 
 

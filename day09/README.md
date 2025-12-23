@@ -229,6 +229,14 @@ public class SecretAuction {
 - [ ] Completed Secret Auction project
 - [ ] Committed code to Git
 
+## 📂 Code Examples
+
+This day includes starter and completed code examples:
+- **`_start/`** - Starting code with TODO comments and learning notes
+- **`_end/`** - Completed solutions with detailed explanations
+
+Check these folders to see the progression from start to finish and learn from the learning curve notes!
+
 ## 🚀 Next Steps
 After completing Day 9, you should be able to:
 - Use maps for key-value storage
@@ -237,6 +245,10 @@ After completing Day 9, you should be able to:
 - Organize data efficiently
 
 **Ready for Day 10?** You'll learn about return values and build a Calculator!
+
+
+
+
 
 
 

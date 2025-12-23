@@ -162,6 +162,14 @@ public class TipCalculator {
 - [ ] Completed Tip Calculator project
 - [ ] Committed code to Git
 
+## 📂 Code Examples
+
+This day includes starter and completed code examples:
+- **`_start/`** - Starting code with TODO comments and learning notes
+- **`_end/`** - Completed solutions with detailed explanations
+
+Check these folders to see the progression from start to finish and learn from the learning curve notes!
+
 ## 🚀 Next Steps
 After completing Day 2, you should be able to:
 - Manipulate strings effectively
@@ -170,6 +178,10 @@ After completing Day 2, you should be able to:
 - Build interactive console programs
 
 **Ready for Day 3?** You'll learn about control flow and logical operators!
+
+
+
+
 
 
 

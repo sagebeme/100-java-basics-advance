@@ -194,6 +194,14 @@ Add proper error handling and fix bugs!
 - [ ] Completed debugging exercises
 - [ ] Committed code to Git
 
+## 📂 Code Examples
+
+This day includes starter and completed code examples:
+- **`_start/`** - Starting code with TODO comments and learning notes
+- **`_end/`** - Completed solutions with detailed explanations
+
+Check these folders to see the progression from start to finish and learn from the learning curve notes!
+
 ## 🚀 Next Steps
 After completing Day 13, you should be able to:
 - Identify and fix errors
@@ -202,6 +210,10 @@ After completing Day 13, you should be able to:
 - Write robust code
 
 **Ready for Day 14?** You'll build the Higher Lower game!
+
+
+
+
 
 
 

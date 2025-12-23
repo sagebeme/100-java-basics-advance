@@ -196,6 +196,14 @@ day17/
 - [ ] Completed Quiz Application
 - [ ] Committed code to Git
 
+## 📂 Code Examples
+
+This day includes starter and completed code examples:
+- **`_start/`** - Starting code with TODO comments and learning notes
+- **`_end/`** - Completed solutions with detailed explanations
+
+Check these folders to see the progression from start to finish and learn from the learning curve notes!
+
 ## 🚀 Next Steps
 After completing Day 17, you should understand:
 - OOP design principles
@@ -204,6 +212,10 @@ After completing Day 17, you should understand:
 - Building multi-class applications
 
 **Ready for Day 18?** You'll learn about JavaFX and GUI programming!
+
+
+
+
 
 
 

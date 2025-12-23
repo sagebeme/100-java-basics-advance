@@ -222,6 +222,14 @@ public class Blackjack {
 - [ ] Completed Blackjack game
 - [ ] Committed code to Git
 
+## 📂 Code Examples
+
+This day includes starter and completed code examples:
+- **`_start/`** - Starting code with TODO comments and learning notes
+- **`_end/`** - Completed solutions with detailed explanations
+
+Check these folders to see the progression from start to finish and learn from the learning curve notes!
+
 ## 🚀 Next Steps
 After completing Day 11, you should be able to:
 - Design and build complete games
@@ -232,6 +240,10 @@ After completing Day 11, you should be able to:
 **Congratulations!** You've completed your first major capstone project!
 
 **Ready for Day 12?** You'll learn about scope and namespacing!
+
+
+
+
 
 
 

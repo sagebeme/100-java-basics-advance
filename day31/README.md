@@ -71,6 +71,14 @@ day31/
 }
 ```
 
+## 📂 Code Examples
+
+This day includes starter and completed code examples:
+- **`_start/`** - Starting code with TODO comments and learning notes
+- **`_end/`** - Completed solutions with detailed explanations
+
+Check these folders to see the progression from start to finish and learn from the learning curve notes!
+
 ## Next Steps
 After completing Day 31, you should be able to:
 - Build GUI applications
@@ -78,6 +86,10 @@ After completing Day 31, you should be able to:
 - Use JSON for data storage
 - Implement MVC pattern
 - Create user-friendly interfaces
+
+
+
+
 
 
 

@@ -199,6 +199,14 @@ public class Turtle extends Animal {
 - [ ] Completed Turtle Race
 - [ ] Committed code to Git
 
+## 📂 Code Examples
+
+This day includes starter and completed code examples:
+- **`_start/`** - Starting code with TODO comments and learning notes
+- **`_end/`** - Completed solutions with detailed explanations
+
+Check these folders to see the progression from start to finish and learn from the learning curve notes!
+
 ## 🚀 Next Steps
 After completing Day 19, you should understand:
 - Inheritance relationships
@@ -207,6 +215,10 @@ After completing Day 19, you should understand:
 - Code reuse through inheritance
 
 **Ready for Day 20?** You'll start building the Snake Game!
+
+
+
+
 
 
 

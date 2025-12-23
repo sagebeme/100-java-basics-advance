@@ -203,6 +203,14 @@ public class Food {
 - [ ] Completed Snake Game
 - [ ] Committed code to Git
 
+## 📂 Code Examples
+
+This day includes starter and completed code examples:
+- **`_start/`** - Starting code with TODO comments and learning notes
+- **`_end/`** - Completed solutions with detailed explanations
+
+Check these folders to see the progression from start to finish and learn from the learning curve notes!
+
 ## 🚀 Next Steps
 After completing Day 21, you should be able to:
 - Build complete games
@@ -211,6 +219,10 @@ After completing Day 21, you should be able to:
 - Handle game state
 
 **Ready for Day 22?** You'll build the classic Pong game!
+
+
+
+
 
 
 

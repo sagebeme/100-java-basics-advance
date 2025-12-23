@@ -188,6 +188,14 @@ public class PasswordGenerator {
 - [ ] Completed Password Generator project
 - [ ] Committed code to Git
 
+## 📂 Code Examples
+
+This day includes starter and completed code examples:
+- **`_start/`** - Starting code with TODO comments and learning notes
+- **`_end/`** - Completed solutions with detailed explanations
+
+Check these folders to see the progression from start to finish and learn from the learning curve notes!
+
 ## 🚀 Next Steps
 After completing Day 5, you should be able to:
 - Use all types of loops effectively
@@ -196,6 +204,10 @@ After completing Day 5, you should be able to:
 - Generate random data
 
 **Ready for Day 6?** You'll learn about functions and methods!
+
+
+
+
 
 
 

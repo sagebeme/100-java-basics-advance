@@ -195,6 +195,14 @@ public class MailMerge {
 - [ ] Completed Mail Merge project
 - [ ] Committed code to Git
 
+## 📂 Code Examples
+
+This day includes starter and completed code examples:
+- **`_start/`** - Starting code with TODO comments and learning notes
+- **`_end/`** - Completed solutions with detailed explanations
+
+Check these folders to see the progression from start to finish and learn from the learning curve notes!
+
 ## 🚀 Next Steps
 After completing Day 24, you should be able to:
 - Work with files effectively
@@ -203,6 +211,10 @@ After completing Day 24, you should be able to:
 - Create file-based applications
 
 **Ready for Day 25?** You'll learn about working with CSV data!
+
+
+
+
 
 
 

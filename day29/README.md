@@ -228,6 +228,14 @@ public class PasswordManager extends Application {
 - [ ] Completed Password Manager
 - [ ] Committed code to Git
 
+## 📂 Code Examples
+
+This day includes starter and completed code examples:
+- **`_start/`** - Starting code with TODO comments and learning notes
+- **`_end/`** - Completed solutions with detailed explanations
+
+Check these folders to see the progression from start to finish and learn from the learning curve notes!
+
 ## 🚀 Next Steps
 After completing Day 29, you should be able to:
 - Build data management apps
@@ -236,6 +244,10 @@ After completing Day 29, you should be able to:
 - Build practical tools
 
 **Ready for Day 30?** You'll improve the Password Manager with exceptions and JSON!
+
+
+
+
 
 
 

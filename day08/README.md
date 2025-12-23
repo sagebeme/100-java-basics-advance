@@ -199,6 +199,14 @@ public class CaesarCipher {
 - [ ] Completed Caesar Cipher project
 - [ ] Committed code to Git
 
+## 📂 Code Examples
+
+This day includes starter and completed code examples:
+- **`_start/`** - Starting code with TODO comments and learning notes
+- **`_end/`** - Completed solutions with detailed explanations
+
+Check these folders to see the progression from start to finish and learn from the learning curve notes!
+
 ## 🚀 Next Steps
 After completing Day 8, you should be able to:
 - Work with method parameters effectively
@@ -207,6 +215,10 @@ After completing Day 8, you should be able to:
 - Build secure communication tools
 
 **Ready for Day 9?** You'll learn about dictionaries (Maps) and build a Secret Auction!
+
+
+
+
 
 
 

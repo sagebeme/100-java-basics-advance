@@ -216,6 +216,14 @@ public class Calculator {
 - [ ] Completed Calculator project
 - [ ] Committed code to Git
 
+## 📂 Code Examples
+
+This day includes starter and completed code examples:
+- **`_start/`** - Starting code with TODO comments and learning notes
+- **`_end/`** - Completed solutions with detailed explanations
+
+Check these folders to see the progression from start to finish and learn from the learning curve notes!
+
 ## 🚀 Next Steps
 After completing Day 10, you should be able to:
 - Create methods with return values
@@ -224,6 +232,10 @@ After completing Day 10, you should be able to:
 - Design clean, modular code
 
 **Ready for Day 11?** You'll build a Blackjack game - your first major capstone project!
+
+
+
+
 
 
 

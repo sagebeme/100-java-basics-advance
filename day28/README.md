@@ -204,6 +204,14 @@ public class PomodoroTimer extends Application {
 - [ ] Completed Pomodoro Timer
 - [ ] Committed code to Git
 
+## 📂 Code Examples
+
+This day includes starter and completed code examples:
+- **`_start/`** - Starting code with TODO comments and learning notes
+- **`_end/`** - Completed solutions with detailed explanations
+
+Check these folders to see the progression from start to finish and learn from the learning curve notes!
+
 ## 🚀 Next Steps
 After completing Day 28, you should be able to:
 - Build timer applications
@@ -212,6 +220,10 @@ After completing Day 28, you should be able to:
 - Create productivity tools
 
 **Ready for Day 29?** You'll build a Password Manager GUI app!
+
+
+
+
 
 
 

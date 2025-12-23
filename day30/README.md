@@ -243,6 +243,14 @@ public class ImprovedPasswordManager {
 - [ ] Completed Improved Password Manager
 - [ ] Committed code to Git
 
+## 📂 Code Examples
+
+This day includes starter and completed code examples:
+- **`_start/`** - Starting code with TODO comments and learning notes
+- **`_end/`** - Completed solutions with detailed explanations
+
+Check these folders to see the progression from start to finish and learn from the learning curve notes!
+
 ## 🚀 Next Steps
 After completing Day 30, you should be able to:
 - Handle exceptions properly
@@ -251,6 +259,10 @@ After completing Day 30, you should be able to:
 - Create data-driven apps
 
 **Ready for Day 31?** You'll build the Flash Card App capstone project!
+
+
+
+
 
 
 

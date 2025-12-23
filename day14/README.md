@@ -224,6 +224,14 @@ data.put("Selena Gomez", 174);
 - [ ] Completed Higher Lower game
 - [ ] Committed code to Git
 
+## 📂 Code Examples
+
+This day includes starter and completed code examples:
+- **`_start/`** - Starting code with TODO comments and learning notes
+- **`_end/`** - Completed solutions with detailed explanations
+
+Check these folders to see the progression from start to finish and learn from the learning curve notes!
+
 ## 🚀 Next Steps
 After completing Day 14, you should be able to:
 - Design and build interactive games
@@ -234,6 +242,10 @@ After completing Day 14, you should be able to:
 **Congratulations!** You've completed the Beginner section (Days 1-14)!
 
 **Ready for Day 15?** You'll set up your development environment and start learning Object-Oriented Programming!
+
+
+
+
 
 
 

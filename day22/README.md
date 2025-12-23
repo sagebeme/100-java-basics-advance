@@ -191,6 +191,14 @@ public class PongGame extends Application {
 - [ ] Completed Pong game
 - [ ] Committed code to Git
 
+## 📂 Code Examples
+
+This day includes starter and completed code examples:
+- **`_start/`** - Starting code with TODO comments and learning notes
+- **`_end/`** - Completed solutions with detailed explanations
+
+Check these folders to see the progression from start to finish and learn from the learning curve notes!
+
 ## 🚀 Next Steps
 After completing Day 22, you should be able to:
 - Build physics-based games
@@ -199,6 +207,10 @@ After completing Day 22, you should be able to:
 - Create two-player games
 
 **Ready for Day 23?** You'll build the Turtle Crossing capstone project!
+
+
+
+
 
 
 

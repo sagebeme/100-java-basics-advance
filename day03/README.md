@@ -181,6 +181,14 @@ public class TreasureIsland {
 - [ ] Completed Treasure Island project
 - [ ] Committed code to Git
 
+## 📂 Code Examples
+
+This day includes starter and completed code examples:
+- **`_start/`** - Starting code with TODO comments and learning notes
+- **`_end/`** - Completed solutions with detailed explanations
+
+Check these folders to see the progression from start to finish and learn from the learning curve notes!
+
 ## 🚀 Next Steps
 After completing Day 3, you should be able to:
 - Control program flow with conditionals
@@ -189,6 +197,10 @@ After completing Day 3, you should be able to:
 - Create interactive games
 
 **Ready for Day 4?** You'll learn about arrays and collections!
+
+
+
+
 
 
 

@@ -18,6 +18,10 @@ Create Personal Website:
 ## 📝 Implementation
 Use Spring Boot + Thymeleaf + Bootstrap
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:** Re-read **Project Requirements** and **Implementation** above; use main README for structure. **Quick reference:** `mvn spring-boot:run` or run from IDE; see Days 54–59 for Spring/Thymeleaf/Bootstrap.
+
 ## ✅ Checklist
 - [ ] Created website structure
 - [ ] Added portfolio section
@@ -25,6 +29,10 @@ Use Spring Boot + Thymeleaf + Bootstrap
 - [ ] Made responsive
 - [ ] Deployed website
 - [ ] Committed code to Git
+
+## 💻 How to Run
+
+**Run:** `mvn spring-boot:run` or run main Application from IDE. Open http://localhost:8080.
 
 ## 🚀 Next Steps
 **Ready for Day 83?** You'll build a Tic Tac Toe Game!

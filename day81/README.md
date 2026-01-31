@@ -51,6 +51,10 @@ day81/
 │                   └── ConverterApp.java
 ```
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:** Re-read **Implementation** and **Project Requirements** above; use main README for structure. **Quick reference:** Run from IDE or `mvn exec:java`; for GUI use JavaFX (see Day 18–22).
+
 ## ✅ Checklist
 - [ ] Implemented conversion
 - [ ] Created interface
@@ -58,6 +62,10 @@ day81/
 - [ ] Tested application
 - [ ] Completed project
 - [ ] Committed code to Git
+
+## 💻 How to Run
+
+**Run:** Run main class from IDE or `mvn exec:java`. For GUI: run JavaFX main class; see Day 18–22 for JavaFX setup.
 
 ## 🚀 Next Steps
 **Ready for Day 82?** You'll build a Personal Website!

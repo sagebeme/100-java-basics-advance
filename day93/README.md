@@ -15,6 +15,10 @@ Create Game Automation:
 4. Log activities
 5. Performance tracking
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:** Re-read **Project Requirements** above; use main README for structure. **Quick reference:** Selenium WebDriver; run from IDE or `mvn exec:java`; add Selenium dependency.
+
 ## ✅ Checklist
 - [ ] Can automate games
 - [ ] Implements strategy
@@ -22,6 +26,10 @@ Create Game Automation:
 - [ ] Logs activities
 - [ ] Completed automation
 - [ ] Committed code to Git
+
+## 💻 How to Run
+
+**Run:** Run main class from IDE or `mvn exec:java`. Add Selenium in pom.xml.
 
 ## 🚀 Next Steps
 **Ready for Day 94?** You'll build Space Invaders!

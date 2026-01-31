@@ -86,6 +86,14 @@ day100/
 }
 ```
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:** Re-read **Project**, **Code Structure**, and **Key Concepts** above; use main README for structure. **Quick reference:** `mvn spring-boot:run`; POST to prediction API with JSON body; see Day 80 for ML/API pattern.
+
+## 💻 How to Run
+
+**Run:** `mvn spring-boot:run` or run main Application from IDE. Open http://localhost:8080. Use prediction API: POST with JSON body (experience, education, location, industry).
+
 ## Congratulations! 🎉
 
 You've completed 100 days of Java! You should now:

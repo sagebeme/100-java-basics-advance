@@ -44,12 +44,20 @@ Create aggregation system:
 3. Find averages
 4. Generate summaries
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:** Re-read **Step-by-Step Instructions** above; use main README for structure. **Quick reference:** Run from IDE or `mvn exec:java`.
+
 ## ✅ Checklist
 - [ ] Can group data
 - [ ] Can aggregate values
 - [ ] Can calculate statistics
 - [ ] Completed aggregation system
 - [ ] Committed code to Git
+
+## 💻 How to Run
+
+**Run:** Run main class from IDE or `mvn exec:java`. For Spring Boot: `mvn spring-boot:run`.
 
 ## 🚀 Next Steps
 **Ready for Day 74?** You'll learn time series analysis!

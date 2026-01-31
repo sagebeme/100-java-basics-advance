@@ -66,6 +66,12 @@ Deploy application:
 4. Configure environment
 5. Set up monitoring
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- Re-read **Step 1** (Dockerfile: FROM, COPY, ENTRYPOINT); **Step 2** (docker-compose: services, ports, env); **Step 3** (build & run)
+- **Related days:** Day 69 (Blog/users); Day 71 (data analysis). **Quick reference:** `docker build -t myapp .` then `docker run -p 8080:8080 myapp`
+
 ## ✅ Checklist
 - [ ] Created Dockerfile
 - [ ] Built Docker image
@@ -74,6 +80,10 @@ Deploy application:
 - [ ] Set up CI/CD
 - [ ] Completed deployment
 - [ ] Committed code to Git
+
+## 💻 How to Run
+
+**Docker:** `docker build -t myapp .` then `docker run -p 8080:8080 myapp`. Or run Spring Boot from IDE: `mvn spring-boot:run`.
 
 ## 🚀 Next Steps
 **Ready for Day 71?** You'll learn data analysis with Java!

@@ -41,12 +41,20 @@ Create dashboard with:
 3. Data filtering
 4. Export capabilities
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:** Re-read **Step-by-Step Instructions** above; use main README for structure. **Quick reference:** Run from IDE or `mvn exec:java`.
+
 ## ✅ Checklist
 - [ ] Can create charts
 - [ ] Can visualize data
 - [ ] Can build dashboards
 - [ ] Completed visualization project
 - [ ] Committed code to Git
+
+## 💻 How to Run
+
+**Run:** Run main class from IDE or `mvn exec:java`. For Spring Boot: `mvn spring-boot:run`.
 
 ## 🚀 Next Steps
 **Ready for Day 73?** You'll learn aggregate data operations!

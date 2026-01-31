@@ -90,6 +90,10 @@ Create user management:
 - [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
 - [JPA Documentation](https://docs.oracle.com/javaee/7/api/javax/persistence/package-summary.html)
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:** Re-read **Step-by-Step Instructions** above; use main README for structure. **Quick reference:** `mvn spring-boot:run` or run from IDE.
+
 ## ✅ Checklist
 - [ ] Understand JPA
 - [ ] Can create entities
@@ -97,6 +101,10 @@ Create user management:
 - [ ] Can perform CRUD
 - [ ] Completed user management
 - [ ] Committed code to Git
+
+## 💻 How to Run
+
+**Run:** `mvn spring-boot:run` or run main Application from IDE. Open http://localhost:8080.
 
 ## 🚀 Next Steps
 **Ready for Day 64?** You'll build a Top 10 Movies website!

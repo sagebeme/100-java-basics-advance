@@ -54,6 +54,10 @@ Add REST API to blog:
 4. PUT /api/posts/{id}
 5. DELETE /api/posts/{id}
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:** Re-read **Step-by-Step Instructions** above; use main README for structure. **Quick reference:** `mvn spring-boot:run` or run from IDE.
+
 ## ✅ Checklist
 - [ ] Created REST endpoints
 - [ ] Integrated with frontend
@@ -61,6 +65,10 @@ Add REST API to blog:
 - [ ] Added error handling
 - [ ] Completed Blog REST API
 - [ ] Committed code to Git
+
+## 💻 How to Run
+
+**Run:** `mvn spring-boot:run` or run main Application from IDE. Open http://localhost:8080.
 
 ## 🚀 Next Steps
 **Ready for Day 68?** You'll learn authentication with Spring Security!

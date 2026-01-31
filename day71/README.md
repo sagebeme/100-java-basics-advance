@@ -51,6 +51,10 @@ Analyze sales data:
 3. Find trends
 4. Generate reports
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:** Re-read **Step-by-Step Instructions** above; use main README for structure. **Quick reference:** Run from IDE or `mvn exec:java` for Java data analysis.
+
 ## ✅ Checklist
 - [ ] Can load data
 - [ ] Can calculate statistics
@@ -58,6 +62,10 @@ Analyze sales data:
 - [ ] Can generate reports
 - [ ] Completed data analysis
 - [ ] Committed code to Git
+
+## 💻 How to Run
+
+**Run:** Run main class from IDE or `mvn exec:java`. For Spring Boot: `mvn spring-boot:run`.
 
 ## 🚀 Next Steps
 **Ready for Day 72?** You'll learn data visualization!

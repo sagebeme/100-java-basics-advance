@@ -56,6 +56,12 @@ Improve existing site:
 4. Enhance design
 5. Test responsiveness
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- Re-read **Step 1** (accessibility: semantic HTML, aria-label, alt text); **Step 2** (performance: lazy loading, minify)
+- **Related days:** Day 64 (movies site); Day 66 (REST APIs). **Quick reference:** Apply to existing Thymeleaf/Spring pages
+
 ## ✅ Checklist
 - [ ] Understand best practices
 - [ ] Can create accessible sites
@@ -63,6 +69,10 @@ Improve existing site:
 - [ ] Can improve UX
 - [ ] Applied best practices
 - [ ] Committed code to Git
+
+## 💻 How to Run
+
+**Run your Spring Boot app:** `mvn spring-boot:run` or run main Application from IDE. Open http://localhost:8080.
 
 ## 🚀 Next Steps
 **Ready for Day 66?** You'll build RESTful APIs!

@@ -51,12 +51,20 @@ Implement:
 3. Custom tree
 4. Performance testing
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:** Re-read **Step-by-Step Instructions** above; use main README for structure. **Quick reference:** Run from IDE or `mvn exec:java`.
+
 ## ✅ Checklist
 - [ ] Understand collections
 - [ ] Can use data structures
 - [ ] Can implement custom structures
 - [ ] Completed custom structures
 - [ ] Committed code to Git
+
+## 💻 How to Run
+
+**Run:** Run main class from IDE or `mvn exec:java`.
 
 ## 🚀 Next Steps
 **Ready for Day 77?** You'll learn algorithms and data structures!

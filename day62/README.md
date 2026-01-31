@@ -63,6 +63,10 @@ Create system for:
 4. Handle errors
 5. Generate reports
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:** Re-read **Step-by-Step Instructions** above; use main README for structure. **Quick reference:** `mvn spring-boot:run` or run from IDE.
+
 ## ✅ Checklist
 - [ ] Can export to CSV
 - [ ] Can import from CSV
@@ -70,6 +74,10 @@ Create system for:
 - [ ] Can handle errors
 - [ ] Completed import/export system
 - [ ] Committed code to Git
+
+## 💻 How to Run
+
+**Run:** `mvn spring-boot:run` or run main Application from IDE. Open http://localhost:8080.
 
 ## 🚀 Next Steps
 **Ready for Day 63?** You'll learn databases with JPA and Hibernate!

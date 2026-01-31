@@ -71,6 +71,10 @@ Create RESTful API:
 4. Error handling
 5. API documentation
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:** Re-read **Step-by-Step Instructions** above; use main README for structure. **Quick reference:** `mvn spring-boot:run` or run from IDE.
+
 ## ✅ Checklist
 - [ ] Can design REST APIs
 - [ ] Can use proper HTTP methods
@@ -78,6 +82,10 @@ Create RESTful API:
 - [ ] Can document APIs
 - [ ] Completed RESTful API
 - [ ] Committed code to Git
+
+## 💻 How to Run
+
+**Run:** `mvn spring-boot:run` or run main Application from IDE. Open http://localhost:8080.
 
 ## 🚀 Next Steps
 **Ready for Day 67?** You'll add RESTful routing to your blog!

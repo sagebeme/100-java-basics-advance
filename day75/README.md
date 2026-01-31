@@ -36,12 +36,20 @@ Create dashboard with:
 3. Data filtering
 4. Export options
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:** Re-read **Step-by-Step Instructions** above; use main README for structure. **Quick reference:** Run from IDE or `mvn exec:java`.
+
 ## ✅ Checklist
 - [ ] Can create multiple chart types
 - [ ] Can build dashboards
 - [ ] Can add interactivity
 - [ ] Completed dashboard
 - [ ] Committed code to Git
+
+## 💻 How to Run
+
+**Run:** Run main class from IDE or `mvn exec:java`. For Spring Boot: `mvn spring-boot:run`.
 
 ## 🚀 Next Steps
 **Ready for Day 76?** You'll learn collections and data structures!

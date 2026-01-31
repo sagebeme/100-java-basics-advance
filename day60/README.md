@@ -83,6 +83,13 @@ Create user registration:
 - [Spring Form Handling](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#mvc-ann-modelattrib-method-args)
 - [Form Validation](https://www.baeldung.com/spring-boot-bean-validation)
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- Re-read **Step 1 & 2** for form HTML and Thymeleaf (`th:action`, `th:object`, `th:field`); **Step 3** for validation (`@NotBlank`, `@Email`)
+- **@ModelAttribute** binds form data to object; **@GetMapping** shows form, **@PostMapping** processes submit
+- **Related days:** Day 59 (Bootstrap/Thymeleaf); Day 61 (advanced forms). **Quick reference:** `mvn spring-boot:run`; run from IDE
+
 ## ✅ Checklist
 - [ ] Can create HTML forms
 - [ ] Can handle submissions
@@ -90,6 +97,10 @@ Create user registration:
 - [ ] Can display errors
 - [ ] Completed registration form
 - [ ] Committed code to Git
+
+## 💻 How to Run
+
+**Spring Boot:** From project root: `mvn spring-boot:run`. Or run the main Application class in your IDE. Open http://localhost:8080 in browser.
 
 ## 🚀 Next Steps
 **Ready for Day 61?** You'll build advanced forms!

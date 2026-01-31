@@ -40,12 +40,20 @@ Create time series analyzer:
 3. Calculate trends
 4. Visualize over time
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:** Re-read **Step-by-Step Instructions** above; use main README for structure. **Quick reference:** Run from IDE or `mvn exec:java`.
+
 ## ✅ Checklist
 - [ ] Can process time series
 - [ ] Can aggregate by time
 - [ ] Can calculate trends
 - [ ] Completed time series analyzer
 - [ ] Committed code to Git
+
+## 💻 How to Run
+
+**Run:** Run main class from IDE or `mvn exec:java`. For Spring Boot: `mvn spring-boot:run`.
 
 ## 🚀 Next Steps
 **Ready for Day 75?** You'll create charts and data visualization!

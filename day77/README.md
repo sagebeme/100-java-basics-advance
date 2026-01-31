@@ -56,12 +56,20 @@ Implement:
 3. Graph algorithms
 4. Performance testing
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:** Re-read **Step-by-Step Instructions** above; use main README for structure. **Quick reference:** Run from IDE or `mvn exec:java`.
+
 ## ✅ Checklist
 - [ ] Can implement algorithms
 - [ ] Understand complexity
 - [ ] Can solve problems
 - [ ] Completed algorithm library
 - [ ] Committed code to Git
+
+## 💻 How to Run
+
+**Run:** Run main class from IDE or `mvn exec:java`.
 
 ## 🚀 Next Steps
 **Ready for Day 78?** You'll learn advanced algorithms!

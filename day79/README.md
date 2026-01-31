@@ -58,12 +58,20 @@ Create test suite:
 3. Mock dependencies
 4. Achieve coverage
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:** Re-read **Step-by-Step Instructions** above; use main README for structure. **Quick reference:** `mvn test` for tests; run app from IDE or `mvn spring-boot:run`.
+
 ## ✅ Checklist
 - [ ] Can write unit tests
 - [ ] Can use mocking
 - [ ] Can test integration
 - [ ] Completed test suite
 - [ ] Committed code to Git
+
+## 💻 How to Run
+
+**Run:** `mvn test` to run tests; `mvn spring-boot:run` or run main Application from IDE for the app.
 
 ## 🚀 Next Steps
 **Ready for Day 80?** You'll build the House Price Prediction capstone!

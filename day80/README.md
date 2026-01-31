@@ -57,6 +57,12 @@ Build complete system:
 4. Build web interface
 5. Deploy application
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- Re-read **Step 1** (model training, prediction); **Step 2** (REST controller, @RequestBody, ResponseEntity)
+- **Related days:** Day 79 (testing); Day 81 (portfolio). **Quick reference:** `mvn spring-boot:run`; POST to `/api/predict/house-price` with JSON body
+
 ## ✅ Checklist
 - [ ] Trained ML model
 - [ ] Created prediction API
@@ -64,6 +70,10 @@ Build complete system:
 - [ ] Deployed application
 - [ ] Completed house price predictor
 - [ ] Committed code to Git
+
+## 💻 How to Run
+
+**Spring Boot:** `mvn spring-boot:run` or run main Application from IDE. Open http://localhost:8080. Use API: POST `/api/predict/house-price` with JSON.
 
 ## 🚀 Next Steps
 **Congratulations!** You've completed the Advanced section!

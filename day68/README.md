@@ -80,6 +80,10 @@ Add security to blog:
 4. Password encryption
 5. Session management
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:** Re-read **Step-by-Step Instructions** above; use main README for structure. **Quick reference:** `mvn spring-boot:run` or run from IDE.
+
 ## ✅ Checklist
 - [ ] Configured Spring Security
 - [ ] Implemented authentication
@@ -87,6 +91,10 @@ Add security to blog:
 - [ ] Secured endpoints
 - [ ] Completed secure blog
 - [ ] Committed code to Git
+
+## 💻 How to Run
+
+**Run:** `mvn spring-boot:run` or run main Application from IDE. Open http://localhost:8080.
 
 ## 🚀 Next Steps
 **Ready for Day 69?** You'll add users to your blog!

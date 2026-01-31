@@ -57,6 +57,10 @@ Add users to blog:
 4. User dashboard
 5. User management
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:** Re-read **Step-by-Step Instructions** above; use main README for structure. **Quick reference:** `mvn spring-boot:run` or run from IDE.
+
 ## ✅ Checklist
 - [ ] Added user entity
 - [ ] Linked posts to users
@@ -64,6 +68,10 @@ Add users to blog:
 - [ ] Added user dashboard
 - [ ] Completed blog with users
 - [ ] Committed code to Git
+
+## 💻 How to Run
+
+**Run:** `mvn spring-boot:run` or run main Application from IDE. Open http://localhost:8080.
 
 ## 🚀 Next Steps
 **Ready for Day 70?** You'll learn deployment with Docker and Cloud!

@@ -55,12 +55,20 @@ Solve advanced problems:
 3. Greedy algorithms
 4. Optimization
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:** Re-read **Step-by-Step Instructions** above; use main README for structure. **Quick reference:** Run from IDE or `mvn exec:java`.
+
 ## ✅ Checklist
 - [ ] Can implement advanced algorithms
 - [ ] Can solve complex problems
 - [ ] Can optimize solutions
 - [ ] Completed advanced algorithms
 - [ ] Committed code to Git
+
+## 💻 How to Run
+
+**Run:** Run main class from IDE or `mvn exec:java`.
 
 ## 🚀 Next Steps
 **Ready for Day 79?** You'll learn testing and quality assurance!

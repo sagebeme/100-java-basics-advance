@@ -25,6 +25,10 @@ Create systems for:
 ## Starter Code
 Check the src/ directory for starter code files.
 
+## 📌 Refer to (when stuck)
+- **Day 40 README** ([day40/README.md](../README.md)) → **Notes & reference** and **Step-by-Step Instructions** (User Management, Subscription, Flight Club)
+- Use the main project structure (User, UserManager, SubscriptionManager) as reference
+
 ## Tips
 - Follow Java best practices
 - Test your code thoroughly

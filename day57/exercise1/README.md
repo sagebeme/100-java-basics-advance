@@ -25,6 +25,9 @@ Create templates with:
 ## Starter Code
 Check the src/ directory for starter code files.
 
+## 📌 Refer to (when stuck)
+- **Day 57 README** ([day57/README.md](../README.md)) → **Notes & reference** and **Step-by-Step Instructions**. Use main day README for structure and hints.
+
 ## Tips
 - Follow Java best practices
 - Test your code thoroughly

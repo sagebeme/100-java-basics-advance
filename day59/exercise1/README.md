@@ -25,6 +25,9 @@ Upgrade blog with:
 ## Starter Code
 Check the src/ directory for starter code files.
 
+## 📌 Refer to (when stuck)
+- **Day 59 README** ([day59/README.md](../README.md)) → **Notes & reference** and **Step-by-Step Instructions** (Bootstrap layout, forms). Use main day README for structure and hints.
+
 ## Tips
 - Follow Java best practices
 - Test your code thoroughly

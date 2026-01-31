@@ -25,6 +25,10 @@ Implement:
 ## Starter Code
 Check the src/ directory for starter code files.
 
+## 📌 Refer to (when stuck)
+- **Day 40 README** ([day40/README.md](../README.md)) → **Notes & reference** and **Step 2 & 3** (Subscription, personalized deals)
+- **Key Concepts Summary** in main README for integration and personalization
+
 ## Tips
 - Follow Java best practices
 - Test your code thoroughly

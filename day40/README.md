@@ -192,6 +192,24 @@ flight-club/
 | Integration | Combine systems | API + DB + Notifications |
 | Complete App | Full application | All features working |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **User model:** Re-read **Step 1** — User with email, preferences, maxPrice; UserManager for DB — see **Step 2**
+- **Subscriptions:** Re-read **Step 2** — subscribe by destination; getSubscribersForDestination — see **Step 3**
+- **Deal flow:** Combine Day 39 (find deals) + filter users by destination/price + send (Day 32) — see **Step 3**
+- **Main day README** → **Step 1 & 2** for User/Subscription; **Key Concepts** for integration
+
+**Related days:** Day 39 (Flight Deal Finder); Day 32 (email); Day 38 (database). **Quick reference:** Maven/IDE for multi-class; env vars for API keys
+
+## 💻 How to Run
+
+This day is a **multi-module capstone**. Run from IDE or Maven:
+
+- **Maven:** `mvn compile exec:java -Dexec.mainClass="FlightClubApp"` (or your main class) from project root; ensure SQLite and JavaMail deps in pom.xml
+- **IDE:** Open as Maven project, run main class `FlightClubApp` (or equivalent); set env vars for API keys
+- **See** Day 38 (DB), Day 32 (email), Day 39 (API) for individual run instructions
+
 ## ✅ Checklist
 - [ ] Can manage users
 - [ ] Can handle subscriptions

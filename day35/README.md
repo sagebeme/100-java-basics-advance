@@ -186,6 +186,16 @@ public class SMSSender {
 | System Properties | JVM properties | `System.getProperty()` |
 | Secrets Management | Secure storage | Environment variables |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Env vars:** Re-read **Step 1** — `System.getenv("KEY")` returns null if not set — see **Step 2**
+- **Properties:** Re-read **Step 2** — `Properties.load(InputStream)`; `getProperty("key")` — see **Step 2**
+- **.env:** Parse manually (read file, split on `=`) or use a small library — see **Step 3**
+- **Main day README** → **Step 1 & 2** for config; **Key Concepts** for env vs properties
+
+**Related days:** Day 24 (read config file); Day 32 (email credentials). **Quick reference:** Never commit secrets; use .env in .gitignore
+
 ## ✅ Checklist
 - [ ] Understand environment variables
 - [ ] Can use properties files
@@ -194,6 +204,64 @@ public class SMSSender {
 - [ ] Can secure credentials
 - [ ] Completed SMS project
 - [ ] Committed code to Git
+
+## 💻 How to Run Java Files
+
+### Prerequisites
+Make sure you have Java installed on your system:
+- **Check installation**: Open terminal/command prompt and run `java -version`
+- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
+
+### Running Java Files
+
+#### **Windows**
+
+1. **Open Command Prompt or PowerShell**
+   - Press `Win + R`, type `cmd` or `powershell`, press Enter
+
+2. **Navigate to your project directory**
+   ```cmd
+   cd "path\to\100-java-basics-advance\day35\src"
+   ```
+
+3. **Compile** (Twilio/API JARs: use Maven or add to classpath)
+   ```cmd
+   javac SMSSender.java
+   ```
+
+4. **Run**
+   ```cmd
+   java SMSSender
+   ```
+
+#### **Mac / Linux**
+
+1. **Open Terminal**
+   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
+   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
+
+2. **Navigate to your project directory**
+   ```bash
+   cd ~/projects/100-java-basics-advance/day35/src
+   ```
+
+3. **Compile and run**
+   ```bash
+   javac SMSSender.java
+   java SMSSender
+   ```
+
+### Using an IDE (Recommended)
+
+**IntelliJ IDEA / Eclipse / VS Code:**
+1. Open the project
+2. Right-click on the main class
+3. Select "Run 'SMSSender.main()'"
+
+### Troubleshooting
+
+- **"javac: command not found"** - Java is not installed or not in PATH
+- **API keys**: Use environment variables; never commit secrets
 
 ## 🚀 Next Steps
 After completing Day 35, you should be able to:

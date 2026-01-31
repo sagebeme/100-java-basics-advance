@@ -172,6 +172,18 @@ public class TreasureIsland {
 | Logical NOT | Inverts condition | `if (!isFalse) { ... }` |
 | Switch | Multiple value matching | `switch (value) { case 1: ... }` |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **If-else syntax:** Re-read **Step 1** — use `if (condition) { }` then `else if` / `else`; braces required for multiple statements
+- **Logical operators:** `&&` (AND), `||` (OR), `!` (NOT) — see **Step 2**
+- **Switch:** Use `switch (variable)` with `case value:` and `break;` — see **Step 3**
+- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for solution logic
+
+**Related days:** Day 2 (conditions on strings/numbers); Day 5 (loops use same conditions).
+
+**Quick reference:** Compare strings with `str.equals("yes")` not `==` · Use `break` in switch to avoid fall-through
+
 ## ✅ Checklist
 - [ ] Understand if-else statements
 - [ ] Know all logical operators

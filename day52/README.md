@@ -214,6 +214,20 @@ public class InstagramBot {
 | Automation | Automated actions | Like, follow, comment |
 | Best Practices | Ethical automation | Respect limits, terms |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **OAuth:** Re-read **Step 1** — Instagram/Facebook Graph API OAuth flow — see **Step 2**
+- **API:** Re-read **Step 2** — use Graph API endpoints; rate limits — see **Step 2**
+- **Automation:** Re-read **Step 3** — respect ToS; delays; avoid bans — see **Step 3**
+- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
+
+**Related days:** Day 45 (OAuth); Day 50 (social APIs); Day 35 (env). **Quick reference:** Env for client ID/secret; run main class from IDE
+
+## 💻 How to Run
+
+**Java + Instagram API** — set env vars for Instagram/Facebook app credentials. Run main class from IDE or Maven exec.
+
 ## ✅ Checklist
 - [ ] Understand Instagram API
 - [ ] Can authenticate

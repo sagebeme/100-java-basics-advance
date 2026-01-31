@@ -188,6 +188,18 @@ day17/
 | Reusability | Using classes multiple times | Question class reused |
 | Maintainability | Easy to update | Changes isolated to classes |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Multiple classes:** Re-read **Step 1** — one class per concept (Question, QuizBrain, QuizApp) — see **Step 2**
+- **Class communication:** Pass data via constructor or method params; return values from methods — see **Step 3**
+- **Compile order:** Compile all: `javac *.java` in the same directory (or use IDE)
+- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for class design
+
+**Related days:** Day 16 (single class OOP); Day 19 (inheritance for shared behavior).
+
+**Quick reference:** QuizBrain holds List&lt;Question&gt; · `stillHasQuestions()` → `currentIndex < list.size()` · Test each class separately
+
 ## ✅ Checklist
 - [ ] Understand OOP benefits
 - [ ] Can design multiple classes

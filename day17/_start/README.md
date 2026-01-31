@@ -74,6 +74,10 @@ Make sure you can:
 - **Clear relationships** - Understand how classes connect
 - **Test each class** - Verify each works independently
 
+### 📌 Refer to (when stuck)
+- **Main day README** ([day17/README.md](../README.md)) → **Notes & reference** for class design; **Step-by-Step Instructions** for Question, QuizBrain, QuizApp
+- **`_end/`** → Completed solution and learning notes if you need a hint on structure or logic
+
 ---
 
 **Remember**: Multi-class applications are more maintainable! 🎉

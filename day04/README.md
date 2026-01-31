@@ -177,6 +177,18 @@ public class RockPaperScissors {
 | Length | Size of array | `arr.length` |
 | Enhanced For | Iterate over elements | `for (int x : arr) { ... }` |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Array declaration:** Re-read **Step 1** — `int[] arr = new int[5];` or `int[] arr = {1, 2, 3};` · Index from 0 to length-1
+- **ArrayList:** `ArrayList<String> list = new ArrayList<>();` then `list.add()`, `list.get(i)`, `list.size()` — see **Step 2**
+- **Index out of bounds:** Valid indices are 0 to `arr.length - 1`; check before accessing
+- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for solution structure
+
+**Related days:** Day 5 (loops to iterate arrays); Day 9 (Maps, more collections).
+
+**Quick reference:** `arr.length` (no parentheses) · `list.size()` · Enhanced for: `for (Type item : collection)`
+
 ## ✅ Checklist
 - [ ] Understand array declaration
 - [ ] Know how to access array elements

@@ -197,6 +197,16 @@ public class BirthdayWisher {
 | DateTimeFormatter | Date formatting | `DateTimeFormatter.ofPattern()` |
 | Automation | Scheduled tasks | Check dates and send emails |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **JavaMail:** Re-read **Step 1 & 2** — add dependency; Properties for SMTP; Session with Authenticator — see **Step 2**
+- **Dates:** Re-read **Step 3** — `LocalDate.now()`, `DateTimeFormatter.ofPattern("yyyy-MM-dd")` — see **Step 3**
+- **Credentials:** Use environment variables or config file; never hardcode — see **Troubleshooting**
+- **Main day README** → **Step 2** for send logic; **Key Concepts** for SMTP/LocalDate
+
+**Related days:** Day 24 (file I/O for config); Day 33 (HTTP for APIs). **Quick reference:** Gmail: use App Password; `Transport.send(message)`
+
 ## ✅ Checklist
 - [ ] Can send emails
 - [ ] Understand JavaMail API
@@ -205,6 +215,69 @@ public class BirthdayWisher {
 - [ ] Can automate tasks
 - [ ] Completed Birthday Wisher
 - [ ] Committed code to Git
+
+## 💻 How to Run Java Files
+
+### Prerequisites
+Make sure you have Java installed on your system:
+- **Check installation**: Open terminal/command prompt and run `java -version`
+- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
+
+### Running Java Files
+
+#### **Windows**
+
+1. **Open Command Prompt or PowerShell**
+   - Press `Win + R`, type `cmd` or `powershell`, press Enter
+
+2. **Navigate to your project directory**
+   ```cmd
+   cd "path\to\100-java-basics-advance\day32\src"
+   ```
+
+3. **Compile** (if using Maven: `mvn compile exec:java` or run from IDE)
+   ```cmd
+   javac BirthdayWisher.java
+   ```
+
+4. **Run the compiled program**
+   ```cmd
+   java BirthdayWisher
+   ```
+
+#### **Mac / Linux**
+
+1. **Open Terminal**
+   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
+   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
+
+2. **Navigate to your project directory**
+   ```bash
+   cd ~/projects/100-java-basics-advance/day32/src
+   ```
+
+3. **Compile** (JavaMail requires JARs on classpath; Maven recommended)
+   ```bash
+   javac BirthdayWisher.java
+   ```
+
+4. **Run the compiled program**
+   ```bash
+   java BirthdayWisher
+   ```
+
+### Using an IDE (Recommended)
+
+**IntelliJ IDEA / Eclipse / VS Code:**
+1. Open the project (or create a Maven project with JavaMail dependency)
+2. Right-click on the main class
+3. Select "Run 'BirthdayWisher.main()'"
+
+### Troubleshooting
+
+- **"javac: command not found"** - Java is not installed or not in PATH
+- **JavaMail / dependencies**: Use Maven/Gradle for dependency management: `mvn compile exec:java -Dexec.mainClass="BirthdayWisher"`
+- **Email credentials**: Use environment variables or a config file; never hardcode passwords
 
 ## 🚀 Next Steps
 After completing Day 32, you should be able to:

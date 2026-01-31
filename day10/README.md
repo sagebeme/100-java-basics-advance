@@ -207,6 +207,18 @@ public class Calculator {
 | Method Chaining | Use return in call | `add(5, multiply(2, 3))` |
 | Code Organization | Break into methods | Separate add, subtract, etc. |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Return type:** Re-read **Step 1** — use `return value;` and declare type: `public static double add(...)`
+- **void vs return:** Use `void` when no value back; use `int`/`double`/`String` when returning — see **Step 2**
+- **Chaining:** Method that returns a value can be used inside another call: `method2(method1())`
+- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for calculator structure
+
+**Related days:** Day 6 (methods); Day 9 (maps for storing results).
+
+**Quick reference:** Every path in a non-void method must `return` a value · Call: `double result = add(1, 2);`
+
 ## ✅ Checklist
 - [ ] Understand return types
 - [ ] Can write methods that return values

@@ -193,6 +193,20 @@ public class WebController {
 | Classpath | Resource location | `classpath:/static/` |
 | Template Engine | Render templates | Thymeleaf, Mustache |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Static:** Re-read **Step 1** — put files in `src/main/resources/static/`; served at `/` — see **Step 2**
+- **Templates:** Re-read **Step 2** — put in `templates/`; Thymeleaf renders — see **Step 2**
+- **Paths:** Re-read **Step 3** — `classpath:/static/`, `classpath:/templates/` — see **Step 3**
+- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
+
+**Related days:** Day 54 (Spring Boot); Day 57 (Thymeleaf). **Quick reference:** `mvn spring-boot:run`; open http://localhost:8080
+
+## 💻 How to Run
+
+**Spring Boot** — from project root: `mvn spring-boot:run`. Run main Application class in IDE. Open `http://localhost:8080` in browser.
+
 ## ✅ Checklist
 - [ ] Understand static resources
 - [ ] Can organize files

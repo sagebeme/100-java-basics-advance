@@ -261,6 +261,20 @@ public class DataEntryBot {
 | Batch Processing | Process multiple | Loop through entries |
 | Error Handling | Handle failures | Try-catch, logging |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Load data:** Re-read **Step 1** — CSV (Day 25) or JSON (Day 30); DataLoader class — see **Starter Code**
+- **Validation:** Re-read **Step 2** — validate email, phone, required fields — see **Step 2**
+- **Forms:** Re-read **Step 3** — Selenium (Day 47) to fill inputs; submit — see **Step 3**
+- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
+
+**Related days:** Day 25 (CSV); Day 47 (Selenium); Day 30 (JSON). **Quick reference:** Run main class; env for credentials; browser opens
+
+## 💻 How to Run
+
+**Java + Selenium + CSV** — run main class from IDE. Ensure entries CSV path is correct; browser will open for form filling.
+
 ## ✅ Checklist
 - [ ] Can load data from files
 - [ ] Can validate data

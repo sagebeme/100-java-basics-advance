@@ -186,6 +186,18 @@ public class MailMerge {
 | Exception Handling | Handle file errors | `try-catch` blocks |
 | Directory | Folder operations | `File.mkdir()`, `listFiles()` |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Reading:** Re-read **Step 1** — `Scanner scanner = new Scanner(new File("path"));` then `hasNextLine()` / `nextLine()` — close when done
+- **Writing:** Re-read **Step 2** — `FileWriter writer = new FileWriter("path");` then `writer.write(str);` — close when done
+- **File not found:** Path is relative to current working directory; use try-catch for `FileNotFoundException`
+- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for Mail Merge flow
+
+**Related days:** Day 13 (try-catch); Day 25 (CSV = read line, split); Day 30 (JSON).
+
+**Quick reference:** `Paths.get("a","b","file.txt")` · `file.exists()` before read · Always close Scanner/Writer in finally or try-with-resources
+
 ## ✅ Checklist
 - [ ] Can read from files
 - [ ] Can write to files
@@ -202,6 +214,79 @@ This day includes starter and completed code examples:
 - **`_end/`** - Completed solutions with detailed explanations
 
 Check these folders to see the progression from start to finish and learn from the learning curve notes!
+
+## 💻 How to Run Java Files
+
+### Prerequisites
+Make sure you have Java installed on your system:
+- **Check installation**: Open terminal/command prompt and run `java -version`
+- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
+
+### Running Java Files
+
+#### **Windows**
+
+1. **Open Command Prompt or PowerShell**
+   - Press `Win + R`, type `cmd` or `powershell`, press Enter
+
+2. **Navigate to the project directory**
+   ```cmd
+   cd "path\to\100-java-basics-advance\day24\_end\src"
+   ```
+
+3. **Compile** (if multiple files: `javac *.java`)
+   ```cmd
+   javac MailMerge.java
+   ```
+
+4. **Run the compiled program**
+   ```cmd
+   java MailMerge
+   ```
+
+#### **Mac / Linux**
+
+1. **Open Terminal**
+   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
+   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
+
+2. **Navigate to the project directory**
+   ```bash
+   cd ~/projects/100-java-basics-advance/day24/_end/src
+   ```
+
+3. **Compile** (if multiple files: `javac *.java`)
+   ```bash
+   javac MailMerge.java
+   ```
+
+4. **Run the compiled program**
+   ```bash
+   java MailMerge
+   ```
+
+### Using an IDE (Recommended)
+
+**IntelliJ IDEA:**
+1. Open the project folder in IntelliJ IDEA
+2. Right-click on the Java file
+3. Select "Run 'MailMerge.main()'"
+
+**VS Code:**
+1. Install "Extension Pack for Java"
+2. Open the Java file
+3. Click "Run" button above `main` method or press `F5`
+
+**Eclipse:**
+1. Import project into Eclipse
+2. Right-click on the Java file
+3. Select "Run As" → "Java Application"
+
+### Troubleshooting
+
+- **"javac: command not found"** - Java is not installed or not in PATH
+- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
+- **"File not found"** - Run from the directory that contains your data files, or use absolute paths
 
 ## 🚀 Next Steps
 After completing Day 24, you should be able to:

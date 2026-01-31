@@ -240,6 +240,16 @@ public class WorkoutTracker extends Application {
 | CRUD | Create, Read, Update, Delete | Database operations |
 | PreparedStatement | Parameterized queries | `pstmt.setString(1, value)` |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **JDBC:** Re-read **Step 1** — `DriverManager.getConnection("jdbc:sqlite:file.db")`; add sqlite-jdbc JAR — see **Step 2**
+- **SQL:** Re-read **Step 2** — CREATE TABLE, INSERT, SELECT, UPDATE, DELETE — see **Step 2**
+- **PreparedStatement:** Use for parameters: `pstmt = conn.prepareStatement("INSERT INTO t (a) VALUES (?)"); pstmt.setString(1, value);` — see **Step 3**
+- **Main day README** → **Step 1 & 2** for connection and CRUD; **Key Concepts** for SQL
+
+**Related days:** Day 24 (file I/O); Day 37 (persistence). **Quick reference:** Always close Connection/Statement in finally or try-with-resources
+
 ## ✅ Checklist
 - [ ] Understand databases
 - [ ] Can use SQLite
@@ -248,6 +258,64 @@ public class WorkoutTracker extends Application {
 - [ ] Can integrate with applications
 - [ ] Completed Workout Tracker
 - [ ] Committed code to Git
+
+## 💻 How to Run Java Files
+
+### Prerequisites
+Make sure you have Java installed on your system:
+- **Check installation**: Open terminal/command prompt and run `java -version`
+- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
+
+### Running Java Files
+
+#### **Windows**
+
+1. **Open Command Prompt or PowerShell**
+   - Press `Win + R`, type `cmd` or `powershell`, press Enter
+
+2. **Navigate to your project directory**
+   ```cmd
+   cd "path\to\100-java-basics-advance\day38\src"
+   ```
+
+3. **Compile** (SQLite JDBC: add sqlite-jdbc.jar to classpath; or use Maven)
+   ```cmd
+   javac WorkoutTracker.java
+   ```
+
+4. **Run**
+   ```cmd
+   java WorkoutTracker
+   ```
+
+#### **Mac / Linux**
+
+1. **Open Terminal**
+   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
+   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
+
+2. **Navigate to your project directory**
+   ```bash
+   cd ~/projects/100-java-basics-advance/day38/src
+   ```
+
+3. **Compile and run** (include SQLite driver: `javac -cp .:sqlite-jdbc.jar *.java`)
+   ```bash
+   javac WorkoutTracker.java
+   java WorkoutTracker
+   ```
+
+### Using an IDE (Recommended)
+
+**IntelliJ IDEA / Eclipse / VS Code:**
+1. Open the project and add SQLite JDBC dependency
+2. Right-click on the main class
+3. Select "Run 'WorkoutTracker.main()'"
+
+### Troubleshooting
+
+- **"javac: command not found"** - Java is not installed or not in PATH
+- **SQLite**: Add sqlite-jdbc JAR to classpath or use Maven dependency
 
 ## 🚀 Next Steps
 After completing Day 38, you should be able to:

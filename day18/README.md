@@ -181,6 +181,18 @@ public class HirstPainting extends Application {
 | Stroke | Outline drawing | `gc.strokeRect()` |
 | Fill | Solid drawing | `gc.fillRect()` |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **JavaFX setup:** Re-read **Step 1** — class extends `Application`, override `start(Stage)` — see **How to Run** for module path
+- **Canvas:** `Canvas canvas = new Canvas(w, h);` then `GraphicsContext gc = canvas.getGraphicsContext2D();` — see **Step 2**
+- **Drawing:** `gc.fillRect(x, y, w, h);` `gc.strokeOval(x, y, w, h);` — origin top-left — see **Step 3**
+- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for drawing logic
+
+**Related days:** Day 20 (animation on canvas); Day 22 (game on canvas). **JavaFX:** Run from IDE or use `--module-path` (see Troubleshooting).
+
+**Quick reference:** Colors: `Color.RED`, `Color.rgb(r,g,b)` · Clear: `gc.clearRect(0,0,w,h)` · Java 11+ needs JavaFX SDK
+
 ## ✅ Checklist
 - [ ] Understand JavaFX basics
 - [ ] Can create canvas

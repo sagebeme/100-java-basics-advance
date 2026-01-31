@@ -187,6 +187,18 @@ public class Hangman {
 | String Manipulation | Work with strings | `word.indexOf(letter)` |
 | User Validation | Check input validity | `if (input.length() == 1) { ... }` |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Game loop:** Re-read **Step 1** — use `while (!gameOver)` and update state (lives, guessed letters) each turn
+- **Random word:** `Random random = new Random(); int i = random.nextInt(words.length);` — see **Step 2**
+- **Display blanks:** Build a string: show letter if in `guessedLetters`, else `_` — see **Step 3**
+- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for win/lose logic
+
+**Related days:** Day 5 (loops), Day 6 (methods), Day 3 (conditions) — combine for game flow.
+
+**Quick reference:** `String.contains(String)` · `word.indexOf(letter)` · Validate input length before using
+
 ## ✅ Checklist
 - [ ] Understand game design principles
 - [ ] Can select random words

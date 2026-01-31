@@ -245,6 +245,20 @@ Create a dashboard with Bootstrap:
 | Utilities | Helper classes | `mt-4`, `text-center` |
 | Responsive | Mobile-friendly | Breakpoints, media queries |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Bootstrap:** Re-read **Step 1** — add CDN or static CSS/JS; use `container`, `row`, `col-*` — see **Step 2**
+- **Components:** Re-read **Step 2** — cards, navbar, buttons, forms — see **Step 2**
+- **Thymeleaf:** Re-read **Step 3** — combine with Day 57; `th:text`, `th:each` in Bootstrap markup — see **Step 3**
+- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
+
+**Related days:** Day 57 (Thymeleaf); Day 59 (Bootstrap blog). **Quick reference:** `mvn spring-boot:run`; open http://localhost:8080
+
+## 💻 How to Run
+
+**Spring Boot + Bootstrap** — from project root: `mvn spring-boot:run`. Run main Application class in IDE. Open `http://localhost:8080` in browser.
+
 ## ✅ Checklist
 - [ ] Can add Bootstrap to project
 - [ ] Can use Bootstrap components

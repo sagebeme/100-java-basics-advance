@@ -154,6 +154,18 @@ public class TipCalculator {
 | Formatting | Displaying values in specific format | `String.format("%.2f", 3.14159)` |
 | StringBuilder | Efficient string building | `new StringBuilder().append("text")` |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **String methods:** Re-read **Step 2** for `length()`, `charAt()`, `substring()`, `toUpperCase()`, `trim()`
+- **Parsing numbers:** Use `Integer.parseInt(str)` or `Double.parseDouble(str)` — wrap in try-catch for invalid input
+- **String formatting:** `String.format("%.2f", value)` for decimals; `%d` for int, `%s` for String
+- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for solution approach
+
+**Related days:** Day 1 (variables, Scanner); Day 3 (control flow uses conditions on strings/numbers).
+
+**Quick reference:** `"a".equals(b)` not `a == b` for strings · `Integer.parseInt(s)` · `String.format("%.2f", x)`
+
 ## ✅ Checklist
 - [ ] Understand primitive vs reference types
 - [ ] Know common String methods

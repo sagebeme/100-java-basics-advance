@@ -191,6 +191,16 @@ public class StockNewsAlert {
 | Automation | Scheduled checks | Monitor stocks |
 | Data Processing | Analyze data | Calculate changes |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Multiple APIs:** Re-read **Step 1** — call Stock API and News API (Day 33 style); combine results — see **Step 2**
+- **Deal logic:** Compare price to threshold; filter/sort — see **Step 2**
+- **Alerts:** Use Day 32 (email) or Day 35 (SMS); store API keys in env — see **Step 3**
+- **Main day README** → **Step 1 & 2** for APIs; **Key Concepts** for aggregation
+
+**Related days:** Day 33 (HTTP, Gson); Day 32 (email); Day 35 (env). **Quick reference:** Maven for dependencies; env vars for keys
+
 ## ✅ Checklist
 - [ ] Can integrate multiple APIs
 - [ ] Can process financial data
@@ -199,6 +209,64 @@ public class StockNewsAlert {
 - [ ] Can format alerts
 - [ ] Completed Stock Alert project
 - [ ] Committed code to Git
+
+## 💻 How to Run Java Files
+
+### Prerequisites
+Make sure you have Java installed on your system:
+- **Check installation**: Open terminal/command prompt and run `java -version`
+- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
+
+### Running Java Files
+
+#### **Windows**
+
+1. **Open Command Prompt or PowerShell**
+   - Press `Win + R`, type `cmd` or `powershell`, press Enter
+
+2. **Navigate to your project directory**
+   ```cmd
+   cd "path\to\100-java-basics-advance\day36\src"
+   ```
+
+3. **Compile** (multiple classes/APIs: use Maven or `javac *.java`)
+   ```cmd
+   javac StockNewsAlert.java
+   ```
+
+4. **Run**
+   ```cmd
+   java StockNewsAlert
+   ```
+
+#### **Mac / Linux**
+
+1. **Open Terminal**
+   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
+   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
+
+2. **Navigate to your project directory**
+   ```bash
+   cd ~/projects/100-java-basics-advance/day36/src
+   ```
+
+3. **Compile and run**
+   ```bash
+   javac StockNewsAlert.java
+   java StockNewsAlert
+   ```
+
+### Using an IDE (Recommended)
+
+**IntelliJ IDEA / Eclipse / VS Code:**
+1. Open the project
+2. Right-click on the main class
+3. Select "Run 'StockNewsAlert.main()'"
+
+### Troubleshooting
+
+- **"javac: command not found"** - Java is not installed or not in PATH
+- **API keys**: Store in environment variables or config; never commit
 
 ## 🚀 Next Steps
 After completing Day 36, you should be able to:

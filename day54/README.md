@@ -75,6 +75,19 @@ public class HelloController {
 }
 ```
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Spring Boot:** Re-read **Project** — create project (start.spring.io); main class with `@SpringBootApplication` — see **Code Structure**
+- **REST:** Re-read **Example Controller** — `@RestController`, `@GetMapping`, `@PathVariable` — see **Example Controller**
+- **Run:** Use `mvn spring-boot:run` or run main Application class from IDE — see **Key Concepts**
+
+**Related days:** Day 55 (REST APIs); Day 56 (static/templates). **Quick reference:** `mvn spring-boot:run`; open http://localhost:8080
+
+## 💻 How to Run
+
+**Spring Boot** — from project root: `mvn spring-boot:run`. Or run the main Application class in your IDE. Open `http://localhost:8080` in browser.
+
 ## Next Steps
 After completing Day 54, you should understand:
 - Spring Boot basics

@@ -96,6 +96,10 @@ Make sure you can:
 - **Practice format specifiers** - `%.2f` for 2 decimal places is very common
 - **Read documentation** - String class has many useful methods
 
+### 📌 Refer to (when stuck)
+- **Main day README** ([day02/README.md](../README.md)) → **Notes & reference** for syntax and gotchas; **Step-by-Step Instructions** for order of work
+- **`_end/`** → Completed solution and learning notes if you need a hint on structure or logic
+
 ---
 
 **Remember**: String manipulation is a core skill in Java. Take time to understand it well - you'll use it constantly! 🎉

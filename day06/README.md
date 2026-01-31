@@ -174,6 +174,18 @@ public class MazeSolver {
 | Method Call | Invoking a method | `add(5, 3)` |
 | Overloading | Same name, different params | `add(int, int)` and `add(double, double)` |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Method syntax:** Re-read **Step 1** — `public static returnType name(params) { }` · Use `void` if no return
+- **Parameters vs arguments:** Parameters in declaration; arguments when calling — see **Step 2**
+- **Overloading:** Same method name, different parameter list (number or types) — see **Step 3**
+- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for method design
+
+**Related days:** Day 5 (loops inside methods); Day 8 (parameters for Caesar Cipher).
+
+**Quick reference:** Return with `return value;` · Call with `methodName(arg1, arg2)` · Overload by changing params only
+
 ## ✅ Checklist
 - [ ] Understand method declaration
 - [ ] Know how to call methods

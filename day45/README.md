@@ -182,6 +182,20 @@ public class MusicTimeMachine {
 | Rate Limiting | Request limits | Handle 429 responses |
 | JSON Parsing | Extract data | Parse API responses |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **OAuth:** Re-read **Step 1** — get token from Spotify token endpoint; use client_id/client_secret — see **Step 2**
+- **API calls:** Re-read **Step 2** — HTTP GET with `Authorization: Bearer <token>` — see **Step 2**
+- **Secrets:** Use env vars for client_id/client_secret; never commit — see **Step 3**
+- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
+
+**Related days:** Day 33 (HTTP); Day 35 (env vars). **Quick reference:** Spotify Developer Dashboard for credentials; Maven for HTTP/Gson
+
+## 💻 How to Run
+
+**Java + Spotify API** — set env vars for Spotify client ID/secret. Run main class from IDE or: `mvn compile exec:java -Dexec.mainClass="YourMainClass"`.
+
 ## ✅ Checklist
 - [ ] Understand OAuth
 - [ ] Can authenticate with Spotify

@@ -90,5 +90,9 @@ After completing Day 24, you should now:
 3. **Template processing** - Powerful automation tool
 4. **Batch operations** - Efficient file handling
 
+### 📌 Refer to (when stuck next time)
+- **Main day README** ([day24/README.md](../README.md)) → **Notes & reference** and **Key Concepts Summary**
+- **`_start/`** → Starting point and common challenges if you redo the day or help someone else
+
 **You're ready for Day 25!** 🚀
 

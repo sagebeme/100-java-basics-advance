@@ -231,6 +231,20 @@ public class SocialMediaBot {
 | Automation | Automate interactions | Like, follow, post |
 | Content Management | Manage posts | Load, schedule, track |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **API:** Re-read **Step 1** — use platform API (Twitter, etc.); OAuth (Day 45 style) — see **Step 2**
+- **Scheduling:** Re-read **Step 2** — `ScheduledExecutorService` for post times — see **Step 2**
+- **Rate limits:** Re-read **Step 3** — respect API limits; delays between requests — see **Step 3**
+- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
+
+**Related days:** Day 33 (HTTP); Day 45 (OAuth); Day 35 (env). **Quick reference:** Env vars for API keys; run main class from IDE
+
+## 💻 How to Run
+
+**Java + Social API** — set env vars for API keys/tokens. Run main class from IDE or: `mvn compile exec:java -Dexec.mainClass="YourMainClass"`.
+
 ## ✅ Checklist
 - [ ] Can use social media APIs
 - [ ] Can schedule posts

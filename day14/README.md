@@ -215,6 +215,18 @@ data.put("Selena Gomez", 174);
 | Game State | Track progress | `score`, `gameContinue` |
 | User Feedback | Show results | Win/lose messages |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Game data:** Re-read **Step 1** — use Map or list for items and "followers"; pick random, compare values
+- **Comparison:** Higher value wins; handle ties — see **Step 2**
+- **Game loop:** Continue until user loses; track score and current item
+- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for flow
+
+**Related days:** Day 9 (Map for data); Day 7 (game loop); Day 11 (game state).
+
+**Quick reference:** Random: `random.nextInt(size)` · Compare: `valueA > valueB` · Clear screen: print newlines or use console clear
+
 ## ✅ Checklist
 - [ ] Understand game concept
 - [ ] Can organize data effectively

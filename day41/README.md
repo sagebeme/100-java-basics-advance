@@ -212,6 +212,23 @@ my-website/
 | Selectors | Target elements | `h1`, `.class`, `#id` |
 | Forms | User input | `<input>`, `<form>` |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **HTML structure:** Re-read **Step 1** — doctype, html, head, body; semantic tags — see **Step 2**
+- **CSS:** Re-read **Step 2** — selectors, colors, layout; link stylesheet or `<style>` — see **Step 3**
+- **Forms:** Use `<form action="" method="">`, `<input name="">`, `<label>` — see **Step 3**
+- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
+
+**Related days:** Day 42 (Flexbox/Grid); Day 54+ (Spring Boot serves HTML). **Quick reference:** Open HTML files in browser; no Java run needed for static HTML/CSS
+
+## 💻 How to Run
+
+This day focuses on **HTML/CSS** (no Java runtime for the page itself):
+
+- **Static files:** Open your `.html` file in a browser (double-click or `file://` URL)
+- **Live server (optional):** Use VS Code "Live Server" or any static server to avoid CORS when linking local files
+
 ## ✅ Checklist
 - [ ] Understand HTML structure
 - [ ] Know common HTML tags

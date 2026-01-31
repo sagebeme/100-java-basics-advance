@@ -195,6 +195,18 @@ public class PomodoroTimer extends Application {
 | Formatting | Display time | `String.format("%02d:%02d")` |
 | Cycle Management | Work/break cycles | Track sessions |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Timeline:** Re-read **Step 1** — `Timeline` with `KeyFrame(Duration.seconds(1), e -> update())` — see **Step 2**
+- **Countdown:** Store `timeLeft`; in KeyFrame decrement and update label; stop when 0 — see **Step 2**
+- **Format:** `String.format("%02d:%02d", minutes, seconds)` for MM:SS — see **Step 3**
+- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for cycle logic
+
+**Related days:** Day 20 (Timeline for animation); Day 27 (JavaFX controls). **JavaFX:** See Troubleshooting.
+
+**Quick reference:** `timeline.setCycleCount(Animation.INDEFINITE)` for repeating · `timeline.play()` / `pause()` / `stop()`
+
 ## ✅ Checklist
 - [ ] Understand Timeline
 - [ ] Can implement countdown
@@ -211,6 +223,79 @@ This day includes starter and completed code examples:
 - **`_end/`** - Completed solutions with detailed explanations
 
 Check these folders to see the progression from start to finish and learn from the learning curve notes!
+
+## 💻 How to Run Java Files
+
+### Prerequisites
+Make sure you have Java installed on your system:
+- **Check installation**: Open terminal/command prompt and run `java -version`
+- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
+
+### Running Java Files
+
+#### **Windows**
+
+1. **Open Command Prompt or PowerShell**
+   - Press `Win + R`, type `cmd` or `powershell`, press Enter
+
+2. **Navigate to the project directory**
+   ```cmd
+   cd "path\to\100-java-basics-advance\day28\_end\src"
+   ```
+
+3. **Compile the Java file**
+   ```cmd
+   javac PomodoroTimer.java
+   ```
+
+4. **Run the compiled program**
+   ```cmd
+   java PomodoroTimer
+   ```
+
+#### **Mac / Linux**
+
+1. **Open Terminal**
+   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
+   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
+
+2. **Navigate to the project directory**
+   ```bash
+   cd ~/projects/100-java-basics-advance/day28/_end/src
+   ```
+
+3. **Compile the Java file**
+   ```bash
+   javac PomodoroTimer.java
+   ```
+
+4. **Run the compiled program**
+   ```bash
+   java PomodoroTimer
+   ```
+
+### Using an IDE (Recommended)
+
+**IntelliJ IDEA:**
+1. Open the project folder in IntelliJ IDEA
+2. Right-click on the Java file
+3. Select "Run 'PomodoroTimer.main()'"
+
+**VS Code:**
+1. Install "Extension Pack for Java"
+2. Open the Java file
+3. Click "Run" button above `main` method or press `F5`
+
+**Eclipse:**
+1. Import project into Eclipse
+2. Right-click on the Java file
+3. Select "Run As" → "Java Application"
+
+### Troubleshooting
+
+- **"javac: command not found"** - Java is not installed or not in PATH
+- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
+- **JavaFX apps**: If using Java 11+, add VM options: `--module-path /path/to/javafx-sdk/lib --add-modules javafx.controls,javafx.fxml`
 
 ## 🚀 Next Steps
 After completing Day 28, you should be able to:

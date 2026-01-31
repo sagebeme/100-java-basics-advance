@@ -72,6 +72,10 @@ Make sure you can:
 - **String replace()** - Easy placeholder replacement
 - **File paths** - Relative or absolute paths
 
+### 📌 Refer to (when stuck)
+- **Main day README** ([day24/README.md](../README.md)) → **Notes & reference** for file read/write and paths; **Step-by-Step Instructions** for Mail Merge
+- **`_end/`** → Completed solution and learning notes if you need a hint on structure or logic
+
 ---
 
 **Remember**: File I/O enables data persistence! 🎉

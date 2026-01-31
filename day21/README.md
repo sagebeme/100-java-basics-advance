@@ -194,6 +194,18 @@ public class Food {
 | Collision | Object intersection | Check coordinates |
 | Score | Game points | Increment on food eaten |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Snake body:** Re-read **Step 1** — use `ArrayList<Segment>`; add new head, remove tail (unless eating) — see **Step 2**
+- **Food:** Random position; ensure not on snake — see **Step 2**
+- **Collision:** Wall: check x/y bounds; self: head equals any body segment — see **Step 3**
+- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for full game logic
+
+**Related days:** Day 20 (animation loop); Day 19 (inheritance for segments); Day 4 (ArrayList). **JavaFX:** See Troubleshooting.
+
+**Quick reference:** `list.add(0, newHead); list.remove(list.size()-1)` · Collision: compare coordinates · `subList(from, to)` for slicing
+
 ## ✅ Checklist
 - [ ] Can work with lists effectively
 - [ ] Can implement snake body

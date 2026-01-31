@@ -224,6 +224,20 @@ public class JobApplicationBot {
 | Application Tracking | Monitor applications | Status, statistics |
 | Data Management | Store application data | JSON, database |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Forms:** Re-read **Step 1** — Selenium (Day 47): find inputs, sendKeys, file upload via sendKeys(path) — see **Step 2**
+- **Job search:** Re-read **Step 2** — navigate to job site; scrape or use API — see **Step 2**
+- **Tracking:** Re-read **Step 3** — store applications in JSON/DB (Day 30/38) — see **Step 3**
+- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
+
+**Related days:** Day 47 (Selenium); Day 38 (DB); Day 30 (JSON). **Quick reference:** Run main class; env for credentials
+
+## 💻 How to Run
+
+**Java + Selenium** — run main class from IDE. Set env for any job-site credentials. Browser will open for form automation.
+
 ## ✅ Checklist
 - [ ] Can automate forms
 - [ ] Can handle file uploads

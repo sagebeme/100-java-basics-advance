@@ -179,6 +179,18 @@ public class PasswordGenerator {
 | Break | Exit loop | `break;` |
 | Continue | Skip iteration | `continue;` |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **For loop:** Re-read **Step 1** — `for (init; condition; update)` · Common: `for (int i = 0; i < arr.length; i++)`
+- **While vs do-while:** While checks first; do-while runs at least once — see **Step 2**
+- **Infinite loop:** Ensure condition eventually becomes false; check update and break conditions
+- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for loop logic
+
+**Related days:** Day 4 (arrays to loop over); Day 6 (methods can contain loops).
+
+**Quick reference:** Use `break` to exit loop; `continue` to skip to next iteration · Off-by-one: use `< length` not `<= length`
+
 ## ✅ Checklist
 - [ ] Understand for loops
 - [ ] Know while and do-while loops

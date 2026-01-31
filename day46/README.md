@@ -215,6 +215,20 @@ public class PriceTrackerApp {
 | Scheduled Tasks | Automated checks | `ScheduledExecutorService` |
 | Alert System | Notify users | Email/SMS alerts |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Scraping:** Re-read **Step 1** — reuse Day 43/44 patterns; extract price from HTML — see **Step 2**
+- **Storage:** Re-read **Step 2** — DB (Day 38) or CSV (Day 25) for price history — see **Step 2**
+- **Scheduling:** Re-read **Step 3** — `ScheduledExecutorService.scheduleAtFixedRate()` — see **Step 3**
+- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
+
+**Related days:** Day 44 (scraping); Day 38 (DB); Day 32 (alerts). **Quick reference:** Maven; run main class; env for API/email
+
+## 💻 How to Run
+
+**Java + Jsoup + optional DB** — run main class from IDE or: `mvn compile exec:java -Dexec.mainClass="YourMainClass"`. Set env for alerts.
+
 ## ✅ Checklist
 - [ ] Can scrape prices
 - [ ] Can store price history

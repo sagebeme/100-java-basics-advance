@@ -190,6 +190,18 @@ public class Turtle extends Animal {
 | Polymorphism | Same interface, different behavior | `Animal a = new Dog()` |
 | Abstract Class | Cannot instantiate | `abstract class Shape` |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Inheritance:** Re-read **Step 1** — `class Child extends Parent { }` — child gets parent's fields/methods — see **Step 2**
+- **Override:** Use `@Override` and same signature as parent; use `super.method()` to call parent — see **Step 3**
+- **Polymorphism:** Variable of parent type can hold child: `Animal a = new Dog();` then `a.method()` calls overridden version
+- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for inheritance design
+
+**Related days:** Day 16 (classes); Day 17 (multiple classes); Day 21 (Snake with inheritance).
+
+**Quick reference:** Constructor: call `super(args)` first in child constructor · Override = same method name and params
+
 ## ✅ Checklist
 - [ ] Understand inheritance
 - [ ] Can create subclasses

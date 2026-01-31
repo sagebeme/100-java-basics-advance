@@ -228,6 +228,20 @@ public class PriceTracker {
 | Error Recovery | Handle failures | Retry with backoff |
 | Data Persistence | Save results | CSV, JSON files |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Pagination:** Re-read **Step 1** — loop with page param; stop when empty — see **Starter Code**
+- **Rate limiting:** Use `Thread.sleep(ms)` between requests — see **Step 2**
+- **Data cleaning:** Trim, normalize; save with Day 24/25 patterns — see **Step 2**
+- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
+
+**Related days:** Day 43 (Jsoup); Day 24 (file I/O). **Quick reference:** Maven + Jsoup; run main class from IDE
+
+## 💻 How to Run
+
+**Java + Jsoup** — run main class (e.g. PriceTracker) from IDE or: `mvn compile exec:java -Dexec.mainClass="YourMainClass"`. Set env for any API keys.
+
 ## ✅ Checklist
 - [ ] Can handle pagination
 - [ ] Can clean data

@@ -215,6 +215,20 @@ public class InternetSpeedBot {
 | Data Formatting | Format results | Create tweet messages |
 | Rate Limiting | API limits | Handle 429 errors |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Speed test:** Re-read **Step 1** — use speedtest API or library; measure download/upload — see **Step 2**
+- **Twitter:** Re-read **Step 2** — OAuth/API (Day 33/50 style); format tweet; post — see **Step 2**
+- **Scheduling:** Re-read **Step 3** — run at interval (Day 46 style) — see **Step 3**
+- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
+
+**Related days:** Day 33 (HTTP); Day 50 (Twitter/social); Day 35 (env). **Quick reference:** Env for Twitter keys; run main class from IDE
+
+## 💻 How to Run
+
+**Java + Twitter API** — set env vars for Twitter API keys/tokens. Run main class from IDE or: `mvn compile exec:java -Dexec.mainClass="YourMainClass"`.
+
 ## ✅ Checklist
 - [ ] Can test internet speed
 - [ ] Can use Twitter API

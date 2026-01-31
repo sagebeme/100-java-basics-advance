@@ -130,6 +130,24 @@ Upgrade existing blog:
 | Responsive Design | Mobile-friendly |
 | Component Library | Pre-built UI elements |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Bootstrap CDN:** Re-read **Step 1** — add CSS/JS links in layout; use Thymeleaf for dynamic content — see **Step 2**
+- **Layout:** Use `container`, `row`, `col-*`; navbar, cards, forms — see **Step 2**
+- **Forms:** Use `form-control`, `form-label`, `btn btn-primary` — see **Step 2**
+- **Main day README** → **Step 1 & 2** for markup; **Key Concepts** for components
+
+**Related days:** Day 54 (Spring Boot); Day 57 (Thymeleaf); Day 58 (Bootstrap intro). **Quick reference:** Run blog with `mvn spring-boot:run`; open browser to localhost
+
+## 💻 How to Run
+
+This day is a **Spring Boot web app** with Bootstrap:
+
+- **Maven:** From project root: `mvn spring-boot:run`
+- **IDE:** Run the main Application class (Spring Boot)
+- **Browser:** Open `http://localhost:8080` (or port in application.properties)
+
 ## ✅ Checklist
 - [ ] Upgraded blog with Bootstrap
 - [ ] Created responsive layout

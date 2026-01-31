@@ -97,6 +97,10 @@ After completing Day 2, you should now:
 4. **Robustness** - Handles edge cases
 5. **Best practices** - Follows Java conventions
 
+### 📌 Refer to (when stuck next time)
+- **Main day README** ([day02/README.md](../README.md)) → **Notes & reference** and **Key Concepts Summary**
+- **`_start/`** → Starting point and common challenges if you redo the day or help someone else
+
 ### Next Steps After Reviewing
 
 - [ ] Compare your solution approach

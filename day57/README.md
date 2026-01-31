@@ -212,6 +212,20 @@ public class BlogController {
 | Loops | Iterate collections | `th:each="item : ${items}"` |
 | Fragments | Reusable components | `th:fragment`, `th:replace` |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Thymeleaf:** Re-read **Step 1** — templates in `templates/`; `th:text="${var}"`, `th:each` — see **Step 2**
+- **Controller:** Re-read **Step 2** — add model in controller; return view name — see **Step 2**
+- **Forms:** Re-read **Step 3** — `th:object`, `th:field`, `th:action` — see **Step 3**
+- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
+
+**Related days:** Day 54 (Spring Boot); Day 56 (static/templates); Day 59 (Bootstrap). **Quick reference:** `mvn spring-boot:run`; open http://localhost:8080
+
+## 💻 How to Run
+
+**Spring Boot + Thymeleaf** — from project root: `mvn spring-boot:run`. Run main Application class in IDE. Open `http://localhost:8080` in browser.
+
 ## ✅ Checklist
 - [ ] Understand Thymeleaf syntax
 - [ ] Can use expressions

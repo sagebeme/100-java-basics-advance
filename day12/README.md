@@ -199,6 +199,18 @@ public class NumberGuessing {
 | Class Scope | Class-level access | Static variable |
 | Access Modifier | Visibility control | `public`, `private`, `protected` |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Scope:** Re-read **Step 1** — variable visible only inside the block where it's declared
+- **Local vs instance:** Local = inside method; instance = field of class, visible in all non-static methods — see **Step 2**
+- **"Cannot find symbol"** → Variable might be out of scope (e.g. declared inside an if block, used outside)
+- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for access design
+
+**Related days:** Day 16 (OOP uses private fields); Day 6 (methods and parameters).
+
+**Quick reference:** Declare variables in the narrowest scope needed · Use `private` for fields, expose via methods
+
 ## ✅ Checklist
 - [ ] Understand variable scope
 - [ ] Know local vs instance vs class scope

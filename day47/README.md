@@ -220,6 +220,20 @@ public class FormBot {
 | Actions | Interact | `sendKeys()`, `click()`, `submit()` |
 | Screenshots | Capture | `TakesScreenshot` |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **WebDriver:** Re-read **Step 1** — add Selenium dependency; `WebDriver driver = new ChromeDriver()` — see **Step 2**
+- **Elements:** Re-read **Step 2** — `driver.findElement(By.id())`, `sendKeys()`, `click()` — see **Step 2**
+- **Waits:** Use `WebDriverWait` and `ExpectedConditions` for dynamic content — see **Step 3**
+- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
+
+**Related days:** Day 43 (HTML); Day 48 (automation). **Quick reference:** ChromeDriver must match Chrome version; run from IDE
+
+## 💻 How to Run
+
+**Java + Selenium** — add Selenium + ChromeDriver to Maven. Run main class from IDE (browser will open). Ensure Chrome/ChromeDriver versions match.
+
 ## ✅ Checklist
 - [ ] Understand Selenium
 - [ ] Can automate browsers

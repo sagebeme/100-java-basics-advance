@@ -162,6 +162,16 @@ By the end of this course, you will:
 - Deploy applications to cloud platforms
 - Build a professional portfolio of projects
 
+## 📌 When you're stuck
+
+Each day is set up so you can find help quickly:
+
+- **In each day's README** → Look for **📌 Notes & reference (use these when stuck)**. It points to which steps to re-read, common gotchas, related days, and quick syntax.
+- **In `_start/` and `_end/`** (Days 1–31) → Use **📌 Refer to (when stuck)** to jump back to the main day README or to the solution for hints.
+- **In each exercise** (`exercise1/`, `exercise2/`) → Use **📌 Refer to (when stuck)** to see which day README section and which folder to check.
+
+Use these notes to solve problems without leaving the repo.
+
 ## 📝 How to Use This Repository
 
 1. **Clone the repository**

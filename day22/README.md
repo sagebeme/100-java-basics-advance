@@ -183,6 +183,18 @@ public class PongGame extends Application {
 | Collision | Object interaction | Ball hits paddle |
 | Score | Points tracking | Increment on goal |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Paddles:** Re-read **Step 1 & 2** — move up/down with key (W/S, Up/Down); clamp y to screen bounds — see **Step 2**
+- **Ball:** Update x,y each frame; bounce: negate velocity on paddle/wall hit — see **Step 3**
+- **Collision:** Ball vs paddle: check ball x,y against paddle rectangle — see **Step 3**
+- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for physics and scoring
+
+**Related days:** Day 20 (keyboard, animation); Day 21 (collision). **JavaFX:** Compile/run needs JavaFX SDK (see Troubleshooting).
+
+**Quick reference:** Bounce: `velocityX = -velocityX` · Clamp paddle: `y = Math.max(0, Math.min(HEIGHT - paddleH, y))`
+
 ## ✅ Checklist
 - [ ] Can create game components
 - [ ] Can implement physics
@@ -198,6 +210,80 @@ This day includes starter and completed code examples:
 - **`_end/`** - Completed solutions with detailed explanations
 
 Check these folders to see the progression from start to finish and learn from the learning curve notes!
+
+## 💻 How to Run Java Files
+
+### Prerequisites
+Make sure you have Java installed on your system:
+- **Check installation**: Open terminal/command prompt and run `java -version`
+- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
+
+### Running Java Files
+
+#### **Windows**
+
+1. **Open Command Prompt or PowerShell**
+   - Press `Win + R`, type `cmd` or `powershell`, press Enter
+
+2. **Navigate to the project directory**
+   ```cmd
+   cd "path\to\100-java-basics-advance\day22\_end\src"
+   ```
+
+3. **Compile the Java file** (this project uses JavaFX — see note below)
+   ```cmd
+   javac PongGame.java
+   ```
+   *If you get "package javafx does not exist"*, JavaFX is not on the classpath. Use an IDE (recommended) or add JavaFX SDK and compile with: `javac --module-path "C:\path\to\javafx-sdk\lib" --add-modules javafx.controls,javafx.fxml PongGame.java`
+
+4. **Run the compiled program**
+   ```cmd
+   java PongGame
+   ```
+
+#### **Mac / Linux**
+
+1. **Open Terminal**
+   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
+   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
+
+2. **Navigate to the project directory**
+   ```bash
+   cd ~/projects/100-java-basics-advance/day22/_end/src
+   ```
+
+3. **Compile the Java file**
+   ```bash
+   javac PongGame.java
+   ```
+
+4. **Run the compiled program**
+   ```bash
+   java PongGame
+   ```
+
+### Using an IDE (Recommended)
+
+**IntelliJ IDEA:**
+1. Open the project folder in IntelliJ IDEA
+2. Right-click on the Java file
+3. Select "Run 'PongGame.main()'"
+
+**VS Code:**
+1. Install "Extension Pack for Java"
+2. Open the Java file
+3. Click "Run" button above `main` method or press `F5`
+
+**Eclipse:**
+1. Import project into Eclipse
+2. Right-click on the Java file
+3. Select "Run As" → "Java Application"
+
+### Troubleshooting
+
+- **"javac: command not found"** - Java is not installed or not in PATH
+- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
+- **"package javafx does not exist"** - This project uses JavaFX. On Java 11+, JavaFX is not included in the JDK. Either run from an IDE (IntelliJ/VS Code/Eclipse with JavaFX support) or [download JavaFX SDK](https://gluonhq.com/products/javafx/) and use `--module-path` and `--add-modules javafx.controls,javafx.fxml` for both `javac` and `java`
 
 ## 🚀 Next Steps
 After completing Day 22, you should be able to:

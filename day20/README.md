@@ -228,6 +228,18 @@ public class SnakeGame extends Application {
 | Input Handling | Respond to user input | `setOnKeyPressed()` |
 | Update Method | Change game state | Move objects, check collisions |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Game loop:** Re-read **Step 1** — use `Timeline` with `KeyFrame` and `Duration.millis(ms)` — see **Step 2**
+- **Animation:** In KeyFrame handler: update positions, then `gc.clearRect(0,0,w,h)` and redraw — see **Step 3**
+- **Keyboard:** `scene.setOnKeyPressed(e -> { e.getCode() == KeyCode.LEFT ... });` — see **Step 4**
+- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for animation flow
+
+**Related days:** Day 18 (canvas drawing); Day 21 (Snake Part 2); Day 22 (Pong). **JavaFX:** See Troubleshooting for module path.
+
+**Quick reference:** Timeline: `new KeyFrame(Duration.millis(100), e -> update())` · `timeline.setCycleCount(Animation.INDEFINITE)` · Request focus: `canvas.requestFocus()`
+
 ## ✅ Checklist
 - [ ] Understand game loops
 - [ ] Can create animations

@@ -219,6 +219,20 @@ public class TodoController {
 | Path Variable | URL parameter | `@PathVariable Long id` |
 | Request Body | JSON payload | `@RequestBody User user` |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **REST:** Re-read **Step 1** — GET (read), POST (create), PUT (update), DELETE — see **Step 2**
+- **Controller:** Re-read **Step 2** — `@RestController`, `@GetMapping("/path")`, `@PostMapping` with `@RequestBody` — see **Step 2**
+- **JSON:** Spring Boot auto-serializes POJOs to JSON — see **Step 3**
+- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
+
+**Related days:** Day 54 (Spring Boot); Day 33 (HTTP). **Quick reference:** `mvn spring-boot:run`; test with curl or Postman
+
+## 💻 How to Run
+
+**Spring Boot** — from project root: `mvn spring-boot:run`. Run main Application class in IDE. Test endpoints at `http://localhost:8080`.
+
 ## ✅ Checklist
 - [ ] Understand REST principles
 - [ ] Can create REST controllers

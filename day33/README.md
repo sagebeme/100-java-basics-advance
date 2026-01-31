@@ -178,6 +178,16 @@ public class APIClient {
 | POST Request | Send data | `.POST(body)` |
 | JSON Parsing | Extract data | `Gson.fromJson()` |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **HTTP Client:** Re-read **Step 1** — `HttpClient.newHttpClient()`, `HttpRequest.newBuilder().uri(...).GET().build()` — see **Step 2**
+- **Parse JSON:** Use Gson: `gson.fromJson(responseBody, MyClass.class)` — see **Step 2**
+- **Errors:** Check status code; handle IOException and parse errors — see **Step 3**
+- **Main day README** → **Step 1 & 2** for request/response; **Key Concepts** for GET/POST
+
+**Related days:** Day 30 (Gson, JSON); Day 34 (API + GUI). **Quick reference:** Java 11+ has `java.net.http` · Add Gson JAR or Maven
+
 ## ✅ Checklist
 - [ ] Understand REST APIs
 - [ ] Can make HTTP requests
@@ -186,6 +196,65 @@ public class APIClient {
 - [ ] Can integrate APIs
 - [ ] Completed API projects
 - [ ] Committed code to Git
+
+## 💻 How to Run Java Files
+
+### Prerequisites
+Make sure you have Java installed on your system:
+- **Check installation**: Open terminal/command prompt and run `java -version`
+- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
+
+### Running Java Files
+
+#### **Windows**
+
+1. **Open Command Prompt or PowerShell**
+   - Press `Win + R`, type `cmd` or `powershell`, press Enter
+
+2. **Navigate to your project directory**
+   ```cmd
+   cd "path\to\100-java-basics-advance\day33\src"
+   ```
+
+3. **Compile** (if multiple files or dependencies: use Maven/Gradle or IDE)
+   ```cmd
+   javac APIClient.java
+   ```
+
+4. **Run the compiled program**
+   ```cmd
+   java APIClient
+   ```
+
+#### **Mac / Linux**
+
+1. **Open Terminal**
+   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
+   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
+
+2. **Navigate to your project directory**
+   ```bash
+   cd ~/projects/100-java-basics-advance/day33/src
+   ```
+
+3. **Compile and run**
+   ```bash
+   javac APIClient.java
+   java APIClient
+   ```
+
+### Using an IDE (Recommended)
+
+**IntelliJ IDEA / Eclipse / VS Code:**
+1. Open the project
+2. Right-click on the main class
+3. Select "Run 'APIClient.main()'"
+
+### Troubleshooting
+
+- **"javac: command not found"** - Java is not installed or not in PATH
+- **HTTP Client**: Requires Java 11+ (built-in `java.net.http`)
+- **Gson/JSON**: Add JAR to classpath or use Maven for dependencies
 
 ## 🚀 Next Steps
 After completing Day 33, you should be able to:

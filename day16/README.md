@@ -181,6 +181,18 @@ public class ResourceManager {
 | Instance Variable | Belongs to object | `private String brand;` |
 | Encapsulation | Data hiding | Private fields, public methods |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Class vs object:** Re-read **Step 1** — class = blueprint; object = `new ClassName()` — see **Step 2**
+- **Constructor:** Same name as class, no return type; use for initialization — see **Step 3**
+- **Encapsulation:** Use `private` for fields; provide `public` getters/setters — see **Step 4**
+- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for OOP design
+
+**Related days:** Day 12 (scope, access); Day 17 (multiple classes); Day 19 (inheritance).
+
+**Quick reference:** `this.field` for instance variable · Constructor: `public ClassName(params) { }` · Compile multiple: `javac *.java`
+
 ## ✅ Checklist
 - [ ] Understand classes and objects
 - [ ] Can create constructors

@@ -146,6 +146,18 @@ public class BandNameGenerator {
 | Initialization | Giving a variable a value | `name = "John";` |
 | Scanner | Reads user input | `Scanner scanner = new Scanner(System.in);` |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Variables / types:** Re-read **Step 2** and **Step 3** above for declaration syntax. Remember: `dataType variableName = value;`
+- **User input:** Re-read **Step 4** for Scanner: `Scanner scanner = new Scanner(System.in);` then `scanner.nextLine()` or `scanner.nextInt()`
+- **"Cannot find symbol"** → Check spelling and that the variable was declared before use
+- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for how the solution works
+
+**Related days:** Day 2 (data types, String, parsing) builds on this.
+
+**Quick reference:** `int x = 5;` · `String s = scanner.nextLine();` · `scanner.close();` when done
+
 ## ✅ Checklist
 - [ ] Understand what variables are
 - [ ] Know the 8 primitive data types

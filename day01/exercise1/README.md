@@ -25,6 +25,11 @@ Create variables for:
 ## Starter Code
 Check the src/ directory for starter code files.
 
+## 📌 Refer to (when stuck)
+- **Day 01 README** → **Step 2 & Step 3** (variable declaration and types: int, double, String, boolean)
+- **Day 01 README** → **Key Concepts Summary** table for syntax
+- **`_start/README.md`** → Common starting challenges; **`_end/README.md`** → How the main project uses variables
+
 ## Tips
 - Follow Java best practices
 - Test your code thoroughly

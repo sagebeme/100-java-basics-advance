@@ -208,6 +208,20 @@ public class CookieClickerBot {
 | Optimization | Improve performance | Better strategies |
 | Pattern Recognition | Identify patterns | Game patterns |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Automation:** Re-read **Step 1** — use Selenium (Day 47) to click/type; locate game elements — see **Step 2**
+- **Strategy:** Re-read **Step 2** — read game state from DOM; decide next action — see **Step 2**
+- **Timing:** Use waits and small delays; avoid rate limits — see **Step 3**
+- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
+
+**Related days:** Day 47 (Selenium); Day 46 (scheduling). **Quick reference:** Run main class; browser runs in foreground
+
+## 💻 How to Run
+
+**Java + Selenium** — run main class from IDE. Browser will open; bot interacts with the game page.
+
 ## ✅ Checklist
 - [ ] Can analyze games
 - [ ] Can implement strategies

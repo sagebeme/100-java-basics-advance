@@ -85,6 +85,10 @@ After completing Day 17, you should now:
 - [ ] Add difficulty levels
 - [ ] Refactor for better organization
 
+### 📌 Refer to (when stuck next time)
+- **Main day README** ([day17/README.md](../README.md)) → **Notes & reference** and **Key Concepts Summary**
+- **`_start/`** → Starting point and common challenges if you redo the day or help someone else
+
 ### 💡 Key Takeaways
 
 1. **Multiple classes** - Organize complex applications

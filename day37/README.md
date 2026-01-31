@@ -188,6 +188,16 @@ public class HabitTracker {
 | Statistics | Analyze data | Completion rates |
 | Visualization | Display data | Calendar, charts |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Habit data:** Re-read **Step 1** — model: name, dates completed; store in JSON or file — see **Step 2**
+- **Streak:** Count consecutive days from today backward — see **Step 2**
+- **Persistence:** Day 24 (file I/O) or Day 30 (Gson JSON) — see **Step 3**
+- **Main day README** → **Step 1 & 2** for data model; **Key Concepts** for persistence
+
+**Related days:** Day 30 (JSON); Day 24 (file I/O); Day 34 (GUI optional). **Quick reference:** LocalDate for dates; Gson for save/load
+
 ## ✅ Checklist
 - [ ] Can track habits
 - [ ] Can calculate streaks
@@ -196,6 +206,64 @@ public class HabitTracker {
 - [ ] Can visualize progress
 - [ ] Completed Habit Tracker
 - [ ] Committed code to Git
+
+## 💻 How to Run Java Files
+
+### Prerequisites
+Make sure you have Java installed on your system:
+- **Check installation**: Open terminal/command prompt and run `java -version`
+- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
+
+### Running Java Files
+
+#### **Windows**
+
+1. **Open Command Prompt or PowerShell**
+   - Press `Win + R`, type `cmd` or `powershell`, press Enter
+
+2. **Navigate to your project directory**
+   ```cmd
+   cd "path\to\100-java-basics-advance\day37\src"
+   ```
+
+3. **Compile** (if multiple files: `javac *.java`)
+   ```cmd
+   javac HabitTracker.java
+   ```
+
+4. **Run**
+   ```cmd
+   java HabitTracker
+   ```
+
+#### **Mac / Linux**
+
+1. **Open Terminal**
+   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
+   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
+
+2. **Navigate to your project directory**
+   ```bash
+   cd ~/projects/100-java-basics-advance/day37/src
+   ```
+
+3. **Compile and run**
+   ```bash
+   javac HabitTracker.java
+   java HabitTracker
+   ```
+
+### Using an IDE (Recommended)
+
+**IntelliJ IDEA / Eclipse / VS Code:**
+1. Open the project
+2. Right-click on the main class
+3. Select "Run 'HabitTracker.main()'"
+
+### Troubleshooting
+
+- **"javac: command not found"** - Java is not installed or not in PATH
+- **"Error: Could not find or load main class"** - Ensure you're in the correct directory and class name matches filename
 
 ## 🚀 Next Steps
 After completing Day 37, you should be able to:

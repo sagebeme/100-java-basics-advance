@@ -190,6 +190,18 @@ public class CaesarCipher {
 | Character Shift | Moving in alphabet | `'A' + 3 = 'D'` |
 | Modulo | Wrap around | `(x + shift) % 26` |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Character shift:** Re-read **Step 2** — use `(char) (c + shift)`; for alphabet wrap use modulo: `(c - 'A' + shift) % 26 + 'A'`
+- **ASCII:** Letters 'A'–'Z' are 65–90; 'a'–'z' are 97–122 — handle upper/lower separately
+- **Caesar cipher:** Encrypt = shift forward; decrypt = shift backward (or use negative shift)
+- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for shift logic
+
+**Related days:** Day 6 (methods with parameters); Day 2 (String/char).
+
+**Quick reference:** Cast: `(char) (x)` · Modulo for wrap: `(n % 26 + 26) % 26` for negative-safe wrap
+
 ## ✅ Checklist
 - [ ] Understand method parameters deeply
 - [ ] Know pass-by-value concept

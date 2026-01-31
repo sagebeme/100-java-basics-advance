@@ -11,6 +11,16 @@ public class VariableDeclaration {
         // System.out.println("Height: " + height);
         // System.out.println("Name: " + name);
         // System.out.println("Likes Java: " + likesJava);
+
+        int age = 23;
+        double height = 2.2;
+        String name = "Marvin";
+        boolean likesJava = true;
+
+        System.out.println("Age: " + age);
+        System.out.println("Height: " + height);
+        System.out.println("Name: " + name);
+        System.out.println("LikesJava: " + likesJava);
     }
 }
 

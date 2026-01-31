@@ -78,6 +78,18 @@ Here is $4.10 in change.
 Here is your latte ☕. Enjoy!
 ```
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Resources:** Re-read **Step 1** — track water, milk, coffee, money; decrease when drink made
+- **Payment:** Sum coins (quarters×0.25, dimes×0.10, etc.); compare to drink cost; return change — see **Step 2**
+- **"Insufficient resources"** → Check water/milk/coffee before making drink
+- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for state and menu logic
+
+**Related days:** Day 6 (methods for each action); Day 3 (conditions for sufficient resources); Day 10 (return change).
+
+**Quick reference:** Use constants for drink recipes · Round money: `Math.round(x * 100) / 100.0` · Validate input (positive numbers)
+
 ## 📂 Code Examples
 
 This day includes starter and completed code examples:

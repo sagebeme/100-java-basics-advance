@@ -201,6 +201,16 @@ public class QuizApp extends Application {
 | Error Handling | Handle API failures | Try-catch, fallbacks |
 | Progress Tracking | Show completion | ProgressBar |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Fetch in GUI:** Re-read **Step 1** — call API (Day 33 style); parse JSON; update UI on JavaFX thread: `Platform.runLater(() -> ...)` — see **Step 2**
+- **Controls:** Use Label, Button, ProgressBar; disable button while loading — see **Step 2**
+- **Errors:** Show message in Label or dialog; try-catch around API call — see **Step 3**
+- **Main day README** → **Step 1 & 2** for API + GUI; **Key Concepts** for async
+
+**Related days:** Day 27 (JavaFX); Day 33 (HTTP, Gson). **JavaFX:** See How to Run. **Quick reference:** Don't block UI thread; use Platform.runLater for UI updates
+
 ## ✅ Checklist
 - [ ] Can integrate APIs in GUI
 - [ ] Can fetch and parse data
@@ -209,6 +219,64 @@ public class QuizApp extends Application {
 - [ ] Can track progress
 - [ ] Completed Quiz App
 - [ ] Committed code to Git
+
+## 💻 How to Run Java Files
+
+### Prerequisites
+Make sure you have Java installed on your system:
+- **Check installation**: Open terminal/command prompt and run `java -version`
+- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
+
+### Running Java Files
+
+#### **Windows**
+
+1. **Open Command Prompt or PowerShell**
+   - Press `Win + R`, type `cmd` or `powershell`, press Enter
+
+2. **Navigate to your project directory**
+   ```cmd
+   cd "path\to\100-java-basics-advance\day34\src"
+   ```
+
+3. **Compile** (JavaFX: add module path if Java 11+)
+   ```cmd
+   javac QuizApp.java
+   ```
+
+4. **Run**
+   ```cmd
+   java QuizApp
+   ```
+
+#### **Mac / Linux**
+
+1. **Open Terminal**
+   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
+   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
+
+2. **Navigate to your project directory**
+   ```bash
+   cd ~/projects/100-java-basics-advance/day34/src
+   ```
+
+3. **Compile and run** (JavaFX: `--module-path /path/to/javafx-sdk/lib --add-modules javafx.controls,javafx.fxml`)
+   ```bash
+   javac QuizApp.java
+   java QuizApp
+   ```
+
+### Using an IDE (Recommended)
+
+**IntelliJ IDEA / Eclipse / VS Code:**
+1. Open the project
+2. Right-click on the main class
+3. Select "Run 'QuizApp.main()'"
+
+### Troubleshooting
+
+- **"javac: command not found"** - Java is not installed or not in PATH
+- **JavaFX**: Java 11+ requires VM options for JavaFX modules
 
 ## 🚀 Next Steps
 After completing Day 34, you should be able to:

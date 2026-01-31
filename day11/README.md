@@ -212,6 +212,18 @@ public class Blackjack {
 | Game Loop | Main game execution | While game not over |
 | Win Conditions | Rules for winning | Closer to 21, not bust |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Hand value:** Re-read **Step 2** — sum card values; Ace = 1 or 11 (use 11 if total ≤ 21, else 1)
+- **Game flow:** Player hit/stand loop, then dealer draws until 17+ — see **Step 3**
+- **Bust:** Hand value > 21; check after each hit
+- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for full game logic
+
+**Related days:** Day 7 (game loop), Day 9 (data structures), Day 10 (methods returning values).
+
+**Quick reference:** Shuffle: `Collections.shuffle(list)` · Ace logic: try 11 first, if bust use 1
+
 ## ✅ Checklist
 - [ ] Understand Blackjack rules
 - [ ] Can represent and shuffle cards

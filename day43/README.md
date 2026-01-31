@@ -203,6 +203,23 @@ public class NewsScraper {
 | Element | HTML element | `Element`, `Elements` |
 | Data Extraction | Get content | `.text()`, `.attr()` |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Jsoup:** Re-read **Step 1** — `Jsoup.connect(url).get()`; add Jsoup dependency (Maven) — see **Step 2**
+- **Selectors:** Re-read **Step 2** — `doc.select("cssSelector")`; `.text()`, `.attr("href")` — see **Step 2**
+- **Errors:** Handle IOException, respect robots.txt; use try-catch — see **Step 3**
+- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
+
+**Related days:** Day 33 (HTTP); Day 44 (advanced scraping). **Quick reference:** Maven: jsoup dependency; run main class from IDE or `mvn exec:java`
+
+## 💻 How to Run
+
+**Java + Jsoup** — add Jsoup to `pom.xml` (or classpath). From project root or `src`:
+
+- **IDE:** Run the main class (e.g. News Scraper)
+- **Maven:** `mvn compile exec:java -Dexec.mainClass="YourMainClass"`
+
 ## ✅ Checklist
 - [ ] Understand web scraping
 - [ ] Can use Jsoup

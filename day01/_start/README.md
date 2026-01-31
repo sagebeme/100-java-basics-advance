@@ -92,6 +92,10 @@ Make sure you can:
 - **Break things** - Make mistakes intentionally to understand errors
 - **Read error messages** - They're trying to help you!
 
+### 📌 Refer to (when stuck)
+- **Main day README** ([day01/README.md](../README.md)) → **Notes & reference** for syntax and gotchas; **Step-by-Step Instructions** for order of work
+- **`_end/`** → Completed solution and learning notes if you need a hint on structure or logic
+
 ---
 
 **Remember**: This is your starting point. Everyone begins here. Take your time, be patient with yourself, and celebrate small wins! 🎉

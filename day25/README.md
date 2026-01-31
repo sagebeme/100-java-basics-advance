@@ -208,6 +208,16 @@ public class StatesGame {
 | CSV Writing | Save to CSV | `String.join(",", values)` |
 | Data Structure | Organize data | Map, List for CSV data |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Reading CSV:** Re-read **Step 1** — read line by line; `line.split(",")` for columns; skip or use header row — see **Step 2**
+- **Parsing:** Handle quoted fields and commas inside quotes if needed; trim whitespace: `s.trim()`
+- **Writing CSV:** Re-read **Step 2** — `String.join(",", values)` or build line manually — see **Step 2**
+- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for States Game logic
+
+**Related days:** Day 24 (file read/write); Day 26 (streams for processing). **Quick reference:** `line.split(",", -1)` keeps trailing empty fields
+
 ## ✅ Checklist
 - [ ] Can read CSV files
 - [ ] Can parse CSV data
@@ -224,6 +234,79 @@ This day includes starter and completed code examples:
 - **`_end/`** - Completed solutions with detailed explanations
 
 Check these folders to see the progression from start to finish and learn from the learning curve notes!
+
+## 💻 How to Run Java Files
+
+### Prerequisites
+Make sure you have Java installed on your system:
+- **Check installation**: Open terminal/command prompt and run `java -version`
+- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
+
+### Running Java Files
+
+#### **Windows**
+
+1. **Open Command Prompt or PowerShell**
+   - Press `Win + R`, type `cmd` or `powershell`, press Enter
+
+2. **Navigate to the project directory**
+   ```cmd
+   cd "path\to\100-java-basics-advance\day25\_end\src"
+   ```
+
+3. **Compile** (if multiple files: `javac *.java`)
+   ```cmd
+   javac StatesGame.java
+   ```
+
+4. **Run the compiled program**
+   ```cmd
+   java StatesGame
+   ```
+
+#### **Mac / Linux**
+
+1. **Open Terminal**
+   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
+   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
+
+2. **Navigate to the project directory**
+   ```bash
+   cd ~/projects/100-java-basics-advance/day25/_end/src
+   ```
+
+3. **Compile** (if multiple files: `javac *.java`)
+   ```bash
+   javac StatesGame.java
+   ```
+
+4. **Run the compiled program**
+   ```bash
+   java StatesGame
+   ```
+
+### Using an IDE (Recommended)
+
+**IntelliJ IDEA:**
+1. Open the project folder in IntelliJ IDEA
+2. Right-click on the Java file
+3. Select "Run 'StatesGame.main()'"
+
+**VS Code:**
+1. Install "Extension Pack for Java"
+2. Open the Java file
+3. Click "Run" button above `main` method or press `F5`
+
+**Eclipse:**
+1. Import project into Eclipse
+2. Right-click on the Java file
+3. Select "Run As" → "Java Application"
+
+### Troubleshooting
+
+- **"javac: command not found"** - Java is not installed or not in PATH
+- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
+- **CSV file not found** - Place your CSV file in the same directory or use the correct path
 
 ## 🚀 Next Steps
 After completing Day 25, you should be able to:

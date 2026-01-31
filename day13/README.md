@@ -184,6 +184,18 @@ Add proper error handling and fix bugs!
 | Finally | Always executes | Cleanup code |
 | Stack Trace | Error location info | Line numbers, method calls |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Try-catch:** Re-read **Step 1** — `try { risky code } catch (ExceptionType e) { handle }` · Use `finally` for cleanup
+- **Common exceptions:** NullPointerException (null reference), ArrayIndexOutOfBounds, NumberFormatException — see **Step 2**
+- **Debugger:** Set breakpoint, step through, inspect variables — see **Step 3**
+- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for error handling
+
+**Related days:** Day 24 (file I/O and FileNotFoundException); Day 30 (advanced exception handling).
+
+**Quick reference:** `e.getMessage()` for error text · `e.printStackTrace()` for full stack trace · Validate input before parsing
+
 ## ✅ Checklist
 - [ ] Understand error types
 - [ ] Can read error messages

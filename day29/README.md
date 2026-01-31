@@ -219,6 +219,18 @@ public class PasswordManager extends Application {
 | Search | Find data | File scanning |
 | Clipboard | Copy to system | `Clipboard.setContent()` |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Password generation:** Re-read **Step 1** — random chars from alphabet; use `Random` and `StringBuilder` — see **Step 2**
+- **File storage:** Re-read **Step 2** — save/load with FileWriter/Scanner or BufferedReader — see **Step 2**
+- **GUI:** Re-read **Step 3** — TextField, Button, ListView; `button.setOnAction()` to add/search — see **Step 3**
+- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for full flow
+
+**Related days:** Day 24 (file I/O); Day 27 (JavaFX); Day 30 (JSON for storage). **JavaFX:** See Troubleshooting.
+
+**Quick reference:** Clipboard: `Clipboard.getSystemClipboard().setContent(ClipboardContent with string)` · Search: iterate entries, match key
+
 ## ✅ Checklist
 - [ ] Can generate passwords
 - [ ] Can save to files
@@ -235,6 +247,79 @@ This day includes starter and completed code examples:
 - **`_end/`** - Completed solutions with detailed explanations
 
 Check these folders to see the progression from start to finish and learn from the learning curve notes!
+
+## 💻 How to Run Java Files
+
+### Prerequisites
+Make sure you have Java installed on your system:
+- **Check installation**: Open terminal/command prompt and run `java -version`
+- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
+
+### Running Java Files
+
+#### **Windows**
+
+1. **Open Command Prompt or PowerShell**
+   - Press `Win + R`, type `cmd` or `powershell`, press Enter
+
+2. **Navigate to the project directory**
+   ```cmd
+   cd "path\to\100-java-basics-advance\day29\_end\src"
+   ```
+
+3. **Compile the Java file**
+   ```cmd
+   javac PasswordManager.java
+   ```
+
+4. **Run the compiled program**
+   ```cmd
+   java PasswordManager
+   ```
+
+#### **Mac / Linux**
+
+1. **Open Terminal**
+   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
+   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
+
+2. **Navigate to the project directory**
+   ```bash
+   cd ~/projects/100-java-basics-advance/day29/_end/src
+   ```
+
+3. **Compile the Java file**
+   ```bash
+   javac PasswordManager.java
+   ```
+
+4. **Run the compiled program**
+   ```bash
+   java PasswordManager
+   ```
+
+### Using an IDE (Recommended)
+
+**IntelliJ IDEA:**
+1. Open the project folder in IntelliJ IDEA
+2. Right-click on the Java file
+3. Select "Run 'PasswordManager.main()'"
+
+**VS Code:**
+1. Install "Extension Pack for Java"
+2. Open the Java file
+3. Click "Run" button above `main` method or press `F5`
+
+**Eclipse:**
+1. Import project into Eclipse
+2. Right-click on the Java file
+3. Select "Run As" → "Java Application"
+
+### Troubleshooting
+
+- **"javac: command not found"** - Java is not installed or not in PATH
+- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
+- **JavaFX apps**: If using Java 11+, add VM options: `--module-path /path/to/javafx-sdk/lib --add-modules javafx.controls,javafx.fxml`
 
 ## 🚀 Next Steps
 After completing Day 29, you should be able to:

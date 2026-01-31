@@ -23,6 +23,12 @@ Practice converting between types:
 ## Starter Code
 Check the src/ directory for starter code files.
 
+## 📌 Refer to (when stuck)
+- **Day 01 README** → **Step 3** (types); **Day 02 README** → type conversion and `Integer.parseInt()`
+- **int → double:** automatic: `double d = myInt;`
+- **double → int:** cast: `(int) myDouble`
+- **String → int:** `Integer.parseInt("123")` — can throw NumberFormatException
+
 ## Tips
 - Follow Java best practices
 - Test your code thoroughly

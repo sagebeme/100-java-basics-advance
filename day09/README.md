@@ -220,6 +220,18 @@ public class SecretAuction {
 | Value | Data associated with key | `95` in `scores.put("Alice", 95)` |
 | Set | Unique elements collection | `Set<String> unique = new HashSet<>()` |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **HashMap:** Re-read **Step 1** — `Map<K,V> map = new HashMap<>();` then `put(key, value)`, `get(key)`, `containsKey(key)`
+- **Iterate map:** `for (Map.Entry<String, Integer> e : map.entrySet())` or `map.keySet()`, `map.values()` — see **Step 2**
+- **HashSet:** `Set<String> set = new HashSet<>();` — no duplicates; `add()`, `contains()`
+- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for auction logic
+
+**Related days:** Day 4 (ArrayList); Day 10 (return values from methods using maps).
+
+**Quick reference:** `map.get(key)` returns null if key missing · Use `map.containsKey(key)` before get · Set has no order
+
 ## ✅ Checklist
 - [ ] Understand HashMap and Map interface
 - [ ] Can add, get, remove from maps

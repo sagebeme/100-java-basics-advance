@@ -199,6 +199,20 @@ Create a modern portfolio:
 | Animations | CSS transitions | `@keyframes`, `animation` |
 | Responsive | Mobile-friendly | Flexible layouts |
 
+## 📌 Notes & reference (use these when stuck)
+
+**When you're stuck:**
+- **Flexbox:** Re-read **Step 1** — `display: flex`, `justify-content`, `align-items`, `flex-direction` — see **Step 2**
+- **Grid:** Re-read **Step 2** — `display: grid`, `grid-template-columns`, `gap` — see **Step 2**
+- **Media queries:** Re-read **Step 3** — `@media (min-width: 768px) { ... }` for breakpoints — see **Step 3**
+- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
+
+**Related days:** Day 41 (HTML/CSS); Day 59 (Bootstrap uses similar concepts). **Quick reference:** Open HTML in browser; use DevTools to inspect layout
+
+## 💻 How to Run
+
+**HTML/CSS only** — open your `.html` file in a browser or use a static file server (e.g. Live Server in VS Code).
+
 ## ✅ Checklist
 - [ ] Understand Flexbox
 - [ ] Understand CSS Grid

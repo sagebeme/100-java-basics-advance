@@ -28,7 +28,7 @@ Portfolio projects, enterprise patterns, microservices, and professional-level a
 
 ## 🛠️ Tools and Technologies
 
-- **Java**: JDK 11+ (LTS versions recommended)
+- **Java**: JDK 11+ (LTS versions recommended; see [Java versions](#-java-versions) below)
 - **IDEs**: IntelliJ IDEA, Eclipse, VS Code
 - **Build Tools**: Maven, Gradle
 - **Frameworks**: Spring Boot, Hibernate, JavaFX
@@ -200,7 +200,12 @@ Use these notes to solve problems without leaving the repo.
    - Read the exercise README for specific requirements
    - Implement solutions in the provided starter code files
 
-5. **Track your progress**
+5. **Required data files (by day)**
+   Some days need data files to run; they are included where applicable:
+   - **Day 24** (Mail Merge): `template.txt`, `names.txt` — in `day24/_start/src/` and `day24/_end/src/`. Run from that folder.
+   - **Day 25** (U.S. States Game): `50_states.csv` — in `day25/_start/src/` and `day25/_end/src/`. Run from that folder (e.g. `javac StatesGame.java && java StatesGame`).
+
+6. **Track your progress**
    - Update the progress badge in README
    - Document your learning journey
    - Share your projects
@@ -208,10 +213,24 @@ Use these notes to solve problems without leaving the repo.
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Java JDK 11 or higher
+- **Java JDK 11 or higher** (see [Java versions](#-java-versions) below)
 - IDE (IntelliJ IDEA recommended)
 - Git
 - Maven or Gradle
+
+### ☕ Java versions
+This course assumes **JDK 11 or newer**. Here’s what matters when choosing a version:
+
+| Version | Notes |
+|--------|--------|
+| **JDK 8** | Still common in older projects. Some examples may work, but later days use features from Java 11+ (e.g. `var`, HTTP Client). |
+| **JDK 11 (LTS)** | First LTS with modules. **Good minimum** for this repo. JavaFX is not included; use the [JavaFX SDK](https://gluonhq.com/products/javafx/) and `--module-path` / `--add-modules` when running GUI days (18, 22–23, 27–31). |
+| **JDK 17 (LTS)** | Recommended for new projects. Same JavaFX note as 11. |
+| **JDK 21 (LTS)** | Current LTS. Best if you want the latest features and performance. |
+
+- **LTS** = Long Term Support: Oracle (and others) provide updates for several years.
+- **Check your version:** `java -version` and `javac -version`.
+- **Downloads:** [Oracle JDK](https://www.oracle.com/java/technologies/downloads/) or [Eclipse Temurin (OpenJDK)](https://adoptium.net/).
 
 ### First Steps
 1. Set up your Java development environment

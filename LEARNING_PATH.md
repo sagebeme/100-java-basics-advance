@@ -57,9 +57,9 @@ There's no `pom.xml` or `build.gradle` yet. Every file compiles with plain `java
 ## Known gaps (tracked for future work)
 
 - **Days 54, 60–100 have no code yet** — README only.
-- **Tests exist for Days 1–17 and 24–26's `_end/` solutions**, and for the testable logic behind Days 19–23 and 27–31 (see below). See the root README's "How to Run Tests". Everything else still has no tests:
-  - **`exercise1/`, `exercise2/` stubs** (most days): these are empty `// TODO` starter files with no working code yet, so there's nothing to test against. Writing tests here means first deciding the exact method the learner should implement, then writing a reference solution — a bigger, separate piece of work.
-  - **Days 32–53, 55–59**: exercise-only, same as above.
+- **Tests exist for Days 1–17 and 24–26's `_end/` solutions**, for the testable logic behind Days 19–23 and 27–31, and for the `exercise1`/`exercise2` stubs of Days 1–11 and 13–14 (see below). See the root README's "How to Run Tests". Everything else still has no tests:
+  - **Days 12's exercises, and Day 13's exercise1** were left as their original `// TODO` stubs on purpose. They ask you to demonstrate a language concept (variable scope, access modifiers, spotting errors in given code) rather than compute something with one correct answer, so there is nothing a test could assert. Day 13's exercise2 (exception handling) does have a clear right answer and is implemented and tested.
+  - **Days 15–23, 27–31's `exercise1`/`exercise2` stubs, and Days 32–53, 55–59 in full** (exercise-only days): still the original empty `// TODO` stubs. Same reasoning as above applies for writing tests here — the method the learner should implement isn't decided yet, and for these days it hasn't been done.
   - **Days 54, 60–100**: no code yet, see above.
 - **Days 18–23, 27–31 are JavaFX GUI programs.** JavaFX isn't part of the JDK from Java 11 onward and isn't installed in this repo, so the GUI classes themselves (`TurtleRace.java`, `PongGame.java`, and so on) can't be compiled or run here yet — that needs the JavaFX SDK as a separate step.
   - For Days 19–23 and 27–31, the actual game/UI logic (collision detection, ball physics, timers, password/flash-card file formats) has been pulled out into a plain `*Logic.java` class next to each original file — no JavaFX needed, and it's fully tested. The original GUI file still has its own copy of that logic inline; it hasn't been changed to call the new class, since that edit can't be verified without JavaFX installed to compile it.

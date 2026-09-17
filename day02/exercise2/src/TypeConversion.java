@@ -1,31 +1,37 @@
 public class TypeConversion {
+
+    public static int parseStringToInt(String str) {
+        return Integer.parseInt(str);
+    }
+
+    public static String intToString(int number) {
+        return String.valueOf(number);
+    }
+
+    public static int doubleToInt(double decimal) {
+        return (int) decimal;
+    }
+
+    public static double intToDouble(int value) {
+        return value;
+    }
+
     public static void main(String[] args) {
-        // TODO: Convert String "123" to int
         String str = "123";
-        // int num = Integer.parseInt(str);
-        
-        // TODO: Convert int 456 to String
+        int num = parseStringToInt(str);
+
         int number = 456;
-        // String numStr = String.valueOf(number);
-        
-        // TODO: Convert double 3.14 to int (with casting)
+        String numStr = intToString(number);
+
         double decimal = 3.14;
-        // int integer = (int) decimal;
-        
-        // TODO: Convert int 100 to double
+        int integer = doubleToInt(decimal);
+
         int value = 100;
-        // double doubleValue = value;
-        
-        // TODO: Print all results
-        // System.out.println("String \"123\" to int: " + num);
-        // System.out.println("int 456 to String: " + numStr);
-        // System.out.println("double 3.14 to int: " + integer);
-        // System.out.println("int 100 to double: " + doubleValue);
+        double doubleValue = intToDouble(value);
+
+        System.out.println("String \"123\" to int: " + num);
+        System.out.println("int 456 to String: " + numStr);
+        System.out.println("double 3.14 to int: " + integer);
+        System.out.println("int 100 to double: " + doubleValue);
     }
 }
-
-
-
-
-
-

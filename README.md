@@ -181,9 +181,9 @@ Use these notes to solve problems without leaving the repo.
    ```
 
 2. **Set up your development environment**
-   - Install JDK 11 or higher
+   - Install JDK 11 or higher (JDK 21 is what this repo is built and tested against)
    - Install IntelliJ IDEA or your preferred IDE
-   - Install Maven or Gradle
+   - No Maven or Gradle needed — everything here compiles with plain `javac`/`java`
 
 3. **Follow the daily structure**
    - Each day has its own folder (day01, day02, etc.)
@@ -209,6 +209,28 @@ Use these notes to solve problems without leaving the repo.
    - Update the progress badge in README
    - Document your learning journey
    - Share your projects
+
+## ✅ How to Run Tests
+
+Some days ship with real JUnit tests next to the solution, in `_end/src/`, so you can check your own version against the same checks. No Maven or Gradle needed — a JUnit runner is already checked into `lib/`.
+
+**Run every test for one day** (from the repo root):
+
+```bash
+javac -cp lib/junit-platform-console-standalone-6.1.3.jar -d day08/_end/src day08/_end/src/*.java
+java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp day08/_end/src --scan-classpath
+```
+
+**PowerShell**, same idea:
+
+```powershell
+javac -cp lib\junit-platform-console-standalone-6.1.3.jar -d day08\_end\src day08\_end\src\*.java
+java -jar lib\junit-platform-console-standalone-6.1.3.jar execute -cp day08\_end\src --scan-classpath
+```
+
+Replace `day08` with whichever day you're on. A clean run ends with a line like `[  X tests successful ]` and `[  0 tests failed ]`. If you've written your own version of a day's code, drop your class next to the test and re-run the same two commands — the test doesn't care whether the code came from `_end/` or from you, only that the method names and behavior match.
+
+**Which days have tests today:** 1–17 and 24–26. The rest are tracked in `LEARNING_PATH.md` under "Known gaps".
 
 ## 🚀 Getting Started
 

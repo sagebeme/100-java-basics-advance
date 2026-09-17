@@ -21,3 +21,6 @@ Thumbs.db
 # Packaged artifacts
 *.jar
 *.war
+
+# ...except the JUnit runner checked into lib/, so `git clone` is enough to run tests
+!lib/*.jar

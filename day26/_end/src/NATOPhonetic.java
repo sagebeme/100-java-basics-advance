@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 public class NATOPhonetic {
     private static final Map<Character, String> natoAlphabet = new HashMap<>();
-    
+
     static {
         natoAlphabet.put('A', "Alpha");
         natoAlphabet.put('B', "Bravo");
@@ -34,23 +34,23 @@ public class NATOPhonetic {
         natoAlphabet.put('Y', "Yankee");
         natoAlphabet.put('Z', "Zulu");
     }
-    
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        
-        System.out.print("Enter a word: ");
-        String word = scanner.nextLine().toUpperCase();
-        
-        // Convert using streams and lambdas
-        String result = word.chars()
+
+    public static String toNato(String word) {
+        return word.toUpperCase().chars()
             .mapToObj(c -> (char) c)
             .filter(Character::isLetter)
             .map(c -> c + " for " + natoAlphabet.get(c))
             .collect(Collectors.joining("\n"));
-        
-        System.out.println(result);
-        
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter a word: ");
+        String word = scanner.nextLine();
+
+        System.out.println(toNato(word));
+
         scanner.close();
     }
 }
-

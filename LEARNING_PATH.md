@@ -57,9 +57,11 @@ There's no `pom.xml` or `build.gradle` yet. Every file compiles with plain `java
 ## Known gaps (tracked for future work)
 
 - **Days 54, 60–100 have no code yet** — README only.
-- **Tests exist for Days 1–17 and 24–26's `_end/` solutions** (see the root README's "How to Run Tests"). Everything else still has no tests:
+- **Tests exist for Days 1–17 and 24–26's `_end/` solutions**, and for the testable logic behind Days 19–23 and 27–31 (see below). See the root README's "How to Run Tests". Everything else still has no tests:
   - **`exercise1/`, `exercise2/` stubs** (most days): these are empty `// TODO` starter files with no working code yet, so there's nothing to test against. Writing tests here means first deciding the exact method the learner should implement, then writing a reference solution — a bigger, separate piece of work.
-  - **Days 18–23, 27–31** (JavaFX GUI programs): not yet covered. Their game/UI logic (collision detection, timers, movement) can be tested without JavaFX itself, by pulling it into a plain class the GUI code calls into — same approach used for Day 6's Maze. Running the GUI itself needs the JavaFX SDK, which isn't part of the JDK from Java 11 onward and isn't set up in this repo yet.
   - **Days 32–53, 55–59**: exercise-only, same as above.
   - **Days 54, 60–100**: no code yet, see above.
+- **Days 18–23, 27–31 are JavaFX GUI programs.** JavaFX isn't part of the JDK from Java 11 onward and isn't installed in this repo, so the GUI classes themselves (`TurtleRace.java`, `PongGame.java`, and so on) can't be compiled or run here yet — that needs the JavaFX SDK as a separate step.
+  - For Days 19–23 and 27–31, the actual game/UI logic (collision detection, ball physics, timers, password/flash-card file formats) has been pulled out into a plain `*Logic.java` class next to each original file — no JavaFX needed, and it's fully tested. The original GUI file still has its own copy of that logic inline; it hasn't been changed to call the new class, since that edit can't be verified without JavaFX installed to compile it.
+  - **Day 18** (HirstPainting) has no real decision logic to extract — it is just a grid of randomly colored dots — so it has no test.
 - **No build file.** Everything runs with `javac`/`java` directly, plus one checked-in JUnit jar in `lib/` for testing — no Maven/Gradle needed.

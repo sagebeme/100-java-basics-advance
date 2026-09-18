@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Variable expression -->
+    <title th:text="${title}">Default Title</title>
+</head>
+<body>
+    <!-- Variable expression -->
+    <h1 th:text="${title}">Default Title</h1>
+
+    <!-- Text expression: string concatenation with a variable -->
+    <p th:text="'Hello, ' + ${name} + '!'">Hello, User!</p>
+
+    <!-- Attribute expression: builds a URL from a path variable with @{...} -->
+    <a th:href="@{/profile/{id}(id=${profileId})}" th:text="'View profile ' + ${profileId}">View profile</a>
+</body>
+</html>

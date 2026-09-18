@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Account</title>
+</head>
+<body>
+    <!-- th:if / th:unless -->
+    <div th:if="${loggedIn}">
+        <p>Welcome back!</p>
+    </div>
+    <div th:unless="${loggedIn}">
+        <p>Please log in</p>
+    </div>
+
+    <!-- th:switch / th:case -->
+    <div th:switch="${role}">
+        <p th:case="'ADMIN'">You have administrator access.</p>
+        <p th:case="'MEMBER'">You have member access.</p>
+        <p th:case="*">You are browsing as a guest.</p>
+    </div>
+
+    <!-- A complex condition: both parts must hold -->
+    <div th:if="${loggedIn and balance >= 100}">
+        <p>Premium badge unlocked!</p>
+    </div>
+</body>
+</html>

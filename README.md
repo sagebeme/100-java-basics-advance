@@ -212,9 +212,9 @@ Use these notes to solve problems without leaving the repo.
 
 ## ✅ How to Run Tests
 
-Some days ship with real JUnit tests next to the solution, in `_end/src/`, so you can check your own version against the same checks. No Maven or Gradle needed — a JUnit runner is already checked into `lib/`.
+Most days ship with real JUnit tests next to the solution, in `_end/src/` or `exerciseN/src/`, so you can check your own version against the same checks. No Maven or Gradle needed for these — a JUnit runner is already checked into `lib/`.
 
-**Run every test for one day** (from the repo root):
+**Run every test for one day's solution** (from the repo root):
 
 ```bash
 javac -cp lib/junit-platform-console-standalone-6.1.3.jar -d day08/_end/src day08/_end/src/*.java
@@ -228,9 +228,23 @@ javac -cp lib\junit-platform-console-standalone-6.1.3.jar -d day08\_end\src day0
 java -jar lib\junit-platform-console-standalone-6.1.3.jar execute -cp day08\_end\src --scan-classpath
 ```
 
-Replace `day08` with whichever day you're on. A clean run ends with a line like `[  X tests successful ]` and `[  0 tests failed ]`. If you've written your own version of a day's code, drop your class next to the test and re-run the same two commands — the test doesn't care whether the code came from `_end/` or from you, only that the method names and behavior match.
+Replace `day08\_end` with `dayNN\exercise1` or `dayNN\exercise2` to run an exercise's tests instead — the command is identical either way. A clean run ends with a line like `[  X tests successful ]` and `[  0 tests failed ]`. If you've written your own version of a day's code, drop your class next to the test and re-run the same two commands — the test doesn't care whether the code came from the day's own solution or from you, only that the method names and behavior match.
 
-**Which days have tests today:** 1–17 and 24–26. The rest are tracked in `LEARNING_PATH.md` under "Known gaps".
+**Days 54–59 are different: they're Spring Boot projects, each with its own `pom.xml`.** Install [Apache Maven](https://maven.apache.org/download.cgi) (any recent 3.9.x), then from that day or exercise's own folder:
+
+```bash
+mvn test
+```
+
+To actually run one of these as a live app (Day 54, for instance) and try it in a browser:
+
+```bash
+mvn spring-boot:run
+```
+
+Then open `http://localhost:8080`. Stop it with Ctrl+C.
+
+**Which days have tests today:** 1–17, 24–26 and 54–59 in full, plus the exercises for 1–30, 35, 37 and 40. The rest are tracked in `LEARNING_PATH.md`.
 
 ## 🚀 Getting Started
 

@@ -1,34 +1,43 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class BankAccount {
     private String accountNumber;
     private double balance;
-    
+    private List<String> transactions = new ArrayList<>();
+
     public BankAccount(String accountNumber) {
         this.accountNumber = accountNumber;
         this.balance = 0.0;
     }
-    
-    // TODO: Implement deposit method
+
     public void deposit(double amount) {
-        // Add amount to balance
+        balance += amount;
+        transactions.add("Deposit: " + amount);
     }
-    
-    // TODO: Implement withdraw method
-    public void withdraw(double amount) {
-        // Subtract amount from balance (check if sufficient funds)
+
+    /**
+     * @return true if the withdrawal went through, false if there were insufficient funds.
+     */
+    public boolean withdraw(double amount) {
+        if (amount > balance) {
+            transactions.add("Withdraw failed (insufficient funds): " + amount);
+            return false;
+        }
+        balance -= amount;
+        transactions.add("Withdraw: " + amount);
+        return true;
     }
-    
-    // TODO: Implement getBalance method
+
     public double getBalance() {
-        // Return balance
+        return balance;
     }
-    
+
     public String getAccountNumber() {
         return accountNumber;
     }
+
+    public List<String> getTransactions() {
+        return transactions;
+    }
 }
-
-
-
-
-
-

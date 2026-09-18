@@ -1,6 +1,7 @@
 public class Exercise1 {
     public static void main(String[] args) {
-        // TODO: Implement Exercise 1
-        // See README.md for requirements
+        Paddle paddle = new Paddle(250, 100, 0, 600);
+        paddle.moveUp(20);
+        System.out.println("Paddle Y: " + paddle.getY());
     }
 }

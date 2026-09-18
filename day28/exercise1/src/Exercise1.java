@@ -1,6 +1,8 @@
 public class Exercise1 {
     public static void main(String[] args) {
-        // TODO: Implement Exercise 1
-        // See README.md for requirements
+        CountdownTimer timer = new CountdownTimer(5 * 60);
+        timer.start();
+        timer.tick();
+        System.out.println(CountdownTimer.format(timer.getSecondsLeft()));
     }
 }

@@ -1,81 +1,96 @@
-# Day 65 - Web Design Best Practices
+# Day 64 - My Top 10 Movies Website
 
 ## 📚 Learning Objectives
-- Understand web design principles
-- Apply UX best practices
-- Create accessible websites
-- Optimize performance
-- Build user-friendly interfaces
+- Build complete web application
+- Integrate database
+- Create movie listing
+- Implement ranking system
+- Build full-stack application
 
 ## 🎯 Topics Covered
-- UX/UI principles
-- Accessibility
-- Performance optimization
-- Responsive design
-- Color theory
-- Typography
+- Full-stack development
+- Database integration
+- List management
+- Ranking system
+- CRUD operations
+- User interface
 
 ## 📝 Step-by-Step Instructions
 
-### Step 1: Accessibility
-Make sites accessible:
+### Step 1: Movie Entity
+Create Movie entity:
 
-```html
-<!-- Use semantic HTML -->
-<nav aria-label="Main navigation">
-    <ul>
-        <li><a href="/">Home</a></li>
-    </ul>
-</nav>
-
-<!-- Add alt text -->
-<img src="logo.png" alt="Company Logo">
-
-<!-- Use ARIA labels -->
-<button aria-label="Close dialog">×</button>
+```java
+@Entity
+public class Movie {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    private String title;
+    private String director;
+    private Integer year;
+    private Integer rating;
+    private Integer rank;
+}
 ```
 
-### Step 2: Performance
-Optimize performance:
+### Step 2: Movie Repository
+Create repository:
 
-```html
-<!-- Lazy load images -->
-<img src="image.jpg" loading="lazy" alt="Description">
-
-<!-- Minify CSS/JS -->
-<link rel="stylesheet" href="styles.min.css">
+```java
+public interface MovieRepository extends JpaRepository<Movie, Long> {
+    List<Movie> findAllByOrderByRankAsc();
+    Optional<Movie> findByRank(Integer rank);
+}
 ```
 
-## 🎮 Project: Apply Best Practices
+### Step 3: Controller
+Create controller:
+
+```java
+@Controller
+public class MovieController {
+    @Autowired
+    private MovieService movieService;
+    
+    @GetMapping("/movies")
+    public String listMovies(Model model) {
+        model.addAttribute("movies", movieService.getTop10Movies());
+        return "movies";
+    }
+}
+```
+
+## 🎮 Project: Top 10 Movies Website
 
 ### Requirements
-Improve existing site:
-1. Add accessibility
-2. Optimize performance
-3. Improve UX
-4. Enhance design
-5. Test responsiveness
+Create website with:
+1. Movie database
+2. Top 10 ranking
+3. Add/edit movies
+4. Update rankings
+5. Beautiful UI
 
 ## 📌 Notes & reference (use these when stuck)
 
-**When you're stuck:**
-- Re-read **Step 1** (accessibility: semantic HTML, aria-label, alt text); **Step 2** (performance: lazy loading, minify)
-- **Related days:** Day 64 (movies site); Day 66 (REST APIs). **Quick reference:** Apply to existing Thymeleaf/Spring pages
+**When you're stuck:** Re-read **Step-by-Step Instructions** above; use main README for structure. **Quick reference:** `mvn spring-boot:run` or run from IDE.
 
 ## ✅ Checklist
-- [ ] Understand best practices
-- [ ] Can create accessible sites
-- [ ] Can optimize performance
-- [ ] Can improve UX
-- [ ] Applied best practices
+- [ ] Created movie entity
+- [ ] Built repository
+- [ ] Created controller
+- [ ] Built UI
+- [ ] Implemented ranking
+- [ ] Completed Top 10 Movies
 - [ ] Committed code to Git
 
 ## 💻 How to Run
 
-**Run your Spring Boot app:** `mvn spring-boot:run` or run main Application from IDE. Open http://localhost:8080.
+**Run:** `mvn spring-boot:run` or run main Application from IDE. Open http://localhost:8080.
 
 ## 🚀 Next Steps
-**Ready for Day 66?** You'll build RESTful APIs!
+**Ready for Day 65?** You'll learn web design best practices!
 
 
 

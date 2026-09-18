@@ -1,0 +1,20 @@
+package com.learning;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class BlogController {
+
+    @Autowired
+    private PostService postService;
+
+    @GetMapping("/posts")
+    public String listPosts(Model model) {
+        model.addAttribute("title", "My Blog");
+        model.addAttribute("posts", postService.getAllPosts());
+        return "posts";
+    }
+}

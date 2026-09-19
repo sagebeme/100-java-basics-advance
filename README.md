@@ -183,7 +183,7 @@ Use these notes to solve problems without leaving the repo.
 2. **Set up your development environment**
    - Install JDK 11 or higher (JDK 21 is what this repo is built and tested against)
    - Install IntelliJ IDEA or your preferred IDE
-   - No Maven or Gradle needed — everything here compiles with plain `javac`/`java`
+   - Days 1–53 compile with plain `javac`/`java` — no Maven or Gradle needed yet. Maven is required starting Day 54 (see `LEARNING_PATH.md`'s "Setup you'll need, and when")
 
 3. **Follow the daily structure**
    - Each day has its own folder (day01, day02, etc.)
@@ -230,7 +230,7 @@ java -jar lib\junit-platform-console-standalone-6.1.3.jar execute -cp day08\_end
 
 Replace `day08\_end` with `dayNN\exercise1` or `dayNN\exercise2` to run an exercise's tests instead — the command is identical either way. A clean run ends with a line like `[  X tests successful ]` and `[  0 tests failed ]`. If you've written your own version of a day's code, drop your class next to the test and re-run the same two commands — the test doesn't care whether the code came from the day's own solution or from you, only that the method names and behavior match.
 
-**Days 54–59 are different: they're Spring Boot projects, each with its own `pom.xml`.** Install [Apache Maven](https://maven.apache.org/download.cgi) (any recent 3.9.x), then from that day or exercise's own folder:
+**Day 54 onward is different: every day and exercise from here on is its own Maven project, each with its own `pom.xml`** (Spring Boot through Day 59, then a mix of Spring Boot and plain Maven projects through Day 100). Install [Apache Maven](https://maven.apache.org/download.cgi) (any recent 3.9.x), then from that day or exercise's own folder:
 
 ```bash
 mvn test
@@ -244,7 +244,7 @@ mvn spring-boot:run
 
 Then open `http://localhost:8080`. Stop it with Ctrl+C.
 
-**Which days have tests today:** 1–17, 24–26 and 54–59 in full, plus the exercises for 1–30, 35, 37 and 40. The rest are tracked in `LEARNING_PATH.md`.
+**Which days have tests today:** 1–17 and 24–26 in full, plus the exercises for 1–30, 35, 37 and 40, and every single day from 54 through 100 (each with its own `mvn test` suite). See `LEARNING_PATH.md` for what's intentionally untested and why, and for the remaining gaps in Days 32–53.
 
 ## 🚀 Getting Started
 

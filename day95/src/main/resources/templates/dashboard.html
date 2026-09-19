@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="30">
+    <title>Live Data Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<main class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Live Data Dashboard</h1>
+        <span class="text-muted" id="last-updated">Last updated: <span th:text="${lastUpdated}">--:--:--</span> (auto-refreshes every 30s)</span>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100" id="weather-card">
+                <div class="card-body">
+                    <h2 class="h5 card-title">Nairobi Weather</h2>
+                    <div th:if="${weather != null}">
+                        <p class="display-6" th:text="${weather.temperatureCelsius} + '&deg;C'">--&deg;C</p>
+                        <p class="text-muted" th:text="'Wind: ' + ${weather.windSpeedKmh} + ' km/h'">Wind: -- km/h</p>
+                    </div>
+                    <p class="text-danger" id="weather-error" th:if="${weatherError != null}" th:text="${weatherError}">Error</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100" id="crypto-card">
+                <div class="card-body">
+                    <h2 class="h5 card-title">Crypto Prices (USD)</h2>
+                    <ul class="list-unstyled" th:if="${prices != null}">
+                        <li th:each="price : ${prices}">
+                            <strong th:text="${price.coin}">coin</strong>: $<span th:text="${price.usd}">0</span>
+                        </li>
+                    </ul>
+                    <p class="text-danger" id="crypto-error" th:if="${cryptoError != null}" th:text="${cryptoError}">Error</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100" id="iss-card">
+                <div class="card-body">
+                    <h2 class="h5 card-title">ISS Current Location</h2>
+                    <div th:if="${iss != null}">
+                        <p>Latitude: <span th:text="${iss.latitude}">0</span></p>
+                        <p>Longitude: <span th:text="${iss.longitude}">0</span></p>
+                    </div>
+                    <p class="text-danger" id="iss-error" th:if="${issError != null}" th:text="${issError}">Error</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

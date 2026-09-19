@@ -1,0 +1,49 @@
+date,category,region,amount
+2026-01-10,Electronics,Nairobi,66150
+2026-01-12,Electronics,Kisumu,30555
+2026-01-14,Clothing,Mombasa,12600
+2026-01-16,Clothing,Eldoret,6402
+2026-01-18,Home & Kitchen,Kisumu,13230
+2026-01-20,Home & Kitchen,Nairobi,24444
+2026-01-22,Sports,Eldoret,5198
+2026-01-24,Sports,Mombasa,8730
+2026-02-10,Electronics,Mombasa,51030
+2026-02-12,Electronics,Eldoret,25928
+2026-02-14,Clothing,Kisumu,9085
+2026-02-16,Clothing,Nairobi,16785
+2026-02-18,Home & Kitchen,Eldoret,10915
+2026-02-20,Home & Kitchen,Mombasa,18333
+2026-02-22,Sports,Nairobi,14553
+2026-02-24,Sports,Kisumu,6722
+2026-03-10,Electronics,Kisumu,38579
+2026-03-12,Electronics,Nairobi,71279
+2026-03-14,Clothing,Eldoret,7352
+2026-03-16,Clothing,Mombasa,12349
+2026-03-18,Home & Kitchen,Nairobi,29172
+2026-03-20,Home & Kitchen,Kisumu,13475
+2026-03-22,Sports,Mombasa,11435
+2026-03-24,Sports,Eldoret,5810
+2026-04-10,Electronics,Eldoret,32737
+2026-04-12,Electronics,Mombasa,54986
+2026-04-14,Clothing,Nairobi,19276
+2026-04-16,Clothing,Kisumu,8904
+2026-04-18,Home & Kitchen,Mombasa,21879
+2026-04-20,Home & Kitchen,Eldoret,11117
+2026-04-22,Sports,Kisumu,8805
+2026-04-24,Sports,Nairobi,16267
+2026-05-10,Electronics,Nairobi,89996
+2026-05-12,Electronics,Kisumu,41570
+2026-05-14,Clothing,Mombasa,14181
+2026-05-16,Clothing,Eldoret,7206
+2026-05-18,Home & Kitchen,Kisumu,16081
+2026-05-20,Home & Kitchen,Nairobi,29712
+2026-05-22,Sports,Eldoret,7610
+2026-05-24,Sports,Mombasa,12782
+2026-06-10,Electronics,Mombasa,69426
+2026-06-12,Electronics,Eldoret,35275
+2026-06-14,Clothing,Kisumu,10225
+2026-06-16,Clothing,Nairobi,18892
+2026-06-18,Home & Kitchen,Eldoret,13267
+2026-06-20,Home & Kitchen,Mombasa,22284
+2026-06-22,Sports,Nairobi,21307
+2026-06-24,Sports,Kisumu,9842

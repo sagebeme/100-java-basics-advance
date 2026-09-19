@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rock Paper Scissors</title>
+</head>
+<body>
+    <h1>Rock Paper Scissors</h1>
+    <button id="rock">Rock</button>
+    <button id="paper">Paper</button>
+    <button id="scissors">Scissors</button>
+
+    <p>Your move: <span id="player-move">-</span></p>
+    <p>Computer move: <span id="computer-move">-</span></p>
+    <p>Result: <span id="result">-</span></p>
+
+    <p>Wins: <span id="wins">0</span></p>
+    <p>Losses: <span id="losses">0</span></p>
+    <p>Ties: <span id="ties">0</span></p>
+
+    <script>
+        const MOVES = ["rock", "paper", "scissors"];
+        const BEATS = { rock: "scissors", paper: "rock", scissors: "paper" };
+
+        let wins = 0, losses = 0, ties = 0;
+
+        function play(playerMove) {
+            const computerMove = MOVES[Math.floor(Math.random() * MOVES.length)];
+
+            document.getElementById("player-move").textContent = playerMove;
+            document.getElementById("computer-move").textContent = computerMove;
+
+            let result;
+            if (playerMove === computerMove) {
+                result = "tie";
+                ties++;
+            } else if (BEATS[playerMove] === computerMove) {
+                result = "win";
+                wins++;
+            } else {
+                result = "loss";
+                losses++;
+            }
+
+            document.getElementById("result").textContent = result;
+            document.getElementById("wins").textContent = wins;
+            document.getElementById("losses").textContent = losses;
+            document.getElementById("ties").textContent = ties;
+        }
+
+        document.getElementById("rock").addEventListener("click", () => play("rock"));
+        document.getElementById("paper").addEventListener("click", () => play("paper"));
+        document.getElementById("scissors").addEventListener("click", () => play("scissors"));
+    </script>
+</body>
+</html>

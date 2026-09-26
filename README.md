@@ -175,6 +175,20 @@ Each day is set up so you can find help quickly:
 
 Use these notes to solve problems without leaving the repo.
 
+## 🌐 The course website
+
+The `site/` folder is a website for the course, built with Next.js: a landing page, the full syllabus, and a page for every day that shows its README with a checklist that saves your progress in your browser. It reads the day folders when it builds, so a README change shows up on the next build.
+
+```bash
+cd site
+npm install
+npm run dev
+```
+
+Then open http://localhost:3000. `npm run build` exports the whole site to `site/out/` as plain static files.
+
+To put it online, import the repo into Netlify (`netlify.toml` is already set up) or Vercel (set the root directory to `site`).
+
 ## 📝 How to Use This Repository
 
 1. **Clone the repository**

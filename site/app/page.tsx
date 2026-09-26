@@ -2,7 +2,16 @@ import Link from "next/link";
 import { STAGES, summaries, totals } from "@/lib/course";
 import { Footer, Navbar } from "@/components/Chrome";
 import { JavaDemo } from "@/components/JavaDemo";
-import { Resume, StartButton, Timeline } from "@/components/HomeProgress";
+import { Resume, StartButton } from "@/components/HomeProgress";
+import { LoyaltyCard } from "@/components/LoyaltyCard";
+import { ChalkMenu } from "@/components/ChalkMenu";
+
+const BREW = [
+  { n: 1, name: "Grind", what: "Read the lesson: the objectives, the key ideas, and the steps with their code." },
+  { n: 2, name: "Brew", what: "Write the code: small exercises first, then the day's project." },
+  { n: 3, name: "Taste", what: "Run the tests: JUnit from Day 1, then mvn test from Day 54." },
+  { n: 4, name: "Serve", what: "Tick off the checklist, commit to Git, and collect your stamp." },
+];
 
 export default function Home() {
   const days = summaries();
@@ -13,55 +22,35 @@ export default function Home() {
     <>
       <a className="skip" href="#main">Skip to content</a>
       <Navbar />
-      <main id="main">
-        <header className="hero">
+      <main id="main" className="java-home">
+        <header className="roast">
           <div className="container">
-            <div>
-              <span className="kicker">100 lessons · 5 stages · about an hour a day</span>
-              <h1>
-                <span className="script">One cup a day</span>100 Days of Java
-              </h1>
-              <p className="lede">
-                Start with your first variable. Finish with Spring Boot web apps, a database, Docker, and a machine learning model you wrote yourself. Most days come with tests that tell you when it works.
-              </p>
-              <div className="actions">
-                <StartButton days={days} className="btn btn-sun" />
-                <a className="btn btn-ghost" href="#path">See the path</a>
-              </div>
-              <Resume days={days} />
+            <p className="banner"><span>100 lessons · 5 stages · an hour a day</span></p>
+            <h1>
+              <span className="script">One cup a day</span>
+              100 Days of Java
+            </h1>
+            <p className="lede">
+              From your first variable to Spring Boot web apps, a database, Docker, and a machine learning model you wrote yourself. Most days come with tests that tell you when it works.
+            </p>
+            <div className="actions">
+              <StartButton days={days} className="btn btn-gloss" />
+              <a className="btn btn-ghost" href="#path">See the menu</a>
             </div>
-            <div className="window" aria-hidden="true">
-              <div className="bar"><i /><i /><i /><b>day01/Main.java</b></div>
-              <pre>
-                <span className="c">{"// Day 1: your first Java program"}</span>{"\n"}
-                <span className="k">public class</span> <span className="t">Main</span> {"{"}{"\n"}
-                {"    "}<span className="k">public static void</span> <span className="f">main</span>(<span className="t">String</span>[] args) {"{"}{"\n"}
-                {"        "}<span className="t">String</span> name = <span className="s">&quot;Amina&quot;</span>;{"\n"}
-                {"        "}<span className="t">int</span> age = <span className="n">21</span>;{"\n"}
-                {"        "}System.out.<span className="f">println</span>(name + <span className="s">&quot; is &quot;</span> + age);{"\n"}
-                {"    }"}{"\n"}
-                {"}"}
-              </pre>
-              <div className="out good">$ javac Main.java &amp;&amp; java Main<br />Amina is 21</div>
-            </div>
+            <Resume days={days} />
           </div>
         </header>
 
-        <section className="stats" aria-label="The course in numbers">
-          <ul className="container">
-            <li><b>100</b><span>Lessons</span></li>
-            <li><b>5</b><span>Stages</span></li>
-            <li><b>{tests.toLocaleString("en-US")}</b><span>Tests</span></li>
-            <li><b>{capstones}</b><span>Capstones</span></li>
-          </ul>
-        </section>
+        <div className="container">
+          <LoyaltyCard days={days} />
+        </div>
 
         <section className="band" id="demo" aria-labelledby="demo-title">
           <div className="container">
             <div className="section-head">
               <span className="over">Why Java?</span>
               <h2 id="demo-title">Catch the bug before your customers do</h2>
-              <p>This course follows the famous Python &ldquo;100 Days of Code&rdquo;. Here&apos;s one thing Java does differently.</p>
+              <p>This course follows the famous Python &ldquo;100 Days of Code&rdquo;. Here&apos;s the same small bug in both.</p>
             </div>
             <JavaDemo />
           </div>
@@ -71,50 +60,29 @@ export default function Home() {
           <div className="container">
             <div className="section-head">
               <span className="over">How each day works</span>
-              <h2 id="how-title">Four steps. Every day.</h2>
-              <p>Every day is a folder with a lesson, exercises, and a project.</p>
+              <h2 id="how-title">The daily brew</h2>
+              <p>Every day is a folder with a lesson, exercises and a project. {tests.toLocaleString("en-US")} tests check your work along the way.</p>
             </div>
-            <ul className="features">
-              <li>
-                <div className="icon" style={{ "--c": "#16a085" } as React.CSSProperties}>
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z" /><path d="M15 3v4h4M9 12h7M9 16h7" /></svg>
-                </div>
-                <h3>Read the lesson</h3>
-                <p>The objectives, the key ideas and the steps, with the code to go with them.</p>
-              </li>
-              <li>
-                <div className="icon" style={{ "--c": "#2980b9" } as React.CSSProperties}>
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M13.5 5l-3 14" /></svg>
-                </div>
-                <h3>Write the code</h3>
-                <p>Small exercises first, then the day&apos;s project. Days 1–31 give you a <code>_start/</code> folder to begin from.</p>
-              </li>
-              <li>
-                <div className="icon" style={{ "--c": "#8e44ad" } as React.CSSProperties}>
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z" /><path d="M7 10l3 2-3 2M12 15h5" /></svg>
-                </div>
-                <h3>Run the tests</h3>
-                <p>JUnit tests for your code: a one-line command early on, then <code>mvn test</code> from Day 54.</p>
-              </li>
-              <li>
-                <div className="icon" style={{ "--c": "#d35400" } as React.CSSProperties}>
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12l5 5L20 6" /></svg>
-                </div>
-                <h3>Tick it off</h3>
-                <p>Each day&apos;s own checklist is saved in this browser, so tomorrow you pick up where you left off.</p>
-              </li>
-            </ul>
+            <ol className="brew">
+              {BREW.map((step) => (
+                <li key={step.n}>
+                  <span className="bean" aria-hidden="true">{step.n}</span>
+                  <h3>{step.name}</h3>
+                  <p>{step.what}</p>
+                </li>
+              ))}
+            </ol>
           </div>
         </section>
 
-        <section className="band" id="path" aria-labelledby="path-title">
+        <section className="band board-band" id="path" aria-labelledby="path-title">
           <div className="container">
             <div className="section-head">
               <span className="over">Your path</span>
               <h2 id="path-title">Five stages, one at a time</h2>
-              <p>Plain Java until Day 53. Maven and Spring Boot from Day 54. Then twenty portfolio projects to show what you can do.</p>
+              <p>Plain Java until Day 53. Maven and Spring Boot from Day 54. Then twenty portfolio projects, with {capstones} capstones along the way.</p>
             </div>
-            <Timeline days={days} stages={stages} />
+            <ChalkMenu days={days} stages={stages} />
           </div>
         </section>
 
@@ -123,46 +91,29 @@ export default function Home() {
             <div className="section-head">
               <span className="over">Before you start</span>
               <h2 id="need-title">What you&apos;ll need</h2>
-              <p>A computer, a JDK, and about an hour a day.</p>
             </div>
-            <div className="pricing">
-              <div className="plan">
-                <div className="head"><h3>Your setup</h3><div className="price">JDK 21</div></div>
-                <ul>
-                  <li>JDK 21, such as Eclipse Temurin</li>
-                  <li>IntelliJ IDEA Community or VS Code</li>
-                  <li>Maven, from Day 54</li>
-                </ul>
-                <div className="foot"><Link href="/syllabus/#setup">Setup steps</Link></div>
-              </div>
-              <div className="plan featured">
-                <span className="popular" aria-hidden="true">Start here</span>
-                <div className="head"><h3>The course</h3><div className="price">100 <small>lessons</small></div></div>
-                <ul>
-                  <li>Exercises and a project every day</li>
-                  <li>{tests.toLocaleString("en-US")} tests to check your work</li>
-                  <li>{capstones} capstones, 20 portfolio projects</li>
-                  <li>Progress saved as you go</li>
-                </ul>
-                <div className="foot"><StartButton days={days} className="btn btn-blue" /></div>
-              </div>
-              <div className="plan">
-                <div className="head"><h3>Your time</h3><div className="price">1 hr <small>/ day</small></div></div>
-                <ul>
-                  <li>No experience needed</li>
-                  <li>Console, then GUIs, then the web</li>
-                  <li>Then databases, Docker and ML</li>
-                </ul>
-                <div className="foot"><Link href="/syllabus/">See all 100 days</Link></div>
-              </div>
+            <div className="receipt">
+              <p className="receipt-head">100 DAYS OF JAVA<br /><small>ORDER #100 · TABLE FOR ONE</small></p>
+              <table>
+                <caption className="sr-only">What you&apos;ll need</caption>
+                <tbody>
+                  <tr><td>1 × JDK 21</td><td>Eclipse Temurin</td></tr>
+                  <tr><td>1 × Editor</td><td>IntelliJ or VS Code</td></tr>
+                  <tr><td>1 × Git</td><td>to save your work</td></tr>
+                  <tr><td>1 × Maven</td><td>from Day 54</td></tr>
+                  <tr><td>100 × Lessons</td><td>with exercises</td></tr>
+                  <tr className="total"><td>Total</td><td>1 hr a day</td></tr>
+                </tbody>
+              </table>
+              <p className="receipt-foot">No experience needed · <Link href="/syllabus/#setup">Setup steps</Link></p>
             </div>
           </div>
         </section>
 
         <section className="cta" aria-labelledby="cta-title">
           <div className="container">
-            <h2 id="cta-title">Your first day takes about an hour</h2>
-            <p>Day 1 is variables: storing and changing data. By Day 100 you&apos;ll have a portfolio full of things you built.</p>
+            <h2 id="cta-title">Your first cup takes about an hour</h2>
+            <p>Day 1 is variables: storing and changing data. By Day 100 your loyalty card is full, and so is your portfolio.</p>
             <StartButton days={days} className="btn btn-sun" />
           </div>
         </section>

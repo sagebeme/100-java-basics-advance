@@ -11,8 +11,8 @@
   --ink: #2c3e50;            /* "midnight blue" */
   --muted: #5d6d7e;
   --line: #d5dbdf;
-  --nav: #2c3e50;
-  --nav-ink: #ecf0f1;
+  --nav: #2b1d14;            /* dark roast: the Java site's own chrome */
+  --nav-ink: #f3e9dc;
   --brand: #c25400;          /* Java orange, deep enough for white text */
   --brand-dark: #8f3e00;
   --blue: #3e6a8c;           /* Java blue */
@@ -32,12 +32,17 @@
   --body: var(--font-open-sans), "Helvetica Neue", Arial, sans-serif;
   --logo: var(--font-pacifico), "Brush Script MT", cursive;
   --mono: var(--font-code), Menlo, Consolas, monospace;
+  --display: var(--font-display), Georgia, serif;
+  --chalk: var(--font-chalk), "Comic Sans MS", cursive;
+  --cream: #f6ecdc;
+  --roast: #2b1d14;
+  --ink-brown: #7a3e1d;
 }
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
-    --bg: #17202a; --surface: #1f2b37; --surface-2: #243342; --ink: #ecf0f1; --muted: #aab7c4; --line: #2e4051;
-    --nav: #111a22; --link: #7fc4ff; --focus: #f5b041;
+    --bg: #17110d; --surface: #221913; --surface-2: #2b2019; --ink: #f1e9df; --muted: #c2b3a3; --line: #3d2d22; /* coffee, not slate */
+    --nav: #1a110b; --link: #7fc4ff; --focus: #f5b041;
     --shadow: 0 2px 0 rgba(0, 0, 0, 0.25), 0 10px 30px rgba(0, 0, 0, 0.3);
     --p5: #8d6e57;
   }
@@ -364,3 +369,136 @@ p { margin: 0 0 1em; }
 .meta-row { display: flex; flex-wrap: wrap; gap: 8px; }
 .prose h2 { scroll-margin-top: 80px; }
 .page-head .labels .label-tests { background: #fff; color: #1e8449; }
+
+/* ================= The Java landing page: a 2012 coffee house ================= */
+
+/* The hero: dark roast with a little grain, centered like a café sign. */
+.roast { position: relative; overflow-x: clip; /* the banner's folded ends stay on screen */ color: var(--cream); text-align: center; background-color: var(--roast);
+  background-image: radial-gradient(ellipse at 50% 0%, rgba(231, 111, 0, 0.35), transparent 60%),
+    radial-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px), radial-gradient(rgba(0, 0, 0, 0.25) 1px, transparent 1px);
+  background-size: auto, 5px 5px, 7px 7px; background-position: 0 0, 0 0, 2px 3px; padding: 64px 0 150px; }
+.roast .container { max-width: 860px; }
+.banner { display: inline-block; position: relative; margin: 0 0 26px; }
+.banner span { position: relative; z-index: 1; display: inline-block; padding: 9px 28px; background: #c25400; color: #fff; font: 700 12px var(--head); letter-spacing: 2px; text-transform: uppercase; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.35); }
+.banner::before, .banner::after { content: ""; position: absolute; top: 9px; width: 30px; height: 100%; background: #8f3e00; z-index: 0; }
+.banner::before { left: -20px; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 12px 50%); }
+.banner::after { right: -20px; clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 50%, 100% 100%, 0 100%); }
+.roast h1 { font: 400 clamp(46px, 8.5vw, 96px)/1.02 var(--display); letter-spacing: 0.5px; color: var(--cream); text-shadow: 0 1px 0 rgba(255, 255, 255, 0.12), 0 -2px 0 rgba(0, 0, 0, 0.7), 0 8px 24px rgba(0, 0, 0, 0.45); }
+.roast h1 .script { display: block; font: 400 0.42em/1.4 var(--logo); color: #f5b041; text-shadow: 0 2px 0 rgba(0, 0, 0, 0.5); }
+.roast .lede { margin: 24px auto 32px; max-width: 34em; font-size: 20px; line-height: 1.6; color: #e9dccb; }
+.roast .actions { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
+.roast .resume { margin: 22px auto 0; max-width: 36em; padding: 12px 16px; border-radius: 6px; background: rgba(0, 0, 0, 0.3); font-size: 15px; }
+/* the glossy button every 2011 landing page had */
+.btn-gloss { background: linear-gradient(#ffb347, #e76f00 55%, #c25400); color: #2b1d14; border: 1px solid #8f3e00; --edge: #8f3e00; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 4px 0 #8f3e00, 0 8px 18px rgba(0, 0, 0, 0.35); }
+.btn-gloss:active { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 1px 0 #8f3e00; }
+
+/* The loyalty card: 100 stamps, overlapping the bottom of the hero. */
+.loyalty { position: relative; z-index: 2; margin: -110px auto 0; max-width: 980px; padding: 26px 30px 22px; border-radius: 14px; color: #3a2a1f; background: var(--cream);
+  background-image: repeating-linear-gradient(-45deg, rgba(122, 62, 29, 0.035) 0 2px, transparent 2px 8px);
+  box-shadow: 0 1px 0 #fff inset, 0 24px 50px rgba(0, 0, 0, 0.3); border: 2px dashed rgba(122, 62, 29, 0.35); outline: 8px solid var(--cream); }
+.loyalty-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 8px 24px; margin-bottom: 18px; }
+.loyalty h2 { font: 400 32px var(--logo); color: var(--ink-brown); }
+.loyalty-head p { margin: 4px 0 0; color: #6b5444; font-size: 15px; }
+.loyalty-count { font: 700 13px var(--head); letter-spacing: 1.5px; text-transform: uppercase; }
+.loyalty-count b { font: 400 34px var(--display); color: var(--ink-brown); letter-spacing: 0; margin-right: 2px; }
+.stamps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(20, 1fr); gap: 8px; }
+.stamp { display: grid; place-items: center; aspect-ratio: 1; border-radius: 50%; border: 2px dashed rgba(122, 62, 29, 0.4); color: #8a7262; font: 700 12px var(--head); text-decoration: none; transition: transform 0.15s; }
+.stamp:hover { transform: scale(1.12); border-style: solid; color: var(--ink-brown); }
+.stamp.cap { border-color: #b03a2e; color: #b03a2e; background: rgba(176, 58, 46, 0.06); }
+.stamp.started { border-style: solid; border-color: rgba(122, 62, 29, 0.7); }
+.stamp.next { border: 3px solid #e76f00; color: #c25400; background: #fff; box-shadow: 0 0 0 4px rgba(231, 111, 0, 0.18); }
+.stamp.done { border: 2px solid var(--ink-brown); background: rgba(122, 62, 29, 0.12); font-size: 15px; transform: rotate(-12deg); }
+.loyalty-key { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 16px 0 0; font-size: 13px; color: #6b5444; }
+.loyalty-key .sample { display: inline-grid; width: 24px; margin-left: 8px; font-size: 11px; transform: none; }
+
+/* Python vs Java, side by side */
+.versus { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 24px; align-items: start; }
+.versus .side { margin: 0; min-width: 0; }
+.versus figcaption { font: 800 14px var(--head); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; color: var(--muted); }
+.versus pre { font-size: 12.5px; }
+.versus .side > p { margin: 14px 0 0; font-size: 16px; }
+.vs { align-self: center; display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: #c25400; color: #fff; font: 400 24px var(--display); box-shadow: 0 0 0 6px var(--bg), 0 6px 14px rgba(0, 0, 0, 0.25); }
+
+/* The daily brew: four beans on a dashed line */
+.brew { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; position: relative; counter-reset: none; }
+.brew::before { content: ""; position: absolute; top: 34px; left: 12%; right: 12%; border-top: 3px dashed rgba(122, 62, 29, 0.35); }
+.brew li { position: relative; text-align: center; }
+.bean { position: relative; display: grid; place-items: center; width: 68px; height: 68px; margin: 0 auto 16px; border-radius: 50% / 42%; background: radial-gradient(circle at 35% 30%, #8d6e57, #4a3324 70%); color: var(--cream); font: 400 28px var(--display); box-shadow: 0 5px 0 #2b1d14, 0 10px 18px rgba(0, 0, 0, 0.25); transform: rotate(-18deg); }
+.bean::after { content: ""; position: absolute; top: 12%; bottom: 12%; left: 50%; width: 3px; border-radius: 3px; background: rgba(0, 0, 0, 0.35); transform: translateX(-50%) rotate(12deg); }
+.brew h3 { font: 400 26px var(--display); margin-bottom: 8px; }
+.brew p { color: var(--muted); font-size: 15.5px; margin: 0; }
+
+/* The chalkboard menu */
+.board-band { background: #e9e0d4; }
+.chalkboard { max-width: 860px; margin: 0 auto; padding: 38px 44px 30px; border-radius: 6px; color: #f4f1ea; font-family: var(--chalk);
+  background: radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.07), transparent 55%), radial-gradient(ellipse at 80% 90%, rgba(255, 255, 255, 0.05), transparent 50%), #2f3a33;
+  border: 14px solid #7a4e2d; border-image: linear-gradient(135deg, #8d5a33, #5c3a20 40%, #8d5a33 60%, #5c3a20) 1; box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.5), 0 18px 40px rgba(0, 0, 0, 0.3); }
+.chalk-title { margin: 0 0 18px; text-align: center; font: 700 42px var(--chalk); color: #fff; opacity: 0.92; }
+.menu-item { border-bottom: 1px dashed rgba(255, 255, 255, 0.18); padding: 12px 0; }
+.menu-item summary { display: flex; align-items: baseline; gap: 10px; cursor: pointer; list-style: none; font-size: 30px; font-weight: 700; }
+.menu-item summary::-webkit-details-marker { display: none; }
+.menu-item summary::after { content: "+"; font-size: 26px; opacity: 0.6; margin-left: 4px; }
+.menu-item[open] summary::after { content: "–"; }
+.menu-item .dish { color: #fff; }
+.menu-item .leader { flex: 1; border-bottom: 3px dotted rgba(255, 255, 255, 0.35); transform: translateY(-6px); min-width: 20px; }
+.menu-item .days { color: #f5d76e; font-size: 26px; white-space: nowrap; }
+.menu-item .desc { margin: 2px 0 0; font-size: 22px; line-height: 1.35; color: #d9dfd9; }
+.menu-item .desc em { color: #f5b7a0; font-style: normal; }
+.menu-item .served { margin: 4px 0 0; font-size: 19px; color: #a8c7a8; }
+.menu-item ul { list-style: none; margin: 10px 0 4px; padding: 0; columns: 2; column-gap: 32px; }
+.menu-item li { break-inside: avoid; }
+.menu-item li a { display: block; padding: 3px 0; color: #eef2ee; text-decoration: none; font-size: 21px; line-height: 1.3; }
+.menu-item li a:hover { color: #f5d76e; text-decoration: underline; }
+.menu-item .n { color: #a8c7a8; }
+.menu-item .star { color: #f5b7a0; }
+.menu-item .tick { color: #7dde92; font-weight: 700; }
+.chalk-note { margin: 16px 0 0; text-align: right; font-size: 20px; opacity: 0.55; }
+.chalkboard :focus-visible { outline-color: #f5d76e; }
+
+/* The receipt */
+.receipt { position: relative; max-width: 440px; margin: 0 auto; padding: 30px 30px 40px; background: #fffdf7; color: #2b2b2b; font: 15px/1.7 var(--mono); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.14); transform: rotate(-1.2deg); }
+.receipt::after { content: ""; position: absolute; left: 0; right: 0; bottom: -12px; height: 12px; background: linear-gradient(-45deg, transparent 8px, #fffdf7 0) 0 0 / 16px 12px, linear-gradient(45deg, transparent 8px, #fffdf7 0) 0 0 / 16px 12px; background-repeat: repeat-x; }
+.receipt-head { margin: 0 0 16px; text-align: center; font-weight: 600; letter-spacing: 2px; border-bottom: 2px dashed #bbb; padding-bottom: 14px; }
+.receipt-head small { font-weight: 400; letter-spacing: 1px; color: #666; }
+.receipt table { width: 100%; border-collapse: collapse; }
+.receipt td { padding: 3px 0; vertical-align: top; }
+.receipt td:last-child { text-align: right; color: #555; }
+.receipt tr.total td { padding-top: 12px; border-top: 2px dashed #bbb; font-weight: 600; font-size: 17px; color: #2b2b2b; }
+.receipt-foot { margin: 18px 0 0; text-align: center; font-size: 13px; color: #555; }
+.receipt-foot a { color: #1f6fb2; }
+
+@media (prefers-color-scheme: dark) {
+  .board-band { background: #1c1712; }
+  .versus .side > p code { color: var(--ink); }
+}
+@media (max-width: 960px) {
+  .stamps { grid-template-columns: repeat(10, 1fr); }
+  .versus { grid-template-columns: minmax(0, 1fr); }
+  .vs { justify-self: center; }
+  .brew { grid-template-columns: repeat(2, 1fr); }
+  .brew::before { display: none; }
+}
+@media (max-width: 720px) {
+  .roast { padding: 44px 0 130px; }
+  .banner span { padding: 8px 18px; letter-spacing: 1.2px; font-size: 11px; }
+  .roast .actions .btn { flex: 1 1 100%; }
+  .loyalty { padding: 20px 16px 18px; outline-width: 4px; }
+  .stamps { gap: 5px; }
+  .stamp { font-size: 10px; border-width: 1.5px; }
+  .chalkboard { padding: 26px 18px 20px; border-width: 10px; }
+  .menu-item summary { font-size: 25px; }
+  .menu-item .days { font-size: 21px; }
+  .menu-item ul { columns: 1; }
+  .chalk-title { font-size: 34px; }
+  .receipt { transform: none; padding: 24px 18px 34px; font-size: 14px; }
+}
+@media (max-width: 480px) {
+  .brew { grid-template-columns: 1fr; }
+  .menu-item summary { flex-wrap: wrap; column-gap: 8px; font-size: 23px; }
+  .menu-item .leader { display: none; }
+  .menu-item .days { font-size: 19px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stamp { transition: none; }
+  .stamp:hover { transform: none; }
+}

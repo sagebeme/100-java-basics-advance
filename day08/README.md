@@ -1,4 +1,4 @@
-# Day 8 - Function Parameters & Caesar Cipher
+# Day 8 - Method Parameters & Caesar Cipher
 
 ## 📚 Learning Objectives
 - Deep dive into method parameters

@@ -1,4 +1,4 @@
-# Day 21 - Build Snake Game Part 2: Inheritance & List Slicing
+# Day 21 - Build Snake Game Part 2: Inheritance & Sublists
 
 ## 📚 Learning Objectives
 - Complete Snake game using inheritance
@@ -108,7 +108,7 @@ Practice with:
 - Adding/removing from lists
 - Accessing list elements
 - Iterating over lists
-- List slicing (subList)
+- Sublists (`subList`)
 
 ### Exercise 2: Collision Detection
 Create methods for:
@@ -188,7 +188,7 @@ public class Food {
 
 | Concept | Description | Example |
 |---------|-------------|---------|
-| List Slicing | Get sublist | `list.subList(0, 5)` |
+| Sublists | Get part of a list | `list.subList(0, 5)` |
 | Snake Body | List of segments | `ArrayList<Segment>` |
 | Food Spawning | Random generation | `random.nextInt()` |
 | Collision | Object intersection | Check coordinates |
@@ -204,7 +204,7 @@ public class Food {
 
 **Related days:** Day 20 (animation loop); Day 19 (inheritance for segments); Day 4 (ArrayList). **JavaFX:** See Troubleshooting.
 
-**Quick reference:** `list.add(0, newHead); list.remove(list.size()-1)` · Collision: compare coordinates · `subList(from, to)` for slicing
+**Quick reference:** `list.add(0, newHead); list.remove(list.size()-1)` · Collision: compare coordinates · `subList(from, to)` for part of a list
 
 ## ✅ Checklist
 - [ ] Can work with lists effectively

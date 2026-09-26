@@ -6,7 +6,7 @@ Practice with:
 - Adding/removing from lists
 - Accessing list elements
 - Iterating over lists
-- List slicing (subList)
+- Sublists (`subList`)
 
 ## Requirements
 List Operations
@@ -14,7 +14,7 @@ Practice with:
 - Adding/removing from lists
 - Accessing list elements
 - Iterating over lists
-- List slicing (subList)
+- Sublists (`subList`)
 
 ## Instructions
 1. Read the requirements above

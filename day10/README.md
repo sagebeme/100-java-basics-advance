@@ -1,4 +1,4 @@
-# Day 10 - Function Return Values and Calculator Project
+# Day 10 - Return Values and Calculator Project
 
 ## 📚 Learning Objectives
 - Master return statements
@@ -86,7 +86,7 @@ Create methods that return:
 - Formatted string
 - Boolean check (is prime, is even, etc.)
 
-### Exercise 2: Calculator Functions
+### Exercise 2: Calculator Methods
 Create methods for:
 - Addition
 - Subtraction

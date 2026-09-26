@@ -1,16 +1,16 @@
-# Day 12 - Scope and Namespacing
+# Day 12 - Scope and Access Modifiers
 
 ## 📚 Learning Objectives
 - Understand variable scope
-- Learn about local vs global scope
+- Learn about local, instance and class (static) scope. Java has no global variables: a `static` field is the closest thing
 - Master block scope
-- Understand namespacing
+- Organise names with packages
 - Practice with access modifiers
 
 ## 🎯 Topics Covered
 - Variable scope (local, instance, class)
 - Block scope
-- Namespace and naming
+- Packages and naming
 - Access modifiers (public, private, protected)
 - Variable shadowing
 - Best practices
@@ -99,7 +99,7 @@ Create classes with:
 - Protected members
 - Package-private members
 
-### Exercise 3: Namespace
+### Exercise 3: Packages and Naming
 Practice with:
 - Avoiding name conflicts
 - Using meaningful names

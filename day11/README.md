@@ -325,7 +325,7 @@ After completing Day 11, you should be able to:
 
 **Congratulations!** You've completed your first major capstone project!
 
-**Ready for Day 12?** You'll learn about scope and namespacing!
+**Ready for Day 12?** You'll learn about scope and access modifiers!
 
 
 

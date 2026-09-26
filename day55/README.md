@@ -252,8 +252,6 @@ The project brief above is yours to build from scratch. The folder has worked so
 | `exception/ResourceNotFoundException.java` | Thrown when an id doesn't exist |
 | `model/User.java` | A user: id, name and email, with validation rules |
 
-Ignore `exercise1/src/Exercise1.java` and `exercise2/src/Exercise2.java`: they're leftover placeholders (just a `main` with a TODO) from before these became Maven projects. The real code is under `src/main/java`.
-
 ## 💻 How to Run
 
 Needs JDK 21 and Maven (see the main README). From the repository root:

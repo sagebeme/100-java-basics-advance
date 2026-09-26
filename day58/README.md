@@ -278,8 +278,6 @@ Also in `src/main/resources/`: `static/css/custom.css`, `templates/layout.html`.
 
 Also in `src/main/resources/`: `templates/index.html`, `templates/signup.html`.
 
-Ignore `exercise1/src/Exercise1.java` and `exercise2/src/Exercise2.java`: they're leftover placeholders (just a `main` with a TODO) from before these became Maven projects. The real code is under `src/main/java`.
-
 ## 💻 How to Run
 
 Needs JDK 21 and Maven (see the main README). From the repository root:

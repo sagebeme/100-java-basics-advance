@@ -66,15 +66,36 @@ Add REST API to blog:
 - [ ] Completed Blog REST API
 - [ ] Committed code to Git
 
+## 📂 What's in this folder
+
+A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+
+| File | What it does |
+|---|---|
+| `Application.java` | Starts Spring Boot |
+| `controller/PostRestController.java` | RESTful routes for posts at `/api/posts` |
+| `model/Post.java` | A JPA entity |
+| `repository/PostRepository.java` | Spring Data repository for posts |
+
 ## 💻 How to Run
 
-**Run:** `mvn spring-boot:run` or run main Application from IDE. Open http://localhost:8080.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+```bash
+cd day67
+mvn spring-boot:run
+```
+
+Then open http://localhost:8080/api/posts. Stop it with Ctrl+C. Or run `Application` from your IDE.
+
+## 🧪 How to Test
+
+```bash
+cd day67
+mvn test
+```
+
+Runs `PostRestControllerTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## 🚀 Next Steps
 **Ready for Day 68?** You'll learn authentication with Spring Security!
-
-
-
-
-
-

@@ -140,13 +140,71 @@ Upgrade existing blog:
 
 **Related days:** Day 54 (Spring Boot); Day 57 (Thymeleaf); Day 58 (Bootstrap intro). **Quick reference:** Run blog with `mvn spring-boot:run`; open browser to localhost
 
+## 📂 What's in this folder
+
+The project brief above is yours to build from scratch. The folder has worked solutions for the two exercises, each its own Maven project:
+
+**`exercise1/`**
+
+| File | What it does |
+|---|---|
+| `Application.java` | Starts Spring Boot |
+| `BlogController.java` | `GET /posts` lists posts with Bootstrap styling (exercise 2 adds paging and `POST /posts/{id}/delete`) |
+| `Post.java` | A blog post |
+| `PostService.java` | Holds the posts (exercise 2 adds paging and deleting) |
+
+Also in `src/main/resources/`: `templates/posts.html`.
+
+**`exercise2/`**
+
+| File | What it does |
+|---|---|
+| `Application.java` | Starts Spring Boot |
+| `BlogController.java` | `GET /posts` lists posts with Bootstrap styling (exercise 2 adds paging and `POST /posts/{id}/delete`) |
+| `Post.java` | A blog post |
+| `PostService.java` | Holds the posts (exercise 2 adds paging and deleting) |
+
+Also in `src/main/resources/`: `templates/posts.html`.
+
+Ignore `exercise1/src/Exercise1.java` and `exercise2/src/Exercise2.java`: they're leftover placeholders (just a `main` with a TODO) from before these became Maven projects. The real code is under `src/main/java`.
+
 ## 💻 How to Run
 
-This day is a **Spring Boot web app** with Bootstrap:
+Needs JDK 21 and Maven (see the main README). From the repository root:
 
-- **Maven:** From project root: `mvn spring-boot:run`
-- **IDE:** Run the main Application class (Spring Boot)
-- **Browser:** Open `http://localhost:8080` (or port in application.properties)
+**exercise1:**
+
+```bash
+cd day59/exercise1
+mvn spring-boot:run
+```
+
+Then open http://localhost:8080/posts. Stop it with Ctrl+C. Or run `Application` from your IDE.
+
+**exercise2:**
+
+```bash
+cd day59/exercise2
+mvn spring-boot:run
+```
+
+Then open http://localhost:8080/posts. Stop it with Ctrl+C. Or run `Application` from your IDE.
+
+## 🧪 How to Test
+
+```bash
+cd day59/exercise1
+mvn test
+```
+
+Runs `BlogControllerTest`. A clean run ends with `BUILD SUCCESS`.
+
+```bash
+cd day59/exercise2
+mvn test
+```
+
+Runs `BlogControllerTest` and `PostServiceTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## ✅ Checklist
 - [ ] Upgraded blog with Bootstrap
@@ -160,9 +218,3 @@ This day is a **Spring Boot web app** with Bootstrap:
 After completing Day 59, you should have a modern, responsive blog!
 
 **Ready for Day 60?** You'll learn HTML forms with Spring Boot!
-
-
-
-
-
-

@@ -27,15 +27,35 @@ Create Disappearing Text App:
 - [ ] Completed app
 - [ ] Committed code to Git
 
+## 📂 What's in this folder
+
+A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+
+| File | What it does |
+|---|---|
+| `DisappearingTextApp.java` | The JavaFX window |
+| `DisappearingTextEditor.java` | The core rule: stop typing for too long and unsaved text disappears. Takes a clock, so it's testable |
+| `SavedEntry.java` | A saved piece of writing |
+
 ## 💻 How to Run
 
-**Run:** Run main class from IDE or `mvn exec:java`. For GUI use JavaFX.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+```bash
+cd day89
+mvn javafx:run
+```
+
+A window opens. The JavaFX libraries come from Maven, so there's nothing extra to install.
+
+## 🧪 How to Test
+
+```bash
+cd day89
+mvn test
+```
+
+Runs `DisappearingTextEditorTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## 🚀 Next Steps
 **Ready for Day 90?** You'll build a PDF to Audio Converter!
-
-
-
-
-
-

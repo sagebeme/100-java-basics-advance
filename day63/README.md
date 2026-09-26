@@ -102,15 +102,36 @@ Create user management:
 - [ ] Completed user management
 - [ ] Committed code to Git
 
+## 📂 What's in this folder
+
+A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+
+| File | What it does |
+|---|---|
+| `Application.java` | Starts Spring Boot |
+| `model/User.java` | A JPA entity |
+| `repository/UserRepository.java` | Spring Data repository, including a find-by-email query |
+| `service/UserService.java` | Create, read, update and delete users |
+
 ## 💻 How to Run
 
-**Run:** `mvn spring-boot:run` or run main Application from IDE. Open http://localhost:8080.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+```bash
+cd day63
+mvn spring-boot:run
+```
+
+It has no pages: today is about the database layer. The tests show it working. Stop it with Ctrl+C.
+
+## 🧪 How to Test
+
+```bash
+cd day63
+mvn test
+```
+
+Runs `UserRepositoryTest` and `UserServiceTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## 🚀 Next Steps
 **Ready for Day 64?** You'll build a Top 10 Movies website!
-
-
-
-
-
-

@@ -51,15 +51,34 @@ Create time series analyzer:
 - [ ] Completed time series analyzer
 - [ ] Committed code to Git
 
+## 📂 What's in this folder
+
+A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+
+| File | What it does |
+|---|---|
+| `DataPoint.java` | A date and a value |
+| `TimeSeriesAnalyzer.java` | Aggregates by day and month, moving averages, and a linear trend slope |
+
 ## 💻 How to Run
 
-**Run:** Run main class from IDE or `mvn exec:java`. For Spring Boot: `mvn spring-boot:run`.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+```bash
+cd day74
+mvn compile exec:java
+```
+
+Or run the main class from your IDE.
+
+## 🧪 How to Test
+
+```bash
+cd day74
+mvn test
+```
+
+Runs `TimeSeriesAnalyzerTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## 🚀 Next Steps
 **Ready for Day 75?** You'll create charts and data visualization!
-
-
-
-
-
-

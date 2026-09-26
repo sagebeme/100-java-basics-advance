@@ -2,7 +2,7 @@
 
 ## Learning Objectives
 - Integrate machine learning with Java
-- Use ML libraries (Weka, Deeplearning4j, or TensorFlow Java)
+- Build a regression model yourself, then know when to reach for a library (Weka, Deeplearning4j, TensorFlow Java)
 - Build a predictive model
 - Create a complete application
 - Deploy ML models
@@ -39,25 +39,29 @@ Build a system that predicts earnings based on multiple variables using machine 
 ```
 day100/
 ├── README.md
-├── src/
-│   └── main/
-│       ├── java/
-│       │   └── com/
-│       │       └── learning/
-│       │           ├── Application.java
-│       │           ├── model/
-│       │           │   └── EarningsModel.java
-│       │           ├── service/
-│       │           │   └── PredictionService.java
-│       │           └── controller/
-│       │               └── PredictionController.java
-│       └── resources/
-│           ├── application.properties
-│           └── templates/
-│               └── prediction.html
-├── data/
-│   └── earnings_data.csv
-└── pom.xml
+├── pom.xml
+└── src/
+    ├── main/
+    │   ├── java/com/learning/
+    │   │   ├── Application.java
+    │   │   ├── controller/
+    │   │   │   ├── PredictionRestController.java
+    │   │   │   └── PredictionWebController.java
+    │   │   ├── model/
+    │   │   │   ├── EarningsRecord.java
+    │   │   │   ├── EarningsRequest.java
+    │   │   │   ├── EvaluationMetrics.java
+    │   │   │   └── PredictionResult.java
+    │   │   └── service/
+    │   │       ├── EarningsDataLoader.java
+    │   │       ├── EarningsPredictionService.java
+    │   │       ├── FeatureEncoder.java
+    │   │       ├── LinearRegressionModel.java
+    │   │       └── ModelEvaluator.java
+    │   └── resources/
+    │       ├── earnings-data.csv
+    │       └── templates/prediction.html
+    └── test/java/com/learning/   (the tests)
 ```
 
 ## Key Concepts
@@ -90,9 +94,48 @@ day100/
 
 **When you're stuck:** Re-read **Project**, **Code Structure**, and **Key Concepts** above; use main README for structure. **Quick reference:** `mvn spring-boot:run`; POST to prediction API with JSON body; see Day 80 for ML/API pattern.
 
+## 📂 What's in this folder
+
+A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+
+| File | What it does |
+|---|---|
+| `Application.java` | Starts Spring Boot |
+| `controller/PredictionRestController.java` | `POST /api/predict` with JSON |
+| `controller/PredictionWebController.java` | `GET /` shows the form, `POST /predict` shows the result |
+| `model/EarningsRecord.java` | One training row |
+| `model/EarningsRequest.java` | The inputs, for both the API and the form |
+| `model/EvaluationMetrics.java` | R², MSE, MAE and the train/test sizes |
+| `model/PredictionResult.java` | The predicted earnings, a confidence score and the model version |
+| `service/EarningsDataLoader.java` | Loads the 150 rows of `earnings-data.csv` |
+| `service/EarningsPredictionService.java` | Trains the model at start-up and makes predictions |
+| `service/FeatureEncoder.java` | One-hot encodes education, location and industry |
+| `service/LinearRegressionModel.java` | Multiple linear regression written from scratch, like Day 80's |
+| `service/ModelEvaluator.java` | A repeatable train/test split, and R², MSE and MAE on the test set |
+
+Also in `src/main/resources/`: `earnings-data.csv`, `templates/prediction.html`.
+
+The model is written from scratch (no Weka, Deeplearning4j or TensorFlow), using the same linear regression as Day 80, plus one-hot encoding for the text fields. It's judged on a held-out test set.
+
 ## 💻 How to Run
 
-**Run:** `mvn spring-boot:run` or run main Application from IDE. Open http://localhost:8080. Use prediction API: POST with JSON body (experience, education, location, industry).
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+```bash
+cd day100
+mvn spring-boot:run
+```
+
+Then open http://localhost:8080. Stop it with Ctrl+C. Or run `Application` from your IDE.
+
+## 🧪 How to Test
+
+```bash
+cd day100
+mvn test
+```
+
+Runs `EarningsPredictionServiceTest`, `FeatureEncoderTest`, `LinearRegressionModelTest`, `ModelEvaluatorTest`, `PredictionRestControllerTest` and `PredictionWebControllerTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## Congratulations! 🎉
 
@@ -114,10 +157,3 @@ You've completed 100 days of Java! You should now:
 ---
 
 **Congratulations on completing 100 Days of Java! ☕**
-
-
-
-
-
-
-

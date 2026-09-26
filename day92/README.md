@@ -27,15 +27,36 @@ Create Web Scraper:
 - [ ] Completed scraper
 - [ ] Committed code to Git
 
+## 📂 What's in this folder
+
+A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+
+| File | What it does |
+|---|---|
+| `CsvSaver.java` | Saves the items as CSV |
+| `ScrapedItem.java` | One scraped item |
+| `ScraperApp.java` | The command-line app |
+| `WebScraper.java` | Fetches a page with Jsoup and extracts the items (extraction is tested on saved HTML) |
+
 ## 💻 How to Run
 
-**Run:** Run main class from IDE or `mvn exec:java`. Add Jsoup dependency in pom.xml.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+```bash
+cd day92
+mvn compile exec:java
+```
+
+Or run the main class from your IDE.
+
+## 🧪 How to Test
+
+```bash
+cd day92
+mvn test
+```
+
+Runs `CsvSaverTest`, `LiveFetchTest` and `WebScraperTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## 🚀 Next Steps
 **Ready for Day 93?** You'll build Game Automation!
-
-
-
-
-
-

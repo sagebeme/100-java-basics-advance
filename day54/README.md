@@ -84,9 +84,34 @@ public class HelloController {
 
 **Related days:** Day 55 (REST APIs); Day 56 (static/templates). **Quick reference:** `mvn spring-boot:run`; open http://localhost:8080
 
+## 📂 What's in this folder
+
+A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+
+| File | What it does |
+|---|---|
+| `Application.java` | Starts Spring Boot |
+| `controller/HelloController.java` | `GET /`, `/hello`, `/hello/{name}` and `/api/info` |
+
 ## 💻 How to Run
 
-**Spring Boot** — from project root: `mvn spring-boot:run`. Or run the main Application class in your IDE. Open `http://localhost:8080` in browser.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+```bash
+cd day54
+mvn spring-boot:run
+```
+
+Then open http://localhost:8080/hello/Amina. Stop it with Ctrl+C. Or run `Application` from your IDE.
+
+## 🧪 How to Test
+
+```bash
+cd day54
+mvn test
+```
+
+Runs `HelloControllerTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## Next Steps
 After completing Day 54, you should understand:
@@ -95,10 +120,3 @@ After completing Day 54, you should understand:
 - Dependency injection
 - Spring Boot configuration
 - Building web applications
-
-
-
-
-
-
-

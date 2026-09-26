@@ -222,9 +222,67 @@ public class BlogController {
 
 **Related days:** Day 54 (Spring Boot); Day 56 (static/templates); Day 59 (Bootstrap). **Quick reference:** `mvn spring-boot:run`; open http://localhost:8080
 
+## 📂 What's in this folder
+
+The project brief above is yours to build from scratch. The folder has worked solutions for the two exercises, each its own Maven project:
+
+**`exercise1/`**
+
+| File | What it does |
+|---|---|
+| `Application.java` | Starts Spring Boot |
+| `GreetingController.java` | `GET /greeting?name=…` renders a Thymeleaf greeting |
+
+Also in `src/main/resources/`: `templates/greeting.html`.
+
+**`exercise2/`**
+
+| File | What it does |
+|---|---|
+| `AccountController.java` | `GET /account` renders an account page with conditionals and loops in Thymeleaf |
+| `Application.java` | Starts Spring Boot |
+
+Also in `src/main/resources/`: `templates/account.html`.
+
+Ignore `exercise1/src/Exercise1.java` and `exercise2/src/Exercise2.java`: they're leftover placeholders (just a `main` with a TODO) from before these became Maven projects. The real code is under `src/main/java`.
+
 ## 💻 How to Run
 
-**Spring Boot + Thymeleaf** — from project root: `mvn spring-boot:run`. Run main Application class in IDE. Open `http://localhost:8080` in browser.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+**exercise1:**
+
+```bash
+cd day57/exercise1
+mvn spring-boot:run
+```
+
+Then open http://localhost:8080/greeting?name=Amina. Stop it with Ctrl+C. Or run `Application` from your IDE.
+
+**exercise2:**
+
+```bash
+cd day57/exercise2
+mvn spring-boot:run
+```
+
+Then open http://localhost:8080/account. Stop it with Ctrl+C. Or run `Application` from your IDE.
+
+## 🧪 How to Test
+
+```bash
+cd day57/exercise1
+mvn test
+```
+
+Runs `GreetingControllerTest`. A clean run ends with `BUILD SUCCESS`.
+
+```bash
+cd day57/exercise2
+mvn test
+```
+
+Runs `AccountControllerTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## ✅ Checklist
 - [ ] Understand Thymeleaf syntax
@@ -243,9 +301,3 @@ After completing Day 57, you should be able to:
 - Work with forms
 
 **Ready for Day 58?** You'll integrate Bootstrap with your Spring Boot app!
-
-
-
-
-
-

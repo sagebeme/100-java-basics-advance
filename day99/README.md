@@ -27,17 +27,47 @@ Create Advanced Analytics:
 - [ ] Completed analytics
 - [ ] Committed code to Git
 
+## 📂 What's in this folder
+
+A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+
+| File | What it does |
+|---|---|
+| `Application.java` | Starts Spring Boot |
+| `controller/AnalyticsController.java` | `GET /` shows the analysis, `GET /report` downloads a PDF report |
+| `model/SalesRecord.java` | One sale |
+| `service/AdvancedStatistics.java` | Monthly totals, mean, standard deviation, month-on-month growth |
+| `service/AnalyticsService.java` | Loads the data once |
+| `service/InsightGenerator.java` | Plain-language insights, each backed by a real number |
+| `service/ReportGenerator.java` | Builds the PDF with Apache PDFBox |
+| `service/RevenueForecaster.java` | Fits a least-squares trend line and forecasts the next months |
+| `service/SalesDataLoader.java` | Loads `sales-data.csv` |
+
+Also in `src/main/resources/`: `sales-data.csv`, `templates/dashboard.html`.
+
+The PDF report is made with Apache PDFBox.
+
 ## 💻 How to Run
 
-**Run:** `mvn spring-boot:run` or run main Application from IDE. Open http://localhost:8080 for dashboard.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+```bash
+cd day99
+mvn spring-boot:run
+```
+
+Then open http://localhost:8080. Stop it with Ctrl+C. Or run `Application` from your IDE.
+
+## 🧪 How to Test
+
+```bash
+cd day99
+mvn test
+```
+
+Runs `AdvancedStatisticsTest`, `AnalyticsControllerTest`, `InsightGeneratorTest`, `ReportGeneratorTest` and `RevenueForecasterTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## 🚀 Next Steps
 **Ready for Day 100?** Final project - Machine Learning Integration!
 
 **Congratulations on reaching Day 99!** 🎉
-
-
-
-
-
-

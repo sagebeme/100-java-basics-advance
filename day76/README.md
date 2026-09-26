@@ -62,15 +62,36 @@ Implement:
 - [ ] Completed custom structures
 - [ ] Committed code to Git
 
+## 📂 What's in this folder
+
+A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+
+| File | What it does |
+|---|---|
+| `BinarySearchTree.java` | Insert, search, in-order traversal and height |
+| `CustomQueue.java` | A queue built from scratch |
+| `CustomStack.java` | A stack built from scratch |
+| `Demo.java` | Runs all three |
+
 ## 💻 How to Run
 
-**Run:** Run main class from IDE or `mvn exec:java`.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+```bash
+cd day76
+mvn compile exec:java
+```
+
+Or run the main class from your IDE.
+
+## 🧪 How to Test
+
+```bash
+cd day76
+mvn test
+```
+
+Runs `BinarySearchTreeTest`, `CustomQueueTest` and `CustomStackTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## 🚀 Next Steps
 **Ready for Day 77?** You'll learn algorithms and data structures!
-
-
-
-
-
-

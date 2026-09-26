@@ -67,15 +67,35 @@ Implement:
 - [ ] Completed algorithm library
 - [ ] Committed code to Git
 
+## 📂 What's in this folder
+
+A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+
+| File | What it does |
+|---|---|
+| `Graph.java` | Breadth-first and depth-first search, and the shortest path by number of edges |
+| `Searcher.java` | Linear and binary search |
+| `Sorter.java` | Bubble sort and quicksort |
+
 ## 💻 How to Run
 
-**Run:** Run main class from IDE or `mvn exec:java`.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+```bash
+cd day77
+mvn compile exec:java
+```
+
+Or run the main class from your IDE.
+
+## 🧪 How to Test
+
+```bash
+cd day77
+mvn test
+```
+
+Runs `GraphTest`, `SearcherTest` and `SorterTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## 🚀 Next Steps
 **Ready for Day 78?** You'll learn advanced algorithms!
-
-
-
-
-
-

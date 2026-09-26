@@ -63,15 +63,35 @@ Analyze sales data:
 - [ ] Completed data analysis
 - [ ] Committed code to Git
 
+## 📂 What's in this folder
+
+A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+
+| File | What it does |
+|---|---|
+| `DataAnalyzer.java` | Loads month,amount CSV data, calculates statistics, finds the trend and prints a report |
+| `SaleRecord.java` | One month's sales |
+| `Statistics.java` | Mean, median, min, max and standard deviation |
+
 ## 💻 How to Run
 
-**Run:** Run main class from IDE or `mvn exec:java`. For Spring Boot: `mvn spring-boot:run`.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+```bash
+cd day71
+mvn compile exec:java
+```
+
+Or run the main class from your IDE.
+
+## 🧪 How to Test
+
+```bash
+cd day71
+mvn test
+```
+
+Runs `DataAnalyzerTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## 🚀 Next Steps
 **Ready for Day 72?** You'll learn data visualization!
-
-
-
-
-
-

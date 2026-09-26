@@ -27,15 +27,34 @@ Create Tic Tac Toe Game:
 - [ ] Completed project
 - [ ] Committed code to Git
 
+## 📂 What's in this folder
+
+A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+
+| File | What it does |
+|---|---|
+| `TicTacToeApp.java` | The JavaFX window |
+| `TicTacToeGame.java` | The rules: moves, turns, wins and draws, with no JavaFX in sight |
+
 ## 💻 How to Run
 
-**Run:** Run main class from IDE or `mvn exec:java`. For GUI use JavaFX.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+```bash
+cd day83
+mvn javafx:run
+```
+
+A window opens. The JavaFX libraries come from Maven, so there's nothing extra to install.
+
+## 🧪 How to Test
+
+```bash
+cd day83
+mvn test
+```
+
+Runs `TicTacToeGameTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## 🚀 Next Steps
 **Ready for Day 84?** You'll build an Image Watermark Tool!
-
-
-
-
-
-

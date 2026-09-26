@@ -69,15 +69,38 @@ Add users to blog:
 - [ ] Completed blog with users
 - [ ] Committed code to Git
 
+## 📂 What's in this folder
+
+A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+
+| File | What it does |
+|---|---|
+| `Application.java` | Starts Spring Boot |
+| `model/BlogUser.java` | A blog user, with the posts they wrote |
+| `model/Post.java` | A post with its author |
+| `repository/BlogUserRepository.java` | Spring Data repository for users |
+| `repository/PostRepository.java` | Spring Data repository for posts |
+| `service/BlogService.java` | Registers users, creates posts for an author, lists an author's posts |
+
 ## 💻 How to Run
 
-**Run:** `mvn spring-boot:run` or run main Application from IDE. Open http://localhost:8080.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+```bash
+cd day69
+mvn spring-boot:run
+```
+
+It has no pages: today is about the data model. The tests show users and posts working together. Stop it with Ctrl+C.
+
+## 🧪 How to Test
+
+```bash
+cd day69
+mvn test
+```
+
+Runs `BlogServiceTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## 🚀 Next Steps
 **Ready for Day 70?** You'll learn deployment with Docker and Cloud!
-
-
-
-
-
-

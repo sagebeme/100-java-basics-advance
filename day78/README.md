@@ -66,15 +66,34 @@ Solve advanced problems:
 - [ ] Completed advanced algorithms
 - [ ] Committed code to Git
 
+## 📂 What's in this folder
+
+A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+
+| File | What it does |
+|---|---|
+| `DynamicProgramming.java` | Fibonacci built bottom-up, the longest common subsequence, and the 0/1 knapsack |
+| `GreedyAlgorithms.java` | Activity selection and greedy coin change |
+
 ## 💻 How to Run
 
-**Run:** Run main class from IDE or `mvn exec:java`.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+```bash
+cd day78
+mvn compile exec:java
+```
+
+Or run the main class from your IDE.
+
+## 🧪 How to Test
+
+```bash
+cd day78
+mvn test
+```
+
+Runs `DynamicProgrammingTest` and `GreedyAlgorithmsTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## 🚀 Next Steps
 **Ready for Day 79?** You'll learn testing and quality assurance!
-
-
-
-
-
-

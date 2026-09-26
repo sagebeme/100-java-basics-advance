@@ -83,15 +83,39 @@ Create RESTful API:
 - [ ] Completed RESTful API
 - [ ] Committed code to Git
 
+## 📂 What's in this folder
+
+A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+
+| File | What it does |
+|---|---|
+| `Application.java` | Starts Spring Boot |
+| `controller/ProductRestController.java` | A REST API at `/api/v1/products`: list, get, create, update, delete |
+| `exception/ApiError.java` | The JSON error body: status, message and timestamp |
+| `exception/ApiExceptionHandler.java` | Turns not-found and validation errors into 404 and 400 responses |
+| `exception/ProductNotFoundException.java` | Thrown when a product id doesn't exist |
+| `model/Product.java` | A JPA entity with validation rules |
+| `repository/ProductRepository.java` | Spring Data repository for products |
+
 ## 💻 How to Run
 
-**Run:** `mvn spring-boot:run` or run main Application from IDE. Open http://localhost:8080.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+```bash
+cd day66
+mvn spring-boot:run
+```
+
+Then open http://localhost:8080/api/v1/products. Stop it with Ctrl+C. Or run `Application` from your IDE.
+
+## 🧪 How to Test
+
+```bash
+cd day66
+mvn test
+```
+
+Runs `ProductRestControllerTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## 🚀 Next Steps
 **Ready for Day 67?** You'll add RESTful routing to your blog!
-
-
-
-
-
-

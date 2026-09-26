@@ -229,9 +229,68 @@ public class TodoController {
 
 **Related days:** Day 54 (Spring Boot); Day 33 (HTTP). **Quick reference:** `mvn spring-boot:run`; test with curl or Postman
 
+## 📂 What's in this folder
+
+The project brief above is yours to build from scratch. The folder has worked solutions for the two exercises, each its own Maven project:
+
+**`exercise1/`**
+
+| File | What it does |
+|---|---|
+| `Application.java` | Starts Spring Boot |
+| `controller/ItemController.java` | CRUD for items at `/api/items`: list, get, create, update, delete |
+| `model/Item.java` | An item: id and name |
+
+**`exercise2/`**
+
+| File | What it does |
+|---|---|
+| `Application.java` | Starts Spring Boot |
+| `controller/UserController.java` | CRUD for users at `/api/users`, plus `GET /api/users/search` with optional filters |
+| `exception/ErrorResponse.java` | The JSON body sent back for an error |
+| `exception/GlobalExceptionHandler.java` | Turns not-found and validation errors into clean 404 and 400 responses |
+| `exception/ResourceNotFoundException.java` | Thrown when an id doesn't exist |
+| `model/User.java` | A user: id, name and email, with validation rules |
+
+Ignore `exercise1/src/Exercise1.java` and `exercise2/src/Exercise2.java`: they're leftover placeholders (just a `main` with a TODO) from before these became Maven projects. The real code is under `src/main/java`.
+
 ## 💻 How to Run
 
-**Spring Boot** — from project root: `mvn spring-boot:run`. Run main Application class in IDE. Test endpoints at `http://localhost:8080`.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+**exercise1:**
+
+```bash
+cd day55/exercise1
+mvn spring-boot:run
+```
+
+Then open http://localhost:8080/api/items. Stop it with Ctrl+C. Or run `Application` from your IDE.
+
+**exercise2:**
+
+```bash
+cd day55/exercise2
+mvn spring-boot:run
+```
+
+Then open http://localhost:8080/api/users. Stop it with Ctrl+C. Or run `Application` from your IDE.
+
+## 🧪 How to Test
+
+```bash
+cd day55/exercise1
+mvn test
+```
+
+Runs `ItemControllerTest`. A clean run ends with `BUILD SUCCESS`.
+
+```bash
+cd day55/exercise2
+mvn test
+```
+
+Runs `UserControllerTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## ✅ Checklist
 - [ ] Understand REST principles
@@ -250,9 +309,3 @@ After completing Day 55, you should be able to:
 - Create API endpoints
 
 **Ready for Day 56?** You'll learn about static files and templates!
-
-
-
-
-
-

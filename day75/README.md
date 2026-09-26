@@ -47,15 +47,33 @@ Create dashboard with:
 - [ ] Completed dashboard
 - [ ] Committed code to Git
 
+## 📂 What's in this folder
+
+A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+
+| File | What it does |
+|---|---|
+| `Dashboard.java` | One dataset shown as bar, line, pie and area charts, filtered, and exported to PNG with JFreeChart |
+
 ## 💻 How to Run
 
-**Run:** Run main class from IDE or `mvn exec:java`. For Spring Boot: `mvn spring-boot:run`.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+```bash
+cd day75
+mvn compile exec:java
+```
+
+Or run the main class from your IDE.
+
+## 🧪 How to Test
+
+```bash
+cd day75
+mvn test
+```
+
+Runs `DashboardTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## 🚀 Next Steps
 **Ready for Day 76?** You'll learn collections and data structures!
-
-
-
-
-
-

@@ -55,15 +55,34 @@ Create aggregation system:
 - [ ] Completed aggregation system
 - [ ] Committed code to Git
 
+## 📂 What's in this folder
+
+A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+
+| File | What it does |
+|---|---|
+| `Sale.java` | One sale: category, region and amount |
+| `SalesAggregator.java` | Groups, totals, averages and counts sales by category, and by category and region |
+
 ## 💻 How to Run
 
-**Run:** Run main class from IDE or `mvn exec:java`. For Spring Boot: `mvn spring-boot:run`.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+```bash
+cd day73
+mvn compile exec:java
+```
+
+Or run the main class from your IDE.
+
+## 🧪 How to Test
+
+```bash
+cd day73
+mvn test
+```
+
+Runs `SalesAggregatorTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## 🚀 Next Steps
 **Ready for Day 74?** You'll learn time series analysis!
-
-
-
-
-
-

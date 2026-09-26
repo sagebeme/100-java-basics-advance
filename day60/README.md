@@ -98,15 +98,38 @@ Create user registration:
 - [ ] Completed registration form
 - [ ] Committed code to Git
 
+## 📂 What's in this folder
+
+A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+
+| File | What it does |
+|---|---|
+| `Application.java` | Starts Spring Boot |
+| `controller/UserController.java` | `GET /users/new` shows the form, `POST /users` validates and saves it, `GET /users` lists everyone |
+| `model/User.java` | A JPA entity with validation rules on name and email |
+| `repository/UserRepository.java` | Spring Data repository for users |
+
+Also in `src/main/resources/`: `templates/user-form.html`, `templates/user-list.html`.
+
 ## 💻 How to Run
 
-**Spring Boot:** From project root: `mvn spring-boot:run`. Or run the main Application class in your IDE. Open http://localhost:8080 in browser.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+```bash
+cd day60
+mvn spring-boot:run
+```
+
+Then open http://localhost:8080/users/new. Stop it with Ctrl+C. Or run `Application` from your IDE.
+
+## 🧪 How to Test
+
+```bash
+cd day60
+mvn test
+```
+
+Runs `UserControllerTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## 🚀 Next Steps
 **Ready for Day 61?** You'll build advanced forms!
-
-
-
-
-
-

@@ -75,15 +75,36 @@ Create system for:
 - [ ] Completed import/export system
 - [ ] Committed code to Git
 
+## 📂 What's in this folder
+
+A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+
+| File | What it does |
+|---|---|
+| `Application.java` | Starts Spring Boot |
+| `controller/ContactController.java` | `GET /contacts` lists contacts, `GET /contacts/export` downloads them as CSV, `POST /contacts/import` uploads a CSV |
+| `model/Contact.java` | A contact: name, email and phone |
+| `service/CsvService.java` | Writes contacts as CSV and parses a CSV back, reporting bad rows instead of dropping them |
+
 ## 💻 How to Run
 
-**Run:** `mvn spring-boot:run` or run main Application from IDE. Open http://localhost:8080.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+```bash
+cd day62
+mvn spring-boot:run
+```
+
+Then open http://localhost:8080/contacts. Stop it with Ctrl+C. Or run `Application` from your IDE.
+
+## 🧪 How to Test
+
+```bash
+cd day62
+mvn test
+```
+
+Runs `ContactControllerTest` and `CsvServiceTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## 🚀 Next Steps
 **Ready for Day 63?** You'll learn databases with JPA and Hibernate!
-
-
-
-
-
-

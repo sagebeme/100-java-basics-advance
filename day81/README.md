@@ -53,7 +53,7 @@ day81/
 
 ## 📌 Notes & reference (use these when stuck)
 
-**When you're stuck:** Re-read **Implementation** and **Project Requirements** above; use main README for structure. **Quick reference:** Run from IDE or `mvn exec:java`; for GUI use JavaFX (see Day 18–22).
+**When you're stuck:** Re-read **Implementation** and **Project Requirements** above; use main README for structure. **Quick reference:** `mvn compile exec:java` runs the console app; a JavaFX window (Days 18–22) is an optional extra.
 
 ## ✅ Checklist
 - [ ] Implemented conversion
@@ -63,15 +63,34 @@ day81/
 - [ ] Completed project
 - [ ] Committed code to Git
 
+## 📂 What's in this folder
+
+A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+
+| File | What it does |
+|---|---|
+| `ConverterApp.java` | A console app: type text or Morse, get the other back |
+| `MorseConverter.java` | Text to Morse and back, with ` / ` between words |
+
 ## 💻 How to Run
 
-**Run:** Run main class from IDE or `mvn exec:java`. For GUI: run JavaFX main class; see Day 18–22 for JavaFX setup.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+```bash
+cd day81
+mvn compile exec:java
+```
+
+Or run the main class from your IDE.
+
+## 🧪 How to Test
+
+```bash
+cd day81
+mvn test
+```
+
+Runs `MorseConverterTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## 🚀 Next Steps
 **Ready for Day 82?** You'll build a Personal Website!
-
-
-
-
-
-

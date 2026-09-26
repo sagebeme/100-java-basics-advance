@@ -255,9 +255,68 @@ Create a dashboard with Bootstrap:
 
 **Related days:** Day 57 (Thymeleaf); Day 59 (Bootstrap blog). **Quick reference:** `mvn spring-boot:run`; open http://localhost:8080
 
+## 📂 What's in this folder
+
+The project brief above is yours to build from scratch. The folder has worked solutions for the two exercises, each its own Maven project:
+
+**`exercise1/`**
+
+| File | What it does |
+|---|---|
+| `Application.java` | Starts Spring Boot |
+| `HomeController.java` | `GET /` renders a Bootstrap layout |
+
+Also in `src/main/resources/`: `static/css/custom.css`, `templates/layout.html`.
+
+**`exercise2/`**
+
+| File | What it does |
+|---|---|
+| `Application.java` | Starts Spring Boot |
+| `Card.java` | The data for one card |
+| `PageController.java` | `GET /` (a grid of Bootstrap cards) and `GET /signup` (a Bootstrap form) |
+
+Also in `src/main/resources/`: `templates/index.html`, `templates/signup.html`.
+
+Ignore `exercise1/src/Exercise1.java` and `exercise2/src/Exercise2.java`: they're leftover placeholders (just a `main` with a TODO) from before these became Maven projects. The real code is under `src/main/java`.
+
 ## 💻 How to Run
 
-**Spring Boot + Bootstrap** — from project root: `mvn spring-boot:run`. Run main Application class in IDE. Open `http://localhost:8080` in browser.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+**exercise1:**
+
+```bash
+cd day58/exercise1
+mvn spring-boot:run
+```
+
+Then open http://localhost:8080. Stop it with Ctrl+C. Or run `Application` from your IDE.
+
+**exercise2:**
+
+```bash
+cd day58/exercise2
+mvn spring-boot:run
+```
+
+Then open http://localhost:8080. Stop it with Ctrl+C. Or run `Application` from your IDE.
+
+## 🧪 How to Test
+
+```bash
+cd day58/exercise1
+mvn test
+```
+
+Runs `HomeControllerTest`. A clean run ends with `BUILD SUCCESS`.
+
+```bash
+cd day58/exercise2
+mvn test
+```
+
+Runs `PageControllerTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## ✅ Checklist
 - [ ] Can add Bootstrap to project
@@ -278,9 +337,3 @@ After completing Day 58, you should be able to:
 **Congratulations!** You've completed the Intermediate+ section!
 
 **Ready for Day 59?** You'll upgrade your blog with Bootstrap!
-
-
-
-
-
-

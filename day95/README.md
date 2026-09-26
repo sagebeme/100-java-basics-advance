@@ -27,15 +27,45 @@ Create API Integration Website:
 - [ ] Completed website
 - [ ] Committed code to Git
 
+## 📂 What's in this folder
+
+A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+
+| File | What it does |
+|---|---|
+| `Application.java` | Starts Spring Boot |
+| `controller/DashboardController.java` | `GET /` shows all three live panels |
+| `dto/CryptoPrice.java` | One coin's price |
+| `dto/IssLocation.java` | Latitude and longitude |
+| `dto/WeatherInfo.java` | Weather data |
+| `exception/ApiException.java` | Thrown when an API fails, so one broken panel doesn't break the page |
+| `service/CryptoService.java` | Coin prices from CoinGecko |
+| `service/IssService.java` | Where the International Space Station is right now |
+| `service/WeatherService.java` | Nairobi's current weather from Open-Meteo |
+
+Also in `src/main/resources/`: `templates/dashboard.html`.
+
+Needs an internet connection: the panels call three free public APIs (no keys needed). If one is down, only its panel shows an error.
+
 ## 💻 How to Run
 
-**Run:** `mvn spring-boot:run` or run main Application from IDE. Open http://localhost:8080.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+```bash
+cd day95
+mvn spring-boot:run
+```
+
+Then open http://localhost:8080. Stop it with Ctrl+C. Or run `Application` from your IDE.
+
+## 🧪 How to Test
+
+```bash
+cd day95
+mvn test
+```
+
+Runs `CryptoServiceTest`, `DashboardControllerTest`, `IssServiceTest` and `WeatherServiceTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## 🚀 Next Steps
 **Ready for Day 96?** You'll build E-commerce with Payment!
-
-
-
-
-
-

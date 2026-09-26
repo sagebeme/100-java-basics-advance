@@ -27,15 +27,37 @@ Create Breakout Game:
 - [ ] Completed game
 - [ ] Committed code to Git
 
+## 📂 What's in this folder
+
+A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+
+| File | What it does |
+|---|---|
+| `Ball.java` | Position and velocity |
+| `BreakoutApp.java` | The JavaFX window and game loop |
+| `BreakoutGame.java` | The game rules: ball, paddle, bricks and collisions |
+| `Brick.java` | A brick, and its collision test |
+| `Paddle.java` | The paddle |
+
 ## 💻 How to Run
 
-**Run:** Run main class from IDE or `mvn exec:java`. For JavaFX see Day 18–22.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+```bash
+cd day86
+mvn javafx:run
+```
+
+A window opens. The JavaFX libraries come from Maven, so there's nothing extra to install.
+
+## 🧪 How to Test
+
+```bash
+cd day86
+mvn test
+```
+
+Runs `BreakoutGameTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## 🚀 Next Steps
 **Ready for Day 87?** You'll build a Cafe Finder Website!
-
-
-
-
-
-

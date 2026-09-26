@@ -203,9 +203,67 @@ public class WebController {
 
 **Related days:** Day 54 (Spring Boot); Day 57 (Thymeleaf). **Quick reference:** `mvn spring-boot:run`; open http://localhost:8080
 
+## 📂 What's in this folder
+
+The project brief above is yours to build from scratch. The folder has worked solutions for the two exercises, each its own Maven project:
+
+**`exercise1/`**
+
+| File | What it does |
+|---|---|
+| `Application.java` | Starts Spring Boot |
+| `WebConfig.java` | Serves files from `custom-assets/` as well as the usual `static/` folder |
+
+Also in `src/main/resources/`: `custom-assets/extra.css`, `static/css/style.css`, `static/images/logo.svg`, `static/js/app.js`.
+
+**`exercise2/`**
+
+| File | What it does |
+|---|---|
+| `Application.java` | Starts Spring Boot |
+| `WebController.java` | `GET /` and `GET /about`, rendered from Thymeleaf templates with a shared header and footer |
+
+Also in `src/main/resources/`: `templates/about.html`, `templates/fragments/footer.html`, `templates/fragments/header.html`, `templates/index.html`.
+
+Ignore `exercise1/src/Exercise1.java` and `exercise2/src/Exercise2.java`: they're leftover placeholders (just a `main` with a TODO) from before these became Maven projects. The real code is under `src/main/java`.
+
 ## 💻 How to Run
 
-**Spring Boot** — from project root: `mvn spring-boot:run`. Run main Application class in IDE. Open `http://localhost:8080` in browser.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+**exercise1:**
+
+```bash
+cd day56/exercise1
+mvn spring-boot:run
+```
+
+Then open http://localhost:8080/css/style.css and http://localhost:8080/assets/extra.css. Stop it with Ctrl+C. Or run `Application` from your IDE.
+
+**exercise2:**
+
+```bash
+cd day56/exercise2
+mvn spring-boot:run
+```
+
+Then open http://localhost:8080. Stop it with Ctrl+C. Or run `Application` from your IDE.
+
+## 🧪 How to Test
+
+```bash
+cd day56/exercise1
+mvn test
+```
+
+Runs `StaticResourceTest`. A clean run ends with `BUILD SUCCESS`.
+
+```bash
+cd day56/exercise2
+mvn test
+```
+
+Runs `WebControllerTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## ✅ Checklist
 - [ ] Understand static resources
@@ -224,9 +282,3 @@ After completing Day 56, you should be able to:
 - Build web applications
 
 **Ready for Day 57?** You'll learn Thymeleaf templating!
-
-
-
-
-
-

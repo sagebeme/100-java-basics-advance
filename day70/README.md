@@ -81,15 +81,49 @@ Deploy application:
 - [ ] Completed deployment
 - [ ] Committed code to Git
 
+## 📂 What's in this folder
+
+A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+
+| File | What it does |
+|---|---|
+| `Application.java` | Starts Spring Boot |
+| `controller/HealthController.java` | `GET /health` for the platform's health check, and `/items` to prove the database works |
+| `model/Item.java` | A JPA entity |
+| `repository/ItemRepository.java` | Spring Data repository for items |
+
+Also in `src/main/resources/`: `application-docker.properties`.
+
+`Dockerfile` builds the app in one image and runs it in a smaller one. `docker-compose.yml` runs it with a PostgreSQL database (the `docker` profile in `application-docker.properties`). Without Docker it uses the in-memory H2 database.
+
 ## 💻 How to Run
 
-**Docker:** `docker build -t myapp .` then `docker run -p 8080:8080 myapp`. Or run Spring Boot from IDE: `mvn spring-boot:run`.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+```bash
+cd day70
+mvn spring-boot:run
+```
+
+Then open http://localhost:8080/health. Stop it with Ctrl+C. Or run `Application` from your IDE.
+
+With Docker, the app and a PostgreSQL database together:
+
+```bash
+cd day70
+docker compose up --build
+```
+
+Then open http://localhost:8080/health.
+
+## 🧪 How to Test
+
+```bash
+cd day70
+mvn test
+```
+
+Runs `HealthControllerTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## 🚀 Next Steps
 **Ready for Day 71?** You'll learn data analysis with Java!
-
-
-
-
-
-

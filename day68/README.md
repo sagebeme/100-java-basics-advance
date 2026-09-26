@@ -92,15 +92,40 @@ Add security to blog:
 - [ ] Completed secure blog
 - [ ] Committed code to Git
 
+## 📂 What's in this folder
+
+A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+
+| File | What it does |
+|---|---|
+| `Application.java` | Starts Spring Boot |
+| `controller/AuthController.java` | Home, register, login and a dashboard only logged-in users can see |
+| `model/AppUser.java` | A user account, stored with a hashed password |
+| `repository/AppUserRepository.java` | Spring Data repository for accounts |
+| `security/SecurityConfig.java` | Which pages need a login, the login form, and the BCrypt password encoder |
+| `security/UserDetailsServiceImpl.java` | Loads an account for Spring Security by username |
+
+Also in `src/main/resources/`: `templates/dashboard.html`, `templates/login.html`, `templates/register.html`.
+
 ## 💻 How to Run
 
-**Run:** `mvn spring-boot:run` or run main Application from IDE. Open http://localhost:8080.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+```bash
+cd day68
+mvn spring-boot:run
+```
+
+Then open http://localhost:8080/register. Stop it with Ctrl+C. Or run `Application` from your IDE.
+
+## 🧪 How to Test
+
+```bash
+cd day68
+mvn test
+```
+
+Runs `SecurityTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## 🚀 Next Steps
 **Ready for Day 69?** You'll add users to your blog!
-
-
-
-
-
-

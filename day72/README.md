@@ -52,15 +52,33 @@ Create dashboard with:
 - [ ] Completed visualization project
 - [ ] Committed code to Git
 
+## 📂 What's in this folder
+
+A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+
+| File | What it does |
+|---|---|
+| `ChartGenerator.java` | Bar, line and pie charts with JFreeChart, a filter for values above a threshold, and PNG export |
+
 ## 💻 How to Run
 
-**Run:** Run main class from IDE or `mvn exec:java`. For Spring Boot: `mvn spring-boot:run`.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+```bash
+cd day72
+mvn compile exec:java
+```
+
+Or run the main class from your IDE.
+
+## 🧪 How to Test
+
+```bash
+cd day72
+mvn test
+```
+
+Runs `ChartGeneratorTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## 🚀 Next Steps
 **Ready for Day 73?** You'll learn aggregate data operations!
-
-
-
-
-
-

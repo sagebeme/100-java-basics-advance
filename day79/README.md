@@ -60,7 +60,7 @@ Create test suite:
 
 ## 📌 Notes & reference (use these when stuck)
 
-**When you're stuck:** Re-read **Step-by-Step Instructions** above; use main README for structure. **Quick reference:** `mvn test` for tests; run app from IDE or `mvn spring-boot:run`.
+**When you're stuck:** Re-read **Step-by-Step Instructions** above; use main README for structure. **Quick reference:** `mvn test` for tests; coverage report in `target/site/jacoco/index.html`.
 
 ## ✅ Checklist
 - [ ] Can write unit tests
@@ -69,15 +69,33 @@ Create test suite:
 - [ ] Completed test suite
 - [ ] Committed code to Git
 
+## 📂 What's in this folder
+
+A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+
+| File | What it does |
+|---|---|
+| `Book.java` | A library book |
+| `BookRepository.java` | Where books are stored, as an interface so tests can swap it |
+| `BookService.java` | Adds, lists, checks out and returns books |
+| `InMemoryBookRepository.java` | A simple in-memory version |
+
+There's no app to run today: the tests *are* the project. JaCoCo measures how much of the code they cover.
+
 ## 💻 How to Run
 
-**Run:** `mvn test` to run tests; `mvn spring-boot:run` or run main Application from IDE for the app.
+There's no app to start today: the tests are the project. Needs JDK 21 and Maven (see the main README).
+
+## 🧪 How to Test
+
+```bash
+cd day79
+mvn test
+```
+
+Runs `BookServiceIntegrationTest` and `BookServiceUnitTest`. A clean run ends with `BUILD SUCCESS`.
+
+The coverage report is written to `day79/target/site/jacoco/index.html`: open it in a browser to see which lines the tests reach.
 
 ## 🚀 Next Steps
 **Ready for Day 80?** You'll build the House Price Prediction capstone!
-
-
-
-
-
-

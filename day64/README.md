@@ -85,15 +85,39 @@ Create website with:
 - [ ] Completed Top 10 Movies
 - [ ] Committed code to Git
 
+## 📂 What's in this folder
+
+A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+
+| File | What it does |
+|---|---|
+| `Application.java` | Starts Spring Boot |
+| `controller/MovieController.java` | `GET /movies` shows the top 10, `POST /movies` adds one |
+| `model/Movie.java` | A JPA entity: title, director, year, rating and rank |
+| `repository/MovieRepository.java` | Spring Data repository for movies |
+| `service/MovieService.java` | Keeps the ranking: adds at the bottom, moves a movie to a new rank |
+
+Also in `src/main/resources/`: `templates/movies.html`.
+
 ## 💻 How to Run
 
-**Run:** `mvn spring-boot:run` or run main Application from IDE. Open http://localhost:8080.
+Needs JDK 21 and Maven (see the main README). From the repository root:
+
+```bash
+cd day64
+mvn spring-boot:run
+```
+
+Then open http://localhost:8080/movies. Stop it with Ctrl+C. Or run `Application` from your IDE.
+
+## 🧪 How to Test
+
+```bash
+cd day64
+mvn test
+```
+
+Runs `MovieServiceTest`. A clean run ends with `BUILD SUCCESS`.
 
 ## 🚀 Next Steps
 **Ready for Day 65?** You'll learn web design best practices!
-
-
-
-
-
-

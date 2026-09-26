@@ -28,14 +28,17 @@ Portfolio projects, enterprise patterns, microservices, and professional-level a
 
 ## 🛠️ Tools and Technologies
 
-- **Java**: JDK 11+ (LTS versions recommended; see [Java versions](#-java-versions) below)
-- **IDEs**: IntelliJ IDEA, Eclipse, VS Code
-- **Build Tools**: Maven, Gradle
-- **Frameworks**: Spring Boot, Hibernate, JavaFX
-- **Testing**: JUnit, Mockito
-- **Databases**: MySQL, PostgreSQL, MongoDB
-- **APIs**: REST, GraphQL
-- **DevOps**: Docker, Jenkins, CI/CD
+What the course actually uses, and from when:
+
+- **Java**: JDK 21 (Days 1–53 also run on JDK 11+; see [Java versions](#-java-versions) below)
+- **IDEs**: IntelliJ IDEA, Eclipse or VS Code
+- **Build tool**: Maven, from Day 54 (Days 1–53 use plain `javac`/`java`)
+- **Frameworks**: Spring Boot 4 (web, Thymeleaf, Spring Data JPA with Hibernate, validation, Spring Security) and JavaFX
+- **Testing**: JUnit 5 and Mockito, with JaCoCo for coverage (Day 79)
+- **Databases**: H2 (in-memory) for most days; PostgreSQL with Docker on Day 70
+- **Libraries**: Jsoup (scraping), Selenium (browser automation), Apache PDFBox (PDFs), JFreeChart (charts)
+- **APIs**: REST, built with Spring and called with Java's HTTP client
+- **DevOps**: Docker and Docker Compose (Day 70)
 - **Version Control**: Git, GitHub
 
 ## 📖 Learning Path
@@ -47,13 +50,13 @@ Portfolio projects, enterprise patterns, microservices, and professional-level a
 - [Day 4](day04): Arrays and Collections
 - [Day 5](day05): Loops (for, while, enhanced for)
 - [Day 6](day06): Methods and Method Overloading
-- [Day 7](day07): Hangman Game Project
+- [Day 7](day07): Hangman Game
 - [Day 8](day08): Method Parameters & Caesar Cipher
 - [Day 9](day09): Maps, Sets, and Collections
 - [Day 10](day10): Return Values and Calculator Project
 - [Day 11](day11): Blackjack Capstone Project
 - [Day 12](day12): Scope and Access Modifiers
-- [Day 13](day13): Exception Handling and Debugging
+- [Day 13](day13): Debugging: How to Find and Fix Errors
 - [Day 14](day14): Higher Lower Game Project
 
 ### 🏋🏻‍♂️ Intermediate (Days 15-31)
@@ -62,8 +65,8 @@ Portfolio projects, enterprise patterns, microservices, and professional-level a
 - [Day 17](day17): Quiz Project & OOP Benefits
 - [Day 18](day18): JavaFX Graphics and GUIs
 - [Day 19](day19): Inheritance and Polymorphism
-- [Day 20](day20): Build Snake Game Part 1: Animation
-- [Day 21](day21): Build Snake Game Part 2: Inheritance
+- [Day 20](day20): Build Snake Game Part 1: Animation & Coordinates
+- [Day 21](day21): Build Snake Game Part 2: Inheritance & Sublists
 - [Day 22](day22): Build Pong: The Famous Arcade Game
 - [Day 23](day23): Turtle Crossing Capstone Project
 - [Day 24](day24): File I/O and Paths
@@ -71,14 +74,14 @@ Portfolio projects, enterprise patterns, microservices, and professional-level a
 - [Day 26](day26): Streams and Lambda Expressions
 - [Day 27](day27): JavaFX GUI Programs
 - [Day 28](day28): JavaFX: Pomodoro Timer Application
-- [Day 29](day29): Building Password Manager GUI App
-- [Day 30](day30): Exceptions and JSON Data
+- [Day 29](day29): Building Password Manager GUI App with JavaFX
+- [Day 30](day30): Exceptions and JSON Data: Improving the Password Manager
 - [Day 31](day31): Capstone Project - Flash Card App
 
 ### 💪 Intermediate+ (Days 32-58)
 - [Day 32](day32): Email (JavaMail) & Date Management
 - [Day 33](day33): REST API Endpoints and HTTP Client
-- [Day 34](day34): API Practice - Creating GUI Quiz App
+- [Day 34](day34): API Practice: Creating a GUI Quiz App
 - [Day 35](day35): Environment Variables and Configuration
 - [Day 36](day36): Stock Trading News Alert Project
 - [Day 37](day37): Habit Tracking Application
@@ -244,25 +247,25 @@ mvn spring-boot:run
 
 Then open `http://localhost:8080`. Stop it with Ctrl+C.
 
-**Which days have tests today:** 1–17 and 24–26 in full, plus the exercises for 1–30, 35, 37 and 40, and every single day from 54 through 100 (each with its own `mvn test` suite). See `LEARNING_PATH.md` for what's intentionally untested and why, and for the remaining gaps in Days 32–53.
+**Which days have tests today:** the main project's solution (`_end/`) on every day from 1 to 31 except 13 and 18; the exercises on most days from 1 to 30, plus 35, 37 and 40; and every day from 54 to 100, each with its own `mvn test` suite. Days 32–53 have no tests yet. See `LEARNING_PATH.md` for what's intentionally untested and why, and for the remaining gaps in Days 32–53.
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- **Java JDK 11 or higher** (see [Java versions](#-java-versions) below)
+- **Java JDK 21** (JDK 11+ is enough for Days 1–53; see [Java versions](#-java-versions) below)
 - IDE (IntelliJ IDEA recommended)
 - Git
-- Maven or Gradle
+- Maven 3.9+ (from Day 54)
 
 ### ☕ Java versions
-This course assumes **JDK 11 or newer**. Here’s what matters when choosing a version:
+**Use JDK 21.** Every Maven project from Day 54 on targets Java 21 and uses Spring Boot 4, so it won't build on an older JDK. Days 1–53 are plain Java and also run on JDK 11 or newer. Here's what matters when choosing a version:
 
 | Version | Notes |
 |--------|--------|
 | **JDK 8** | Still common in older projects. Some examples may work, but later days use features from Java 11+ (e.g. `var`, HTTP Client). |
-| **JDK 11 (LTS)** | First LTS with modules. **Good minimum** for this repo. JavaFX is not included; use the [JavaFX SDK](https://gluonhq.com/products/javafx/) and `--module-path` / `--add-modules` when running GUI days (18, 22–23, 27–31). |
-| **JDK 17 (LTS)** | Recommended for new projects. Same JavaFX note as 11. |
-| **JDK 21 (LTS)** | Current LTS. Best if you want the latest features and performance. |
+| **JDK 11 (LTS)** | First LTS with modules. Enough for Days 1–53 only. JavaFX is not included; use the [JavaFX SDK](https://gluonhq.com/products/javafx/) and `--module-path` / `--add-modules` when running GUI days (18, 22–23, 27–31). |
+| **JDK 17 (LTS)** | Enough for Days 1–53 only: Days 54–100 target Java 21. Same JavaFX note as 11. |
+| **JDK 21 (LTS)** | **What this course is built and tested on.** Needed from Day 54. |
 
 - **LTS** = Long Term Support: Oracle (and others) provide updates for several years.
 - **Check your version:** `java -version` and `javac -version`.

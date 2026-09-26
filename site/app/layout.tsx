@@ -12,7 +12,7 @@ const code = Source_Code_Pro({ subsets: ["latin"], weight: ["400", "600"], varia
 
 export const metadata: Metadata = {
   title: { default: "100 Days of Java", template: "%s · 100 Days of Java" },
-  description: "A free course: 100 days of Java, from your first variable to Spring Boot web apps and a machine learning capstone. Most days have tests.",
+  description: "100 days of Java, from your first variable to Spring Boot web apps and a machine learning capstone. Most days have tests.",
   icons: { icon: "/favicon.svg" },
 };
 

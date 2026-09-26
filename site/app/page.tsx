@@ -17,7 +17,7 @@ export default function Home() {
         <header className="hero">
           <div className="container">
             <div>
-              <span className="kicker">Free · 100 lessons · about an hour a day</span>
+              <span className="kicker">100 lessons · 5 stages · about an hour a day</span>
               <h1>
                 <span className="script">One cup a day</span>100 Days of Java
               </h1>
@@ -121,25 +121,25 @@ export default function Home() {
         <section className="band white" id="need" aria-labelledby="need-title">
           <div className="container">
             <div className="section-head">
-              <span className="over">What it costs</span>
-              <h2 id="need-title">Pick your plan</h2>
-              <p>There&apos;s only one plan. It&apos;s free.</p>
+              <span className="over">Before you start</span>
+              <h2 id="need-title">What you&apos;ll need</h2>
+              <p>A computer, a JDK, and about an hour a day.</p>
             </div>
             <div className="pricing">
               <div className="plan">
-                <div className="head"><h3>Your setup</h3><div className="price">$0</div></div>
+                <div className="head"><h3>Your setup</h3><div className="price">JDK 21</div></div>
                 <ul>
-                  <li>JDK 21 (Temurin is free)</li>
+                  <li>JDK 21, such as Eclipse Temurin</li>
                   <li>IntelliJ IDEA Community or VS Code</li>
                   <li>Maven, from Day 54</li>
                 </ul>
                 <div className="foot"><Link href="/syllabus/#setup">Setup steps</Link></div>
               </div>
               <div className="plan featured">
-                <span className="popular" aria-hidden="true">Most popular</span>
-                <div className="head"><h3>The course</h3><div className="price">$0 <small>/ forever</small></div></div>
+                <span className="popular" aria-hidden="true">Start here</span>
+                <div className="head"><h3>The course</h3><div className="price">100 <small>lessons</small></div></div>
                 <ul>
-                  <li>100 lessons with exercises</li>
+                  <li>Exercises and a project every day</li>
                   <li>{tests.toLocaleString("en-US")} tests to check your work</li>
                   <li>{capstones} capstones, 20 portfolio projects</li>
                   <li>Progress saved as you go</li>

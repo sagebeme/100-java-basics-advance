@@ -1,273 +1,99 @@
-# Day 33 - REST API Endpoints and HTTP Client
+# Day 33 - Laundry Forecast: REST APIs and HttpClient
 
-## 📚 Learning Objectives
-- Understand REST APIs
-- Make HTTP requests
-- Parse JSON responses
-- Work with API endpoints
-- Handle API errors
+> Saturday morning, a full basin of washing, and a grey sky over Nairobi. Ask a real weather service whether it will dry.
 
-## 🎯 Topics Covered
-- REST API concepts
-- HTTP methods (GET, POST, PUT, DELETE)
-- HTTP client (HttpClient)
-- JSON parsing
-- API authentication
-- Error handling
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Every house in Kenya has had this argument: hang the washing out and risk the afternoon rain, or dry it inside and wait three days. Today your program settles it with data. It calls a free weather **API** over the internet, reads the hourly chance of rain, and gives a verdict:
 
-### Step 1: HTTP Client Setup
-Use Java 11+ HttpClient:
-
-```java
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.URI;
-
-HttpClient client = HttpClient.newHttpClient();
+```
+$ java LaundryForecast
+Laundry forecast for -1.29, 36.82 (Africa/Nairobi), 8am to 5pm
+Highest chance of rain: 25% at 13:00
+Hang it out.
 ```
 
-### Step 2: GET Request
-Make GET request:
+The service is [Open-Meteo](https://open-meteo.com/). It's free for non-commercial use and needs no account or API key, so you can call it straight away.
 
-```java
-HttpRequest request = HttpRequest.newBuilder()
-    .uri(URI.create("https://api.example.com/data"))
-    .GET()
-    .build();
+## 🎯 Learning Objectives
+- Know what a REST API is: a URL you call over HTTP that answers with data, usually JSON
+- Build a request URL with a query string, and encode its values safely
+- Send a GET request with Java's built-in `HttpClient`, with a timeout
+- Check the HTTP status code before trusting the body
+- Read JSON with the `org.json` library
+- Test HTTP code against a small fake server running on your own machine
 
-HttpResponse<String> response = client.send(request, 
-    HttpResponse.BodyHandlers.ofString());
+## 🧰 Java you'll use
 
-System.out.println(response.body());
+**A request** has a URL; the part after `?` is the **query string**, pairs of `name=value` joined by `&`:
+
+```
+https://api.open-meteo.com/v1/forecast?latitude=-1.29&longitude=36.82&hourly=precipitation_probability
 ```
 
-### Step 3: POST Request
-Make POST request with JSON:
+**`HttpClient`** (built into Java since version 11) sends it:
 
 ```java
-String jsonBody = "{\"name\":\"John\",\"age\":30}";
-
-HttpRequest request = HttpRequest.newBuilder()
-    .uri(URI.create("https://api.example.com/users"))
-    .header("Content-Type", "application/json")
-    .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
-    .build();
-
-HttpResponse<String> response = client.send(request,
-    HttpResponse.BodyHandlers.ofString());
+HttpClient client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
+HttpRequest request = HttpRequest.newBuilder(URI.create(url)).timeout(Duration.ofSeconds(10)).GET().build();
+HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+response.statusCode(); // 200 means OK
+response.body();       // the JSON text
 ```
 
-### Step 4: Parse JSON Response
-Parse API response:
+**Status codes** say how it went: `200` OK, `400` you sent something wrong, `404` no such thing, `429` too many requests, `500` the server broke. Never parse the body of a failed response as if it were good data.
+
+**`org.json`** (in `lib/`) reads JSON:
 
 ```java
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
-Gson gson = new Gson();
-JsonObject jsonObject = gson.fromJson(response.body(), JsonObject.class);
-String value = jsonObject.get("key").getAsString();
+JSONObject root = new JSONObject(body);
+JSONObject hourly = root.getJSONObject("hourly");
+JSONArray times = hourly.getJSONArray("time");
+times.getString(0);   // "2026-10-02T00:00"
 ```
 
-## 💻 Exercises
+**A fake server for tests.** Java ships a tiny web server, `com.sun.net.httpserver.HttpServer`. A test starts one on a random free port, serves a saved JSON file, and points your client at it. The test never touches the internet, so it's fast and gives the same answer every time.
 
-### Exercise 1: API Calls
-Create programs that:
-- Make GET requests
-- Make POST requests
-- Handle responses
-- Parse JSON data
+## 🪜 Steps
 
-### Exercise 2: API Integration
-Integrate with:
-- Public APIs
-- Weather APIs
-- News APIs
-- Quote APIs
+1. **Exercise 1: Your first GET** (`exercise1/`). Fetch text, and handle a bad status code.
+2. **Exercise 2: Query strings** (`exercise2/`). Build a URL safely from a map of parameters.
+3. **Project: Laundry Forecast** (`_start/src/`).
+   1. `forecastUri(lat, lon)`: the Open-Meteo URL for hourly `precipitation_probability`, in the `Africa/Nairobi` time zone, for one day.
+   2. `WeatherClient.fetch(uri)`: send the request; throw an `ApiException` (with the status code) for anything other than 200.
+   3. `parse(json)`: a list of `HourlyRain(LocalDateTime time, int chance)`.
+   4. `verdict(hours, fromHour, toHour)`: look only at hours from `fromHour` up to, but not including, `toHour`. Below 30% at the worst hour: `Hang it out.` Below 60%: `Risky: hang it near the door.` Otherwise: `Keep it inside.`
+   5. `main`: Nairobi by default, or a latitude and longitude from the arguments. Print the verdict, and print a friendly message instead of a stack trace if the network is down.
 
-### Exercise 3: Error Handling
-Handle:
-- Network errors
-- API errors
-- Invalid responses
-- Timeout errors
+## 🧪 Run it and test it
 
-## 🎮 Project: ISS Overhead Notifier & Kanye Quotes
+From the repo root (on Windows, use `;` instead of `:`):
 
-### Requirements
-Create two API projects:
-
-**Project 1: ISS Overhead Notifier**
-1. Get ISS location from API
-2. Get your location
-3. Check if ISS is overhead
-4. Send notification if overhead
-
-**Project 2: Kanye Quotes**
-1. Fetch quote from Kanye API
-2. Display quote
-3. Get new quote on button click
-4. Format quote nicely
-
-### Example APIs
-- ISS API: `http://api.open-notify.org/iss-now.json`
-- Kanye API: `https://api.kanye.rest`
-
-### Starter Code
-```java
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.URI;
-
-public class APIClient {
-    private HttpClient client;
-    
-    public APIClient() {
-        client = HttpClient.newHttpClient();
-    }
-    
-    public String getData(String url) {
-        HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(url))
-            .GET()
-            .build();
-        
-        try {
-            HttpResponse<String> response = client.send(request,
-                HttpResponse.BodyHandlers.ofString());
-            return response.body();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-}
+```bash
+javac -cp "lib/*" -d day33/_end/src day33/_end/src/*.java
+java -cp "day33/_end/src:lib/*" LaundryForecast
+java -cp "day33/_end/src:lib/*" LaundryForecast -0.42 36.95      # Nyeri
+java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp "day33/_end/src:lib/*" --scan-classpath
 ```
 
-## 📚 Resources
+The tests read `forecast-dry.json` and `forecast-wet.json`, real responses saved from the API, so they pass even offline.
 
-### Official Documentation
-- [HTTP Client - Oracle Docs](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html)
-- [REST API Tutorial](https://restfulapi.net/)
-- [JSON.org](https://www.json.org/)
+## 🆘 Stuck?
 
-### Tutorials
-- [Java HTTP Client - Baeldung](https://www.baeldung.com/java-9-http-client)
-- [REST API in Java](https://www.geeksforgeeks.org/rest-api-in-java/)
-- [API Integration](https://www.baeldung.com/rest-template)
-
-### Video Resources
-- [Java HTTP Client Tutorial](https://www.youtube.com/results?search_query=java+http+client+tutorial)
-- [REST API Java](https://www.youtube.com/results?search_query=rest+api+java+tutorial)
-
-### Practice Platforms
-- [Public APIs](https://github.com/public-apis/public-apis)
-- [API Practice](https://jsonplaceholder.typicode.com/)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| REST API | Web service interface | HTTP endpoints |
-| HTTP Client | Make requests | `HttpClient.newHttpClient()` |
-| GET Request | Retrieve data | `.GET()` |
-| POST Request | Send data | `.POST(body)` |
-| JSON Parsing | Extract data | `Gson.fromJson()` |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **HTTP Client:** Re-read **Step 1** — `HttpClient.newHttpClient()`, `HttpRequest.newBuilder().uri(...).GET().build()` — see **Step 2**
-- **Parse JSON:** Use Gson: `gson.fromJson(responseBody, MyClass.class)` — see **Step 2**
-- **Errors:** Check status code; handle IOException and parse errors — see **Step 3**
-- **Main day README** → **Step 1 & 2** for request/response; **Key Concepts** for GET/POST
-
-**Related days:** Day 30 (Gson, JSON); Day 34 (API + GUI). **Quick reference:** Java 11+ has `java.net.http` · Add Gson JAR or Maven
+- **`ConnectException` or `HttpTimeoutException`**: no internet, or the service is slow. That's exactly why `main` catches `IOException` and prints a message.
+- **`JSONException: JSONObject["hourly"] not found`**: print the body. You probably got an error response, such as `{"error":true,"reason":"..."}`, and parsed it without checking the status.
+- **`URISyntaxException` or strange results with a value like `Africa/Nairobi`**: encode query values with `URLEncoder.encode(value, StandardCharsets.UTF_8)`. The `/` must become `%2F`.
+- **The wrong hours are counted**: `LocalDateTime.parse("2026-10-02T13:00").getHour()` is `13`. Compare with `>= fromHour && < toHour`.
 
 ## ✅ Checklist
-- [ ] Understand REST APIs
-- [ ] Can make HTTP requests
-- [ ] Can parse JSON responses
-- [ ] Can handle API errors
-- [ ] Can integrate APIs
-- [ ] Completed API projects
+- [ ] Built a URL with an encoded query string
+- [ ] Sent a GET request with a timeout
+- [ ] Checked the status code before reading the body
+- [ ] Read nested JSON with `org.json`
+- [ ] Tested HTTP code against a local fake server
+- [ ] The tests pass
 - [ ] Committed code to Git
 
-## 💻 How to Run Java Files
+## ➡️ Next
 
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to your project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day33\src"
-   ```
-
-3. **Compile** (if multiple files or dependencies: use Maven/Gradle or IDE)
-   ```cmd
-   javac APIClient.java
-   ```
-
-4. **Run the compiled program**
-   ```cmd
-   java APIClient
-   ```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to your project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day33/src
-   ```
-
-3. **Compile and run**
-   ```bash
-   javac APIClient.java
-   java APIClient
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA / Eclipse / VS Code:**
-1. Open the project
-2. Right-click on the main class
-3. Select "Run 'APIClient.main()'"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **HTTP Client**: Requires Java 11+ (built-in `java.net.http`)
-- **Gson/JSON**: Add JAR to classpath or use Maven for dependencies
-
-## 🚀 Next Steps
-After completing Day 33, you should be able to:
-- Work with REST APIs
-- Make HTTP requests
-- Parse API responses
-- Build API-integrated apps
-
-**Ready for Day 34?** You'll create a GUI Quiz App using APIs!
-
-
-
-
-
-
-
+Day 34 puts an API behind a window: a quiz app with buttons, scores and questions fetched from the internet.

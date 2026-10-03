@@ -1,31 +1,17 @@
-# Exercise 1
+# Day 33 - Exercise 1: Your first GET
 
-## Objective
-API Calls
-Create programs that:
-- Make GET requests
-- Make POST requests
-- Handle responses
-- Parse JSON data
+Write `fetchText(URI uri)` in `src/FirstGet.java`. It sends a GET request and returns the body, but only for status `200`. For any other status, throw an `IOException` whose message includes the status, like `"HTTP 404"`.
 
-## Requirements
-API Calls
-Create programs that:
-- Make GET requests
-- Make POST requests
-- Handle responses
-- Parse JSON data
+Then, in `main`, fetch `https://api.open-meteo.com/v1/forecast?latitude=-1.29&longitude=36.82&current=temperature_2m` and print it.
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+The tests start a fake server on your own machine, so they work offline.
 
-## Starter Code
-Check the src/ directory for starter code files.
+## Files
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+- `src/FirstGet.java`: your code goes here.
+- `src/FirstGetTest.java`: the tests.
+- `solution/FirstGet.java`: one answer.
+
+## 📌 Stuck?
+
+`HttpClient.newHttpClient()`, `HttpRequest.newBuilder(uri).GET().build()`, then `client.send(request, HttpResponse.BodyHandlers.ofString())`. The response has `statusCode()` and `body()`.

@@ -1,41 +1,31 @@
-# Exercise 1
+# Day 1 - Exercise 1: Farm profile
 
-## Objective
-Variable Declaration
-Create variables for:
-- Your age (int)
-- Your height in meters (double)
-- Your name (String)
-- Whether you like Java (boolean)
+Before the cooperative accepts a new member, the clerk fills in a short profile of the farm. Store each fact in a variable of the right type, then print them.
 
-## Requirements
-Variable Declaration
-Create variables for:
-- Your age (int)
-- Your height in meters (double)
-- Your name (String)
-- Whether you like Java (boolean)
+| Fact | Type | Example |
+|---|---|---|
+| Farmer's name | `String` | `"Wanjiru Kamau"` |
+| Number of coffee trees | `int` | `300` |
+| Altitude in metres | `int` | `1750` |
+| Farm size in hectares | `double` | `0.8` |
+| Grown without chemical sprays | `boolean` | `false` |
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+Print one line per fact, starting with these labels so the test can find them:
 
-## Starter Code
-Check the src/ directory for starter code files.
+```
+Farmer: Wanjiru Kamau
+Trees: 300
+Altitude: 1750 m
+Farm size: 0.8 hectares
+Organic: false
+```
 
-## 📌 Refer to (when stuck)
-- **Day 01 README** → **Step 2 & Step 3** (variable declaration and types: int, double, String, boolean)
-- **Day 01 README** → **Key Concepts Summary** table for syntax
-- **`_start/README.md`** → Common starting challenges; **`_end/README.md`** → How the main project uses variables
+## Files
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+- `src/FarmProfile.java`: your code goes here.
+- `src/FarmProfileTest.java`: the test. Run it as shown in the day's README.
+- `solution/FarmProfile.java`: one answer. Try it yourself first.
 
+## 📌 Stuck?
 
-
-
-
+Re-read **Java you'll use** in the [day's README](../README.md). The type always comes before the name: `int trees = 300;`.

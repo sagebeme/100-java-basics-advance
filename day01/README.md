@@ -1,274 +1,105 @@
-# Day 1 - Working with Variables in Java to Manage Data
+# Day 1 - The Harvest Log
 
-## 📚 Learning Objectives
-- Understand Java variables and data types
-- Learn how to declare and initialize variables
-- Practice variable naming conventions
-- Work with primitive data types (int, double, boolean, char)
-- Understand type conversion and casting
-- Use Scanner for user input
+> Your first Java program: write down what a coffee farmer picked today.
 
-## 🎯 Topics Covered
-- Variable declaration and initialization
-- Primitive data types (int, double, boolean, char, byte, short, long, float)
-- Reference types (String)
-- Naming conventions
-- Type conversion and casting
-- Scanner class for input
-- System.out.println() for output
+## 🌱 On the shamba
 
-## 📝 Step-by-Step Instructions
+It's 4pm in Othaya, Nyeri. Wanjiru has been picking coffee since 7am. She carries her sacks of red cherries to the cooperative's weighing station, and the clerk writes one line in the book: who delivered, how much, and whether it was all ripe.
 
-### Step 1: Set Up Your Development Environment
-1. Create a new Java project in your IDE (IntelliJ IDEA, Eclipse, or VS Code)
-2. Create a package: `com.learning.day01`
-3. Create a class: `BandNameGenerator.java`
+Today you'll write that line in Java. Your program asks three questions, stores each answer in a variable, and prints the log line.
 
-### Step 2: Understand Variables
-Variables are containers that store data values. In Java, you must declare the type before using a variable.
-
-```java
-// Syntax: dataType variableName = value;
-int age = 25;
-String name = "John";
-double price = 19.99;
+```
+=== Harvest Log ===
+Farmer's name?
+Wanjiru
+Kilograms of cherry picked?
+23.5
+Were they all red and ripe? (yes/no)
+yes
+Wanjiru delivered 23.5 kg of cherry. All ripe: yes
 ```
 
-### Step 3: Practice Variable Declarations
-Try declaring different types of variables:
-- Integer (int)
-- Double (double)
-- Boolean (boolean)
-- Character (char)
-- String (String)
+## 🎯 By the end of today
+- Declare variables of the four types you'll use most: `int`, `double`, `boolean` and `String`
+- Read a line of input with `Scanner`
+- Turn text into a number with `Double.parseDouble`
+- Join text and values with `+`, and print them with `System.out.println`
 
-### Step 4: Learn About Scanner
-Scanner is used to read user input from the console.
+## ☕ Bean fact
+
+Coffee doesn't start as a brown bean. It grows on a bush as a fruit called a **cherry**, which turns red when it's ripe. Inside each cherry are usually two seeds, and those seeds are the coffee beans. In Kenya, most coffee is grown on small family farms, and the farmers take their cherries to a cooperative to be weighed and processed.
+
+## 🧰 Java you'll use
+
+**A variable** is a labelled box for one value. In Java you say what type of value goes in the box before you use it:
+
+```java
+String farmer = "Wanjiru";   // text
+int trees = 300;             // a whole number
+double kgPicked = 23.5;      // a number with a decimal point
+boolean allRipe = true;      // true or false
+```
+
+**`Scanner`** reads what the user types. `nextLine()` always gives you text, so a number has to be converted:
 
 ```java
 import java.util.Scanner;
 
 Scanner scanner = new Scanner(System.in);
-String input = scanner.nextLine();
+String name = scanner.nextLine();
+double kg = Double.parseDouble(scanner.nextLine());
 ```
 
-## 💻 Exercises
+**Joining text** works with `+`. Java turns numbers and booleans into text for you when you add them to a `String`:
 
-### Exercise 1: Variable Declaration
-Create variables for:
-- Your age (int)
-- Your height in meters (double)
-- Your name (String)
-- Whether you like Java (boolean)
-
-### Exercise 2: Type Conversion
-Practice converting between types:
-- Convert int to double
-- Convert double to int (casting)
-- Convert String to int (Integer.parseInt())
-
-### Exercise 3: User Input
-Create a program that asks for:
-- Your name
-- Your favorite color
-- Your age
-Then prints them back
-
-## 🎮 Project: Band Name Generator
-
-### Requirements
-Create a program that generates a band name based on user input:
-1. Ask user for their city name
-2. Ask user for their pet's name
-3. Combine them to create a band name
-4. Display the result
-
-### Example Output
-```
-Welcome to the Band Name Generator!
-What city did you grow up in?
-Boston
-What's your pet's name?
-Max
-Your band name could be: Boston Max
-```
-
-### Starter Code
 ```java
-import java.util.Scanner;
-
-public class BandNameGenerator {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        
-        System.out.println("Welcome to the Band Name Generator!");
-        
-        // Your code here
-        
-        scanner.close();
-    }
-}
+System.out.println(farmer + " picked " + kgPicked + " kg");
 ```
 
-### Solution Hints
-- Use `scanner.nextLine()` to read strings
-- Use string concatenation with `+` operator
-- Print the result with `System.out.println()`
+## 🪜 Steps
 
-## 📚 Resources
+1. **Exercise 1: Farm profile** (`exercise1/`). Declare a variable for each fact about a farm and print them.
+2. **Exercise 2: Scale readings** (`exercise2/`). Convert between text, `int` and `double`.
+3. **Project: The Harvest Log** (`_start/src/HarvestLog.java`).
+   1. Fill in `logLine` so it builds the sentence from its three parameters. Print `yes` or `no` for `allRipe`, not `true` or `false`.
+   2. In `main`, ask the three questions and store each answer in a variable of the right type.
+   3. A farmer types `yes` or `no`. Turn that into a `boolean` with `answer.equalsIgnoreCase("yes")`.
+   4. Print the log line, then close the `Scanner`.
 
-### Official Documentation
-- [Java Variables - Oracle Docs](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/variables.html)
-- [Java Data Types - Oracle Docs](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html)
-- [Scanner Class - Java API](https://docs.oracle.com/javase/8/docs/api/java/util/Scanner.html)
+## 🧪 Taste test
 
-### Tutorials
-- [Java Variables Tutorial - W3Schools](https://www.w3schools.com/java/java_variables.asp)
-- [Java User Input - Programiz](https://www.programiz.com/java-programming/basic-input-output)
-- [Java Data Types - GeeksforGeeks](https://www.geeksforgeeks.org/data-types-in-java/)
+Run the program:
 
-### Video Resources
-- [Java Variables Explained - YouTube](https://www.youtube.com/results?search_query=java+variables+tutorial)
-- [Java Scanner Tutorial - YouTube](https://www.youtube.com/results?search_query=java+scanner+tutorial)
+```bash
+cd day01/_start/src
+javac HarvestLog.java
+java HarvestLog
+```
 
-### Practice Platforms
-- [Java Exercises - W3Schools](https://www.w3schools.com/java/java_exercises.asp)
-- [CodingBat Java](https://codingbat.com/java)
-- [HackerRank Java](https://www.hackerrank.com/domains/java)
+Check it with the tests. Copy `_end/src/HarvestLogTest.java` next to your file, then from the repo root:
 
-## 🔑 Key Concepts Summary
+```bash
+javac -cp lib/junit-platform-console-standalone-6.1.3.jar -d day01/_start/src day01/_start/src/*.java
+java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp day01/_start/src --scan-classpath
+```
 
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Variable | Container for storing data | `int age = 25;` |
-| Data Type | Defines what kind of data | `int`, `double`, `String` |
-| Declaration | Creating a variable | `String name;` |
-| Initialization | Giving a variable a value | `name = "John";` |
-| Scanner | Reads user input | `Scanner scanner = new Scanner(System.in);` |
+Each exercise has its tests in its own `src/` folder, so run the same two commands with `day01/exercise1/src` instead.
 
-## 📌 Notes & reference (use these when stuck)
+## 🆘 Stuck?
 
-**When you're stuck:**
-- **Variables / types:** Re-read **Step 2** and **Step 3** above for declaration syntax. Remember: `dataType variableName = value;`
-- **User input:** Re-read **Step 4** for Scanner: `Scanner scanner = new Scanner(System.in);` then `scanner.nextLine()` or `scanner.nextInt()`
-- **"Cannot find symbol"** → Check spelling and that the variable was declared before use
-- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for how the solution works
-
-**Related days:** Day 2 (data types, String, parsing) builds on this.
-
-**Quick reference:** `int x = 5;` · `String s = scanner.nextLine();` · `scanner.close();` when done
+- **`cannot find symbol`**: a variable is misspelled, or it's used before the line that declares it. Java is case-sensitive, so `kgpicked` and `kgPicked` are two different names.
+- **`NumberFormatException`**: `Double.parseDouble` was given something that isn't a number, like `23,5` or an empty line. Use a dot for decimals.
+- **The log says `true` instead of `yes`**: use `allRipe ? "yes" : "no"`, which picks one of two texts depending on the boolean.
+- **Still stuck?** Read `_end/src/HarvestLog.java` once, close it, then write your own version from memory.
 
 ## ✅ Checklist
-- [ ] Understand what variables are
-- [ ] Know the 8 primitive data types
-- [ ] Can declare and initialize variables
-- [ ] Can read user input with Scanner
-- [ ] Can print output to console
-- [ ] Completed Band Name Generator project
+- [ ] Declared an `int`, a `double`, a `boolean` and a `String`
+- [ ] Read input with `Scanner`
+- [ ] Converted text to a number with `Double.parseDouble`
+- [ ] Finished both exercises
+- [ ] The Harvest Log prints the right line and its tests pass
 - [ ] Committed code to Git
 
-## 📂 Code Examples
+## ➡️ Next
 
-This day includes starter and completed code examples:
-- **`_start/`** - Starting code with TODO comments and learning notes
-- **`_end/`** - Completed solutions with detailed explanations
-
-Check these folders to see the progression from start to finish and learn from the learning curve notes!
-
-## 💻 How to Run Java Files
-
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to the project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day01\_end\src"
-   ```
-
-3. **Compile the Java file**
-   ```cmd
-   javac BandNameGenerator.java
-   ```
-   *Note: This day has multiple files. You can compile all at once: `javac *.java`*
-
-4. **Run the compiled program**
-   ```cmd
-   java BandNameGenerator
-   ```
-
-**Example for Day 1:**
-```cmd
-cd "C:\Users\YourName\projects\100-java-basics-advance\day01\_end\src"
-javac BandNameGenerator.java
-java BandNameGenerator
-```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to the project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day01/_end/src
-   ```
-
-3. **Compile the Java file**
-   ```bash
-   javac BandNameGenerator.java
-   ```
-   *Note: This day has multiple files. You can compile all at once: `javac *.java`*
-
-4. **Run the compiled program**
-   ```bash
-   java BandNameGenerator
-   ```
-
-**Example for Day 1:**
-```bash
-cd ~/projects/100-java-basics-advance/day01/_end/src
-javac BandNameGenerator.java
-java BandNameGenerator
-```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA:**
-1. Open the project folder in IntelliJ IDEA
-2. Right-click on the Java file
-3. Select "Run 'ClassName.main()'"
-
-**VS Code:**
-1. Install "Extension Pack for Java"
-2. Open the Java file
-3. Click "Run" button above `main` method or press `F5`
-
-**Eclipse:**
-1. Import project into Eclipse
-2. Right-click on the Java file
-3. Select "Run As" → "Java Application"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
-- **"package does not exist"** - Remove package declaration if running from command line, or use proper package structure
-
-## 🚀 Next Steps
-After completing Day 1, you should be comfortable with:
-- Declaring and initializing variables
-- Reading user input
-- Displaying output
-- Basic data type operations
-
-**Ready for Day 2?** You'll learn about data types manipulation and string methods!
+Day 2 follows the cherries into the factory: how many kilograms of cherry does it take to make one cup of coffee?

@@ -1,33 +1,24 @@
-# Exercise 1
+# Day 2 - Exercise 1: Member codes
 
-## Objective
-String Manipulation
-Create a program that:
-- Takes a sentence as input
-- Converts it to uppercase
-- Converts it to lowercase
-- Counts the number of characters
-- Finds the first word
+Every farmer in the cooperative has a member code made from their initials and their member number, padded to four digits. The clerk types names in any case and with extra spaces, so clean them up first.
 
-## Requirements
-String Manipulation
-Create a program that:
-- Takes a sentence as input
-- Converts it to uppercase
-- Converts it to lowercase
-- Counts the number of characters
-- Finds the first word
+| Method | Example |
+|---|---|
+| `cleanName("  wanjiru KAMAU ")` | `"Wanjiru Kamau"` |
+| `initials("Wanjiru Kamau")` | `"WK"` |
+| `memberCode("wanjiru kamau", 42)` | `"WK-0042"` |
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+Names always have two parts: a first name and a surname.
 
-## Starter Code
-Check the src/ directory for starter code files.
+## Files
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+- `src/MemberCodes.java`: your code goes here.
+- `src/MemberCodesTest.java`: the tests.
+- `solution/MemberCodes.java`: one answer.
+
+## 📌 Stuck?
+
+- `trim()` removes spaces at both ends, and `toLowerCase()` / `toUpperCase()` change the case.
+- `indexOf(' ')` finds the space between the two names, and `substring(start, end)` cuts out a piece.
+- `charAt(0)` is the first letter. `String.valueOf(c)` turns a `char` back into a `String`.
+- `String.format("%04d", 42)` gives `"0042"`.

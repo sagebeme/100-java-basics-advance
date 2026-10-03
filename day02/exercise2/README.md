@@ -1,31 +1,21 @@
-# Exercise 2
+# Day 2 - Exercise 2: Farm maths
 
-## Objective
-Type Conversion
-Convert between different types:
-- String "123" to int
-- int 456 to String
-- double 3.14 to int (with casting)
-- int 100 to double
+Three small calculations the cooperative does every week. Each one has a trap where `int` and `double` meet.
 
-## Requirements
-Type Conversion
-Convert between different types:
-- String "123" to int
-- int 456 to String
-- double 3.14 to int (with casting)
-- int 100 to double
+| Method | Example | The trap |
+|---|---|---|
+| `averageKgPerTree(int totalKg, int trees)` | `25, 10` → `2.5` | `25 / 10` is `2` |
+| `sacksNeeded(int kg, int sackSize)` | `120, 50` → `3` | `120 / 50` is `2`, but 2 sacks leave 20 kg on the ground |
+| `percentRipe(int ripe, int total)` | `45, 60` → `75` | `45 / 60 * 100` is `0` |
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+## Files
 
-## Starter Code
-Check the src/ directory for starter code files.
+- `src/FarmMaths.java`: your code goes here.
+- `src/FarmMathsTest.java`: the tests.
+- `solution/FarmMaths.java`: one answer.
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+## 📌 Stuck?
+
+- Cast one side before dividing: `(double) totalKg / trees`.
+- `Math.ceil(x)` rounds a `double` up, and you then cast it to `int`.
+- For a percentage of two `int`s, multiply first: `ripe * 100 / total`.

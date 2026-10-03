@@ -1,275 +1,110 @@
-# Day 2 - Understanding Data Types and String Manipulation
+# Day 2 - Cherry to Cup
 
-## 📚 Learning Objectives
-- Deep dive into Java data types
-- Understand String manipulation methods
-- Learn about type conversion
-- Work with mathematical operations
-- Practice string formatting
+> How many kilograms of cherry does it take to make one cup of coffee? Today, Java does the maths.
 
-## 🎯 Topics Covered
-- Primitive vs Reference types
-- String class and its methods
-- String concatenation
-- Type conversion and casting
-- Mathematical operations
-- String formatting with printf
-- StringBuilder for efficient string operations
+## 🌱 On the shamba
 
-## 📝 Step-by-Step Instructions
+Wanjiru delivered 23.5 kg of cherry yesterday. She has never tasted the coffee made from it, and she's curious: how many cups is that?
 
-### Step 1: Review Data Types
-Java has two categories of data types:
-- **Primitive types**: int, double, boolean, char, byte, short, long, float
-- **Reference types**: String, Arrays, Objects
+On the way from her farm to a cup, the coffee loses a lot of weight:
 
-### Step 2: String Methods
-Strings in Java are objects with many useful methods:
+1. **Cherry → green beans.** At the factory the fruit is removed and the seeds are washed and dried. About **6 kg of cherry** gives **1 kg of green (raw) beans**.
+2. **Green → roasted.** Roasting dries the beans further. They keep about **85%** of their weight.
+3. **Roasted → cups.** One cup uses about **10 g** of ground coffee, roughly two teaspoons.
+
+Today's program turns kilograms of cherry into cups:
+
+```
+=== Cherry to Cup ===
+Kilograms of cherry?
+23.5
+23.5 kg of cherry makes 3.92 kg of green beans, 3.33 kg roasted, about 332 cups.
+That's enough for one cup a day for 0 years and 332 days.
+```
+
+## 🎯 By the end of today
+- Choose between `int` and `double`, and know what each one is for
+- Cast a `double` to an `int`, and know that it drops the decimals
+- Spot integer division (`7 / 2` is `3`) and avoid it when you need decimals
+- Use `final` for a value that never changes
+- Format numbers in text with `String.format`
+
+## ☕ Bean fact
+
+Kenya grades and sells its coffee as **green beans**, not roasted ones. Most of it is roasted in another country, so the farmer who grew it may never drink a cup made from their own harvest.
+
+## 🧰 Java you'll use
+
+**`final`** marks a value that never changes. By convention its name is in capitals:
 
 ```java
-String text = "Hello World";
-text.length();        // Returns 11
-text.toUpperCase();   // "HELLO WORLD"
-text.toLowerCase();   // "hello world"
-text.substring(0, 5); // "Hello"
-text.indexOf("World"); // 6
+final double CHERRY_PER_KG_GREEN = 6.0;
 ```
 
-### Step 3: String Concatenation
-Combine strings using the `+` operator:
+**`int` vs `double`.** An `int` holds whole numbers, and a `double` holds decimals. When you divide two `int`s, Java throws the decimals away:
 
 ```java
-String firstName = "John";
-String lastName = "Doe";
-String fullName = firstName + " " + lastName; // "John Doe"
+int a = 7 / 2;          // 3, not 3.5
+double b = 7 / 2;       // still 3.0: the division happened between two ints first
+double c = 7.0 / 2;     // 3.5: one side is a double, so the answer is too
+double d = (double) 7 / 2; // 3.5: cast before dividing
 ```
 
-### Step 4: Type Conversion
-Convert between types when needed:
+**Casting** forces a value into another type. Going from `double` to `int` cuts off the decimals, it doesn't round:
 
 ```java
-// String to int
-String numStr = "123";
-int num = Integer.parseInt(numStr);
-
-// int to String
-int number = 456;
-String numString = String.valueOf(number);
+int cups = (int) 332.9; // 332
 ```
 
-## 💻 Exercises
+**`String.format`** puts values into text. `%.2f` means "a decimal with 2 places", `%d` means "a whole number", and `%s` means "text":
 
-### Exercise 1: String Manipulation
-Create a program that:
-- Takes a sentence as input
-- Converts it to uppercase
-- Converts it to lowercase
-- Counts the number of characters
-- Finds the first word
-
-### Exercise 2: Type Conversion
-Convert between different types:
-- String "123" to int
-- int 456 to String
-- double 3.14 to int (with casting)
-- int 100 to double
-
-### Exercise 3: String Formatting
-Use printf to format output:
-- Format a number with 2 decimal places
-- Format a string with padding
-- Format multiple values
-
-## 🎮 Project: Tip Calculator
-
-### Requirements
-Create a tip calculator that:
-1. Asks for the total bill amount
-2. Asks for the tip percentage (10, 12, or 15)
-3. Asks for the number of people
-4. Calculates the tip amount
-5. Calculates total per person
-6. Displays formatted results
-
-### Example Output
-```
-Welcome to the tip calculator!
-What was the total bill? $124.56
-What percentage tip would you like to give? 10, 12, or 15? 12
-How many people to split the bill? 7
-Each person should pay: $19.93
-```
-
-### Starter Code
 ```java
-import java.util.Scanner;
-
-public class TipCalculator {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        
-        System.out.println("Welcome to the tip calculator!");
-        
-        // Your code here
-        
-        scanner.close();
-    }
-}
+String.format("%.2f kg makes %d cups", 3.329, 332); // "3.33 kg makes 332 cups"
 ```
 
-### Solution Hints
-- Use `scanner.nextDouble()` for decimal numbers
-- Use `scanner.nextInt()` for whole numbers
-- Calculate: tip = bill * (tipPercent / 100)
-- Calculate: totalPerPerson = (bill + tip) / numberOfPeople
-- Use `String.format()` or `printf()` for currency formatting
+## 🪜 Steps
 
-## 📚 Resources
+1. **Exercise 1: Member codes** (`exercise1/`). Practise `String` methods by building a cooperative member code.
+2. **Exercise 2: Farm maths** (`exercise2/`). Avoid the integer-division trap.
+3. **Project: Cherry to Cup** (`_start/src/CherryToCup.java`).
+   1. Declare the three `final` constants: 6 kg of cherry per kg of green, 0.85 of the weight kept after roasting, and 10 g per cup.
+   2. Fill in `greenKg`, `roastedKg` and `cups`. `cups` returns an `int`, so convert kilograms to grams and cast.
+   3. Fill in `summary` with `String.format`.
+   4. In `main`, read the kilograms, print the summary, then work out years and days with `/` and `%`. This is one place where integer division is exactly what you want.
 
-### Official Documentation
-- [Java String Class - Oracle Docs](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)
-- [Java Primitive Types - Oracle Docs](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html)
-- [StringBuilder Class - Java API](https://docs.oracle.com/javase/8/docs/api/java/lang/StringBuilder.html)
+## 🧪 Taste test
 
-### Tutorials
-- [Java Strings - W3Schools](https://www.w3schools.com/java/java_strings.asp)
-- [Java String Methods - Programiz](https://www.programiz.com/java-programming/string)
-- [Type Conversion in Java - GeeksforGeeks](https://www.geeksforgeeks.org/type-conversion-java-examples/)
+```bash
+cd day02/_start/src
+javac CherryToCup.java
+java CherryToCup
+```
 
-### Video Resources
-- [Java String Methods Tutorial](https://www.youtube.com/results?search_query=java+string+methods)
-- [Java Type Conversion](https://www.youtube.com/results?search_query=java+type+conversion)
+To run the tests, copy `_end/src/CherryToCupTest.java` next to your file, then from the repo root:
 
-### Practice Platforms
-- [String Practice - CodingBat](https://codingbat.com/java/String-1)
-- [Java String Exercises](https://www.w3resource.com/java-exercises/string/)
+```bash
+javac -cp lib/junit-platform-console-standalone-6.1.3.jar -d day02/_start/src day02/_start/src/*.java
+java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp day02/_start/src --scan-classpath
+```
 
-## 🔑 Key Concepts Summary
+For an exercise, use `day02/exercise1/src` or `day02/exercise2/src` in both commands.
 
-| Concept | Description | Example |
-|---------|-------------|---------|
-| String Methods | Built-in functions for strings | `text.length()`, `text.toUpperCase()` |
-| Concatenation | Joining strings together | `"Hello" + " " + "World"` |
-| Type Conversion | Changing one type to another | `Integer.parseInt("123")` |
-| Formatting | Displaying values in specific format | `String.format("%.2f", 3.14159)` |
-| StringBuilder | Efficient string building | `new StringBuilder().append("text")` |
+## 🆘 Stuck?
 
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **String methods:** Re-read **Step 2** for `length()`, `charAt()`, `substring()`, `toUpperCase()`, `trim()`
-- **Parsing numbers:** Use `Integer.parseInt(str)` or `Double.parseDouble(str)` — wrap in try-catch for invalid input
-- **String formatting:** `String.format("%.2f", value)` for decimals; `%d` for int, `%s` for String
-- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for solution approach
-
-**Related days:** Day 1 (variables, Scanner); Day 3 (control flow uses conditions on strings/numbers).
-
-**Quick reference:** `"a".equals(b)` not `a == b` for strings · `Integer.parseInt(s)` · `String.format("%.2f", x)`
+- **The answer is a round number when it shouldn't be**: integer division. Make one side a `double` before dividing.
+- **`possible lossy conversion from double to int`**: Java won't drop decimals unless you ask. Add a cast: `(int) value`.
+- **`332.99999` instead of `333`**: decimals in a computer aren't exact. `String.format("%.2f", x)` rounds for display.
+- **Years and days**: `cups / 365` gives whole years and `cups % 365` gives the days left over.
 
 ## ✅ Checklist
-- [ ] Understand primitive vs reference types
-- [ ] Know common String methods
-- [ ] Can perform type conversions
-- [ ] Can format strings and numbers
-- [ ] Completed Tip Calculator project
+- [ ] Used `final` for the three constants
+- [ ] Can explain why `7 / 2` is `3` in Java
+- [ ] Cast a `double` to an `int`
+- [ ] Formatted numbers with `String.format`
+- [ ] Finished both exercises
+- [ ] Cherry to Cup's tests pass
 - [ ] Committed code to Git
 
-## 📂 Code Examples
+## ➡️ Next
 
-This day includes starter and completed code examples:
-- **`_start/`** - Starting code with TODO comments and learning notes
-- **`_end/`** - Completed solutions with detailed explanations
-
-Check these folders to see the progression from start to finish and learn from the learning curve notes!
-
-## 💻 How to Run Java Files
-
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to the project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day02\_end\src"
-   ```
-
-3. **Compile the Java file**
-   ```cmd
-   javac TipCalculator.java
-   ```
-   *Note: This day has multiple files. You can compile all at once: `javac *.java`*
-
-4. **Run the compiled program**
-   ```cmd
-   java TipCalculator
-   ```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to the project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day02/_end/src
-   ```
-
-3. **Compile the Java file**
-   ```bash
-   javac TipCalculator.java
-   ```
-   *Note: This day has multiple files. You can compile all at once: `javac *.java`*
-
-4. **Run the compiled program**
-   ```bash
-   java TipCalculator
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA:**
-1. Open the project folder in IntelliJ IDEA
-2. Right-click on the Java file
-3. Select "Run 'ClassName.main()'"
-
-**VS Code:**
-1. Install "Extension Pack for Java"
-2. Open the Java file
-3. Click "Run" button above `main` method or press `F5`
-
-**Eclipse:**
-1. Import project into Eclipse
-2. Right-click on the Java file
-3. Select "Run As" → "Java Application"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
-- **"package does not exist"** - Remove package declaration if running from command line, or use proper package structure
-
-
-## 🚀 Next Steps
-After completing Day 2, you should be able to:
-- Manipulate strings effectively
-- Convert between data types
-- Format output nicely
-- Build interactive console programs
-
-**Ready for Day 3?** You'll learn about control flow and logical operators!
-
-
-
-
-
-
-
+Not every cherry makes it to the factory. On Day 3 you'll write the rules that decide which ones do.

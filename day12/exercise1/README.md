@@ -1,33 +1,19 @@
-# Exercise 1
+# Day 12 - Exercise 1: Scope bugs
 
-## Objective
-Scope Practice
-Create programs that demonstrate:
-- Local variable scope
-- Block scope
-- Instance variable scope
-- Class variable scope
-- Variable shadowing
+`src/CherryTally.java` compiles and runs, but both of its answers are wrong. Each bug is about **where a variable lives**. Fix them without rewriting the methods from scratch.
 
-## Requirements
-Scope Practice
-Create programs that demonstrate:
-- Local variable scope
-- Block scope
-- Instance variable scope
-- Class variable scope
-- Variable shadowing
+1. **`countRed(String[] cherries)`** should count the `"red"` cherries. For `{"red", "green", "red", "red"}` it should return `3`, but it returns `1`.
+2. **`add(int ripe)`** should add to the tally's running total, kept in the `ripe` field. After `add(5)` and `add(3)`, `getRipe()` should be `8`, but it's `0`.
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+Before you change anything, explain to yourself (or a rubber duck) exactly why each one is wrong. Then run the tests.
 
-## Starter Code
-Check the src/ directory for starter code files.
+## Files
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+- `src/CherryTally.java`: the buggy code to fix.
+- `src/CherryTallyTest.java`: the tests. They fail until both bugs are fixed.
+- `solution/CherryTally.java`: the fixed version.
+
+## 📌 Stuck?
+
+- Bug 1: what happens to `count` at the start of every trip round the loop?
+- Bug 2: inside `add`, which `ripe` does the name `ripe` mean, the field or the parameter? How do you reach the other one?

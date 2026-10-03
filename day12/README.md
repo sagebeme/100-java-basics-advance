@@ -1,319 +1,135 @@
-# Day 12 - Scope and Access Modifiers
+# Day 12 - Farmer Records
 
-## 📚 Learning Objectives
-- Understand variable scope
-- Learn about local, instance and class (static) scope. Java has no global variables: a `static` field is the closest thing
-- Master block scope
-- Organise names with packages
-- Practice with access modifiers
+> A farmer's total is worth money. Protect it with `private`, and learn where each variable lives.
 
-## 🎯 Topics Covered
-- Variable scope (local, instance, class)
-- Block scope
-- Packages and naming
-- Access modifiers (public, private, protected)
-- Variable shadowing
-- Best practices
+## 🌱 On the shamba
 
-## 📝 Step-by-Step Instructions
+Last season, someone at a cooperative in another county quietly added 200 kg to a cousin's record. Nobody noticed until payday, and by then the money was gone from everyone else's share.
 
-### Step 1: Understanding Scope
-Scope determines where a variable is accessible:
+In Day 11's program, any line of code could change any number. Today you'll build a **farmer record** that only changes in ways the rules allow: deliveries can be added, but never negative ones, and nobody can type in a new total directly.
+
+```
+=== Records Office ===
+Opened 2 records.
+WK-0042 Wanjiru: 33.5 kg
+OA-0107 Otieno: 31.0 kg
+Tried to add -200 kg to Otieno: refused.
+OA-0107 Otieno: 31.0 kg
+```
+
+## 🎯 By the end of today
+- Know where a variable can be used: its **scope**
+- Tell local variables, fields and `static` fields apart
+- Hide a class's data with `private`, and let others in only through `public` methods
+- Use `this` when a parameter has the same name as a field
+- Make a value unchangeable with `final`
+
+## ☕ Bean fact
+
+Many Kenyan coffee cooperatives have moved from paper books to digital weighing: the scale sends the weight straight to a computer, and the farmer gets an SMS receipt. It's harder to fiddle with a number that nobody types in.
+
+## 🧰 Java you'll use
+
+**Scope** is the part of the code where a variable exists. A variable lives from the line that declares it to the closing `}` of the block it's in:
 
 ```java
-public class ScopeExample {
-    // Class/static variable (class scope)
-    static int classVariable = 10;
-    
-    // Instance variable (instance scope)
-    int instanceVariable = 20;
-    
-    public void method() {
-        // Local variable (method scope)
-        int localVariable = 30;
-        
-        if (true) {
-            // Block scope
-            int blockVariable = 40;
-            // blockVariable only accessible here
+static int countRed(String[] cherries) {
+    int count = 0;                   // lives until the method's last }
+    for (String c : cherries) {      // c lives only inside the loop
+        if (c.equals("red")) {
+            count++;
         }
-        // blockVariable not accessible here
     }
+    // c doesn't exist here
+    return count;
 }
 ```
 
-### Step 2: Local Scope
-Variables declared in methods:
+**A class with private fields.** Until now every class has been a bag of `static` methods. Today a class also holds data, and you make objects from it with `new`. Day 16 covers objects properly; for now you need just this much:
 
 ```java
-public void example() {
-    int x = 5; // Local to this method
-    if (true) {
-        int y = 10; // Local to this block
-        System.out.println(x); // Can access x
+public class FarmerRecord {
+    private final String name;      // set once, never changed
+    private double deliveredKg;     // only this class can touch it
+
+    public FarmerRecord(String name) {   // the constructor runs on `new`
+        this.name = name;                // this.name is the field, name is the parameter
     }
-    // System.out.println(y); // Error: y not in scope
-}
-```
 
-### Step 3: Instance vs Class Variables
-- Instance: Each object has its own copy
-- Class/Static: Shared across all objects
+    public boolean addDelivery(double kg) {
+        if (kg <= 0) return false;       // the rule, enforced in one place
+        deliveredKg += kg;
+        return true;
+    }
 
-```java
-class Counter {
-    static int count = 0; // Class variable
-    int instanceCount = 0; // Instance variable
-    
-    void increment() {
-        count++; // Affects all objects
-        instanceCount++; // Affects only this object
+    public double getDeliveredKg() {     // read-only access from outside
+        return deliveredKg;
     }
 }
+
+FarmerRecord w = new FarmerRecord("Wanjiru");
+w.addDelivery(23.5);
+w.getDeliveredKg();   // 23.5
+w.deliveredKg = 999;  // compile error: deliveredKg has private access
 ```
 
-### Step 4: Access Modifiers
-Control visibility:
+| Keyword | Who can use it |
+|---|---|
+| `private` | Only code inside the same class |
+| `public` | Any code anywhere |
+| (none) | Code in the same folder (package) |
+
+**`static` fields** belong to the class, not to any one object, so all records share one counter:
 
 ```java
-public int publicVar;      // Accessible everywhere
-private int privateVar;    // Only in this class
-protected int protectedVar; // In this class and subclasses
-int packageVar;            // Package-private (default)
+private static int recordsOpened = 0;  // one number for the whole class
 ```
 
-## 💻 Exercises
+## 🪜 Steps
 
-### Exercise 1: Scope Practice
-Create programs that demonstrate:
-- Local variable scope
-- Block scope
-- Instance variable scope
-- Class variable scope
-- Variable shadowing
+1. **Exercise 1: Scope bugs** (`exercise1/`). Two programs that compile but give wrong answers because a variable lives in the wrong place.
+2. **Exercise 2: A scale nobody can fiddle** (`exercise2/`). A private calibration setting with a guarded way to change it.
+3. **Project: Farmer Records** (`_start/src/FarmerRecord.java` and `RecordsOffice.java`).
+   1. Give `FarmerRecord` three `private` fields: `name` and `memberCode` (both `final`) and `deliveredKg`.
+   2. In the constructor, use `this.` to copy the parameters into the fields, and add 1 to the `static` counter `recordsOpened`.
+   3. `addDelivery(double kg)`: refuse `0` or less by returning `false`.
+   4. Fill in the getters `getName()` and `getDeliveredKg()`, and `summary()`, which gives `"WK-0042 Wanjiru: 33.5 kg"`. Don't write a `setDeliveredKg`.
+   5. In `RecordsOffice.main`, open two records, add deliveries, and try a negative one. Then uncomment the line that sets `deliveredKg` directly and read the compiler's error.
 
-### Exercise 2: Access Modifiers
-Create classes with:
-- Public methods and variables
-- Private methods and variables
-- Protected members
-- Package-private members
+## 🧪 Taste test
 
-### Exercise 3: Packages and Naming
-Practice with:
-- Avoiding name conflicts
-- Using meaningful names
-- Following naming conventions
-- Organizing code with packages
-
-## 🎮 Project: Number Guessing Game
-
-### Requirements
-Create a number guessing game:
-1. Choose difficulty (easy/hard)
-2. Generate random number based on difficulty
-3. Give appropriate number of attempts
-4. Get user's guess
-5. Provide feedback (too high/too low)
-6. Track remaining attempts
-7. Win if correct, lose if out of attempts
-8. Ask to play again
-
-### Example Output
-```
-Welcome to the Number Guessing Game!
-I'm thinking of a number between 1 and 100.
-Choose a difficulty. Type 'easy' or 'hard': hard
-You have 5 attempts remaining to guess the number.
-Make a guess: 50
-Too high.
-Guess again.
-You have 4 attempts remaining to guess the number.
-Make a guess: 25
-Too low.
-Guess again.
-You have 3 attempts remaining to guess the number.
-Make a guess: 37
-You got it! The answer was 37.
+```bash
+cd day12/_start/src
+javac *.java
+java RecordsOffice
 ```
 
-### Starter Code
-```java
-import java.util.Random;
-import java.util.Scanner;
+To run the tests, copy `_end/src/FarmerRecordTest.java` next to your files, then from the repo root:
 
-public class NumberGuessing {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        Random random = new Random();
-        
-        // Your code here
-        
-        scanner.close();
-    }
-}
+```bash
+javac -cp lib/junit-platform-console-standalone-6.1.3.jar -d day12/_start/src day12/_start/src/*.java
+java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp day12/_start/src --scan-classpath
 ```
 
-### Solution Hints
-- Use constants for difficulty levels
-- Create method to generate random number
-- Create method to check guess
-- Use loop for attempts
-- Track attempts with variable
-- Use scope appropriately for variables
+For an exercise, use `day12/exercise1/src` or `day12/exercise2/src` in both commands.
 
-### Bonus Features
-- Score tracking
-- High score system
-- Hints system
-- Different number ranges
-- Statistics (average guesses, win rate)
+## 🆘 Stuck?
 
-## 📚 Resources
-
-### Official Documentation
-- [Java Variables - Oracle Docs](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/variables.html)
-- [Access Control - Oracle Docs](https://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html)
-- [Packages - Oracle Docs](https://docs.oracle.com/javase/tutorial/java/package/index.html)
-
-### Tutorials
-- [Java Variable Scope - Programiz](https://www.programiz.com/java-programming/variables-primitive-data-types)
-- [Access Modifiers - GeeksforGeeks](https://www.geeksforgeeks.org/access-modifiers-java/)
-- [Java Naming Conventions](https://www.geeksforgeeks.org/java-naming-conventions/)
-
-### Video Resources
-- [Java Scope Tutorial](https://www.youtube.com/results?search_query=java+variable+scope)
-- [Access Modifiers Explained](https://www.youtube.com/results?search_query=java+access+modifiers)
-
-### Practice Platforms
-- [Scope Exercises](https://codingbat.com/java)
-- [Java Best Practices](https://google.github.io/styleguide/javaguide.html)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Local Scope | Method-level access | Variable in method |
-| Block Scope | Block-level access | Variable in if/for block |
-| Instance Scope | Object-level access | Non-static variable |
-| Class Scope | Class-level access | Static variable |
-| Access Modifier | Visibility control | `public`, `private`, `protected` |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **Scope:** Re-read **Step 1** — variable visible only inside the block where it's declared
-- **Local vs instance:** Local = inside method; instance = field of class, visible in all non-static methods — see **Step 2**
-- **"Cannot find symbol"** → Variable might be out of scope (e.g. declared inside an if block, used outside)
-- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for access design
-
-**Related days:** Day 16 (OOP uses private fields); Day 6 (methods and parameters).
-
-**Quick reference:** Declare variables in the narrowest scope needed · Use `private` for fields, expose via methods
+- **`cannot find symbol`** for a variable you can see a few lines up: it was declared inside a block (`{ }`) that has already closed. Declare it before the block.
+- **The field stays `null` or `0` after the constructor**: you wrote `name = name;`, which copies the parameter onto itself. Write `this.name = name;`.
+- **`cannot assign a value to final variable`**: a `final` field can only be set once, in the constructor.
+- **`non-static variable cannot be referenced from a static context`**: `main` is `static`, so it has no record of its own. Make one with `new FarmerRecord(...)` and call its methods.
 
 ## ✅ Checklist
-- [ ] Understand variable scope
-- [ ] Know local vs instance vs class scope
-- [ ] Understand block scope
-- [ ] Know access modifiers
-- [ ] Can avoid scope issues
-- [ ] Completed Number Guessing Game
+- [ ] Can say where a variable's scope starts and ends
+- [ ] Fixed both scope bugs in Exercise 1
+- [ ] Made fields `private` and read them through getters
+- [ ] Used `this.` in a constructor
+- [ ] Used a `static` field shared by every object
+- [ ] Saw the compiler refuse to let `RecordsOffice` touch a private field
+- [ ] Farmer Records' tests pass
 - [ ] Committed code to Git
 
-## 📂 Code Examples
+## ➡️ Next
 
-This day includes starter and completed code examples:
-- **`_start/`** - Starting code with TODO comments and learning notes
-- **`_end/`** - Completed solutions with detailed explanations
-
-Check these folders to see the progression from start to finish and learn from the learning curve notes!
-
-## 💻 How to Run Java Files
-
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to the project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day12\_end\src"
-   ```
-
-3. **Compile the Java file**
-   ```cmd
-   javac NumberGuessingGame.java
-   ```
-
-4. **Run the compiled program**
-   ```cmd
-   java NumberGuessingGame
-   ```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to the project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day12/_end/src
-   ```
-
-3. **Compile the Java file**
-   ```bash
-   javac NumberGuessingGame.java
-   ```
-
-4. **Run the compiled program**
-   ```bash
-   java NumberGuessingGame
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA:**
-1. Open the project folder in IntelliJ IDEA
-2. Right-click on the Java file
-3. Select "Run 'ClassName.main()'"
-
-**VS Code:**
-1. Install "Extension Pack for Java"
-2. Open the Java file
-3. Click "Run" button above `main` method or press `F5`
-
-**Eclipse:**
-1. Import project into Eclipse
-2. Right-click on the Java file
-3. Select "Run As" → "Java Application"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
-- **"package does not exist"** - Remove package declaration if running from command line, or use proper package structure
-
-
-## 🚀 Next Steps
-After completing Day 12, you should be able to:
-- Manage variable scope properly
-- Use access modifiers effectively
-- Avoid naming conflicts
-- Write well-organized code
-
-**Ready for Day 13?** You'll learn about debugging and exception handling!
-
-
-
-
-
-
-
+On Day 13 the weighbridge is giving the wrong totals. You'll find the bugs with stack traces and a debugger.

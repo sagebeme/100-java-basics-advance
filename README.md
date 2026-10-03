@@ -1,6 +1,6 @@
 # 100 Days of Java ☕
 
-A comprehensive 100-day learning path for mastering Java from basics to advanced concepts, structured similar to the popular "100 Days of Code" Python course.
+A 100-day learning path from your first Java variable to Spring Boot, databases and a machine learning model you build yourself. The Beginner stage follows a coffee bean from a farm in Nyeri to a cup in Nairobi, so you learn something real about coffee while you learn Java.
 
 <p align="center">
     <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java">
@@ -12,7 +12,7 @@ A comprehensive 100-day learning path for mastering Java from basics to advanced
 This course is divided into 5 main sections, progressing from beginner to professional level:
 
 ### 👨🏻‍🎓 Beginner (Days 1-14)
-Foundation concepts: variables, data types, control flow, loops, functions, and basic projects.
+Foundation concepts: variables, data types, control flow, loops, methods, collections, scope and debugging. Every project is a step on coffee's journey from shamba to cup: weighing the harvest, drying, grading, paying the farmer, roasting, and finally reading a coffee shop menu.
 
 ### 🏋🏻‍♂️ Intermediate (Days 15-31)
 Object-Oriented Programming, GUI basics, file handling, and intermediate projects.
@@ -44,20 +44,20 @@ What the course actually uses, and from when:
 ## 📖 Learning Path
 
 ### 👨🏻‍🎓 Beginner (Days 1-14)
-- [Day 1](day01): Working with Variables in Java to Manage Data
-- [Day 2](day02): Understanding Data Types and String Manipulation
-- [Day 3](day03): Control Flow and Logical Operators
-- [Day 4](day04): Arrays and Collections
-- [Day 5](day05): Loops (for, while, enhanced for)
-- [Day 6](day06): Methods and Method Overloading
-- [Day 7](day07): Hangman Game
-- [Day 8](day08): Method Parameters & Caesar Cipher
-- [Day 9](day09): Maps, Sets, and Collections
-- [Day 10](day10): Return Values and Calculator Project
-- [Day 11](day11): Blackjack Capstone Project
-- [Day 12](day12): Scope and Access Modifiers
-- [Day 13](day13): Debugging: How to Find and Fix Errors
-- [Day 14](day14): Higher Lower Game Project
+- [Day 1](day01): The Harvest Log (variables, `Scanner`)
+- [Day 2](day02): Cherry to Cup (`int` vs `double`, casting, `String.format`)
+- [Day 3](day03): Cherry Sorter (`if`/`else`, logical operators)
+- [Day 4](day04): Rainfall Week (arrays, `ArrayList`)
+- [Day 5](day05): Drying Bed Countdown (`for`, `while`, enhanced `for`)
+- [Day 6](day06): Grade Labeller (methods, overloading)
+- [Day 7](day07): Weighing Station (project: a menu-driven program)
+- [Day 8](day08): Farmer Payout (parameters, pass-by-value, varargs)
+- [Day 9](day09): Flavour Map (`Map`, `Set`)
+- [Day 10](day10): Roast Checker (return values, `switch`)
+- [Day 11](day11): Season Simulator Capstone Project (`Random`, putting it all together)
+- [Day 12](day12): Farmer Records (scope, `private`, `static`)
+- [Day 13](day13): Fix the Weighbridge (stack traces, the debugger, classic bugs)
+- [Day 14](day14): Coffee Shop Menu Decoder (project: everything from Days 1–13)
 
 ### 🏋🏻‍♂️ Intermediate (Days 15-31)
 - [Day 15](day15): Local Development Setup & Coffee Machine Project
@@ -170,8 +170,9 @@ By the end of this course, you will:
 Each day is set up so you can find help quickly:
 
 - **In each day's README** → Look for **📌 Notes & reference (use these when stuck)**. It points to which steps to re-read, common gotchas, related days, and quick syntax.
-- **In `_start/` and `_end/`** (Days 1–31) → Use **📌 Refer to (when stuck)** to jump back to the main day README or to the solution for hints.
-- **In each exercise** (`exercise1/`, `exercise2/`) → Use **📌 Refer to (when stuck)** to see which day README section and which folder to check.
+- **Days 1–14** → Each day's README has a **🆘 Stuck?** section with the errors you're most likely to see, and each exercise README ends with **📌 Stuck?** hints. Every exercise keeps one answer in its `solution/` folder.
+- **In `_start/` and `_end/`** (Days 15–31) → Use **📌 Refer to (when stuck)** to jump back to the main day README or to the solution for hints.
+- **In each exercise** (`exercise1/`, `exercise2/`, Days 15 on) → Use **📌 Refer to (when stuck)** to see which day README section and which folder to check.
 
 Use these notes to solve problems without leaving the repo.
 
@@ -213,6 +214,7 @@ To put it online, import the repo into Netlify (`netlify.toml` is already set up
    - Each exercise folder contains:
      - `README.md` - Exercise requirements and instructions
      - `src/` - Starter code files with TODO comments
+     - `solution/` (Days 1–14) - One answer, to check against once you've tried it yourself
    - Navigate to `dayXX/exercise1/` or `dayXX/exercise2/` to start practicing
    - Read the exercise README for specific requirements
    - Implement solutions in the provided starter code files
@@ -245,7 +247,7 @@ javac -cp lib\junit-platform-console-standalone-6.1.3.jar -d day08\_end\src day0
 java -jar lib\junit-platform-console-standalone-6.1.3.jar execute -cp day08\_end\src --scan-classpath
 ```
 
-Replace `day08\_end` with `dayNN\exercise1` or `dayNN\exercise2` to run an exercise's tests instead — the command is identical either way. A clean run ends with a line like `[  X tests successful ]` and `[  0 tests failed ]`. If you've written your own version of a day's code, drop your class next to the test and re-run the same two commands — the test doesn't care whether the code came from the day's own solution or from you, only that the method names and behavior match.
+Replace `day08\_end` with `dayNN\exercise1\src` or `dayNN\exercise2\src` to run an exercise's tests instead — the command is identical either way. On Days 1–14 an exercise's `src/` holds your starter code, so its tests fail until you've done the exercise; to check the bundled answer, compile `dayNN/exerciseN/solution/*.java` together with the test file from `src/`. A clean run ends with a line like `[  X tests successful ]` and `[  0 tests failed ]`. If you've written your own version of a day's code, drop your class next to the test and re-run the same two commands — the test doesn't care whether the code came from the day's own solution or from you, only that the method names and behavior match.
 
 **Day 54 onward is different: every day and exercise from here on is its own Maven project, each with its own `pom.xml`** (Spring Boot through Day 59, then a mix of Spring Boot and plain Maven projects through Day 100). Install [Apache Maven](https://maven.apache.org/download.cgi) (any recent 3.9.x), then from that day or exercise's own folder:
 
@@ -261,7 +263,7 @@ mvn spring-boot:run
 
 Then open `http://localhost:8080`. Stop it with Ctrl+C.
 
-**Which days have tests today:** the main project's solution (`_end/`) on every day from 1 to 31 except 13 and 18; the exercises on most days from 1 to 30, plus 35, 37 and 40; and every day from 54 to 100, each with its own `mvn test` suite. Days 32–53 have no tests yet. See `LEARNING_PATH.md` for what's intentionally untested and why, and for the remaining gaps in Days 32–53.
+**Which days have tests today:** the main project's solution (`_end/`) on every day from 1 to 31 except 18; every exercise on Days 1–14 and most exercises from 15 to 30, plus 35, 37 and 40; and every day from 54 to 100, each with its own `mvn test` suite. Days 32–53 have no tests yet. See `LEARNING_PATH.md` for what's intentionally untested and why, and for the remaining gaps in Days 32–53.
 
 ## 🚀 Getting Started
 

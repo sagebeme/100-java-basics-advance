@@ -17,7 +17,7 @@ Do this for every day, in order:
 
 | Stage | Days | What's different |
 |---|---|---|
-| Beginner | 1–14 | Plain `.java` files, `javac`/`java` only. No extra tools. |
+| Beginner | 1–14 | Plain `.java` files, `javac`/`java` only. No extra tools. One story runs through all 14 days: a coffee bean's journey from a farm in Nyeri to a cup in Nairobi. |
 | Intermediate | 15–31 | Same tooling, plus JavaFX for GUI days (18, 22–23, 27–31) — see the JavaFX note below before you hit Day 18. |
 | Intermediate+ | 32–58 | APIs, credentials, scraping, and automation days start appearing — see "When a day needs something you don't have," below. Spring Boot and Maven arrive at Day 54. |
 | Advanced | 59–80 | Everything is a self-contained Maven project from here on (own `pom.xml` per day) — plain `javac` no longer applies past Day 59. |
@@ -33,7 +33,8 @@ Do this for every day, in order:
 │   ├── README.md              # Learning objectives, topics, and the day's project
 │   ├── exercise1/
 │   │   ├── README.md          # What to build, and where to look when stuck
-│   │   └── src/                # Starter code with TODOs
+│   │   ├── src/                # Starter code with TODOs, and the exercise's test
+│   │   └── solution/           # One answer (Days 1–14)
 │   ├── exercise2/
 │   │   ├── README.md
 │   │   └── src/
@@ -48,7 +49,7 @@ Do this for every day, in order:
     └── README.md               # Portfolio project brief
 ```
 
-- **`exercise1/`, `exercise2/`** (most days 1–40): small, focused practice on the day's concept. Starter code has `// TODO` comments; the README says what's expected.
+- **`exercise1/`, `exercise2/`** (most days 1–40): small, focused practice on the day's concept. Starter code has `// TODO` comments; the README says what's expected. On Days 1–14 the starter and its test sit in `src/` (the test fails until you've done the exercise), and one answer sits in `solution/`. On Day 13 the "starter" is buggy code to fix.
 - **`_start/`, `_end/`** (Days 1–31 only): the day's main project. `_start` is where you begin; use `_end` only to check your own work, not as a template to copy from.
 - **From Day 32 on**, most days are project-only: read the `README.md` and build directly into the day's folder.
 - **From Day 54 on**, every day/exercise is its own Maven project (its own `pom.xml`) instead of loose `.java` files, because that's what those days are teaching (Spring Boot, JPA, etc.).
@@ -57,7 +58,7 @@ Do this for every day, in order:
 
 Most early and late days ship with real JUnit tests you can run against your own solution, not just the bundled one — see the root README's **"How to Run Tests"** for the exact commands (plain JUnit for Days 1–17/24–26/exercises through Day 40; `mvn test` for every day from 54 onward). If a day has a test, get it green before moving on — that's a stronger signal than "it compiles" or "it looks right."
 
-**Skipped on purpose, not by oversight:** a handful of exercises ask you to demonstrate a concept (explain variable scope, spot the bug in given code, draw some shapes) rather than compute a value with one right answer, so there's nothing a test could assert. Day 12's exercises, Day 13's exercise1, and Day 18/27's exercise1 fall in this group — read the README's own checklist for those instead.
+**Skipped on purpose, not by oversight:** a handful of exercises ask you to demonstrate a concept (explain variable scope, spot the bug in given code, draw some shapes) rather than compute a value with one right answer, so there's nothing a test could assert. Day 18 and Day 27's exercise1 fall in this group — read the README's own checklist for those instead.
 
 ## Setup you'll need, and when
 

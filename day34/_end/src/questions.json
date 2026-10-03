@@ -1,0 +1,125 @@
+{
+ "response_code": 0,
+ "results": [
+  {
+   "type": "boolean",
+   "difficulty": "easy",
+   "category": "Kenya",
+   "question": "Mount Kenya is the highest mountain in Kenya.",
+   "correct_answer": "True",
+   "incorrect_answers": [
+    "False"
+   ]
+  },
+  {
+   "type": "boolean",
+   "difficulty": "easy",
+   "category": "Kenya",
+   "question": "Lake Victoria is shared by Kenya, Uganda and Tanzania.",
+   "correct_answer": "True",
+   "incorrect_answers": [
+    "False"
+   ]
+  },
+  {
+   "type": "boolean",
+   "difficulty": "easy",
+   "category": "Kenya",
+   "question": "Mombasa was the capital of British East Africa before Nairobi.",
+   "correct_answer": "True",
+   "incorrect_answers": [
+    "False"
+   ]
+  },
+  {
+   "type": "boolean",
+   "difficulty": "easy",
+   "category": "Kenya",
+   "question": "Kenya became independent in 1965.",
+   "correct_answer": "False",
+   "incorrect_answers": [
+    "True"
+   ]
+  },
+  {
+   "type": "boolean",
+   "difficulty": "easy",
+   "category": "Kenya",
+   "question": "Kiswahili and English are both official languages of Kenya.",
+   "correct_answer": "True",
+   "incorrect_answers": [
+    "False"
+   ]
+  },
+  {
+   "type": "boolean",
+   "difficulty": "easy",
+   "category": "Kenya",
+   "question": "The Great Rift Valley runs through Kenya.",
+   "correct_answer": "True",
+   "incorrect_answers": [
+    "False"
+   ]
+  },
+  {
+   "type": "boolean",
+   "difficulty": "easy",
+   "category": "Kenya",
+   "question": "Lake Turkana is a freshwater lake.",
+   "correct_answer": "False",
+   "incorrect_answers": [
+    "True"
+   ]
+  },
+  {
+   "type": "boolean",
+   "difficulty": "easy",
+   "category": "Kenya",
+   "question": "The yearly wildebeest migration passes through the Maasai Mara.",
+   "correct_answer": "True",
+   "incorrect_answers": [
+    "False"
+   ]
+  },
+  {
+   "type": "boolean",
+   "difficulty": "easy",
+   "category": "Kenya",
+   "question": "Mombasa&#039;s old town is built on an island.",
+   "correct_answer": "True",
+   "incorrect_answers": [
+    "False"
+   ]
+  },
+  {
+   "type": "boolean",
+   "difficulty": "easy",
+   "category": "Kenya",
+   "question": "The equator passes through Kenya.",
+   "correct_answer": "True",
+   "incorrect_answers": [
+    "False"
+   ]
+  },
+  {
+   "type": "boolean",
+   "difficulty": "easy",
+   "category": "Kenya",
+   "question": "Nairobi National Park is more than 100 km from the city centre.",
+   "correct_answer": "False",
+   "incorrect_answers": [
+    "True"
+   ]
+  },
+  {
+   "type": "boolean",
+   "difficulty": "easy",
+   "category": "Kenya",
+   "question": "The Kenyan flag has a Maasai shield in the middle.",
+   "correct_answer": "True",
+   "incorrect_answers": [
+    "False"
+   ]
+  }
+ ]
+}

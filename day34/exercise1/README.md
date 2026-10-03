@@ -1,31 +1,26 @@
-# Exercise 1
+# Day 34 - Exercise 1: A fallback that always answers
 
-## Objective
-API Integration
-Practice with:
-- Fetching data from APIs
-- Parsing API responses
-- Handling API errors
-- Caching API data
+Programs that depend on the internet should still do *something* when it's down. Write `firstThatWorks(List<Supplier<String>> sources, String lastResort)` in `src/Fallback.java`. It tries each source in order and returns the first answer that:
 
-## Requirements
-API Integration
-Practice with:
-- Fetching data from APIs
-- Parsing API responses
-- Handling API errors
-- Caching API data
+- doesn't throw an exception, and
+- isn't `null` or blank.
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+If every source fails, it returns `lastResort`.
 
-## Starter Code
-Check the src/ directory for starter code files.
+```java
+firstThatWorks(List.of(
+        () -> { throw new RuntimeException("no Wi-Fi"); },
+        () -> "  ",
+        () -> "from the cache"),
+    "built-in questions")          // "from the cache"
+```
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+## Files
+
+- `src/Fallback.java`: your code goes here.
+- `src/FallbackTest.java`: the tests.
+- `solution/Fallback.java`: one answer.
+
+## 📌 Stuck?
+
+A `Supplier<String>` is anything with a `get()` method that returns a `String`. Call `source.get()` inside a `try`, `catch (RuntimeException e)`, and move on to the next one.

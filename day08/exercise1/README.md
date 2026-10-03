@@ -1,31 +1,30 @@
-# Exercise 1
+# Day 8 - Exercise 1: Copies and arrays
 
-## Objective
-Parameter Practice
-Create methods that:
-- Accept multiple parameters
-- Use different parameter types
-- Return calculated values
-- Handle edge cases
+At the end of a good season, the cooperative adds a bonus to every farmer's kilograms. Write two versions in `src/BonusKilos.java` and see which one works the way you'd expect:
 
-## Requirements
-Parameter Practice
-Create methods that:
-- Accept multiple parameters
-- Use different parameter types
-- Return calculated values
-- Handle edge cases
+| Method | What it does |
+|---|---|
+| `withBonus(double kg, double bonus)` | **Returns** `kg + bonus`. The caller's own variable doesn't change. |
+| `addBonusToAll(double[] kgs, double bonus)` | Returns nothing (`void`), but adds `bonus` to **every element** of the caller's array. |
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+Then, in `main`, try this and predict the output before you run it:
 
-## Starter Code
-Check the src/ directory for starter code files.
+```java
+double mine = 50;
+withBonus(mine, 10);
+System.out.println(mine);          // ?
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+double[] team = {50, 20};
+addBonusToAll(team, 10);
+System.out.println(team[0]);       // ?
+```
+
+## Files
+
+- `src/BonusKilos.java`: your code goes here.
+- `src/BonusKilosTest.java`: the tests.
+- `solution/BonusKilos.java`: one answer.
+
+## 📌 Stuck?
+
+Re-read **Java you'll use** in the [day's README](../README.md). The answers are `50.0` and `60.0`. If that surprises you, the README explains why.

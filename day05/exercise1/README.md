@@ -1,31 +1,22 @@
-# Exercise 1
+# Day 5 - Exercise 1: Weighing tickets
 
-## Objective
-For Loop Practice
-Create programs that:
-- Print numbers 1 to 100
-- Print even numbers from 2 to 50
-- Print multiplication table for a number
-- Calculate factorial of a number
+Every delivery at the weighing station gets a numbered ticket. Write two methods in `src/WeighingTickets.java`:
 
-## Requirements
-For Loop Practice
-Create programs that:
-- Print numbers 1 to 100
-- Print even numbers from 2 to 50
-- Print multiplication table for a number
-- Calculate factorial of a number
+| Method | Example |
+|---|---|
+| `ticketNumbers(int first, int last)` | `ticketNumbers(7, 10)` → `"T007 T008 T009 T010"` |
+| `totalKg(double[] deliveries)` | `{12.5, 8.0, 20.25}` → `40.75` |
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+Use a plain `for` loop for the tickets and an enhanced `for` for the total. The tickets are separated by single spaces, with no space at the end.
 
-## Starter Code
-Check the src/ directory for starter code files.
+## Files
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+- `src/WeighingTickets.java`: your code goes here.
+- `src/WeighingTicketsTest.java`: the tests.
+- `solution/WeighingTickets.java`: one answer.
+
+## 📌 Stuck?
+
+- `String.format("T%03d", 7)` gives `"T007"`.
+- To avoid a space at the end, add the space *before* every ticket except the first one.
+- `for (double kg : deliveries)` gives you each delivery in turn.

@@ -1,299 +1,126 @@
-# Day 5 - Loops (for, while, enhanced for)
+# Day 5 - Drying Bed Countdown
 
-## 📚 Learning Objectives
-- Master for loops
-- Understand while and do-while loops
-- Learn enhanced for loops (for-each)
-- Practice loop control (break, continue)
-- Work with nested loops
+> The beans are washed. Now they sit in the sun until they're dry enough to store. How many days will that take?
 
-## 🎯 Topics Covered
-- For loops
-- While loops
-- Do-while loops
-- Enhanced for loops
-- Break and continue statements
-- Nested loops
-- Loop patterns
+## 🌱 On the shamba
 
-## 📝 Step-by-Step Instructions
+At the factory, the cherries' skin and sticky fruit are removed, and the beans are washed. They come out in a papery shell called **parchment**, and they're wet: about half of their weight is water.
 
-### Step 1: For Loop
-Use for loops when you know how many iterations:
+Next they're spread on long raised tables called **drying beds**. Workers turn them by hand through the day and cover them when it rains. When the moisture drops to about **11%**, the beans can be stored and shipped without going mouldy.
+
+Today's program counts down the days, one loop at a time:
+
+```
+=== Drying Bed Countdown ===
+Starting moisture (%)?
+52
+Weather for the next days (S = sunny, C = cloudy, R = rain)?
+SSSSCRSSSSSSSSSS
+Day 1: 49.0% #########
+Day 2: 46.0% #########
+...
+Day 15: 11.5% ##
+Day 16: 8.5% #
+Dry after 16 days.
+```
+
+## 🎯 By the end of today
+- Repeat work with a `for` loop when you know how many times
+- Repeat with a `while` loop when you stop on a condition
+- Walk through every item with an enhanced `for` (`for (char day : forecast.toCharArray())`)
+- Stop a loop early with `return` or `break`
+- Build text inside a loop
+
+## ☕ Bean fact
+
+Kenya's famous "washed" coffees are dried in parchment on raised **African beds**: wire mesh on wooden legs, so air reaches the beans from below. Drying slowly over one to three weeks, and stirring the beans often, keeps the flavour clean and bright.
+
+## 🧰 Java you'll use
+
+**`for`** runs a set number of times:
 
 ```java
-for (int i = 0; i < 10; i++) {
-    System.out.println(i);
+for (int day = 1; day <= 7; day++) {
+    System.out.println("Day " + day);
 }
 ```
 
-### Step 2: While Loop
-Use while loops when condition is checked first:
+**`while`** runs for as long as its condition is true. Make sure something inside the loop changes the condition, or it never stops:
 
 ```java
-int i = 0;
-while (i < 10) {
-    System.out.println(i);
-    i++;
+double moisture = 52;
+int days = 0;
+while (moisture > 11) {
+    moisture = moisture - 3;
+    days++;
 }
 ```
 
-### Step 3: Do-While Loop
-Use do-while when you need at least one execution:
+**Enhanced `for`** visits each item without an index. `toCharArray()` turns a `String` into its characters:
 
 ```java
-int i = 0;
-do {
-    System.out.println(i);
-    i++;
-} while (i < 10);
-```
-
-### Step 4: Enhanced For Loop
-Iterate over collections easily:
-
-```java
-int[] numbers = {1, 2, 3, 4, 5};
-for (int num : numbers) {
-    System.out.println(num);
-}
-```
-
-### Step 5: Loop Control
-Control loop execution:
-
-```java
-// Break - exit loop immediately
-for (int i = 0; i < 10; i++) {
-    if (i == 5) break;
-    System.out.println(i);
-}
-
-// Continue - skip to next iteration
-for (int i = 0; i < 10; i++) {
-    if (i % 2 == 0) continue;
-    System.out.println(i);
-}
-```
-
-## 💻 Exercises
-
-### Exercise 1: For Loop Practice
-Create programs that:
-- Print numbers 1 to 100
-- Print even numbers from 2 to 50
-- Print multiplication table for a number
-- Calculate factorial of a number
-
-### Exercise 2: While Loop Practice
-Create programs that:
-- Keep asking for input until valid
-- Count down from 10 to 1
-- Sum numbers until user enters 0
-- Find first number divisible by 7 and 11
-
-### Exercise 3: Nested Loops
-Create programs that:
-- Print a square pattern of asterisks
-- Print a triangle pattern
-- Print multiplication tables 1-10
-- Find all prime numbers up to 100
-
-## 🎮 Project: Password Generator
-
-### Requirements
-Create a password generator that:
-1. Asks for number of letters
-2. Asks for number of symbols
-3. Asks for number of numbers
-4. Generates a random password
-5. Shuffles the password characters
-6. Displays the password
-
-### Example Output
-```
-Welcome to the Password Generator!
-How many letters would you like in your password?
-> 8
-How many symbols would you like?
-> 2
-How many numbers would you like?
-> 2
-Your password is: aB3$kL9@mN2
-```
-
-### Starter Code
-```java
-import java.util.Scanner;
-import java.util.Random;
-import java.util.ArrayList;
-import java.util.Collections;
-
-public class PasswordGenerator {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        Random random = new Random();
-        
-        // Your code here
-        
-        scanner.close();
+for (char weather : "SSCR".toCharArray()) {
+    if (weather == 'R') {
+        continue; // skip to the next day
     }
 }
 ```
 
-### Solution Hints
-- Create arrays/lists for letters, numbers, symbols
-- Use loops to generate required characters
-- Use Collections.shuffle() to randomize order
-- Combine all characters into one list
-- Convert list to string for output
+Single characters use single quotes: `'R'` is a `char`, and `"R"` is a `String`. You can compare `char`s with `==`.
 
-## 📚 Resources
+**Building text in a loop**:
 
-### Official Documentation
-- [Java For Loop - Oracle Docs](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/for.html)
-- [Java While Loop - Oracle Docs](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/while.html)
-- [Control Flow - Oracle Docs](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/flow.html)
+```java
+String bar = "";
+for (int i = 0; i < 5; i++) {
+    bar = bar + "#";
+}
+// bar is "#####"
+```
 
-### Tutorials
-- [Java Loops - W3Schools](https://www.w3schools.com/java/java_for_loop.asp)
-- [Java While Loop - Programiz](https://www.programiz.com/java-programming/while-loop)
-- [Nested Loops - GeeksforGeeks](https://www.geeksforgeeks.org/nested-loops-in-java/)
+## 🪜 Steps
 
-### Video Resources
-- [Java Loops Tutorial](https://www.youtube.com/results?search_query=java+loops+tutorial)
-- [Java Nested Loops](https://www.youtube.com/results?search_query=java+nested+loops)
+1. **Exercise 1: Weighing tickets** (`exercise1/`). `for` and enhanced `for`.
+2. **Exercise 2: Ask until it makes sense** (`exercise2/`). A `while` loop that keeps asking until the answer is valid.
+3. **Project: Drying Bed Countdown** (`_start/src/DryingBed.java`).
+   1. `daysToDry(start, target, lossPerDay)`: the same loss every day. Use a `while` loop. If `lossPerDay` is `0` or less, the beans will never dry, so return `-1` straight away instead of looping forever.
+   2. `daysToDryWithWeather(start, target, forecast)`: a sunny day removes 3 points, a cloudy day removes 1.5, and a rainy day removes nothing because the beans are covered. Loop over the forecast's characters and return the day they reach the target. If the forecast runs out first, return `-1`.
+   3. `moistureBar(moisture)`: one `#` for every full 5 points, so `52` gives 10 of them.
+   4. In `main`, print each day's moisture and bar, then the result.
 
-### Practice Platforms
-- [Loop Practice - CodingBat](https://codingbat.com/java/Logic-2)
-- [Java Loop Exercises](https://www.w3resource.com/java-exercises/basic/index.php#forloops)
+## 🧪 Taste test
 
-## 🔑 Key Concepts Summary
+```bash
+cd day05/_start/src
+javac DryingBed.java
+java DryingBed
+```
 
-| Concept | Description | Example |
-|---------|-------------|---------|
-| For Loop | Iterate with counter | `for (int i = 0; i < 10; i++)` |
-| While Loop | Iterate while condition true | `while (condition) { ... }` |
-| Do-While | Execute at least once | `do { ... } while (condition);` |
-| Enhanced For | Iterate over collections | `for (int x : array) { ... }` |
-| Break | Exit loop | `break;` |
-| Continue | Skip iteration | `continue;` |
+To run the tests, copy `_end/src/DryingBedTest.java` next to your file, then from the repo root:
 
-## 📌 Notes & reference (use these when stuck)
+```bash
+javac -cp lib/junit-platform-console-standalone-6.1.3.jar -d day05/_start/src day05/_start/src/*.java
+java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp day05/_start/src --scan-classpath
+```
 
-**When you're stuck:**
-- **For loop:** Re-read **Step 1** — `for (init; condition; update)` · Common: `for (int i = 0; i < arr.length; i++)`
-- **While vs do-while:** While checks first; do-while runs at least once — see **Step 2**
-- **Infinite loop:** Ensure condition eventually becomes false; check update and break conditions
-- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for loop logic
+For an exercise, use `day05/exercise1/src` or `day05/exercise2/src` in both commands.
 
-**Related days:** Day 4 (arrays to loop over); Day 6 (methods can contain loops).
+## 🆘 Stuck?
 
-**Quick reference:** Use `break` to exit loop; `continue` to skip to next iteration · Off-by-one: use `< length` not `<= length`
+- **The program hangs**: a `while` loop whose condition never becomes false. Check that the moisture actually changes inside the loop, and that a loss of `0` returns `-1` before the loop starts.
+- **Off by one day**: decide whether you count the day before or after removing the moisture, then check against a small example by hand. 52 → 11 at 3 a day takes 14 days.
+- **`incomparable types: char and String`**: compare a `char` with `'S'`, not `"S"`.
+- **Is "dry" `<` or `<=` the target?** Reaching exactly 11% counts as dry, so stop when `moisture <= target`.
 
 ## ✅ Checklist
-- [ ] Understand for loops
-- [ ] Know while and do-while loops
-- [ ] Can use enhanced for loops
-- [ ] Understand break and continue
-- [ ] Can create nested loops
-- [ ] Completed Password Generator project
+- [ ] Wrote a `for` loop and a `while` loop
+- [ ] Looped over a `String`'s characters with an enhanced `for`
+- [ ] Left a loop early with `return`
+- [ ] Made sure a loop can't run forever
+- [ ] Finished both exercises
+- [ ] Drying Bed Countdown's tests pass
 - [ ] Committed code to Git
 
-## 📂 Code Examples
+## ➡️ Next
 
-This day includes starter and completed code examples:
-- **`_start/`** - Starting code with TODO comments and learning notes
-- **`_end/`** - Completed solutions with detailed explanations
-
-Check these folders to see the progression from start to finish and learn from the learning curve notes!
-
-## 💻 How to Run Java Files
-
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to the project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day05\_end\src"
-   ```
-
-3. **Compile the Java file**
-   ```cmd
-   javac PasswordGenerator.java
-   ```
-
-4. **Run the compiled program**
-   ```cmd
-   java PasswordGenerator
-   ```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to the project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day05/_end/src
-   ```
-
-3. **Compile the Java file**
-   ```bash
-   javac PasswordGenerator.java
-   ```
-
-4. **Run the compiled program**
-   ```bash
-   java PasswordGenerator
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA:**
-1. Open the project folder in IntelliJ IDEA
-2. Right-click on the Java file
-3. Select "Run 'ClassName.main()'"
-
-**VS Code:**
-1. Install "Extension Pack for Java"
-2. Open the Java file
-3. Click "Run" button above `main` method or press `F5`
-
-**Eclipse:**
-1. Import project into Eclipse
-2. Right-click on the Java file
-3. Select "Run As" → "Java Application"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
-- **"package does not exist"** - Remove package declaration if running from command line, or use proper package structure
-
-
-## 🚀 Next Steps
-After completing Day 5, you should be able to:
-- Use all types of loops effectively
-- Control loop execution
-- Build programs with repetition
-- Generate random data
-
-**Ready for Day 6?** You'll learn about functions and methods!
-
-
-
-
-
-
-
+Dry beans are sorted by size, and the size sets the price. On Day 6 you'll write methods that label them the way Kenya does.

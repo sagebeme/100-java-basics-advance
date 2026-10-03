@@ -1,31 +1,20 @@
-# Exercise 1
+# Day 14 - Exercise 1: What size is that?
 
-## Objective
-Data Organization
-Create data structures for:
-- Celebrity followers
-- Brand values
-- Country populations
-- Game scores
+Coffee shops sell drinks in small, medium and large. Write two methods in `src/CupSize.java`:
 
-## Requirements
-Data Organization
-Create data structures for:
-- Celebrity followers
-- Brand values
-- Country populations
-- Game scores
+| Method | Example |
+|---|---|
+| `totalMl(int... parts)` | `totalMl(30, 200, 10)` → `240` |
+| `cupSize(int ml)` | up to 240 ml → `"small"`, up to 360 ml → `"medium"`, more → `"large"`. `0` or less → `"empty"`. |
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+Then, in `main`, print the size of a latte made from 30 ml of espresso, 300 ml of milk and 20 ml of foam.
 
-## Starter Code
-Check the src/ directory for starter code files.
+## Files
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+- `src/CupSize.java`: your code goes here.
+- `src/CupSizeTest.java`: the tests.
+- `solution/CupSize.java`: one answer.
+
+## 📌 Stuck?
+
+Day 8 covered varargs: inside the method, `parts` is an `int[]`. For `cupSize`, check `"empty"` first, then go up in size.

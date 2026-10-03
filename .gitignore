@@ -27,3 +27,7 @@ Thumbs.db
 
 # Node dependencies (the course website, and any day that uses npm): install locally, never commit
 node_modules/
+
+# Secrets (Day 35): keep real keys in the environment or in these ignored files
+.env
+*.local.properties

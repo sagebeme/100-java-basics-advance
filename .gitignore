@@ -24,3 +24,6 @@ Thumbs.db
 
 # ...except the JUnit runner checked into lib/, so `git clone` is enough to run tests
 !lib/*.jar
+
+# Node dependencies (the course website, and any day that uses npm): install locally, never commit
+node_modules/

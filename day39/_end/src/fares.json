@@ -1,0 +1,226 @@
+{
+ "note": "Practice fares from a made-up API. Airlines and prices are invented.",
+ "fares": [
+  {
+   "from": "NBO",
+   "to": "MBA",
+   "city": "Mombasa",
+   "depart": "2026-12-25",
+   "return": "2026-12-27",
+   "price": {
+    "amount": 6200,
+    "currency": "KES"
+   },
+   "airline": "Ndege Link",
+   "stops": 0
+  },
+  {
+   "from": "NBO",
+   "to": "MBA",
+   "city": "Mombasa",
+   "depart": "2026-12-25",
+   "return": "2026-12-27",
+   "price": {
+    "amount": 7900,
+    "currency": "KES"
+   },
+   "airline": "Twiga Air",
+   "stops": 0
+  },
+  {
+   "from": "NBO",
+   "to": "MBA",
+   "city": "Mombasa",
+   "depart": "2026-12-25",
+   "return": "2026-12-27",
+   "price": {
+    "amount": 9800,
+    "currency": "KES"
+   },
+   "airline": "Pwani Express",
+   "stops": 0
+  },
+  {
+   "from": "NBO",
+   "to": "KIS",
+   "city": "Kisumu",
+   "depart": "2026-12-25",
+   "return": "2026-12-27",
+   "price": {
+    "amount": 4800,
+    "currency": "KES"
+   },
+   "airline": "Ndege Link",
+   "stops": 0
+  },
+  {
+   "from": "NBO",
+   "to": "KIS",
+   "city": "Kisumu",
+   "depart": "2026-12-25",
+   "return": "2026-12-27",
+   "price": {
+    "amount": 5600,
+    "currency": "KES"
+   },
+   "airline": "Twiga Air",
+   "stops": 0
+  },
+  {
+   "from": "NBO",
+   "to": "KIS",
+   "city": "Kisumu",
+   "depart": "2026-12-25",
+   "return": "2026-12-27",
+   "price": {
+    "amount": 7300,
+    "currency": "KES"
+   },
+   "airline": "Pwani Express",
+   "stops": 0
+  },
+  {
+   "from": "NBO",
+   "to": "UKA",
+   "city": "Diani",
+   "depart": "2026-12-25",
+   "return": "2026-12-27",
+   "price": {
+    "amount": 8900,
+    "currency": "KES"
+   },
+   "airline": "Ndege Link",
+   "stops": 0
+  },
+  {
+   "from": "NBO",
+   "to": "UKA",
+   "city": "Diani",
+   "depart": "2026-12-25",
+   "return": "2026-12-27",
+   "price": {
+    "amount": 10400,
+    "currency": "KES"
+   },
+   "airline": "Twiga Air",
+   "stops": 1
+  },
+  {
+   "from": "NBO",
+   "to": "LAU",
+   "city": "Lamu",
+   "depart": "2026-12-25",
+   "return": "2026-12-27",
+   "price": {
+    "amount": 13800,
+    "currency": "KES"
+   },
+   "airline": "Ndege Link",
+   "stops": 0
+  },
+  {
+   "from": "NBO",
+   "to": "LAU",
+   "city": "Lamu",
+   "depart": "2026-12-25",
+   "return": "2026-12-27",
+   "price": {
+    "amount": 16500,
+    "currency": "KES"
+   },
+   "airline": "Twiga Air",
+   "stops": 1
+  },
+  {
+   "from": "NBO",
+   "to": "ZNZ",
+   "city": "Zanzibar",
+   "depart": "2026-12-25",
+   "return": "2026-12-27",
+   "price": {
+    "amount": 21500,
+    "currency": "KES"
+   },
+   "airline": "Ndege Link",
+   "stops": 0
+  },
+  {
+   "from": "NBO",
+   "to": "ZNZ",
+   "city": "Zanzibar",
+   "depart": "2026-12-25",
+   "return": "2026-12-27",
+   "price": {
+    "amount": 24900,
+    "currency": "KES"
+   },
+   "airline": "Twiga Air",
+   "stops": 1
+  },
+  {
+   "from": "NBO",
+   "to": "ZNZ",
+   "city": "Zanzibar",
+   "depart": "2026-12-25",
+   "return": "2026-12-27",
+   "price": {
+    "amount": 29800,
+    "currency": "KES"
+   },
+   "airline": "Pwani Express",
+   "stops": 1
+  },
+  {
+   "from": "NBO",
+   "to": "KGL",
+   "city": "Kigali",
+   "depart": "2026-12-25",
+   "return": "2026-12-27",
+   "price": {
+    "amount": 27400,
+    "currency": "KES"
+   },
+   "airline": "Ndege Link",
+   "stops": 0
+  },
+  {
+   "from": "NBO",
+   "to": "KGL",
+   "city": "Kigali",
+   "depart": "2026-12-25",
+   "return": "2026-12-27",
+   "price": {
+    "amount": 31800,
+    "currency": "KES"
+   },
+   "airline": "Twiga Air",
+   "stops": 1
+  },
+  {
+   "from": "NBO",
+   "to": "JRO",
+   "city": "Kilimanjaro",
+   "depart": "2026-12-25",
+   "return": "2026-12-27",
+   "price": {
+    "amount": 18900,
+    "currency": "KES"
+   },
+   "airline": "Ndege Link",
+   "stops": 0
+  },
+  {
+   "from": "NBO",
+   "to": "JRO",
+   "city": "Kilimanjaro",
+   "depart": "2026-12-25",
+   "return": "2026-12-27",
+   "price": {
+    "amount": 23100,
+    "currency": "KES"
+   },
+   "airline": "Twiga Air",
+   "stops": 1
+  }
+ ]
+}

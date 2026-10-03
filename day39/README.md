@@ -1,286 +1,99 @@
-# Day 39 - Capstone Part 1: Flight Deal Finder
+# Day 39 - Capstone Part 1: Long Weekend Deal Finder
 
-## 📚 Learning Objectives
-- Build complex application
-- Integrate flight APIs
-- Process large datasets
-- Implement search algorithms
-- Create data processing pipeline
+> Christmas falls on a Friday this year. Find every cheap flight out of Nairobi for that long weekend before your friends do.
 
-## 🎯 Topics Covered
-- Flight API integration
-- Data processing
-- Search algorithms
-- Price comparison
-- Notification systems
-- Multi-step workflows
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Every Kenyan with a job knows the trick: a public holiday on a Friday or a Monday is a free three-day weekend. Today and tomorrow you'll build a two-part capstone. **Part 1** (today) finds the next long weekend, searches a fare API for each place on your wishlist, and reports the deals that are under your limit:
 
-### Step 1: Flight API Integration
-Get flight data:
+```
+$ java DealFinder
+Next long weekend: Fri 25 Dec – Sun 27 Dec (Christmas Day, Boxing Day)
+3 deals from Nairobi:
+  Mombasa    MBA  KES   6,200  Ndege Link     direct  KES 800 under your limit
+  Diani      UKA  KES   8,900  Ndege Link     direct  KES 600 under your limit
+  Zanzibar   ZNZ  KES  21,500  Ndege Link     direct  KES 500 under your limit
+No deal yet: Kisumu (cheapest KES 4,800, your limit KES 4,500), Kigali (cheapest KES 27,400, your limit KES 25,000)
+```
+
+**Part 2** (Day 40) turns it into a club: members sign up with their own wishlists and get the deals by email.
+
+Real flight APIs need business accounts. So the project includes a **practice fare API**, `PracticeFareServer`, a real HTTP server that starts on your computer and answers from `fares.json`. Your `FareClient` talks to it over HTTP exactly as it would talk to a real API. Set `FARE_API_URL` and the same code uses a different server. **The airlines and prices are made up.**
+
+## 🎯 Learning Objectives
+- Break a capstone into small pieces you can test one at a time
+- Work out long weekends from a list of public holidays, including merging Easter's four days
+- Call an HTTP API (Day 33), with its address from the environment (Day 35)
+- Use `Optional` for "there might not be an answer"
+- Sort with a `Comparator` and format a readable report
+
+## 🧰 Java you'll use
+
+**`Optional<T>`** is a box that holds one value or nothing. It makes "maybe there's no deal" impossible to forget:
 
 ```java
-public class FlightAPI {
-    private static final String API_KEY = System.getenv("FLIGHT_API_KEY");
-    private static final String BASE_URL = "https://api.example.com/flights";
-    
-    public List<Flight> searchFlights(String from, String to, String date) {
-        String url = BASE_URL + "?from=" + from + "&to=" + to + "&date=" + date;
-        
-        // Make API request
-        // Parse response
-        // Return flight list
-    }
-    
-    public Flight getCheapestFlight(List<Flight> flights) {
-        return flights.stream()
-            .min(Comparator.comparing(Flight::getPrice))
-            .orElse(null);
-    }
+Optional<Fare> best = fares.stream()
+        .filter(f -> f.priceKes() <= limit)
+        .min(Comparator.comparingInt(Fare::priceKes));
+
+if (best.isPresent()) { ... best.get() ... }
+best.map(Fare::airline).orElse("no deal");
+```
+
+**`DayOfWeek`** tells you what day a date falls on:
+
+```java
+LocalDate.of(2026, 12, 25).getDayOfWeek();   // FRIDAY
+```
+
+**A server and a client in one program.** `PracticeFareServer` uses the same `HttpServer` you met in Day 33's tests. It's `AutoCloseable`, so try-with-resources stops it when you're done:
+
+```java
+try (PracticeFareServer api = new PracticeFareServer(Path.of("fares.json"))) {
+    FareClient client = new FareClient(api.baseUri().toString());
+    ...
 }
 ```
 
-### Step 2: Data Model
-Design flight data structure:
+## 🪜 Steps
 
-```java
-public class Flight {
-    private String from;
-    private String to;
-    private LocalDate date;
-    private double price;
-    private String airline;
-    private int duration;
-    
-    // Constructors, getters, setters
-}
+1. **Exercise 1: Leave days** (`exercise1/`). How many days off do you need to book for a trip?
+2. **Exercise 2: Cheapest per city** (`exercise2/`). Group fares with `Collectors.groupingBy`.
+3. **Project: Long Weekend Deal Finder** (`_start/src/`). The records, `FareClient` and `PracticeFareServer` are ready.
+   1. `Holidays.longWeekends`: a Friday holiday makes Fri–Sun, a Monday one Sat–Mon, and weekends that touch merge. Name every holiday inside each weekend.
+   2. `Holidays.next(holidays, today)`: the first long weekend that starts today or later.
+   3. `DealFinder.cheapestWithin(wish, fares)` and `sortDeals(deals)`.
+   4. `main`: search each wish for the weekend's dates and print the report.
+
+## 🧪 Run it and test it
+
+From the repo root (on Windows, use `;` instead of `:`):
+
+```bash
+javac -cp "lib/*" -d day39/_end/src day39/_end/src/*.java
+cd day39/_end/src && java -cp ".:../../../lib/*" DealFinder && cd ../../..
+java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp "day39/_end/src:lib/*" --scan-classpath
 ```
 
-### Step 3: Deal Detection
-Find good deals:
+Pass a date to pretend it's a different day: `java ... DealFinder 2027-02-01` looks for Easter instead. Edit `wishlist.csv` to change your limits.
 
-```java
-public class DealFinder {
-    private double maxPrice;
-    
-    public boolean isGoodDeal(Flight flight) {
-        // Check if price is below threshold
-        // Check if it's a significant discount
-        return flight.getPrice() <= maxPrice;
-    }
-    
-    public List<Flight> findDeals(List<Flight> flights) {
-        return flights.stream()
-            .filter(this::isGoodDeal)
-            .collect(Collectors.toList());
-    }
-}
-```
+`holidays.csv` lists Kenya's fixed-date public holidays and Easter for late 2026 and 2027. Dates can change by gazette notice, and Eid holidays depend on the moon, so check the official list before you book.
 
-### Step 4: Notification System
-Alert users of deals:
+## 🆘 Stuck?
 
-```java
-public class DealNotifier {
-    public void notifyDeal(Flight flight) {
-        String message = String.format(
-            "Low price alert! Only $%.2f to fly from %s to %s on %s",
-            flight.getPrice(),
-            flight.getFrom(),
-            flight.getTo(),
-            flight.getDate()
-        );
-        
-        EmailSender.sendEmail("user@example.com", "Flight Deal!", message);
-    }
-}
-```
-
-## 💻 Exercises
-
-### Exercise 1: API Integration
-Practice with:
-- Flight APIs
-- Data parsing
-- Error handling
-- Rate limiting
-
-### Exercise 2: Data Processing
-Process:
-- Flight data
-- Price comparisons
-- Filtering
-- Sorting
-
-### Exercise 3: Notification Systems
-Implement:
-- Deal detection
-- Alert formatting
-- Multiple notification channels
-- User preferences
-
-## 🎮 Project: Flight Deal Finder Part 1
-
-### Requirements
-Create flight deal finder (Part 1):
-1. Integrate flight search API
-2. Search flights by route and date
-3. Find cheapest flights
-4. Detect deals (below threshold)
-5. Store user preferences
-6. Basic notification system
-
-### Example Output
-```
-Flight Deal Finder
-
-Searching flights from LON to PAR on 2024-12-25...
-
-Found 15 flights
-Cheapest: $250.00
-
-Deals Found:
-- Flight ABC123: $200.00 (20% below average)
-- Flight XYZ789: $220.00 (12% below average)
-
-Sending notifications...
-```
-
-### Starter Code
-```java
-public class FlightDealFinder {
-    private FlightAPI flightAPI;
-    private DealFinder dealFinder;
-    private DealNotifier notifier;
-    
-    public void searchDeals(String from, String to, String date) {
-        List<Flight> flights = flightAPI.searchFlights(from, to, date);
-        List<Flight> deals = dealFinder.findDeals(flights);
-        
-        for (Flight deal : deals) {
-            notifier.notifyDeal(deal);
-        }
-    }
-}
-```
-
-## 📚 Resources
-
-### Official Documentation
-- [Flight APIs](https://developers.amadeus.com/)
-- [HTTP Client - Java API](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/)
-
-### Tutorials
-- [Flight API Integration](https://developers.amadeus.com/get-started)
-- [API Best Practices](https://www.baeldung.com/rest-api-best-practices)
-
-### Video Resources
-- [Flight API Tutorial](https://www.youtube.com/results?search_query=flight+api+java)
-- [API Integration](https://www.youtube.com/results?search_query=java+api+integration)
-
-### Practice Platforms
-- [Travel APIs](https://github.com/public-apis/public-apis#travel)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| API Integration | Connect to services | Flight search API |
-| Deal Detection | Find good prices | Price comparison |
-| Data Processing | Analyze data | Filter, sort flights |
-| Notification | Alert users | Email/SMS alerts |
-| Multi-step | Complex workflow | Search → Filter → Notify |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **Flight API:** Re-read **Step 1** — HTTP GET (Day 33); parse JSON to flight list — see **Step 2**
-- **Deal logic:** Compare price to threshold; filter by destination/dates — see **Step 2**
-- **Notify:** Use Day 32 (email) or Day 35 (SMS); env vars for API keys — see **Step 3**
-- **Main day README** → **Step 1 & 2** for API and filtering; **Key Concepts** for workflow
-
-**Related days:** Day 33 (HTTP, Gson); Day 32 (email); Day 36 (multi-API). **Quick reference:** Store API key in env; handle rate limits and errors
+- **Easter shows up as two weekends**: when the next weekend starts on or before the day after the last one ends, merge them instead of adding a new one.
+- **Boxing Day isn't named**: after finding a weekend's dates, look for *any* holiday inside them, not just the one that created it.
+- **`Connection refused`**: the practice server has stopped. Keep the client's calls inside the try-with-resources block.
+- **`NoSuchElementException: No value present`**: you called `get()` on an empty `Optional`. Check `isPresent()` first, or use `orElse`.
 
 ## ✅ Checklist
-- [ ] Can integrate flight APIs
-- [ ] Can process flight data
-- [ ] Can detect deals
-- [ ] Can send notifications
-- [ ] Can build complex workflows
-- [ ] Completed Flight Deal Finder Part 1
+- [ ] Found long weekends, including a four-day Easter
+- [ ] Searched a fare API over HTTP for each wish
+- [ ] Used `Optional` for "maybe no deal"
+- [ ] Sorted deals by saving and printed a clear report
+- [ ] The tests pass
 - [ ] Committed code to Git
 
-## 💻 How to Run Java Files
+## ➡️ Next
 
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to your project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day39\src"
-   ```
-
-3. **Compile** (multiple classes/API: use Maven or `javac *.java` with Gson JAR)
-   ```cmd
-   javac FlightDealFinder.java
-   ```
-
-4. **Run**
-   ```cmd
-   java FlightDealFinder
-   ```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to your project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day39/src
-   ```
-
-3. **Compile and run**
-   ```bash
-   javac FlightDealFinder.java
-   java FlightDealFinder
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA / Eclipse / VS Code:**
-1. Open the project (Maven/Gradle recommended for APIs and Gson)
-2. Right-click on the main class
-3. Select "Run 'FlightDealFinder.main()'"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **API keys**: Use environment variables for flight API keys; never commit secrets
-
-## 🚀 Next Steps
-After completing Day 39, you should be able to:
-- Build complex applications
-- Integrate multiple systems
-- Process large datasets
-- Create automated workflows
-
-**Ready for Day 40?** You'll complete Flight Club in Part 2!
-
-
-
-
-
-
-
+Day 40: Part 2. Members, sign-ups, personal wishlists, and an email to each member with only their deals.

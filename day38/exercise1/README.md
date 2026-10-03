@@ -1,33 +1,24 @@
-# Exercise 1
+# Day 38 - Exercise 1: Your first table
 
-## Objective
-Database Basics
-Practice with:
-- Creating tables
-- Inserting data
-- Querying data
-- Updating data
-- Deleting data
+Write three methods in `src/FirstTable.java`, each taking an open `Connection`:
 
-## Requirements
-Database Basics
-Practice with:
-- Creating tables
-- Inserting data
-- Querying data
-- Updating data
-- Deleting data
+| Method | SQL it runs |
+|---|---|
+| `createTable(db)` | `CREATE TABLE IF NOT EXISTS members (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(60) NOT NULL, joined DATE NOT NULL)` |
+| `addMember(db, name, joined)` | an `INSERT` with `?` placeholders |
+| `countMembers(db)` | `SELECT COUNT(*) FROM members` |
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+`main` connects to `jdbc:h2:mem:club`, creates the table, adds three gym members and prints the count. The tests use their own in-memory database.
 
-## Starter Code
-Check the src/ directory for starter code files.
+## Files
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+- `src/FirstTable.java`: your code goes here.
+- `src/FirstTableTest.java`: the tests.
+- `solution/FirstTable.java`: one answer.
+
+## 📌 Stuck?
+
+- `db.createStatement().execute(sql)` is fine for SQL with no values in it, like `CREATE TABLE`.
+- For values, use `db.prepareStatement(sql)`, then `setString(1, ...)`, `setObject(2, localDate)` and `executeUpdate()`.
+- `executeQuery()` gives a `ResultSet`; call `next()` once, then `getInt(1)` for the count.
+- Wrap every statement in try-with-resources so it's closed.

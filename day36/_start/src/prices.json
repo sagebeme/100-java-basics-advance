@@ -1,0 +1,59 @@
+{
+ "market": "NSE",
+ "currency": "KES",
+ "note": "Made-up prices for practice",
+ "symbols": {
+  "SCOM": {
+   "name": "Safaricom",
+   "closes": [
+    {
+     "date": "2026-09-30",
+     "close": 17.1
+    },
+    {
+     "date": "2026-10-01",
+     "close": 18.2
+    }
+   ]
+  },
+  "EQTY": {
+   "name": "Equity Group",
+   "closes": [
+    {
+     "date": "2026-09-30",
+     "close": 44.5
+    },
+    {
+     "date": "2026-10-01",
+     "close": 44.95
+    }
+   ]
+  },
+  "KCB": {
+   "name": "KCB Group",
+   "closes": [
+    {
+     "date": "2026-09-30",
+     "close": 38.0
+    },
+    {
+     "date": "2026-10-01",
+     "close": 35.7
+    }
+   ]
+  },
+  "EABL": {
+   "name": "East African Breweries",
+   "closes": [
+    {
+     "date": "2026-09-30",
+     "close": 152.0
+    },
+    {
+     "date": "2026-10-01",
+     "close": 151.25
+    }
+   ]
+  }
+ }
+}

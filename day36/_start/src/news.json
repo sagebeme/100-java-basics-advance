@@ -1,0 +1,54 @@
+{
+ "status": "ok",
+ "totalResults": 6,
+ "articles": [
+  {
+   "source": {
+    "name": "Biashara Daily"
+   },
+   "title": "Safaricom shares jump after M-Pesa growth beats forecasts",
+   "publishedAt": "2026-10-01T09:30:00Z",
+   "url": "https://example.com/scom-mpesa"
+  },
+  {
+   "source": {
+    "name": "Soko Wire"
+   },
+   "title": "Safaricom names new chief technology officer",
+   "publishedAt": "2026-09-29T07:00:00Z",
+   "url": "https://example.com/scom-cto"
+  },
+  {
+   "source": {
+    "name": "Soko Wire"
+   },
+   "title": "KCB Group falls as investors weigh loan loss provisions",
+   "publishedAt": "2026-10-01T11:15:00Z",
+   "url": "https://example.com/kcb-loans"
+  },
+  {
+   "source": {
+    "name": "Biashara Daily"
+   },
+   "title": "KCB opens new branch in Eldoret",
+   "publishedAt": "2026-09-20T08:00:00Z",
+   "url": "https://example.com/kcb-branch"
+  },
+  {
+   "source": {
+    "name": "Market Matters"
+   },
+   "title": "Equity Group steady ahead of results",
+   "publishedAt": "2026-10-01T06:45:00Z",
+   "url": "https://example.com/eqty"
+  },
+  {
+   "source": {
+    "name": "Market Matters"
+   },
+   "title": "Nairobi bourse closes mixed; KCB and Safaricom lead volumes",
+   "publishedAt": "2026-10-01T15:30:00Z",
+   "url": "https://example.com/nse-close"
+  }
+ ]
+}

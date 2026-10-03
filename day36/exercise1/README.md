@@ -1,31 +1,28 @@
-# Exercise 1
+# Day 36 - Exercise 1: Percent change
 
-## Objective
-API Integration
-Practice with:
-- Multiple API calls
-- Data aggregation
-- Error handling
-- Rate limiting
+Write two methods in `src/PercentChange.java`, using `BigDecimal` throughout:
 
-## Requirements
-API Integration
-Practice with:
-- Multiple API calls
-- Data aggregation
-- Error handling
-- Rate limiting
+**`percentChange(String before, String after)`**: the change as a percentage, rounded half-up to 2 decimal places.
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+| before → after | Result |
+|---|---|
+| `17.10` → `18.20` | `6.43` |
+| `38.00` → `35.70` | `-6.05` |
+| `0.10` → `0.30` | `200.00` |
 
-## Starter Code
-Check the src/ directory for starter code files.
+Throw an `IllegalArgumentException` if `before` is zero, since a change from nothing has no percentage.
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+**`describe(BigDecimal change)`**: `"▲ 6.43%"`, `"▼ 6.05%"` or `"● 0.00%"` for no change.
+
+## Files
+
+- `src/PercentChange.java`: your code goes here.
+- `src/PercentChangeTest.java`: the tests.
+- `solution/PercentChange.java`: one answer.
+
+## 📌 Stuck?
+
+- `new BigDecimal("17.10")` from text, never from a `double`.
+- `divide(divisor, 2, RoundingMode.HALF_UP)` rounds as it divides.
+- `signum()` is `1`, `0` or `-1`, and `abs()` drops the minus sign.
+- Compare a `BigDecimal` with zero using `compareTo(BigDecimal.ZERO) == 0`, not `equals`: `0.00` and `0` aren't `equals`.

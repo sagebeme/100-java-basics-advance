@@ -1,34 +1,21 @@
-# Exercise 1
+# Day 46 - Exercise 1: Structured data
 
-## Objective
-Price Scraping
-Scrape prices from:
-- E-commerce sites
-- Different product pages
-- Handle different formats
-- Error handling
+Many shops tag their product pages with **schema.org** data for search engines: `<meta itemprop="price" content="1499.00">`. It's more reliable than the visible text, which changes with every redesign and is sometimes simply wrong. Look at `src/shoes.html`: the banner says KES 1,299, but the data says 1,499.
 
-## Requirements
-Price Scraping
-Scrape prices from:
-- E-commerce sites
-- Different product pages
-- Handle different formats
-- Error handling
+Write two methods in `src/StructuredPrice.java`:
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+| Method | For `shoes.html` |
+|---|---|
+| `price(Document page)` | `1499`: the `meta[itemprop=price]` content rounded to whole shillings, or, if there's no such tag, the digits of the visible `.price`. `-1` if there's neither. |
+| `currency(Document page)` | `"KES"`: the `meta[itemprop=priceCurrency]` content, or `"KES"` if it's missing |
 
-## Starter Code
-Check the src/ directory for starter code files.
+## Files
 
-## 📌 Refer to (when stuck)
-- **Day 46 README** ([day46/README.md](../README.md)) → **Notes & reference** and **Step-by-Step Instructions**. Use main day README for structure and hints.
+- `src/StructuredPrice.java`: your code goes here.
+- `src/shoes.html`: the page.
+- `src/StructuredPriceTest.java`: the tests.
+- `solution/StructuredPrice.java`: one answer.
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+## 📌 Stuck?
+
+`page.selectFirst("meta[itemprop=price]")` and `.attr("content")`. `Math.round(Double.parseDouble("1499.00"))`. For the visible price, `text.replaceAll("[^0-9]", "")` keeps only the digits.

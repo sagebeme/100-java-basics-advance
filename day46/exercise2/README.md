@@ -1,34 +1,20 @@
-# Exercise 2
+# Day 46 - Exercise 2: Is it really cheaper?
 
-## Objective
-Price Tracking
-Track:
-- Price history
-- Price changes
-- Trends
-- Statistics
+Given today's price and the prices seen over the last few weeks, write two methods in `src/PriceStats.java`:
 
-## Requirements
-Price Tracking
-Track:
-- Price history
-- Price changes
-- Trends
-- Statistics
+| Method | Example (history `[18999, 18999, 21999, 21999]`) |
+|---|---|
+| `percentBelowHigh(int today, List<Integer> history)` | today `18499`: `15.9` (rounded to one decimal place), or `0.0` when today is the highest or there's no history |
+| `isLowestYet(int today, List<Integer> history)` | today `18499`: `true`; today `18999`: `false` (it's not *lower* than the lowest) |
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+`isLowestYet` with an empty history is `true`: the first price you see is the lowest you've seen.
 
-## Starter Code
-Check the src/ directory for starter code files.
+## Files
 
-## 📌 Refer to (when stuck)
-- **Day 46 README** ([day46/README.md](../README.md)) → **Notes & reference** and **Key Concepts Summary**. Use main day README for structure and hints.
+- `src/PriceStats.java`: your code goes here.
+- `src/PriceStatsTest.java`: the tests.
+- `solution/PriceStats.java`: one answer.
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+## 📌 Stuck?
+
+`history.stream().mapToInt(Integer::intValue).max()` gives an `OptionalInt`. `(high - today) * 100.0 / high`, then `Math.round(x * 10) / 10.0` for one decimal place.

@@ -1,255 +1,91 @@
-# Day 46 - Automated Price Tracker
+# Day 46 - Bei Alert: An Automated Price Tracker
 
-## 📚 Learning Objectives
-- Build automated price monitoring
-- Track price changes
-- Send price alerts
-- Store price history
-- Create monitoring tools
+> "Flash sale! Was KES 6,999!" Was it, though? Track prices over time, get an email when something you want really gets cheaper, and catch the fake discounts.
 
-## 🎯 Topics Covered
-- Price scraping
-- Price comparison
-- Database storage
-- Alert systems
-- Scheduled tasks
-- Data visualization
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Njoki is saving for a new phone. She checks the shop every evening, and every week there's a "flash sale" that doesn't feel like much of one. Today you'll build **Bei Alert** (*bei* means price): it reads the product pages on her watchlist, remembers every price it has seen, and emails her only when the price is really worth it:
 
-### Step 1: Price Scraping
-Extract prices from websites:
+```
+$ java BeiAlert njoki@example.com
+🔔 Spark 20 Smartphone, 128 GB                KES  18,499  KES 18,499 is at or under your target of KES 19,000
+   Wireless Earbuds Pro                       KES   3,299  Out of stock
+   Jikoni 1.5L Blender                        KES   5,999  Not a real sale: it was KES 5,499 earlier this month
+```
+
+The shop, *Duka Digital*, is made up, and its pages are saved in the project. The program can also read a live page by URL, following the rules from Day 43: one page, a clear user agent, and only where the site allows it.
+
+## 🎯 Learning Objectives
+- Read **schema.org structured data** from a page, with the visible text as a fallback
+- Keep a price history in a CSV file that grows every run
+- Ask questions of the history: lowest and highest over the last 30 days
+- Write alert rules that check history, not just today's number
+- Send alerts through Day 32's `Mailer`
+
+## 🧰 What you'll use
+
+**Structured data.** Shops add hidden tags so search engines can show prices in results:
+
+```html
+<meta itemprop="price" content="18499">
+<link itemprop="availability" href="https://schema.org/InStock">
+```
 
 ```java
-public class PriceScraper {
-    public double getPrice(String url) {
-        try {
-            Document doc = Jsoup.connect(url)
-                .userAgent("Mozilla/5.0")
-                .get();
-            
-            // Find price element (adjust selector)
-            Element priceElement = doc.selectFirst(".price, [data-price]");
-            String priceText = priceElement.text();
-            
-            // Extract number
-            return parsePrice(priceText);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -1;
-        }
-    }
-    
-    private double parsePrice(String text) {
-        // Remove currency symbols and extract number
-        String cleaned = text.replaceAll("[^\\d.]", "");
-        return Double.parseDouble(cleaned);
-    }
-}
+page.selectFirst("meta[itemprop=price]").attr("content");   // "18499"
 ```
 
-### Step 2: Price Storage
-Store prices in database:
+These rarely change when the shop redesigns its pages, so they make the sturdiest scraper. The visible price is a backup.
+
+**Appending to a file**, so history builds up day by day:
 
 ```java
-public class PriceDatabase {
-    public void savePrice(String productUrl, double price, LocalDateTime timestamp) {
-        String sql = "INSERT INTO prices (url, price, timestamp) VALUES (?, ?, ?)";
-        
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, productUrl);
-            pstmt.setDouble(2, price);
-            pstmt.setString(3, timestamp.toString());
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    public double getLastPrice(String productUrl) {
-        String sql = "SELECT price FROM prices WHERE url = ? ORDER BY timestamp DESC LIMIT 1";
-        // Execute query and return price
-    }
-}
+Files.writeString(csv, "2026-10-03,PHONE-01,18499\n", StandardOpenOption.APPEND);
 ```
 
-### Step 3: Price Comparison
-Compare and detect changes:
+**History questions** with streams:
 
 ```java
-public class PriceTracker {
-    public void checkPrice(String url, double targetPrice) {
-        double currentPrice = scraper.getPrice(url);
-        double lastPrice = database.getLastPrice(url);
-        
-        database.savePrice(url, currentPrice, LocalDateTime.now());
-        
-        if (lastPrice > 0) {
-            double change = currentPrice - lastPrice;
-            double percentChange = (change / lastPrice) * 100;
-            
-            if (currentPrice <= targetPrice) {
-                sendAlert(url, currentPrice, "Price dropped to target!");
-            } else if (percentChange < -10) {
-                sendAlert(url, currentPrice, "Price dropped by " + percentChange + "%");
-            }
-        }
-    }
-}
+history.before(sku, today, 30).stream().mapToInt(Integer::intValue).min();   // the 30-day low
 ```
 
-### Step 4: Scheduled Monitoring
-Automate price checks:
+## 🪜 Steps
 
-```java
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+1. **Exercise 1: Structured data** (`exercise1/`). Trust the data over the banner.
+2. **Exercise 2: Is it really cheaper?** (`exercise2/`). Percentages below the high, and "lowest yet".
+3. **Project: Bei Alert** (`_start/src/`).
+   1. `ProductPage.read`: name, SKU, price, the crossed-out "was" price, and whether it's in stock.
+   2. `AlertRules.judge`: out of stock, a fake sale, at target, or how far to go, in that order.
+   3. Run it for `2026-10-03`, read the email in `outbox/`, and look at the new lines at the end of `history.csv`.
 
-public class AutomatedTracker {
-    private ScheduledExecutorService scheduler;
-    
-    public void startMonitoring(String url, double targetPrice, int intervalHours) {
-        scheduler = Executors.newScheduledThreadPool(1);
-        
-        scheduler.scheduleAtFixedRate(() -> {
-            tracker.checkPrice(url, targetPrice);
-        }, 0, intervalHours, TimeUnit.HOURS);
-    }
-}
+## 🧪 Run it and test it
+
+From the repo root (on Windows, use `;` instead of `:`):
+
+```bash
+javac -cp "lib/*" -d day46/_end/src day46/_end/src/*.java
+cd day46/_end/src && java -cp ".:../../../lib/*" BeiAlert you@example.com 2026-10-03 && cd ../../..
+java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp "day46/_end/src:lib/*" --scan-classpath
 ```
 
-## 💻 Exercises
+Each run adds three lines to `history.csv`. Run `git checkout day46/_end/src/history.csv` to reset it.
 
-### Exercise 1: Price Scraping
-Scrape prices from:
-- E-commerce sites
-- Different product pages
-- Handle different formats
-- Error handling
+## 🆘 Stuck?
 
-### Exercise 2: Price Tracking
-Track:
-- Price history
-- Price changes
-- Trends
-- Statistics
-
-### Exercise 3: Alert System
-Implement:
-- Price drop alerts
-- Target price alerts
-- Email notifications
-- SMS notifications
-
-## 🎮 Project: Amazon Price Tracker
-
-### Requirements
-Create automated price tracker:
-1. Track product URLs
-2. Check prices periodically
-3. Store price history
-4. Detect price drops
-5. Send email alerts
-6. Web interface (optional)
-
-### Example Output
-```
-Price Tracker
-
-Monitoring: https://amazon.com/product/123
-
-Current Price: $99.99
-Last Price: $129.99
-Change: -$30.00 (-23.1%)
-
-Price History:
-2024-12-01: $129.99
-2024-12-02: $99.99 ⬇️
-
-Alert sent: Price dropped below $100!
-```
-
-### Starter Code
-```java
-public class PriceTrackerApp {
-    public static void main(String[] args) {
-        PriceTracker tracker = new PriceTracker();
-        
-        // Add products to track
-        tracker.addProduct("https://amazon.com/product1", 50.0);
-        tracker.addProduct("https://amazon.com/product2", 100.0);
-        
-        // Start monitoring
-        tracker.startMonitoring(6); // Check every 6 hours
-    }
-}
-```
-
-## 📚 Resources
-
-### Official Documentation
-- [Jsoup Documentation](https://jsoup.org/)
-- [SQLite Documentation](https://www.sqlite.org/docs.html)
-- [ScheduledExecutorService - Java API](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ScheduledExecutorService.html)
-
-### Tutorials
-- [Price Tracking Tutorial](https://www.geeksforgeeks.org/)
-- [Scheduled Tasks Java](https://www.baeldung.com/java-executor-service-tutorial)
-
-### Video Resources
-- [Price Tracker Tutorial](https://www.youtube.com/results?search_query=price+tracker+java)
-- [Web Scraping Automation](https://www.youtube.com/results?search_query=web+scraping+automation+java)
-
-### Practice Platforms
-- [Automation Projects](https://github.com/karan/Projects#automation)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Price Scraping | Extract prices | Parse HTML |
-| Price History | Track over time | Database storage |
-| Price Comparison | Detect changes | Calculate differences |
-| Scheduled Tasks | Automated checks | `ScheduledExecutorService` |
-| Alert System | Notify users | Email/SMS alerts |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **Scraping:** Re-read **Step 1** — reuse Day 43/44 patterns; extract price from HTML — see **Step 2**
-- **Storage:** Re-read **Step 2** — DB (Day 38) or CSV (Day 25) for price history — see **Step 2**
-- **Scheduling:** Re-read **Step 3** — `ScheduledExecutorService.scheduleAtFixedRate()` — see **Step 3**
-- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
-
-**Related days:** Day 44 (scraping); Day 38 (DB); Day 32 (alerts). **Quick reference:** Maven; run main class; env for API/email
-
-## 💻 How to Run
-
-**Java + Jsoup + optional DB** — run main class from IDE or: `mvn compile exec:java -Dexec.mainClass="YourMainClass"`. Set env for alerts.
+- **The price is 1299 when the data says 1499**: you read the visible banner first. Prefer `meta[itemprop=price]`.
+- **`NumberFormatException` on `"18,499"`**: remove everything that isn't a digit first.
+- **Every sale looks fake**: only call it fake when the page *claims* a discount (a "was" price) and the 30-day low is at or below today's price.
+- **The 30-day low includes today**: compare with prices *before* today, or every price would be its own lowest.
 
 ## ✅ Checklist
-- [ ] Can scrape prices
-- [ ] Can store price history
-- [ ] Can compare prices
-- [ ] Can schedule tasks
-- [ ] Can send alerts
-- [ ] Completed Price Tracker
+- [ ] Read a price from structured data, with a fallback
+- [ ] Kept a growing price history
+- [ ] Found 30-day lows and highs
+- [ ] Spotted a fake sale
+- [ ] Sent an alert email through the `Mailer`
+- [ ] Finished both exercises, and the tests pass
 - [ ] Committed code to Git
 
-## 🚀 Next Steps
-After completing Day 46, you should be able to:
-- Build automated trackers
-- Monitor prices
-- Send alerts
-- Create monitoring tools
+## ➡️ Next
 
-**Ready for Day 47?** You'll learn Selenium WebDriver automation!
-
-
-
-
-
-
-
+Day 47 drives a real web browser from Java with Selenium, against a practice events site that runs on your own computer.

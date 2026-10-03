@@ -1,43 +1,42 @@
 import org.junit.jupiter.api.Test;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class HabitStatsTest {
 
+    private static final LocalDate TODAY = LocalDate.of(2026, 10, 3); // Saturday
+
     @Test
-    void completionRateIsCompletedDaysOverTotalDays() {
-        Habit habit = new Habit("Read");
-        LocalDate start = LocalDate.of(2026, 1, 1);
-        habit.markComplete(start);
-        habit.markComplete(start.plusDays(1));
-        // 2 of 4 days (Jan 1-4) completed
-        assertEquals(0.5, HabitStats.completionRate(habit, start, start.plusDays(3)), 0.001);
+    void ratesOnlyTheWindow() {
+        Set<LocalDate> done = new HashSet<>();
+        for (int i = 0; i < 24; i++) done.add(TODAY.minusDays(i));
+        done.add(TODAY.minusDays(45));
+        assertEquals(80, HabitStats.rate(done, TODAY, 30));
+        assertEquals(0, HabitStats.rate(Set.of(), TODAY, 30));
     }
 
     @Test
-    void aPerfectRangeIsFullCompletion() {
-        Habit habit = new Habit("Read");
-        LocalDate day = LocalDate.of(2026, 1, 1);
-        habit.markComplete(day);
-        assertEquals(1.0, HabitStats.completionRate(habit, day, day), 0.001);
+    void roundsToTheNearestPercent() {
+        assertEquals(33, HabitStats.rate(Set.of(TODAY), TODAY, 3));
+        assertEquals(67, HabitStats.rate(Set.of(TODAY, TODAY.minusDays(1)), TODAY, 3));
     }
 
     @Test
-    void longestStreakFindsTheBestRunEvenAfterAGap() {
-        Habit habit = new Habit("Read");
-        LocalDate start = LocalDate.of(2026, 1, 1);
-        habit.markComplete(start);
-        habit.markComplete(start.plusDays(1));
-        habit.markComplete(start.plusDays(2));
-        // gap at day 3
-        habit.markComplete(start.plusDays(4));
-        habit.markComplete(start.plusDays(5));
-
-        assertEquals(3, HabitStats.longestStreak(habit));
+    void findsTheBestWeekday() {
+        Set<LocalDate> done = Set.of(
+                LocalDate.of(2026, 9, 14), LocalDate.of(2026, 9, 21), LocalDate.of(2026, 9, 28),        // 3 Mondays
+                LocalDate.of(2026, 9, 12), LocalDate.of(2026, 9, 19), LocalDate.of(2026, 9, 26), TODAY, // 4 Saturdays
+                LocalDate.of(2026, 9, 27));                                                             // 1 Sunday
+        assertEquals(DayOfWeek.SATURDAY, HabitStats.bestWeekday(done));
     }
 
     @Test
-    void aHabitWithNoHistoryHasNoStreak() {
-        assertEquals(0, HabitStats.longestStreak(new Habit("Read")));
+    void theEarlierDayWinsATie() {
+        assertEquals(DayOfWeek.MONDAY, HabitStats.bestWeekday(Set.of(LocalDate.of(2026, 9, 28), TODAY)));
+        assertNull(HabitStats.bestWeekday(Set.of()));
     }
 }

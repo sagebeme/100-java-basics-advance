@@ -1,31 +1,23 @@
-# Exercise 1
+# Day 37 - Exercise 1: Streaks
 
-## Objective
-Habit Tracking
-Create systems for:
-- Adding habits
-- Marking completion
-- Tracking streaks
-- Viewing history
+Write two methods in `src/Streaks.java`. Both take the days a habit was done as a `Set<LocalDate>`.
 
-## Requirements
-Habit Tracking
-Create systems for:
-- Adding habits
-- Marking completion
-- Tracking streaks
-- Viewing history
+**`current(Set<LocalDate> done, LocalDate today)`**: how many days in a row, ending today. If today isn't done (yet), count back from yesterday instead.
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+**`longest(Set<LocalDate> done)`**: the longest run of consecutive days anywhere.
 
-## Starter Code
-Check the src/ directory for starter code files.
+```
+done: 28 Sep, 29 Sep, 30 Sep, 2 Oct, 3 Oct     today: 3 Oct
+current → 2      longest → 3
+```
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+## Files
+
+- `src/Streaks.java`: your code goes here.
+- `src/StreaksTest.java`: the tests.
+- `solution/Streaks.java`: one answer.
+
+## 📌 Stuck?
+
+- `current`: a `while (done.contains(day))` loop, moving `day = day.minusDays(1)` each time.
+- `longest`: copy the dates into a `TreeSet` so they're in order. A run continues when `previous.plusDays(1).equals(day)`, and otherwise starts again at 1.

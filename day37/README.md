@@ -1,282 +1,104 @@
-# Day 37 - Habit Tracking Application
+# Day 37 - Streak Garden: A Habit Tracker
 
-## 📚 Learning Objectives
-- Build habit tracking system
-- Work with date tracking
-- Create data visualization
-- Implement persistence
-- Build productivity tools
+> Read 10 pages, drink 2 litres of water, practise Java for an hour. Track your habits, count your streaks, and watch your garden grow.
 
-## 🎯 Topics Covered
-- Habit tracking logic
-- Date management
-- Data persistence
-- Visualization basics
-- Progress tracking
-- Statistics
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+You're 37 days into a 100-day course, so you already know a streak keeps you going. Today you'll build a habit tracker for the terminal. Every day you mark what you did, and it shows a calendar that "grows" like a garden: empty soil for days you missed, flowers for days you showed up.
 
-### Step 1: Habit Data Model
-Design habit structure:
+```
+$ java StreakGarden done "Java practice"
+✔ Java practice done for Sat 3 Oct. Streak: 14 days 🔥
+
+$ java StreakGarden show
+Java practice    streak 14 · best 14 · 57% of the last 30 days
+     Mon  · · ✿ ✿ ✿ ✿
+     Tue  · ✿ ✿ · ✿ ✿
+     Wed  · ✿ · · ✿ ✿
+     Thu  · ✿ · · ✿ ✿
+     Fri  · · · · ✿ ✿
+     Sat  · · · · ✿ ✿
+     Sun  · · · ✿ ✿
+```
+
+Your habits are saved in `habits.json`, so they're still there tomorrow.
+
+## 🎯 Learning Objectives
+- Model data with classes and records: a `Habit` holds a set of dates
+- Count streaks by walking backwards through days
+- Calculate completion rates over a window of time
+- Draw a calendar grid in the terminal, one column per week
+- Save to and load from a JSON file
+- Build a small command-line interface from `args`
+
+## 🧰 Java you'll use
+
+**A `Set<LocalDate>`** is the right shape for "days I did it": each day counts once, and `contains` is fast.
+
+**Walking backwards through days** is the core of a streak:
 
 ```java
-public class Habit {
-    private String name;
-    private Map<LocalDate, Boolean> completions;
-    
-    public Habit(String name) {
-        this.name = name;
-        this.completions = new HashMap<>();
-    }
-    
-    public void markComplete(LocalDate date) {
-        completions.put(date, true);
-    }
-    
-    public boolean isComplete(LocalDate date) {
-        return completions.getOrDefault(date, false);
-    }
-    
-    public int getStreak() {
-        // Calculate current streak
-    }
+LocalDate day = today;
+int streak = 0;
+while (done.contains(day)) {
+    streak++;
+    day = day.minusDays(1);
 }
 ```
 
-### Step 2: Persistence
-Save habits to file:
+One subtlety: at 8am you haven't read your 10 pages *yet*, but your streak isn't broken. If today isn't done, start counting from yesterday.
+
+**Weeks as columns.** To draw a calendar, find the Monday of the earliest week (`date.with(DayOfWeek.MONDAY)`), then fill rows Monday to Sunday and columns week by week. Days in the future show as blank.
+
+**Saving to JSON** with `org.json`:
 
 ```java
-public class HabitManager {
-    private List<Habit> habits;
-    private Gson gson;
-    
-    public void saveHabits() {
-        try {
-            String json = gson.toJson(habits);
-            FileWriter writer = new FileWriter("habits.json");
-            writer.write(json);
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    public void loadHabits() {
-        try {
-            FileReader reader = new FileReader("habits.json");
-            Type listType = new TypeToken<List<Habit>>(){}.getType();
-            habits = gson.fromJson(reader, listType);
-            reader.close();
-        } catch (FileNotFoundException e) {
-            habits = new ArrayList<>();
-        }
-    }
-}
+JSONObject root = new JSONObject();
+root.put("Java practice", new JSONArray(List.of("2026-10-01", "2026-10-02")));
+Files.writeString(Path.of("habits.json"), root.toString(2));
 ```
 
-### Step 3: Statistics
-Calculate habit statistics:
+## 🪜 Steps
 
-```java
-public class HabitStats {
-    public int getTotalDays(Habit habit) {
-        return habit.getCompletions().size();
-    }
-    
-    public int getCurrentStreak(Habit habit) {
-        // Calculate streak logic
-    }
-    
-    public double getCompletionRate(Habit habit) {
-        // Calculate percentage
-    }
-}
+1. **Exercise 1: Streaks** (`exercise1/`). Current and longest streaks from a set of dates.
+2. **Exercise 2: Rates and best days** (`exercise2/`). Completion rate over the last *n* days, and which weekday you're best at.
+3. **Project: Streak Garden** (`_start/src/`).
+   1. `Habit`: `markDone(date)`, `currentStreak(today)`, `longestStreak()` and `rate(today, days)`.
+   2. `Garden.render(habit, today, weeks)`: the grid in the example. `✿` for done, `·` for missed, and a blank for days after `today`.
+   3. `HabitStore.save` and `load`: the habits as `{"name": ["2026-10-01", ...]}`. Loading a file that doesn't exist gives no habits, not an error.
+   4. `StreakGarden.main`: the commands `add <name>`, `done <name> [yyyy-mm-dd]` and `show`.
+
+## 🧪 Run it and test it
+
+From the repo root (on Windows, use `;` instead of `:`):
+
+```bash
+javac -cp "lib/*" -d day37/_end/src day37/_end/src/*.java
+cd day37/_end/src
+java -cp ".:../../../lib/*" StreakGarden add "Java practice"
+java -cp ".:../../../lib/*" StreakGarden done "Java practice"
+java -cp ".:../../../lib/*" StreakGarden done "Java practice" 2026-10-01
+java -cp ".:../../../lib/*" StreakGarden show
+cd ../../..
+java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp "day37/_end/src:lib/*" --scan-classpath
 ```
 
-## 💻 Exercises
+## 🆘 Stuck?
 
-### Exercise 1: Habit Tracking
-Create systems for:
-- Adding habits
-- Marking completion
-- Tracking streaks
-- Viewing history
-
-### Exercise 2: Statistics
-Calculate:
-- Completion rates
-- Current streaks
-- Longest streaks
-- Weekly/monthly stats
-
-### Exercise 3: Visualization
-Create visual:
-- Progress bars
-- Calendar view
-- Charts
-- Reports
-
-## 🎮 Project: Habit Tracker
-
-### Requirements
-Create habit tracking application:
-1. Add/remove habits
-2. Mark habits as complete
-3. Track daily completions
-4. Calculate streaks
-5. Display statistics
-6. Save to file
-7. Calendar view of completions
-
-### Example Output
-```
-Habit Tracker
-
-Habits:
-✓ Exercise (Streak: 5 days)
-✓ Reading (Streak: 3 days)
-✗ Meditation (Streak: 0 days)
-
-Today's Progress: 2/3 habits completed
-
-[Calendar view showing completion dates]
-```
-
-### Starter Code
-```java
-public class HabitTracker {
-    private List<Habit> habits;
-    private HabitManager manager;
-    
-    public void addHabit(String name) {
-        habits.add(new Habit(name));
-        manager.saveHabits();
-    }
-    
-    public void markComplete(String habitName) {
-        // Mark today as complete
-    }
-}
-```
-
-## 📚 Resources
-
-### Official Documentation
-- [LocalDate - Java API](https://docs.oracle.com/javase/8/docs/api/java/time/LocalDate.html)
-- [Map Interface - Oracle Docs](https://docs.oracle.com/javase/tutorial/collections/interfaces/map.html)
-
-### Tutorials
-- [Habit Tracking Apps](https://www.geeksforgeeks.org/)
-- [Date Calculations](https://www.baeldung.com/java-date-calculations)
-
-### Video Resources
-- [Habit Tracker Tutorial](https://www.youtube.com/results?search_query=habit+tracker+java)
-- [Productivity Apps](https://www.youtube.com/results?search_query=java+productivity+app)
-
-### Practice Platforms
-- [Productivity Projects](https://github.com/karan/Projects#productivity)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Habit Tracking | Monitor activities | Daily completions |
-| Streak | Consecutive days | Current streak count |
-| Persistence | Save data | JSON file storage |
-| Statistics | Analyze data | Completion rates |
-| Visualization | Display data | Calendar, charts |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **Habit data:** Re-read **Step 1** — model: name, dates completed; store in JSON or file — see **Step 2**
-- **Streak:** Count consecutive days from today backward — see **Step 2**
-- **Persistence:** Day 24 (file I/O) or Day 30 (Gson JSON) — see **Step 3**
-- **Main day README** → **Step 1 & 2** for data model; **Key Concepts** for persistence
-
-**Related days:** Day 30 (JSON); Day 24 (file I/O); Day 34 (GUI optional). **Quick reference:** LocalDate for dates; Gson for save/load
+- **The streak is 0 every morning**: if today isn't done yet, count from yesterday.
+- **The longest streak is too long**: sort the dates first, then count runs where each date is exactly one day after the one before.
+- **The calendar's columns are off by one**: start from the Monday on or before the first day you show: `start.with(DayOfWeek.MONDAY)`. For a Sunday that goes *back* six days, which is what you want.
+- **`habits.json` appears in a strange folder**: relative paths start from where you ran `java`. That's why the commands above `cd` into `src` first.
 
 ## ✅ Checklist
-- [ ] Can track habits
-- [ ] Can calculate streaks
-- [ ] Can persist data
-- [ ] Can display statistics
-- [ ] Can visualize progress
-- [ ] Completed Habit Tracker
+- [ ] Counted current and longest streaks, including "not done yet today"
+- [ ] Calculated a completion rate
+- [ ] Drew a week-by-week calendar in the terminal
+- [ ] Saved and reloaded habits as JSON
+- [ ] Built `add`, `done` and `show` commands
+- [ ] The tests pass
 - [ ] Committed code to Git
 
-## 💻 How to Run Java Files
+## ➡️ Next
 
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to your project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day37\src"
-   ```
-
-3. **Compile** (if multiple files: `javac *.java`)
-   ```cmd
-   javac HabitTracker.java
-   ```
-
-4. **Run**
-   ```cmd
-   java HabitTracker
-   ```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to your project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day37/src
-   ```
-
-3. **Compile and run**
-   ```bash
-   javac HabitTracker.java
-   java HabitTracker
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA / Eclipse / VS Code:**
-1. Open the project
-2. Right-click on the main class
-3. Select "Run 'HabitTracker.main()'"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **"Error: Could not find or load main class"** - Ensure you're in the correct directory and class name matches filename
-
-## 🚀 Next Steps
-After completing Day 37, you should be able to:
-- Build tracking applications
-- Work with date-based data
-- Calculate statistics
-- Create productivity tools
-
-**Ready for Day 38?** You'll build a Workout Tracking App with database!
-
-
-
-
-
-
-
+Day 38 swaps a JSON file for a real database: log your workouts with SQL and JDBC.

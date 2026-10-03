@@ -1,31 +1,24 @@
-# Exercise 2
+# Day 37 - Exercise 2: Rates and best days
 
-## Objective
-Statistics
-Calculate:
-- Completion rates
-- Current streaks
-- Longest streaks
-- Weekly/monthly stats
+Write two methods in `src/HabitStats.java`:
 
-## Requirements
-Statistics
-Calculate:
-- Completion rates
-- Current streaks
-- Longest streaks
-- Weekly/monthly stats
+**`rate(Set<LocalDate> done, LocalDate today, int days)`**: the whole-number percentage of the last `days` days, ending today, that were done. Done days outside that window don't count.
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+**`bestWeekday(Set<LocalDate> done)`**: the day of the week with the most completions, as a `DayOfWeek`. If two days tie, the earlier one in the week (Monday first) wins. With no days at all, return `null`.
 
-## Starter Code
-Check the src/ directory for starter code files.
+```
+24 of the last 30 days done                  → rate 80
+done on 3 Mondays, 4 Saturdays, 1 Sunday     → SATURDAY
+```
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+## Files
+
+- `src/HabitStats.java`: your code goes here.
+- `src/HabitStatsTest.java`: the tests.
+- `solution/HabitStats.java`: one answer.
+
+## 📌 Stuck?
+
+- `Math.round(count * 100f / days)` rounds to the nearest whole percent.
+- Count per weekday in an `EnumMap<DayOfWeek, Integer>`, or an `int[7]` indexed by `day.getDayOfWeek().getValue() - 1`.
+- Loop over `DayOfWeek.values()`, which is Monday to Sunday, and keep the first one with the highest count.

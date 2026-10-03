@@ -1,239 +1,106 @@
-# Day 42 - Intermediate HTML/CSS
+# Day 42 - Zuhura's Kanga Gallery: Flexbox, Grid and Responsive Design
 
-## 📚 Learning Objectives
-- Master advanced CSS techniques
-- Learn CSS layouts (Flexbox, Grid)
-- Understand responsive design
-- Work with CSS frameworks
-- Build modern web layouts
+> A portfolio for a textile designer in Mombasa, laid out with flexbox and CSS grid, and good on every screen from a cheap phone to a wide monitor.
 
-## 🎯 Topics Covered
-- CSS Flexbox
-- CSS Grid
-- Responsive design
-- Media queries
-- CSS animations
-- Advanced selectors
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Zuhura designs **kangas**, the printed cotton cloths you see all along the Swahili coast. Every kanga has a border (the **pindo**), a central design (the **mji**) and a saying printed across it (the **jina**): *Haba na haba hujaza kibaba*, "little by little fills the measure". People choose kangas for what they *say* as much as how they look.
 
-### Step 1: Flexbox Layout
-Create flexible layouts:
+She wants a portfolio site her customers can open on their phones at the market and her shop buyers can browse on laptops. Today you'll lay it out:
 
-```css
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-}
+- a sticky header with her name and links
+- a hero with a big headline and a kanga beside it (stacked on phones)
+- a gallery that shows as many kangas per row as fit, with no breakpoints at all
+- an "about" section arranged with named grid areas
+- a dark theme for people whose phones are in dark mode
 
-.item {
-    flex: 1;
-    padding: 20px;
-}
-```
+Every kanga on the page is drawn in **pure CSS** with gradients. There isn't a single image file. Open `_end/src/index.html` to see it.
 
-### Step 2: CSS Grid
-Create grid layouts:
+## 🎯 Learning Objectives
+- Lay things out in one direction with **flexbox**: `justify-content`, `align-items`, `flex-wrap` and `gap`
+- Lay things out in two directions with **CSS grid**: `grid-template-columns`, `fr` units, `span` and `grid-template-areas`
+- Build a responsive gallery with `repeat(auto-fit, minmax(...))`
+- Write **mobile-first** CSS: one column by default, more columns inside `@media (min-width: ...)`
+- Support dark mode with `prefers-color-scheme` and calmer pages with `prefers-reduced-motion`
+- Draw patterns with `linear-gradient`, `radial-gradient`, `conic-gradient` and `border-image`
+
+## 🧰 What you'll use
+
+**Flexbox** lines items up in a row (or a column) and shares out the space:
 
 ```css
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 20px;
-}
-
-.grid-item {
-    background-color: #f0f0f0;
-    padding: 20px;
-}
+.top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
 ```
 
-### Step 3: Responsive Design
-Use media queries:
+**Grid** places items in rows *and* columns at once:
 
 ```css
-/* Mobile first */
-.container {
-    width: 100%;
-    padding: 10px;
-}
-
-/* Tablet */
-@media (min-width: 768px) {
-    .container {
-        max-width: 750px;
-        margin: 0 auto;
-    }
-}
-
-/* Desktop */
-@media (min-width: 1024px) {
-    .container {
-        max-width: 1200px;
-    }
-}
+.gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 1.5rem; }
 ```
 
-### Step 4: CSS Animations
-Add animations:
+"Fit as many columns as you can, each at least 18rem wide, and share out what's left." Three columns on a laptop, one on a phone, and no `@media` needed.
+
+**Named areas** draw a layout in words:
 
 ```css
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
+.about-grid { grid-template-areas: "big" "text" "facts"; }          /* phones: one column */
+@media (min-width: 56rem) {
+    .about-grid {
+        grid-template-columns: 1.2fr 1fr;
+        grid-template-areas: "big text" "facts facts";               /* wide: two columns */
     }
 }
+.big { grid-area: big; }
+```
 
-.element {
-    animation: fadeIn 1s ease-in;
+**Which to use?** If it's a single row or column, like a nav bar or a list of buttons, use flexbox. If items have to line up both across and down, like a gallery, a page layout or a timetable, use grid.
+
+**Dark mode** is a media query that redefines your colour variables:
+
+```css
+@media (prefers-color-scheme: dark) {
+    :root { --sand: #14121f; --ink: #f6efe3; }
 }
 ```
 
-## 💻 Exercises
+## 🪜 Steps
 
-### Exercise 1: Flexbox
-Create layouts with:
-- Flex containers
-- Flex items
-- Alignment
-- Wrapping
+1. **Exercise 1: A matatu route card** (`exercise1/`). Flexbox: rows, wrapping and spacing.
+2. **Exercise 2: A weekly timetable** (`exercise2/`). Grid: equal columns, a spanning item and a phone layout.
+3. **Project: Zuhura's Kanga Gallery** (`_start/src/`). The HTML is done; `style.css` has a `/* TODO */` for each layout.
+   1. The header and nav (flexbox).
+   2. The hero (grid: one column, then two on wide screens).
+   3. The gallery (`auto-fit` + `minmax`) and tiles that lift on hover.
+   4. The about section (`grid-template-areas`) and the facts row (flexbox).
+   5. The dark theme. Then draw the kangas: copy the gradients from `_end`, or design your own.
+   6. Run `PageCheck` and the tests, and check every width from 320px to 1400px.
 
-### Exercise 2: CSS Grid
-Build grids with:
-- Multiple columns
-- Grid areas
-- Responsive grids
-- Complex layouts
+## 🧪 Run it and test it
 
-### Exercise 3: Responsive Design
-Make pages responsive:
-- Mobile layouts
-- Tablet layouts
-- Desktop layouts
-- Media queries
+Open `index.html` in a browser. Use your browser's device toolbar (F12, then the phone icon) to try phone sizes. For the checks, from the repo root (on Windows, use `;` instead of `:`):
 
-## 🎮 Project: Modern Portfolio Website
-
-### Requirements
-Create a modern portfolio:
-1. Responsive navigation
-2. Hero section
-3. Projects grid
-4. About section
-5. Contact form
-6. Smooth animations
-7. Mobile-friendly
-
-### Example Layout
-```
-[Header with Navigation]
-[Hero Section - Full Width]
-[Projects Grid - 3 Columns]
-[About Section]
-[Contact Form]
-[Footer]
+```bash
+javac -cp "lib/*" -d day42/_end/src day42/_end/src/*.java
+cd day42/_end/src && java -cp ".:../../../lib/*" PageCheck index.html && cd ../../..
+java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp "day42/_end/src:lib/*" --scan-classpath
 ```
 
-### Starter Code
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header>
-        <nav class="navbar">
-            <!-- Navigation -->
-        </nav>
-    </header>
-    <main>
-        <section class="hero">
-            <!-- Hero content -->
-        </section>
-        <section class="projects">
-            <div class="grid-container">
-                <!-- Project cards -->
-            </div>
-        </section>
-    </main>
-</body>
-</html>
-```
+## 🆘 Stuck?
 
-## 📚 Resources
-
-### Official Documentation
-- [CSS Flexbox - MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout)
-- [CSS Grid - MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout)
-- [Media Queries - MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries)
-
-### Tutorials
-- [Flexbox Guide - CSS-Tricks](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
-- [Grid Guide - CSS-Tricks](https://css-tricks.com/snippets/css/complete-guide-grid/)
-- [Responsive Design](https://www.w3schools.com/css/css_rwd_intro.asp)
-
-### Video Resources
-- [Flexbox Tutorial](https://www.youtube.com/results?search_query=css+flexbox+tutorial)
-- [CSS Grid Tutorial](https://www.youtube.com/results?search_query=css+grid+tutorial)
-
-### Practice Platforms
-- [Flexbox Froggy](https://flexboxfroggy.com/)
-- [Grid Garden](https://cssgridgarden.com/)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Flexbox | One-dimensional layout | `display: flex` |
-| Grid | Two-dimensional layout | `display: grid` |
-| Media Queries | Responsive design | `@media (min-width: 768px)` |
-| Animations | CSS transitions | `@keyframes`, `animation` |
-| Responsive | Mobile-friendly | Flexible layouts |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **Flexbox:** Re-read **Step 1** — `display: flex`, `justify-content`, `align-items`, `flex-direction` — see **Step 2**
-- **Grid:** Re-read **Step 2** — `display: grid`, `grid-template-columns`, `gap` — see **Step 2**
-- **Media queries:** Re-read **Step 3** — `@media (min-width: 768px) { ... }` for breakpoints — see **Step 3**
-- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
-
-**Related days:** Day 41 (HTML/CSS); Day 59 (Bootstrap uses similar concepts). **Quick reference:** Open HTML in browser; use DevTools to inspect layout
-
-## 💻 How to Run
-
-**HTML/CSS only** — open your `.html` file in a browser or use a static file server (e.g. Live Server in VS Code).
+- **`justify-content` does nothing**: it goes on the flex *container*, and the container needs `display: flex`.
+- **The page scrolls sideways on a phone**: something has a fixed width. Use `width: min(100% - 2rem, 70rem)` instead of `width: 70rem`.
+- **The gallery shows one huge tile**: `auto-fit` with `minmax(18rem, 1fr)` stretches a lonely tile to fill the row. That's expected with one item; add more.
+- **Dark mode looks wrong**: anything with a hard-coded colour won't change. Use your `var(--...)` colours everywhere.
 
 ## ✅ Checklist
-- [ ] Understand Flexbox
-- [ ] Understand CSS Grid
-- [ ] Can create responsive designs
-- [ ] Can use media queries
-- [ ] Can add animations
-- [ ] Completed Portfolio Website
+- [ ] Used flexbox for the header, nav, facts and buttons
+- [ ] Used grid for the hero, gallery and about section
+- [ ] Made a gallery that needs no breakpoints
+- [ ] Wrote mobile-first CSS with a `min-width` media query
+- [ ] Added a dark theme
+- [ ] Finished both exercises, and the tests pass
 - [ ] Committed code to Git
 
-## 🚀 Next Steps
-After completing Day 42, you should be able to:
-- Create modern layouts
-- Build responsive websites
-- Use advanced CSS
-- Design professional pages
+## ➡️ Next
 
-**Ready for Day 43?** You'll learn web scraping with Jsoup!
-
-
-
-
-
-
-
+Now that you know how HTML is built, Day 43 takes it apart: scrape headlines from a news page with jsoup.

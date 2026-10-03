@@ -1,0 +1,35 @@
+/* Zuhura Designs. The HTML is finished: today is all layout.
+   Colours and fonts are set up for you; the TODOs are where flexbox and grid go. */
+:root {
+    --sand: #f6efe3;
+    --paper: #fffaf2;
+    --ink: #1d1a2f;
+    --muted: #615a72;
+    --sea: #127475;
+    --coral: #f25c54;
+    --sun: #f7b267;
+    --line: #e4d8c4;
+    --radius: 18px;
+}
+/* TODO: a @media (prefers-color-scheme: dark) block that redefines the colours */
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--sand); color: var(--ink); font: 1.05rem/1.65 "Outfit", system-ui, sans-serif; }
+h1, h2, h3 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; line-height: 1.1; }
+main > section { width: min(100% - 2rem, 70rem); margin: 0 auto; padding: 4rem 0; }
+
+/* TODO .top: a flex row, logo on the left and nav on the right, wrapping on small screens */
+/* TODO nav: a flex row of pill-shaped links */
+/* TODO .hero: a grid, one column on phones and two on wide screens */
+
+/* The kangas: drawn with gradients. Copy these from _end/src/style.css, or invent your own! */
+.kanga { aspect-ratio: 3 / 2; border: 14px solid var(--ink); display: grid; place-items: end center; padding-bottom: 8%; }
+.kanga span { padding: 0.25rem 0.8rem; background: var(--paper); border-radius: 4px; font-weight: 600; }
+.k1, .k2, .k3, .k4, .k5, .k6 { background: var(--sun); }
+
+/* TODO .gallery: a grid with repeat(auto-fit, minmax(18rem, 1fr)) and no list bullets */
+/* TODO .tile: a card that lifts a little on :hover */
+/* TODO .about-grid: a grid with named grid-template-areas: one column on phones, two on wide screens */
+/* TODO .facts: a flex row of three dark boxes that share the width */
+/* TODO .contact-links: a centred flex row */
+/* TODO @media (min-width: 56rem) { ... } for the wide-screen layouts */

@@ -1,34 +1,18 @@
-# Exercise 1
+# Day 42 - Exercise 1: A matatu route card (flexbox)
 
-## Objective
-Flexbox
-Create layouts with:
-- Flex containers
-- Flex items
-- Alignment
-- Wrapping
+`src/route.html` is a card for one matatu route. Write `src/route.css` so it looks like a route card on a stage noticeboard, using **flexbox**:
 
-## Requirements
-Flexbox
-Create layouts with:
-- Flex containers
-- Flex items
-- Alignment
-- Wrapping
+- `.card header`: the route number and name on one row, pushed to opposite ends (`justify-content: space-between`) and centred vertically (`align-items: center`)
+- `.stops`: the stages in a row that **wraps** onto more lines on a narrow screen (`flex-wrap: wrap`), with a `gap` between them
+- `.card footer`: the fare and the button on one row, also pushed apart
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+## Files
 
-## Starter Code
-Check the src/ directory for starter code files.
+- `src/route.html`: the card (don't change it).
+- `src/route.css`: your styles (it starts nearly empty).
+- `src/RouteStyleTest.java`: checks you used flexbox in those three places.
+- `solution/route.css`: one design.
 
-## 📌 Refer to (when stuck)
-- **Day 42 README** ([day42/README.md](../README.md)) → **Notes & reference** and **Step-by-Step Instructions**. Use main day README for structure and hints.
+## 📌 Stuck?
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+`display: flex` goes on the **container** (the parent), not on the items. `gap: 0.5rem` spaces the items without any margins.

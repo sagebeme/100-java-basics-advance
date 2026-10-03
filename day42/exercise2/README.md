@@ -1,34 +1,18 @@
-# Exercise 2
+# Day 42 - Exercise 2: A weekly timetable (grid)
 
-## Objective
-CSS Grid
-Build grids with:
-- Multiple columns
-- Grid areas
-- Responsive grids
-- Complex layouts
+`src/timetable.html` is a week of a youth football club's sessions. Write `src/timetable.css` to lay it out with **CSS grid**:
 
-## Requirements
-CSS Grid
-Build grids with:
-- Multiple columns
-- Grid areas
-- Responsive grids
-- Complex layouts
+- `.week`: seven equal columns, one per day: `grid-template-columns: repeat(7, 1fr)`, with a `gap`
+- `.session.long`: a long session spans **two** days with `grid-column: span 2`
+- `@media (max-width: 40rem)`: on a phone, `.week` becomes a single column, so the days stack
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+## Files
 
-## Starter Code
-Check the src/ directory for starter code files.
+- `src/timetable.html`: the timetable (don't change it).
+- `src/timetable.css`: your styles (it starts nearly empty).
+- `src/TimetableStyleTest.java`: the checks.
+- `solution/timetable.css`: one design.
 
-## 📌 Refer to (when stuck)
-- **Day 42 README** ([day42/README.md](../README.md)) → **Notes & reference** and **Key Concepts Summary**. Use main day README for structure and hints.
+## 📌 Stuck?
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+`1fr` means "one share of the free space", so seven `1fr` columns are always equal. Inside the `@media` block, write `.week { grid-template-columns: 1fr; }` and, because one column can't hold a two-column span, `.session.long { grid-column: auto; }`.

@@ -1,0 +1,220 @@
+/* Zuhura Designs: sea, sand and kanga colours. Flexbox for rows, grid for everything 2D. */
+:root {
+    --sand: #f6efe3;
+    --paper: #fffaf2;
+    --ink: #1d1a2f;
+    --muted: #615a72;
+    --sea: #127475;
+    --coral: #f25c54;
+    --sun: #f7b267;
+    --line: #e4d8c4;
+    --radius: 18px;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --sand: #14121f;
+        --paper: #1d1a2f;
+        --ink: #f6efe3;
+        --muted: #b5adc6;
+        --line: #322d48;
+    }
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+    margin: 0;
+    background: var(--sand);
+    color: var(--ink);
+    font: 1.05rem/1.65 "Outfit", system-ui, sans-serif;
+}
+
+h1, h2, h3 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; line-height: 1.1; }
+h2 { font-size: clamp(2rem, 4vw, 2.8rem); margin: 0 0 1.5rem; }
+
+/* ---------- Header: a flex row that wraps on small screens ---------- */
+.top {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem clamp(1rem, 4vw, 3rem);
+    background: color-mix(in srgb, var(--sand) 88%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+}
+.logo {
+    color: var(--ink);
+    font: 1.6rem "DM Serif Display", Georgia, serif;
+    text-decoration: none;
+}
+.logo span { color: var(--coral); font-style: italic; }
+nav { display: flex; gap: 0.4rem; }
+nav a {
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    color: var(--ink);
+    font-weight: 600;
+    text-decoration: none;
+}
+nav a:hover, nav a:focus-visible { background: var(--ink); color: var(--sand); }
+
+main > section { width: min(100% - 2rem, 70rem); margin: 0 auto; padding: 4rem 0; }
+
+/* ---------- Hero: text and a big kanga side by side ---------- */
+.hero {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: center;
+}
+.eyebrow { color: var(--sea); font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.8rem; }
+.hero h1 { font-size: clamp(2.8rem, 7vw, 5rem); margin: 0.3rem 0 1rem; }
+.hero h1 em { color: var(--coral); }
+.hero-text p { color: var(--muted); max-width: 34rem; }
+.hero-kanga { transform: rotate(3deg); box-shadow: 0 30px 60px -25px rgba(0, 0, 0, 0.45); }
+
+.cta, .ghost {
+    display: inline-block;
+    padding: 0.8rem 1.4rem;
+    border-radius: 999px;
+    font-weight: 800;
+    text-decoration: none;
+}
+.cta { background: var(--sea); color: white; }
+.cta:hover { background: var(--coral); }
+.ghost { border: 2px solid var(--ink); color: var(--ink); }
+.ghost:hover { background: var(--ink); color: var(--sand); }
+
+/* ---------- Kangas, drawn with gradients: pindo (border), mji (centre), jina (saying) ---------- */
+.kanga {
+    position: relative;
+    aspect-ratio: 3 / 2;
+    border: 14px solid transparent;
+    border-radius: 6px;
+    display: grid;
+    place-items: end center;
+    padding-bottom: 8%;
+    overflow: hidden;
+}
+.kanga span {
+    padding: 0.25rem 0.8rem;
+    background: var(--paper);
+    color: #1d1a2f;
+    border-radius: 4px;
+    font: 600 clamp(0.7rem, 1.6vw, 0.95rem) "Outfit", sans-serif;
+    text-align: center;
+    max-width: 85%;
+}
+@media (prefers-color-scheme: dark) { .kanga span { background: #fffaf2; } }
+
+.k1 {
+    border-image: repeating-linear-gradient(45deg, #1d1a2f 0 10px, #f7b267 10px 20px) 14;
+    background:
+        repeating-conic-gradient(from 0deg at 50% 45%, #f7b267 0 10deg, #ffd166 10deg 20deg),
+        #ffd166;
+}
+.k2 {
+    border-image: repeating-linear-gradient(90deg, #ffffff 0 8px, #1b2a6b 8px 16px) 14;
+    background:
+        radial-gradient(circle, #ffffff 18%, transparent 19%) 0 0 / 44px 44px,
+        radial-gradient(circle, #ffffff 8%, transparent 9%) 22px 22px / 44px 44px,
+        #1b2a6b;
+}
+.k3 {
+    border-image: repeating-linear-gradient(-45deg, #2a9d8f 0 9px, #f4a261 9px 18px) 14;
+    background:
+        conic-gradient(from 45deg at 50% 50%, #f4a261 25%, #e76f51 0 50%, #f4a261 0 75%, #e76f51 0) 0 0 / 40px 40px;
+}
+.k4 {
+    border-image: repeating-linear-gradient(0deg, #111 0 6px, #ef233c 6px 12px) 14;
+    background:
+        repeating-linear-gradient(90deg, #ef233c 0 22px, #111 22px 26px),
+        #ef233c;
+}
+.k5 {
+    border-image: repeating-linear-gradient(45deg, #fcbf49 0 10px, #0b6e72 10px 20px) 14;
+    background:
+        radial-gradient(circle, #fcbf49 22%, transparent 23%) 0 0 / 30px 30px,
+        linear-gradient(160deg, #0b6e72, #1aa6a0);
+}
+.k6 {
+    border-image: repeating-linear-gradient(90deg, #f1e3f3 0 6px, #5a189a 6px 12px) 14;
+    background:
+        repeating-linear-gradient(45deg, #7b2cbf 0 12px, transparent 12px 24px),
+        repeating-linear-gradient(-45deg, #9d4edd 0 12px, #5a189a 12px 24px);
+}
+
+/* ---------- The gallery: as many columns as fit, never narrower than 18rem ---------- */
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.tile {
+    padding: 0.9rem 0.9rem 1.1rem;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.tile:hover { transform: translateY(-6px); box-shadow: 0 20px 40px -24px rgba(0, 0, 0, 0.5); }
+.tile h3 { margin: 0.9rem 0 0.2rem; font-size: 1.5rem; }
+.tile p { margin: 0; color: var(--muted); }
+
+/* ---------- About: named grid areas ---------- */
+.about-grid {
+    display: grid;
+    gap: 1.5rem 3rem;
+    grid-template-areas: "big" "text" "facts";
+}
+.big { grid-area: big; margin: 0; font: italic 1.8rem/1.3 "DM Serif Display", Georgia, serif; }
+.about-grid > p:not(.big) { grid-area: text; margin: 0; color: var(--muted); }
+.facts {
+    grid-area: facts;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.facts li {
+    flex: 1 1 8rem;
+    padding: 1rem;
+    border-radius: var(--radius);
+    background: var(--ink);
+    color: var(--sand);
+}
+.facts strong { display: block; font: 2.4rem "DM Serif Display", Georgia, serif; color: var(--sun); }
+
+/* ---------- Contact ---------- */
+.contact { text-align: center; }
+.contact-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.8rem; }
+
+footer { padding: 2rem 1rem; text-align: center; color: var(--muted); border-top: 1px solid var(--line); }
+
+/* ---------- Wider screens ---------- */
+@media (min-width: 56rem) {
+    .hero { grid-template-columns: 1.1fr 0.9fr; }
+    .about-grid {
+        grid-template-columns: 1.2fr 1fr;
+        grid-template-areas:
+            "big   text"
+            "facts facts";
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .tile { transition: none; }
+}

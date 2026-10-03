@@ -1,0 +1,73 @@
+:root { --night: #101418; --neon: #39ff88; --pink: #ff3d8b; --chalk: #f2f2f2; }
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    display: grid;
+    place-items: center;
+    background: #232a31;
+    font-family: "Trebuchet MS", system-ui, sans-serif;
+    color: var(--chalk);
+}
+
+.card {
+    width: min(100% - 2rem, 34rem);
+    padding: 1.4rem;
+    border-radius: 20px;
+    background: var(--night);
+    border: 3px solid var(--neon);
+    box-shadow: 0 0 0 6px var(--night), 0 0 30px rgba(57, 255, 136, 0.35);
+}
+
+.card header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+.number {
+    display: grid;
+    place-items: center;
+    width: 3.4rem;
+    height: 3.4rem;
+    border-radius: 50%;
+    background: var(--pink);
+    font-size: 1.5rem;
+    font-weight: 900;
+}
+h1 { margin: 0; font-size: 1.4rem; text-align: right; }
+
+.stops {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1.4rem 0;
+    padding: 0;
+    list-style: none;
+}
+.stops li {
+    padding: 0.35rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid rgba(242, 242, 242, 0.3);
+    font-size: 0.9rem;
+}
+.stops li:first-child, .stops li:last-child { background: var(--neon); color: var(--night); font-weight: 700; border-color: var(--neon); }
+
+.card footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+.fare { margin: 0; font-size: 1.6rem; font-weight: 900; color: var(--neon); }
+.fare small { display: block; font-size: 0.75rem; font-weight: 400; color: var(--chalk); opacity: 0.7; }
+.board {
+    padding: 0.7rem 1.1rem;
+    border-radius: 12px;
+    background: var(--pink);
+    color: white;
+    font-weight: 700;
+    text-decoration: none;
+}
+.board:hover { background: var(--neon); color: var(--night); }

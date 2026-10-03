@@ -1,34 +1,7 @@
-# Exercise 1
+# Day 45 - Exercise 1: PKCE
 
-## Objective
-API Authentication
-Practice with:
-- OAuth flow
-- Token management
-- Token refresh
-- Error handling
+Write `newVerifier()` and `challenge(verifier)` in `src/Pkce.java`, following RFC 7636: the verifier is random URL-safe text, and the challenge is `base64url(SHA-256(verifier))` with no `=` padding. The test checks your challenge against the example printed in the standard itself.
 
-## Requirements
-API Authentication
-Practice with:
-- OAuth flow
-- Token management
-- Token refresh
-- Error handling
+## 📌 Stuck?
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
-
-## Starter Code
-Check the src/ directory for starter code files.
-
-## 📌 Refer to (when stuck)
-- **Day 45 README** ([day45/README.md](../README.md)) → **Notes & reference** and **Step-by-Step Instructions**. Use main day README for structure and hints.
-
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+`Base64.getUrlEncoder().withoutPadding()`, `new SecureRandom().nextBytes(bytes)` and `MessageDigest.getInstance("SHA-256").digest(...)`. One answer is in `solution/Pkce.java`.

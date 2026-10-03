@@ -1,34 +1,7 @@
-# Exercise 2
+# Day 45 - Exercise 2: The login callback
 
-## Objective
-API Calls
-Make requests for:
-- Search songs
-- Get user playlists
-- Create playlists
-- Add tracks
+After a user logs in, Spotify sends their browser back to your program as `...callback?code=...&state=...`. Write `codeFromCallback(rawQuery, expectedState)` in `src/SpotifyAuth.java`: URL-decode the query, throw an `IllegalStateException` if it contains `error`, if `state` isn't the one you sent (someone may be trying to slip you *their* login), or if there's no `code`. Otherwise return the code.
 
-## Requirements
-API Calls
-Make requests for:
-- Search songs
-- Get user playlists
-- Create playlists
-- Add tracks
+## 📌 Stuck?
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
-
-## Starter Code
-Check the src/ directory for starter code files.
-
-## 📌 Refer to (when stuck)
-- **Day 45 README** ([day45/README.md](../README.md)) → **Notes & reference** and **Key Concepts Summary**. Use main day README for structure and hints.
-
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+Split on `&`, then each pair on the first `=`, and decode with `URLDecoder.decode(text, StandardCharsets.UTF_8)`. One answer is in `solution/SpotifyAuth.java`.

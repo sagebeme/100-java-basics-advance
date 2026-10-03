@@ -1,222 +1,76 @@
-# Day 45 - Create Spotify Playlist API Integration
+# Day 45 - Music Time Machine: Scraping Meets an OAuth API
 
-## 📚 Learning Objectives
-- Work with Spotify Web API
-- Authenticate with OAuth
-- Create and manage playlists
-- Search for songs
-- Build music automation tools
+> What was everyone dancing to the week you finished school? Scrape the chart for that week and turn it into a playlist, with a proper, safe login.
 
-## 🎯 Topics Covered
-- Spotify Web API
-- OAuth 2.0 authentication
-- API requests and responses
-- Playlist management
-- Song search
-- API rate limiting
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+A radio station's website keeps its old Top 10 charts. Your program reads the chart for any week, looks each song up in a music service, and builds a playlist:
 
-### Step 1: Spotify API Setup
-Register application:
+```
+$ java TimeMachine 2016-12-03
+Using the practice catalogue (set SPOTIFY_CLIENT_ID to use Spotify)
+Created playlist "Time Machine: 2016-12-03" with 8 of 10 songs.
+  not found: #4 Sunsets in Lamu by Neema
+  not found: #8 Mvua by Wanjiru Lee
+```
 
-1. Go to [Spotify Developer Dashboard](https://developer.spotify.com/dashboard)
-2. Create app
-3. Get Client ID and Client Secret
-4. Set redirect URI
+The chart and its artists are made up and saved in the project. With no settings, the program uses a **practice catalogue** in memory. Set `SPOTIFY_CLIENT_ID` (from a free app at developer.spotify.com, with the redirect URI `http://127.0.0.1:8888/callback`) and the same code logs in to your real Spotify account and makes a private playlist.
 
-### Step 2: OAuth Authentication
-Authenticate with Spotify:
+## 🎯 Learning Objectives
+- Combine scraping (Days 43–44) with an API (Days 33–39)
+- Understand **OAuth**: letting a program act for you without ever seeing your password
+- Use **PKCE** and a **state** value to make the login safe
+- Hash with SHA-256 and encode with base64url
+- Match the same song across two services by normalising titles
+- Keep a real service and a practice one behind the same interface
+
+## 🧰 What you'll use
+
+**OAuth with PKCE, in three steps:**
+
+1. Your program makes a random secret, the **verifier**, and sends only its SHA-256 hash, the **challenge**, in a link the user opens. They log in *on Spotify's site*.
+2. Spotify sends the browser back to `http://127.0.0.1:8888/callback?code=...&state=...`. A tiny `HttpServer` in your program catches it and checks the `state` is the one it sent.
+3. Your program swaps the `code` plus the original verifier for an **access token**. Only the program that made the verifier can do this, so a stolen code is useless.
 
 ```java
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.Base64;
-
-public class SpotifyAuth {
-    private String clientId;
-    private String clientSecret;
-    
-    public String getAccessToken() {
-        String credentials = clientId + ":" + clientSecret;
-        String encoded = Base64.getEncoder().encodeToString(credentials.getBytes());
-        
-        HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create("https://accounts.spotify.com/api/token"))
-            .header("Authorization", "Basic " + encoded)
-            .header("Content-Type", "application/x-www-form-urlencoded")
-            .POST(HttpRequest.BodyPublishers.ofString("grant_type=client_credentials"))
-            .build();
-        
-        // Parse response and return access token
-    }
-}
+String verifier = Pkce.newVerifier();
+URI login = SpotifyAuth.authorizeUrl(clientId, redirect, "playlist-modify-private", state, Pkce.challenge(verifier));
 ```
 
-### Step 3: Search Songs
-Search for tracks:
+## 🪜 Steps
 
-```java
-public class SpotifyAPI {
-    private String accessToken;
-    
-    public List<Track> searchTracks(String query) {
-        String url = "https://api.spotify.com/v1/search?q=" + 
-                     query.replace(" ", "%20") + 
-                     "&type=track&limit=10";
-        
-        HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(url))
-            .header("Authorization", "Bearer " + accessToken)
-            .GET()
-            .build();
-        
-        // Parse JSON response
-        // Return list of tracks
-    }
-}
+1. **Exercise 1: PKCE** (`exercise1/`). Verifier and challenge, checked against the standard's own example.
+2. **Exercise 2: The login callback** (`exercise2/`). Decode it, check the state, return the code.
+3. **Project: Music Time Machine** (`_start/src/`).
+   1. `ChartScraper.read`: the chart in order, skipping the sponsored entry.
+   2. `ChartScraper.normalise`: lower case, no "(feat. ...)", no punctuation.
+   3. `TimeMachine.build`: find each song, create the playlist, add what was found, report what wasn't.
+
+## 🧪 Run it and test it
+
+From the repo root (on Windows, use `;` instead of `:`):
+
+```bash
+javac -cp "lib/*" -d day45/_end/src day45/_end/src/*.java
+cd day45/_end/src && java -cp ".:../../../lib/*" TimeMachine 2016-12-03 && cd ../../..
+java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp "day45/_end/src:lib/*" --scan-classpath
 ```
 
-### Step 4: Create Playlist
-Create and add songs:
+## 🆘 Stuck?
 
-```java
-public void createPlaylist(String name, List<String> trackUris) {
-    // Create playlist
-    String playlistId = createPlaylistRequest(name);
-    
-    // Add tracks
-    addTracksToPlaylist(playlistId, trackUris);
-}
-```
-
-## 💻 Exercises
-
-### Exercise 1: API Authentication
-Practice with:
-- OAuth flow
-- Token management
-- Token refresh
-- Error handling
-
-### Exercise 2: API Calls
-Make requests for:
-- Search songs
-- Get user playlists
-- Create playlists
-- Add tracks
-
-### Exercise 3: Playlist Management
-Build features:
-- Create playlists
-- Add/remove songs
-- Update playlist details
-- Get playlist info
-
-## 🎮 Project: Music Time Machine
-
-### Requirements
-Create a playlist generator:
-1. Input a date (e.g., "2000-01-01")
-2. Search for top songs from that time
-3. Create Spotify playlist
-4. Add songs to playlist
-5. Share playlist link
-
-### Example Output
-```
-Music Time Machine
-
-Enter a date (YYYY-MM-DD): 2000-01-01
-
-Searching for top songs from 2000...
-Found 100 songs
-
-Creating playlist: "Top Songs from 2000"...
-Adding songs...
-✓ Playlist created successfully!
-
-Playlist URL: https://open.spotify.com/playlist/abc123
-```
-
-### Starter Code
-```java
-public class MusicTimeMachine {
-    private SpotifyAPI spotify;
-    
-    public void createTimeMachinePlaylist(String date) {
-        // Search for songs from that time
-        // Create playlist
-        // Add songs
-    }
-}
-```
-
-## 📚 Resources
-
-### Official Documentation
-- [Spotify Web API](https://developer.spotify.com/documentation/web-api/)
-- [Spotify API Reference](https://developer.spotify.com/documentation/web-api/reference/)
-- [OAuth 2.0](https://oauth.net/2/)
-
-### Tutorials
-- [Spotify API Tutorial](https://developer.spotify.com/documentation/web-api/quick-start/)
-- [OAuth in Java](https://www.baeldung.com/java-oauth)
-
-### Video Resources
-- [Spotify API Tutorial](https://www.youtube.com/results?search_query=spotify+api+java)
-- [OAuth Java](https://www.youtube.com/results?search_query=oauth+java+tutorial)
-
-### Practice Platforms
-- [Spotify Developer](https://developer.spotify.com/)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| OAuth 2.0 | Authentication | Client credentials flow |
-| Access Token | API authentication | Bearer token |
-| API Endpoints | Service URLs | `/v1/search`, `/v1/playlists` |
-| Rate Limiting | Request limits | Handle 429 responses |
-| JSON Parsing | Extract data | Parse API responses |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **OAuth:** Re-read **Step 1** — get token from Spotify token endpoint; use client_id/client_secret — see **Step 2**
-- **API calls:** Re-read **Step 2** — HTTP GET with `Authorization: Bearer <token>` — see **Step 2**
-- **Secrets:** Use env vars for client_id/client_secret; never commit — see **Step 3**
-- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
-
-**Related days:** Day 33 (HTTP); Day 35 (env vars). **Quick reference:** Spotify Developer Dashboard for credentials; Maven for HTTP/Gson
-
-## 💻 How to Run
-
-**Java + Spotify API** — set env vars for Spotify client ID/secret. Run main class from IDE or: `mvn compile exec:java -Dexec.mainClass="YourMainClass"`.
+- **The PKCE test fails**: use `Base64.getUrlEncoder().withoutPadding()`. The ordinary encoder uses `+`, `/` and `=`.
+- **"The state doesn't match"**: you started a second login; use the newest link.
+- **Spotify says `INVALID_CLIENT: Invalid redirect URI`**: add exactly `http://127.0.0.1:8888/callback` to your app's settings.
+- **A song isn't found**: compare the normalised titles of both sides. Real catalogues spell things differently.
 
 ## ✅ Checklist
-- [ ] Understand OAuth
-- [ ] Can authenticate with Spotify
-- [ ] Can search songs
-- [ ] Can create playlists
-- [ ] Can add tracks
-- [ ] Completed Music Time Machine
+- [ ] Scraped the chart and skipped the advert
+- [ ] Built and tested PKCE and the callback check
+- [ ] Built a playlist through the `MusicService` interface
+- [ ] Can explain why OAuth never shows your program the password
+- [ ] Finished both exercises, and the tests pass
 - [ ] Committed code to Git
 
-## 🚀 Next Steps
-After completing Day 45, you should be able to:
-- Work with OAuth APIs
-- Integrate music services
-- Build automation tools
-- Create playlist generators
+## ➡️ Next
 
-**Ready for Day 46?** You'll build an Automated Price Tracker!
-
-
-
-
-
-
-
+Day 46 watches prices over time and sends an alert when something you want gets cheaper.

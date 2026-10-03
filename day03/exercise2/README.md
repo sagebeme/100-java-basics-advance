@@ -1,29 +1,22 @@
-# Exercise 2
+# Day 3 - Exercise 2: Altitude check
 
-## Objective
-Logical Operators
-Create a program that:
-- Checks if a person can vote (age >= 18)
-- Checks if a person can drive (age >= 16 && hasLicense)
-- Checks if a person gets a discount (isStudent || isSenior)
+In Kenya, Arabica coffee grows best on the slopes of Mount Kenya and the Aberdares, roughly between 1,400 and 2,100 metres above sea level. Higher farms are cooler, so the cherries ripen slowly and the coffee often tastes brighter.
 
-## Requirements
-Logical Operators
-Create a program that:
-- Checks if a person can vote (age >= 18)
-- Checks if a person can drive (age >= 16 && hasLicense)
-- Checks if a person gets a discount (isStudent || isSenior)
+Write `altitudeRating(int metres)`:
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+| Altitude | Rating |
+|---|---|
+| below 1400 | `"too low"` |
+| 1400 to 1699 | `"good"` |
+| 1700 to 2100 | `"excellent"` |
+| above 2100 | `"too high"` |
 
-## Starter Code
-Check the src/ directory for starter code files.
+## Files
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+- `src/AltitudeCheck.java`: your code goes here.
+- `src/AltitudeCheckTest.java`: the tests.
+- `solution/AltitudeCheck.java`: one answer.
+
+## 📌 Stuck?
+
+Check from the bottom up: `if (metres < 1400)`, then `else if (metres < 1700)`, and so on. Each `else if` already knows the earlier checks failed, so it only needs one comparison. Test the edges: 1400, 1700, 2100 and 2101.

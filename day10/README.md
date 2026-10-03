@@ -1,327 +1,135 @@
-# Day 10 - Return Values and Calculator Project
+# Day 10 - Roast Checker
 
-## 📚 Learning Objectives
-- Master return statements
-- Understand return types
-- Learn about multiple return values
-- Build a calculator with functions
-- Practice method organization
+> Green beans don't smell like coffee yet. Roasting changes that. Write methods that return how far a roast went.
 
-## 🎯 Topics Covered
-- Return types (int, double, String, void)
-- Return statements
-- Early returns
-- Method chaining
-- Organizing code with methods
+## 🌱 On the shamba
 
-## 📝 Step-by-Step Instructions
+Wanjiru's green beans have travelled to a roastery. Green coffee smells grassy, like dried peas. In a hot drum the beans turn yellow, then brown, and at about **196°C** they start to pop like popcorn. Roasters call this the **first crack**. Stop soon after it for a light roast, keep going for medium or dark, and too far is burnt.
 
-### Step 1: Return Types
-Methods can return values:
+A roaster checks a batch two ways: the temperature the beans reached, and how much weight they lost, because hotter roasts drive out more water. Today's methods return both answers and check whether they agree:
+
+```
+=== Roast Checker ===
+Final bean temperature (°C)?
+212
+Green weight (g)?
+1000
+Roasted weight (g)?
+845
+Thermometer says: MEDIUM
+Weight lost: 15.5% (MEDIUM)
+The thermometer and the scale agree.
+```
+
+| Final temperature | Level |
+|---|---|
+| below 196°C | `UNDERDEVELOPED` (stopped before first crack) |
+| 196 to 205 | `LIGHT` |
+| 206 to 218 | `MEDIUM` |
+| 219 to 230 | `DARK` |
+| above 230 | `BURNT` |
+
+| Weight lost | Level |
+|---|---|
+| below 14% | `LIGHT` |
+| 14% to just under 17% | `MEDIUM` |
+| 17% or more | `DARK` |
+
+## 🎯 By the end of today
+- Return a value from a method, and use that value in another method
+- Return early as soon as the answer is known
+- Return a "this didn't work" value, like `-1`, for impossible input
+- Return a `boolean` that answers a yes/no question
+- Choose between several cases with `switch`
+
+## ☕ Bean fact
+
+Darker doesn't mean stronger. The longer a bean roasts, the more of its own flavour burns away, so a light roast tastes more of the farm (fruit, flowers, that blackcurrant from Nyeri), and a dark roast tastes more of the roasting (smoke, bitter chocolate). There's about as much caffeine in each.
+
+## 🧰 Java you'll use
+
+**A return value** is the method's answer. The caller can store it, print it, or pass it straight into another method:
 
 ```java
-// Return int
-public static int add(int a, int b) {
-    return a + b;
-}
-
-// Return double
-public static double divide(double a, double b) {
-    return a / b;
-}
-
-// Return String
-public static String greet(String name) {
-    return "Hello, " + name;
-}
-
-// Return boolean
-public static boolean isEven(int number) {
-    return number % 2 == 0;
-}
-
-// No return (void)
-public static void printMessage(String msg) {
-    System.out.println(msg);
-}
+double loss = weightLossPercent(1000, 845);  // 15.5
+String level = levelFromLoss(loss);          // "MEDIUM"
+String same = levelFromLoss(weightLossPercent(1000, 845)); // the same, in one line
 ```
 
-### Step 2: Early Returns
-Return early to exit method:
+**Early return.** `return` ends the method on the spot. A chain of `if`s with a `return` in each needs no `else`:
 
 ```java
-public static int divide(int a, int b) {
-    if (b == 0) {
-        System.out.println("Cannot divide by zero!");
-        return 0; // Early return
-    }
-    return a / b;
+static String roastLevel(int temp) {
+    if (temp < 196) return "UNDERDEVELOPED";
+    if (temp <= 205) return "LIGHT";
+    ...
+    return "BURNT";
 }
 ```
 
-### Step 3: Method Chaining
-Use return values in other methods:
+**A value that means "impossible".** A weight loss can't be negative, so `-1` makes a clear signal that the input was wrong:
 
 ```java
-int result = add(5, multiply(3, 4)); // 5 + 12 = 17
-```
-
-### Step 4: Organizing Calculator
-Break calculator into methods:
-
-```java
-public static double add(double a, double b) { return a + b; }
-public static double subtract(double a, double b) { return a - b; }
-public static double multiply(double a, double b) { return a * b; }
-public static double divide(double a, double b) { return a / b; }
-```
-
-## 💻 Exercises
-
-### Exercise 1: Return Values
-Create methods that return:
-- Sum of two numbers
-- Product of three numbers
-- Largest of two numbers
-- Formatted string
-- Boolean check (is prime, is even, etc.)
-
-### Exercise 2: Calculator Methods
-Create methods for:
-- Addition
-- Subtraction
-- Multiplication
-- Division
-- Modulo
-- Power
-- Square root
-
-### Exercise 3: Complex Returns
-Create methods that:
-- Return multiple values (using array or class)
-- Return formatted results
-- Return error codes
-- Return null for invalid input
-
-## 🎮 Project: Calculator
-
-### Requirements
-Create a calculator program:
-1. Display calculator logo
-2. Get first number
-3. Get operation (+, -, *, /)
-4. Get second number
-5. Perform calculation
-6. Display result
-7. Ask if user wants to continue
-8. Clear previous calculation if continuing
-
-### Example Output
-```
- _____________________
-|  _________________  |
-| | Java Calculator | |
-| |_________________| |
-|  ___ ___ ___   ___  |
-| | 7 | 8 | 9 | | + | |
-| |___|___|___| |___| |
-| | 4 | 5 | 6 | | - | |
-| |___|___|___| |___| |
-| | 1 | 2 | 3 | | * | |
-| |___|___|___| |___| |
-| | . | 0 | = | | / | |
-| |___|___|___| |___| |
-
-What's the first number?: 10
-+
--
-*
-/
-Pick an operation: +
-What's the second number?: 5
-10.0 + 5.0 = 15.0
-
-Type 'y' to continue calculating with 15.0, or type 'n' to start a new calculation: y
-Pick an operation: *
-What's the next number?: 3
-15.0 * 3.0 = 45.0
-```
-
-### Starter Code
-```java
-import java.util.Scanner;
-
-public class Calculator {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        
-        // Your code here
-        
-        scanner.close();
-    }
-    
-    // Create calculation methods here
-    // add, subtract, multiply, divide
+if (green <= 0 || roasted > green) {
+    return -1;
 }
 ```
 
-### Solution Hints
-- Create separate methods for each operation
-- Use loop to continue calculations
-- Store result for next calculation
-- Handle division by zero
-- Format output nicely
+**`switch`** picks one case by value, and reads more clearly than a long chain of `equals`:
 
-### Bonus Features
-- Support for more operations (%, ^, sqrt)
-- History of calculations
-- Memory functions (M+, M-, MR, MC)
-- Scientific calculator mode
-- GUI version with JavaFX
+```java
+int mg = switch (drink) {
+    case "espresso" -> 63;
+    case "filter" -> 95;
+    default -> 0;
+};
+```
 
-## 📚 Resources
+## 🪜 Steps
 
-### Official Documentation
-- [Java Methods - Oracle Docs](https://docs.oracle.com/javase/tutorial/java/javaOO/methods.html)
-- [Return Statement - Oracle Docs](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/branch.html)
+1. **Exercise 1: How much caffeine?** (`exercise1/`). `switch`, and a `boolean` answer.
+2. **Exercise 2: Roast timer** (`exercise2/`). Early returns, and a `-1` for impossible input.
+3. **Project: Roast Checker** (`_start/src/RoastChecker.java`).
+   1. `roastLevel(int finalTempC)`, using the first table.
+   2. `weightLossPercent(green, roasted)`: the percentage of the green weight that's gone. Return `-1` if `green` is 0 or less, or if the roasted beans somehow weigh more than the green ones.
+   3. `levelFromLoss(double lossPercent)`, using the second table. Return `UNKNOWN` for a negative loss.
+   4. `readingsAgree(temp, green, roasted)`: `true` when both methods give the same level. Build it from the other three methods.
+   5. In `main`, print the example's lines. When the readings disagree, print `Check your thermometer or your scale.`
 
-### Tutorials
-- [Java Return Values - Programiz](https://www.programiz.com/java-programming/methods)
-- [Method Return Types - GeeksforGeeks](https://www.geeksforgeeks.org/methods-in-java/)
+## 🧪 Taste test
 
-### Video Resources
-- [Java Return Statements](https://www.youtube.com/results?search_query=java+return+statement)
-- [Building a Calculator in Java](https://www.youtube.com/results?search_query=java+calculator+tutorial)
+```bash
+cd day10/_start/src
+javac RoastChecker.java
+java RoastChecker
+```
 
-### Practice Platforms
-- [Method Exercises](https://codingbat.com/java)
-- [Calculator Projects](https://github.com/karan/Projects#calculator)
+To run the tests, copy `_end/src/RoastCheckerTest.java` next to your file, then from the repo root:
 
-## 🔑 Key Concepts Summary
+```bash
+javac -cp lib/junit-platform-console-standalone-6.1.3.jar -d day10/_start/src day10/_start/src/*.java
+java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp day10/_start/src --scan-classpath
+```
 
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Return Type | Type of value returned | `int`, `double`, `String`, `void` |
-| Return Statement | Exits method with value | `return result;` |
-| Early Return | Exit before end | `if (error) return;` |
-| Method Chaining | Use return in call | `add(5, multiply(2, 3))` |
-| Code Organization | Break into methods | Separate add, subtract, etc. |
+For an exercise, use `day10/exercise1/src` or `day10/exercise2/src` in both commands.
 
-## 📌 Notes & reference (use these when stuck)
+## 🆘 Stuck?
 
-**When you're stuck:**
-- **Return type:** Re-read **Step 1** — use `return value;` and declare type: `public static double add(...)`
-- **void vs return:** Use `void` when no value back; use `int`/`double`/`String` when returning — see **Step 2**
-- **Chaining:** Method that returns a value can be used inside another call: `method2(method1())`
-- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for calculator structure
-
-**Related days:** Day 6 (methods); Day 9 (maps for storing results).
-
-**Quick reference:** Every path in a non-void method must `return` a value · Call: `double result = add(1, 2);`
+- **`missing return statement`**: Java needs a `return` on every path. End with a final `return` after the `if`s.
+- **The loss is `0.0`**: integer division again. If you used `int` grams, `(1000 - 845) / 1000` is `0`. Use `double`s.
+- **`readingsAgree` says `false` for a match**: compare the two `String`s with `equals`, not `==`.
+- **A `switch` case runs into the next one**: that's the old `case "x":` style. Use the arrow style `case "x" -> ...`, which never falls through.
 
 ## ✅ Checklist
-- [ ] Understand return types
-- [ ] Can write methods that return values
-- [ ] Know when to use void
-- [ ] Can organize code with methods
-- [ ] Can chain method calls
-- [ ] Completed Calculator project
+- [ ] Used one method's return value in another method
+- [ ] Returned early from an `if`
+- [ ] Returned `-1` for impossible input
+- [ ] Wrote a method that returns a `boolean`
+- [ ] Used a `switch`
+- [ ] Finished both exercises
+- [ ] Roast Checker's tests pass
 - [ ] Committed code to Git
 
-## 📂 Code Examples
+## ➡️ Next
 
-This day includes starter and completed code examples:
-- **`_start/`** - Starting code with TODO comments and learning notes
-- **`_end/`** - Completed solutions with detailed explanations
-
-Check these folders to see the progression from start to finish and learn from the learning curve notes!
-
-## 💻 How to Run Java Files
-
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to the project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day10\_end\src"
-   ```
-
-3. **Compile the Java file**
-   ```cmd
-   javac Calculator.java
-   ```
-
-4. **Run the compiled program**
-   ```cmd
-   java Calculator
-   ```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to the project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day10/_end/src
-   ```
-
-3. **Compile the Java file**
-   ```bash
-   javac Calculator.java
-   ```
-
-4. **Run the compiled program**
-   ```bash
-   java Calculator
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA:**
-1. Open the project folder in IntelliJ IDEA
-2. Right-click on the Java file
-3. Select "Run 'ClassName.main()'"
-
-**VS Code:**
-1. Install "Extension Pack for Java"
-2. Open the Java file
-3. Click "Run" button above `main` method or press `F5`
-
-**Eclipse:**
-1. Import project into Eclipse
-2. Right-click on the Java file
-3. Select "Run As" → "Java Application"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
-- **"package does not exist"** - Remove package declaration if running from command line, or use proper package structure
-
-
-## 🚀 Next Steps
-After completing Day 10, you should be able to:
-- Create methods with return values
-- Organize code into reusable functions
-- Build complex programs with methods
-- Design clean, modular code
-
-**Ready for Day 11?** You'll build a Blackjack game - your first major capstone project!
-
-
-
-
-
-
-
+Day 11 is the Beginner capstone: simulate a whole season on Wanjiru's farm, from the first rains to payday.

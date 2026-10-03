@@ -1,246 +1,99 @@
-# Day 43 - Web Scraping with Jsoup
+# Day 43 - Headline Digest: Web Scraping with jsoup
 
-## 📚 Learning Objectives
-- Understand web scraping
-- Use Jsoup library
-- Parse HTML documents
-- Extract data from websites
-- Handle web scraping challenges
+> Some useful information has no API, only a web page. Learn to read pages from Java, and to do it politely.
 
-## 🎯 Topics Covered
-- Jsoup library
-- HTML parsing
-- Element selection
-- Data extraction
-- Web scraping ethics
-- Error handling
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Every morning, Achieng reads the same news site on her phone, scrolling past adverts and the stories she's already seen. She'd rather get a short list: section, headline, link. The site has no API, but every page is HTML, and on Days 41 and 42 you learned how HTML is built. Today you'll take it apart:
 
-### Step 1: Jsoup Setup
-Add Jsoup dependency:
-
-**pom.xml:**
-```xml
-<dependency>
-    <groupId>org.jsoup</groupId>
-    <artifactId>jsoup</artifactId>
-    <version>1.17.2</version>
-</dependency>
+```
+$ java HeadlineScraper
+Mwangaza Daily · Kenya's news, made up for practice
+7 stories: {Business=2, Culture=1, News=2, Sport=2}
+  [News    ] Expressway to cut night-time fares for matatus
+             https://mwangaza.example/news/2026/10/03/expressway-night-fares
+  [Business] Tea prices rise at the Mombasa auction for a third week
+             https://mwangaza.example/business/2026/10/03/tea-auction-prices
+  ...
+Saved headlines.csv
 ```
 
-### Step 2: Connect and Parse
-Load HTML document:
+The newspaper, *Mwangaza Daily*, is made up, and its front page is saved in the project, so you can practise as often as you like without bothering a real website.
+
+## 🎯 Learning Objectives
+- Parse HTML into a document tree with **jsoup**
+- Find elements with CSS selectors: classes, attributes and `:not(...)`
+- Read text, attributes and absolute URLs from elements
+- Handle parts of a page that are missing, without crashing
+- Write scraped data to a properly quoted CSV file
+- Scrape responsibly: check the terms and `robots.txt`, identify yourself, and go slowly
+
+## 🧰 What you'll use
+
+**Parsing and selecting**:
 
 ```java
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-// From URL
-Document doc = Jsoup.connect("https://example.com")
-    .userAgent("Mozilla/5.0")
-    .get();
-
-// From HTML string
-String html = "<html><body><p>Hello</p></body></html>";
-Document doc = Jsoup.parse(html);
-
-// From file
-File file = new File("page.html");
-Document doc = Jsoup.parse(file, "UTF-8");
+Document page = Jsoup.parse(html, "https://mwangaza.example/");   // the base URI resolves relative links
+Elements stories = page.select("article.story:not(.sponsored)");   // CSS selectors, like in your stylesheet
+Element link = story.selectFirst("h2 a");                          // null if there isn't one
+link.text();            // "Tea prices rise at the Mombasa auction..."
+link.attr("href");      // "/business/2026/10/03/tea-auction-prices"
+link.absUrl("href");    // "https://mwangaza.example/business/2026/10/03/tea-auction-prices"
 ```
 
-### Step 3: Select Elements
-Use CSS selectors:
+**A live page** (only when you're allowed to):
 
 ```java
-// By tag
-Elements paragraphs = doc.select("p");
-
-// By class
-Elements items = doc.select(".item");
-
-// By ID
-Element header = doc.selectFirst("#header");
-
-// By attribute
-Elements links = doc.select("a[href]");
-
-// Complex selectors
-Elements titles = doc.select("div.content > h2.title");
+Document page = Jsoup.connect("https://example.com/")
+        .userAgent("HeadlineDigest/1.0 (learning project)")
+        .timeout(10_000)
+        .get();
 ```
 
-### Step 4: Extract Data
-Get text and attributes:
+**Scraping responsibly.** A website belongs to someone. Before scraping a real one:
 
-```java
-// Get text
-String text = element.text();
+1. **Read its terms of use.** Many forbid scraping. If there's an API or an RSS feed, use that instead.
+2. **Check `/robots.txt`** (for example `https://example.com/robots.txt`). It lists the paths the owner asks robots to stay out of.
+3. **Go slowly.** One page every few seconds at most. Your program can send requests far faster than a person, and that can overload a small site.
+4. **Say who you are** with a clear user agent, and never collect personal data you don't need.
 
-// Get HTML
-String html = element.html();
+## 🪜 Steps
 
-// Get attribute
-String href = element.attr("href");
-String src = element.attr("src");
+1. **Exercise 1: Page facts** (`exercise1/`). Titles, headings, links and images.
+2. **Exercise 2: A messy fare table** (`exercise2/`). Clean numbers that people wrote in many different ways.
+3. **Project: Headline Digest** (`_start/src/`).
+   1. `scrape(page)`: a `Story` for each `article.story` that isn't `.sponsored`, with its id, section, headline, absolute URL, time and summary. Missing parts become `"Other"`, `null` or `""`.
+   2. `countBySection(stories)`: how many stories in each section, sorted by name.
+   3. `csvField(value)`: quote a field that contains a comma, a quote or a line break, and double the quotes inside.
+   4. Run it on the saved page, open `headlines.csv` in a spreadsheet, and check every headline is in one cell.
 
-// Get all elements
-for (Element item : items) {
-    String title = item.select("h3").text();
-    String link = item.select("a").attr("href");
-    System.out.println(title + " - " + link);
-}
+## 🧪 Run it and test it
+
+From the repo root (on Windows, use `;` instead of `:`):
+
+```bash
+javac -cp "lib/*" -d day43/_end/src day43/_end/src/*.java
+cd day43/_end/src && java -cp ".:../../../lib/*" HeadlineScraper && cd ../../..
+java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp "day43/_end/src:lib/*" --scan-classpath
 ```
 
-## 💻 Exercises
+## 🆘 Stuck?
 
-### Exercise 1: Basic Scraping
-Scrape:
-- Headings and paragraphs
-- Links and images
-- Lists
-- Tables
-
-### Exercise 2: Data Extraction
-Extract:
-- News headlines
-- Product prices
-- Article content
-- Structured data
-
-### Exercise 3: Complex Scraping
-Handle:
-- Multiple pages
-- Pagination
-- Dynamic content
-- Error handling
-
-## 🎮 Project: News Headlines Scraper
-
-### Requirements
-Create a news scraper:
-1. Connect to news website
-2. Extract headlines
-3. Extract article links
-4. Extract summaries
-5. Save to file
-6. Handle errors gracefully
-
-### Example Output
-```
-News Headlines:
-
-1. Breaking: Major Event Happens
-   Link: https://example.com/article1
-   Summary: Brief description...
-
-2. Technology Advances
-   Link: https://example.com/article2
-   Summary: Brief description...
-```
-
-### Starter Code
-```java
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-public class NewsScraper {
-    public static void main(String[] args) {
-        try {
-            Document doc = Jsoup.connect("https://news.example.com")
-                .userAgent("Mozilla/5.0")
-                .get();
-            
-            Elements articles = doc.select(".article");
-            
-            for (Element article : articles) {
-                String title = article.select("h2").text();
-                String link = article.select("a").attr("href");
-                String summary = article.select("p.summary").text();
-                
-                System.out.println(title);
-                System.out.println(link);
-                System.out.println(summary);
-                System.out.println();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-}
-```
-
-## 📚 Resources
-
-### Official Documentation
-- [Jsoup Documentation](https://jsoup.org/)
-- [Jsoup Cookbook](https://jsoup.org/cookbook/)
-- [CSS Selectors - MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors)
-
-### Tutorials
-- [Jsoup Tutorial - Baeldung](https://www.baeldung.com/java-with-jsoup)
-- [Web Scraping Java](https://www.geeksforgeeks.org/web-scraping-in-java-with-jsoup/)
-- [Jsoup Examples](https://jsoup.org/cookbook/)
-
-### Video Resources
-- [Jsoup Tutorial](https://www.youtube.com/results?search_query=jsoup+tutorial)
-- [Web Scraping Java](https://www.youtube.com/results?search_query=web+scraping+java)
-
-### Practice Platforms
-- [Web Scraping Exercises](https://www.scrapehero.com/)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Web Scraping | Extract web data | Parse HTML |
-| Jsoup | HTML parser | `Jsoup.connect()` |
-| CSS Selectors | Find elements | `.class`, `#id` |
-| Element | HTML element | `Element`, `Elements` |
-| Data Extraction | Get content | `.text()`, `.attr()` |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **Jsoup:** Re-read **Step 1** — `Jsoup.connect(url).get()`; add Jsoup dependency (Maven) — see **Step 2**
-- **Selectors:** Re-read **Step 2** — `doc.select("cssSelector")`; `.text()`, `.attr("href")` — see **Step 2**
-- **Errors:** Handle IOException, respect robots.txt; use try-catch — see **Step 3**
-- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
-
-**Related days:** Day 33 (HTTP); Day 44 (advanced scraping). **Quick reference:** Maven: jsoup dependency; run main class from IDE or `mvn exec:java`
-
-## 💻 How to Run
-
-**Java + Jsoup** — add Jsoup to `pom.xml` (or classpath). From project root or `src`:
-
-- **IDE:** Run the main class (e.g. News Scraper)
-- **Maven:** `mvn compile exec:java -Dexec.mainClass="YourMainClass"`
+- **`NullPointerException` on one story**: `selectFirst` returns `null` when nothing matches. Check before calling `.text()`.
+- **Links come out as `/news/...`**: use `absUrl("href")`, and parse with a base URI.
+- **The advert is in your list**: `article.story:not(.sponsored)`, with no space between `story` and `:not`.
+- **A live site gives `HTTP error fetching URL. Status=403`**: the site is refusing robots. Respect that, and look for an API or RSS feed instead.
+- **One headline spreads over two cells in the spreadsheet**: it has a comma in it. Fix `csvField`.
 
 ## ✅ Checklist
-- [ ] Understand web scraping
-- [ ] Can use Jsoup
-- [ ] Can parse HTML
-- [ ] Can extract data
-- [ ] Can handle errors
-- [ ] Completed News Scraper
+- [ ] Parsed a page with jsoup and selected elements with CSS selectors
+- [ ] Skipped adverts with `:not(...)`
+- [ ] Handled missing parts without crashing
+- [ ] Wrote properly quoted CSV
+- [ ] Can explain what `robots.txt` is and why scraping should be slow
+- [ ] Finished both exercises, and the tests pass
 - [ ] Committed code to Git
 
-## 🚀 Next Steps
-After completing Day 43, you should be able to:
-- Scrape websites
-- Extract data from HTML
-- Parse complex structures
-- Build data collection tools
+## ➡️ Next
 
-**Ready for Day 44?** You'll learn advanced web scraping techniques!
-
-
-
-
-
-
-
+Day 44 scrapes many pages, not one: follow "next page" links through a listings site and clean up what you find.

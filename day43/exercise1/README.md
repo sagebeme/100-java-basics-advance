@@ -1,34 +1,28 @@
-# Exercise 1
+# Day 43 - Exercise 1: Page facts
 
-## Objective
-Basic Scraping
-Scrape:
-- Headings and paragraphs
-- Links and images
-- Lists
-- Tables
+`src/stall.html` is a saved page for a stall at Gikomba market. Write four methods in `src/PageFacts.java`, each taking a jsoup `Document`:
 
-## Requirements
-Basic Scraping
-Scrape:
-- Headings and paragraphs
-- Links and images
-- Lists
-- Tables
+| Method | Returns for `stall.html` |
+|---|---|
+| `title(page)` | `"Baraka's Stall · Gikomba Market"` |
+| `headings(page)` | the `<h2>` texts in order: `[Jackets, Sneakers, Find us]` |
+| `links(page)` | every link as an **absolute** URL, each once, sorted |
+| `imagesWithoutAlt(page)` | how many `<img>` have **no** `alt` attribute at all: `1` |
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+The page is parsed with the base URI `https://baraka.example/`, so `/jackets` becomes `https://baraka.example/jackets`.
 
-## Starter Code
-Check the src/ directory for starter code files.
+Note that `alt=""` is *allowed*: it means "this picture is decoration, skip it". Only a missing `alt` is a problem.
 
-## 📌 Refer to (when stuck)
-- **Day 43 README** ([day43/README.md](../README.md)) → **Notes & reference** and **Step-by-Step Instructions**. Use main day README for structure and hints.
+## Files
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+- `src/PageFacts.java`: your code goes here.
+- `src/stall.html`: the page.
+- `src/PageFactsTest.java`: the tests.
+- `solution/PageFacts.java`: one answer.
+
+## 📌 Stuck?
+
+- `page.select("h2")` finds elements with a CSS selector, and `.eachText()` gives their texts.
+- `link.absUrl("href")` resolves a relative link against the base URI.
+- `img:not([alt])` selects images with no `alt` attribute.
+- A `TreeSet` both removes duplicates and sorts.

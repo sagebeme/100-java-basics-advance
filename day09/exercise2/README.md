@@ -1,31 +1,26 @@
-# Exercise 2
+# Day 9 - Exercise 2: Who came both days?
 
-## Objective
-Set Operations
-Create programs that:
-- Find unique elements
-- Perform set operations (union, intersection)
-- Remove duplicates from list
-- Check membership efficiently
+The clerk has two lists of who delivered on Monday and on Tuesday. Some farmers came more than once a day, so names repeat. Write two methods in `src/DeliveryDays.java` that answer with sets:
 
-## Requirements
-Set Operations
-Create programs that:
-- Find unique elements
-- Perform set operations (union, intersection)
-- Remove duplicates from list
-- Check membership efficiently
+| Method | Answer |
+|---|---|
+| `bothDays(monday, tuesday)` | Farmers who came on both days |
+| `onlyTuesday(monday, tuesday)` | Farmers who came on Tuesday but not on Monday |
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+```java
+monday:  ["Wanjiru", "Otieno", "Wanjiru", "Achieng"]
+tuesday: ["Otieno", "Kip", "Kip", "Wanjiru"]
+```
 
-## Starter Code
-Check the src/ directory for starter code files.
+`bothDays` gives `{Otieno, Wanjiru}`, and `onlyTuesday` gives `{Kip}`.
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+## Files
+
+- `src/DeliveryDays.java`: your code goes here.
+- `src/DeliveryDaysTest.java`: the tests. They don't care about order.
+- `solution/DeliveryDays.java`: one answer.
+
+## 📌 Stuck?
+
+- `new HashSet<>(monday)` makes a set from a list, dropping the repeats.
+- `retainAll(other)` keeps only what's also in `other`, and `removeAll(other)` drops everything that's in `other`.

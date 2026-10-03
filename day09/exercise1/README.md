@@ -1,31 +1,24 @@
-# Exercise 1
+# Day 9 - Exercise 1: Totals by farmer
 
-## Objective
-HashMap Practice
-Create programs that:
-- Store and retrieve key-value pairs
-- Count occurrences of words
-- Build a phone directory
-- Create a student grade book
+On Day 7 you kept two lists in step, names in one and weights in the other. A `Map` does the same job with less that can go wrong: each farmer's name is a key, and the value is their running total.
 
-## Requirements
-HashMap Practice
-Create programs that:
-- Store and retrieve key-value pairs
-- Count occurrences of words
-- Build a phone directory
-- Create a student grade book
+Write `totalsByFarmer(List<String> farmers, List<Double> kgs)`. It returns a map from each farmer to their total kilograms, in the order each farmer **first** appeared:
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+```java
+farmers: ["Wanjiru", "Otieno", "Wanjiru"]
+kgs:     [23.5,      31.0,     10.0]
+```
 
-## Starter Code
-Check the src/ directory for starter code files.
+gives `{Wanjiru=33.5, Otieno=31.0}`.
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+## Files
+
+- `src/FarmerTotals.java`: your code goes here.
+- `src/FarmerTotalsTest.java`: the tests.
+- `solution/FarmerTotals.java`: one answer.
+
+## 📌 Stuck?
+
+- Use a `LinkedHashMap` so the first-seen order is kept.
+- `totals.getOrDefault(name, 0.0)` gives the total so far, or `0.0` for someone new. Add this delivery and `put` it back.
+- There's also a one-line way: `totals.merge(name, kg, Double::sum)`. Try the long way first.

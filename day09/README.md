@@ -1,340 +1,129 @@
-# Day 9 - Maps, Sets, and Collections
+# Day 9 - Flavour Map
 
-## 📚 Learning Objectives
-- Understand HashMap and Map interface
-- Learn about HashSet and Set interface
-- Work with key-value pairs
-- Practice nested data structures
-- Build programs using collections
+> Coffee from Nyeri doesn't taste like coffee from Kisii. Map each region to its flavours.
 
-## 🎯 Topics Covered
-- HashMap and Map interface
-- HashSet and Set interface
-- Key-value pairs
-- Nested collections
-- Collection methods
-- Iterating over maps
+## 🌱 On the shamba
 
-## 📝 Step-by-Step Instructions
+A buyer visits the cooperative and asks, "What does your coffee taste like?" Wanjiru has never thought about it. Coffee is coffee, isn't it?
 
-### Step 1: HashMap Basics
-Maps store key-value pairs:
+Not to a professional taster. Soil, altitude, rain and the way the beans are processed all change the flavour. Tasters describe it with **tasting notes**: everyday flavours the coffee reminds them of. A Nyeri coffee might be described as "blackcurrant and grapefruit". Nobody added fruit; that's just what it tastes like.
+
+Today's program stores the notes for each region and answers questions like "Where would I find a coffee that tastes of honey?":
+
+```
+=== Flavour Map ===
+Nyeri: blackcurrant, grapefruit, brown sugar
+Kirinyaga: blackberry, citrus, honey
+Kiambu: lemon, black tea, caramel
+Murang'a: red currant, plum, honey
+Embu: orange, molasses, black tea
+Kisii: milk chocolate, red apple, caramel
+Which flavour do you like?
+honey
+Try coffee from: Kirinyaga, Murang'a
+```
+
+(These notes are typical examples. Every farm and every harvest tastes a little different.)
+
+## 🎯 By the end of today
+- Store pairs of keys and values in a `Map`, and look a value up by its key
+- Loop over a map's entries
+- Keep only unique values with a `Set`
+- Find what two sets have in common with `retainAll`
+- Choose between `HashMap`, `LinkedHashMap` and `TreeSet` by the order you need
+
+## ☕ Bean fact
+
+Kenyan coffees are famous for a bright, juicy sourness that tasters call **acidity**, and for a dark berry flavour often described as **blackcurrant**. If you've never had a blackcurrant, think of the deep, sharp taste of **zambarau**.
+
+## 🧰 Java you'll use
+
+**A `Map`** links each key to one value. Keys are unique, so putting a key in twice replaces its value:
 
 ```java
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-// Create HashMap
-Map<String, Integer> scores = new HashMap<>();
-
-// Add elements
-scores.put("Alice", 95);
-scores.put("Bob", 87);
-scores.put("Charlie", 92);
-
-// Access elements
-int aliceScore = scores.get("Alice");
-
-// Check if key exists
-if (scores.containsKey("Bob")) {
-    // Key exists
-}
-
-// Remove element
-scores.remove("Charlie");
+Map<String, String> capital = new HashMap<>();
+capital.put("Nyeri", "Nyeri town");
+capital.put("Kiambu", "Kiambu town");
+capital.get("Nyeri");               // "Nyeri town"
+capital.get("Mombasa");             // null: no such key
+capital.getOrDefault("Mombasa", "?"); // "?"
+capital.containsKey("Kiambu");      // true
 ```
 
-### Step 2: Iterating Over Maps
-Different ways to iterate:
+**Looping over a map**:
 
 ```java
-// Iterate over keys
-for (String key : scores.keySet()) {
-    System.out.println(key + ": " + scores.get(key));
-}
-
-// Iterate over entries
-for (Map.Entry<String, Integer> entry : scores.entrySet()) {
-    System.out.println(entry.getKey() + ": " + entry.getValue());
-}
-
-// Iterate over values
-for (Integer value : scores.values()) {
-    System.out.println(value);
+for (Map.Entry<String, String> entry : capital.entrySet()) {
+    System.out.println(entry.getKey() + " -> " + entry.getValue());
 }
 ```
 
-### Step 3: Nested Collections
-Collections within collections:
+A `HashMap` doesn't promise any order. A `LinkedHashMap` keeps the order you added things in, which is nicer for printing.
+
+**A `Set`** holds each value at most once. Adding a duplicate does nothing:
 
 ```java
-Map<String, List<String>> countries = new HashMap<>();
-countries.put("USA", Arrays.asList("New York", "Los Angeles"));
-countries.put("UK", Arrays.asList("London", "Manchester"));
+Set<String> notes = new TreeSet<>();  // TreeSet keeps them sorted
+notes.add("honey");
+notes.add("caramel");
+notes.add("honey");                   // ignored
+// notes is [caramel, honey]
 ```
 
-### Step 4: HashSet
-Set stores unique elements:
+**Common items**: `retainAll` keeps only what's also in another collection.
 
 ```java
-import java.util.HashSet;
-import java.util.Set;
-
-Set<String> uniqueNames = new HashSet<>();
-uniqueNames.add("Alice");
-uniqueNames.add("Bob");
-uniqueNames.add("Alice"); // Won't add duplicate
-
-// Check membership
-if (uniqueNames.contains("Alice")) {
-    // Element exists
-}
+Set<String> shared = new TreeSet<>(List.of("honey", "plum"));
+shared.retainAll(List.of("honey", "citrus"));
+// shared is [honey]
 ```
 
-## 💻 Exercises
+## 🪜 Steps
 
-### Exercise 1: HashMap Practice
-Create programs that:
-- Store and retrieve key-value pairs
-- Count occurrences of words
-- Build a phone directory
-- Create a student grade book
+1. **Exercise 1: Totals by farmer** (`exercise1/`). Replace Day 7's two parallel lists with one `Map`.
+2. **Exercise 2: Who came both days?** (`exercise2/`). Sets.
+3. **Project: Flavour Map** (`_start/src/FlavourMap.java`). `kenyanRegions()` already builds the map for you.
+   1. `describe(regions, region)`: `"Nyeri: blackcurrant, grapefruit, brown sugar"`, or `"Unknown region: Mombasa"`. `String.join(", ", list)` joins a list with commas.
+   2. `allNotes(regions)`: every note from every region, each once, in alphabetical order.
+   3. `regionsWithNote(regions, note)`: the regions whose notes include `note`, ignoring capitals, in the map's order.
+   4. `sharedNotes(regions, a, b)`: the notes two regions have in common, sorted. An unknown region shares nothing.
+   5. In `main`, print every region with `describe`, then ask for a flavour and suggest regions.
 
-### Exercise 2: Set Operations
-Create programs that:
-- Find unique elements
-- Perform set operations (union, intersection)
-- Remove duplicates from list
-- Check membership efficiently
+## 🧪 Taste test
 
-### Exercise 3: Nested Structures
-Create programs that:
-- Store lists in maps
-- Store maps in lists
-- Build complex data structures
-- Navigate nested collections
-
-## 🎮 Project: Secret Auction
-
-### Requirements
-Create a secret auction program:
-1. Display auction logo
-2. Ask for bidder's name
-3. Ask for bid amount
-4. Ask if there are more bidders
-5. Clear screen for next bidder
-6. Find highest bidder
-7. Display winner
-
-### Example Output
-```
-                         ___________
-                         \\         /
-                          )_______(
-                          |"""""""|_.-._,.---------.,_.-._
-                          |       | | |               | | ''-.
-                          |       |_| |_             |||  _.-'
-                          |_______| '-' `'---------'`''-'`'-..__
-                          )"""""""(
-                         /_________\\
-                       .-------------.
-                      /_______________\\
-
-Welcome to the secret auction program.
-What is your name?: Alice
-What's your bid?: $150
-Are there any other bidders? Type 'yes' or 'no'.
-> yes
-[Clear screen]
-
-What is your name?: Bob
-What's your bid?: $200
-Are there any other bidders? Type 'yes' or 'no'.
-> no
-
-The winner is Bob with a bid of $200
+```bash
+cd day09/_start/src
+javac FlavourMap.java
+java FlavourMap
 ```
 
-### Starter Code
-```java
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+To run the tests, copy `_end/src/FlavourMapTest.java` next to your file, then from the repo root:
 
-public class SecretAuction {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        Map<String, Integer> bids = new HashMap<>();
-        
-        System.out.println("Welcome to the secret auction program.");
-        
-        // Your code here
-        
-        scanner.close();
-    }
-}
+```bash
+javac -cp lib/junit-platform-console-standalone-6.1.3.jar -d day09/_start/src day09/_start/src/*.java
+java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp day09/_start/src --scan-classpath
 ```
 
-### Solution Hints
-- Use HashMap to store name-bid pairs
-- Use loop to collect multiple bids
-- Clear screen between bidders (print many newlines or use ANSI codes)
-- Find maximum value in map
-- Get key for maximum value
+For an exercise, use `day09/exercise1/src` or `day09/exercise2/src` in both commands.
 
-### Bonus Features
-- Input validation
-- Minimum bid requirement
-- Bid history display
-- Timer for auction
-- Multiple item auctions
+## 🆘 Stuck?
 
-## 📚 Resources
-
-### Official Documentation
-- [Map Interface - Oracle Docs](https://docs.oracle.com/javase/tutorial/collections/interfaces/map.html)
-- [HashMap Class - Java API](https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html)
-- [Set Interface - Oracle Docs](https://docs.oracle.com/javase/tutorial/collections/interfaces/set.html)
-- [HashSet Class - Java API](https://docs.oracle.com/javase/8/docs/api/java/util/HashSet.html)
-
-### Tutorials
-- [Java HashMap - W3Schools](https://www.w3schools.com/java/java_hashmap.asp)
-- [Java Map Interface - Programiz](https://www.programiz.com/java-programming/map)
-- [Java Collections - GeeksforGeeks](https://www.geeksforgeeks.org/collections-in-java-2/)
-
-### Video Resources
-- [Java HashMap Tutorial](https://www.youtube.com/results?search_query=java+hashmap+tutorial)
-- [Java Collections Framework](https://www.youtube.com/results?search_query=java+collections+framework)
-
-### Practice Platforms
-- [Map Practice - CodingBat](https://codingbat.com/java)
-- [Java Collection Exercises](https://www.w3resource.com/java-exercises/collection/)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Map | Key-value pairs | `Map<String, Integer>` |
-| HashMap | Map implementation | `new HashMap<>()` |
-| Key | Unique identifier | `"Alice"` in `scores.get("Alice")` |
-| Value | Data associated with key | `95` in `scores.put("Alice", 95)` |
-| Set | Unique elements collection | `Set<String> unique = new HashSet<>()` |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **HashMap:** Re-read **Step 1** — `Map<K,V> map = new HashMap<>();` then `put(key, value)`, `get(key)`, `containsKey(key)`
-- **Iterate map:** `for (Map.Entry<String, Integer> e : map.entrySet())` or `map.keySet()`, `map.values()` — see **Step 2**
-- **HashSet:** `Set<String> set = new HashSet<>();` — no duplicates; `add()`, `contains()`
-- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for auction logic
-
-**Related days:** Day 4 (ArrayList); Day 10 (return values from methods using maps).
-
-**Quick reference:** `map.get(key)` returns null if key missing · Use `map.containsKey(key)` before get · Set has no order
+- **`NullPointerException`**: `get` returned `null` for a key that isn't in the map. Check with `containsKey` first, or use `getOrDefault`.
+- **`UnsupportedOperationException`**: `List.of(...)` and `Set.of(...)` can't be changed. Copy one into a new collection before adding or removing: `new TreeSet<>(regions.get(a))`.
+- **`retainAll` emptied the region's own list**: you called it on the map's list itself. Always copy first.
+- **Wrong order**: `HashMap` and `HashSet` shuffle. Use `LinkedHashMap` for "the order I added them" and `TreeSet` for "sorted".
 
 ## ✅ Checklist
-- [ ] Understand HashMap and Map interface
-- [ ] Can add, get, remove from maps
-- [ ] Can iterate over maps
-- [ ] Understand HashSet and Set
-- [ ] Can work with nested collections
-- [ ] Completed Secret Auction project
+- [ ] Put keys and values in a `Map` and looked them up
+- [ ] Looped over a map's entries
+- [ ] Used a `Set` to remove duplicates
+- [ ] Found common values with `retainAll`
+- [ ] Finished both exercises
+- [ ] Flavour Map's tests pass
 - [ ] Committed code to Git
 
-## 📂 Code Examples
+## ➡️ Next
 
-This day includes starter and completed code examples:
-- **`_start/`** - Starting code with TODO comments and learning notes
-- **`_end/`** - Completed solutions with detailed explanations
-
-Check these folders to see the progression from start to finish and learn from the learning curve notes!
-
-## 💻 How to Run Java Files
-
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to the project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day09\_end\src"
-   ```
-
-3. **Compile the Java file**
-   ```cmd
-   javac SecretAuction.java
-   ```
-
-4. **Run the compiled program**
-   ```cmd
-   java SecretAuction
-   ```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to the project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day09/_end/src
-   ```
-
-3. **Compile the Java file**
-   ```bash
-   javac SecretAuction.java
-   ```
-
-4. **Run the compiled program**
-   ```bash
-   java SecretAuction
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA:**
-1. Open the project folder in IntelliJ IDEA
-2. Right-click on the Java file
-3. Select "Run 'ClassName.main()'"
-
-**VS Code:**
-1. Install "Extension Pack for Java"
-2. Open the Java file
-3. Click "Run" button above `main` method or press `F5`
-
-**Eclipse:**
-1. Import project into Eclipse
-2. Right-click on the Java file
-3. Select "Run As" → "Java Application"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
-- **"package does not exist"** - Remove package declaration if running from command line, or use proper package structure
-
-
-## 🚀 Next Steps
-After completing Day 9, you should be able to:
-- Use maps for key-value storage
-- Work with sets for unique data
-- Build complex data structures
-- Organize data efficiently
-
-**Ready for Day 10?** You'll learn about return values and build a Calculator!
-
-
-
-
-
-
-
+The green beans travel abroad, and someone roasts them. On Day 10 you'll write methods that return the roast level, the weight lost, and how much caffeine ends up in your cup.

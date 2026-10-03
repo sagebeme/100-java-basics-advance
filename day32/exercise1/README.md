@@ -1,31 +1,24 @@
-# Exercise 1
+# Day 32 - Exercise 1: Date maths
 
-## Objective
-Email Sending
-Create programs that:
-- Send simple emails
-- Send HTML emails
-- Send emails with attachments
-- Send to multiple recipients
+Write three methods in `src/DateMaths.java`:
 
-## Requirements
-Email Sending
-Create programs that:
-- Send simple emails
-- Send HTML emails
-- Send emails with attachments
-- Send to multiple recipients
+| Method | Example |
+|---|---|
+| `ageOn(LocalDate born, LocalDate day)` | born 1991-10-02, on 2026-10-01 → `34`; on 2026-10-02 → `35` |
+| `daysUntilNextBirthday(LocalDate born, LocalDate today)` | born 1991-10-02, today 2026-09-30 → `2`; today 2026-10-02 → `0`; today 2026-10-03 → `364` |
+| `friendly(LocalDate date)` | 2026-10-02 → `"Friday, 2 October 2026"` |
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+For `daysUntilNextBirthday`, someone born on 29 February has their next birthday on 28 February in an ordinary year.
 
-## Starter Code
-Check the src/ directory for starter code files.
+## Files
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+- `src/DateMaths.java`: your code goes here.
+- `src/DateMathsTest.java`: the tests.
+- `solution/DateMaths.java`: one answer.
+
+## 📌 Stuck?
+
+- `Period.between(born, day).getYears()` counts whole years.
+- Try this year's birthday; if it's already passed, use next year's. `ChronoUnit.DAYS.between(a, b)` counts the days.
+- `born.withYear(2027)` on a 29 February date gives 28 February automatically.
+- `DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy", Locale.ENGLISH)`.

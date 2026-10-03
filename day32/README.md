@@ -1,296 +1,122 @@
-# Day 32 - Email (JavaMail) & Date Management
+# Day 32 - Chama Reminders: Email and Dates
 
-## 📚 Learning Objectives
-- Send emails using JavaMail API
-- Work with dates and times
-- Format dates
-- Schedule tasks
-- Automate email sending
+> Your mum's chama has 14 members, two birthdays this month and a contribution due on the 5th. Write the program that never forgets.
 
-## 🎯 Topics Covered
-- JavaMail API
-- Email sending (SMTP)
-- Date and time classes
-- Date formatting
-- Scheduling
-- Automation
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+A **chama** is a savings group: friends, neighbours or colleagues who each put in a fixed amount every month and take turns receiving the pot. The treasurer's hardest job isn't the money, it's the reminders: "Your KES 2,000 is due on Friday", "Happy birthday, Wanjiku!".
 
-### Step 1: JavaMail Setup
-Add JavaMail dependency:
+Today you'll build `ChamaReminders`. It reads the member list, works out what's due today, and sends the right emails:
 
-**pom.xml:**
-```xml
-<dependency>
-    <groupId>com.sun.mail</groupId>
-    <artifactId>javax.mail</artifactId>
-    <version>1.6.2</version>
-</dependency>
+```
+$ java ChamaReminders members.csv 2026-10-02
+Sent 2 emails (saved in outbox/):
+  to wanjiku@example.com: Happy birthday, Wanjiku!
+  to otieno@example.com: Your chama contribution is due on Mon 5 Oct
 ```
 
-### Step 2: Send Email
-Send email programmatically:
+The program never talks to a real mail server in this lesson. It sends through a `Mailer` **interface**, and today's `Mailer` writes each email to a file in `outbox/`. At the end of the lesson you'll see how to swap in a real SMTP sender without changing anything else.
+
+## 🎯 Learning Objectives
+- Work with dates using `LocalDate`, `Period` and `ChronoUnit`
+- Format and parse dates with `DateTimeFormatter`
+- Handle awkward calendar cases: 29 February, and a "31st" in a 30-day month
+- Hide a service behind an interface so you can test without it
+- Read a CSV file and turn each row into a `record`
+- Build the text of an email: headers, subject and body
+
+## 🧰 Java you'll use
+
+**`LocalDate`** is a date with no time and no time zone, which is exactly right for birthdays and due dates:
 
 ```java
-import javax.mail.*;
-import javax.mail.internet.*;
-import java.util.Properties;
+LocalDate today = LocalDate.of(2026, 10, 2);
+today.plusDays(3);                  // 2026-10-05
+today.getDayOfWeek();               // FRIDAY
+today.lengthOfMonth();              // 31
+ChronoUnit.DAYS.between(today, LocalDate.of(2026, 12, 25)); // 84
+Period.between(LocalDate.of(1990, 5, 1), today).getYears();  // 36
+```
 
-public class EmailSender {
-    public static void sendEmail(String to, String subject, String body) {
-        String from = "your-email@gmail.com";
-        String password = "your-app-password";
-        
-        Properties properties = new Properties();
-        properties.put("mail.smtp.host", "smtp.gmail.com");
-        properties.put("mail.smtp.port", "587");
-        properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.starttls.enable", "true");
-        
-        Session session = Session.getInstance(properties, new Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(from, password);
-            }
-        });
-        
-        try {
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(from));
-            message.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
-            message.setSubject(subject);
-            message.setText(body);
-            
-            Transport.send(message);
-            System.out.println("Email sent successfully!");
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
+**`DateTimeFormatter`** turns dates into text and back:
+
+```java
+DateTimeFormatter nice = DateTimeFormatter.ofPattern("EEE d MMM", Locale.ENGLISH);
+nice.format(LocalDate.of(2026, 10, 5));   // "Mon 5 Oct"
+LocalDate.parse("1990-05-01");            // ISO format needs no formatter
+```
+
+Always pass a `Locale` when a pattern contains day or month names. Otherwise the output depends on the computer it runs on.
+
+**An interface** says *what* something can do, not *how*:
+
+```java
+public interface Mailer {
+    void send(Email email);
+}
+```
+
+`OutboxMailer` writes files, a test uses a `RecordingMailer` that just remembers what it was given, and a real `SmtpMailer` could talk to Gmail. `ChamaReminders` only ever sees `Mailer`, so it works with all three.
+
+**Records** are short classes for plain data:
+
+```java
+public record Member(String name, String email, LocalDate birthday, int contributionDay) {}
+```
+
+## 🪜 Steps
+
+1. **Exercise 1: Date maths** (`exercise1/`). Ages, days until a birthday, and a friendly date format.
+2. **Exercise 2: Build an email** (`exercise2/`). Check an address and turn an `Email` into the text a mail server sends.
+3. **Project: Chama Reminders** (`_start/src/`).
+   1. `Member.fromCsvLine` turns `Wanjiku,wanjiku@example.com,1991-10-02,5` into a `Member`.
+   2. `isBirthday(member, today)`: same month and day. Someone born on 29 February celebrates on 28 February when the year isn't a leap year.
+   3. `contributionDate(member, today)`: this month's due date. If the member's day is 31 and the month only has 30 days, it's the last day of the month.
+   4. `remindersFor(members, today)`: a birthday email for each birthday today, and a contribution reminder for each member whose due date is exactly **3 days** away.
+   5. `main`: read the CSV, send everything through an `OutboxMailer`, and print what was sent.
+
+## 🧪 Run it and test it
+
+From the repo root (on Windows, use `;` instead of `:` between classpath entries):
+
+```bash
+javac -cp "lib/*" -d day32/_end/src day32/_end/src/*.java
+java -cp "day32/_end/src:lib/*" ChamaReminders day32/_end/src/members.csv 2026-10-02
+java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp "day32/_end/src:lib/*" --scan-classpath
+```
+
+Work in `_start/src` the same way: copy `_end/src/ChamaRemindersTest.java` next to your files and swap `_end` for `_start` in the commands. For an exercise, compile and run `day32/exercise1/src`.
+
+### Sending real email later
+
+When you have a mail account to send from, add [Jakarta Mail](https://jakarta.ee/specifications/mail/) and write a second `Mailer`:
+
+```java
+public class SmtpMailer implements Mailer {
+    public void send(Email email) {
+        // Session session = Session.getInstance(props, authenticator);
+        // Transport.send(message built from email)
     }
 }
 ```
 
-### Step 3: Date and Time
-Work with dates:
+Read the account and password from **environment variables** (Day 35), never from the code. Gmail needs an *app password*, not your normal one. Nothing else in the project changes, and that's the point of the interface.
 
-```java
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+## 🆘 Stuck?
 
-// Current date
-LocalDate today = LocalDate.now();
-
-// Specific date
-LocalDate birthday = LocalDate.of(1990, 5, 15);
-
-// Format date
-DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-String formatted = today.format(formatter);
-
-// Parse date
-LocalDate parsed = LocalDate.parse("2023-12-25", formatter);
-```
-
-### Step 4: Date Operations
-Manipulate dates:
-
-```java
-// Add days
-LocalDate future = today.plusDays(30);
-
-// Check if before/after
-boolean isBefore = today.isBefore(birthday);
-
-// Get day of week
-DayOfWeek day = today.getDayOfWeek();
-```
-
-## 💻 Exercises
-
-### Exercise 1: Email Sending
-Create programs that:
-- Send simple emails
-- Send HTML emails
-- Send emails with attachments
-- Send to multiple recipients
-
-### Exercise 2: Date Operations
-Practice with:
-- Date formatting
-- Date parsing
-- Date calculations
-- Date comparisons
-
-### Exercise 3: Automation
-Create automated systems:
-- Scheduled email sending
-- Birthday reminders
-- Date-based triggers
-- Recurring tasks
-
-## 🎮 Project: Automated Birthday Wisher
-
-### Requirements
-Create a birthday reminder system:
-1. Read birthdays from CSV file
-2. Check if today is someone's birthday
-3. Send birthday email automatically
-4. Track sent emails
-5. Support multiple recipients
-
-### Example CSV (birthdays.csv)
-```csv
-name,email,birthday
-Alice,alice@example.com,1990-05-15
-Bob,bob@example.com,1985-12-25
-```
-
-### Starter Code
-```java
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-
-public class BirthdayWisher {
-    public static void main(String[] args) {
-        List<Person> people = loadBirthdays();
-        LocalDate today = LocalDate.now();
-        
-        for (Person person : people) {
-            if (isBirthdayToday(person, today)) {
-                sendBirthdayEmail(person);
-            }
-        }
-    }
-}
-```
-
-## 📚 Resources
-
-### Official Documentation
-- [JavaMail API - Oracle Docs](https://javaee.github.io/javameail/)
-- [Date and Time - Oracle Docs](https://docs.oracle.com/javase/tutorial/datetime/)
-- [LocalDate - Java API](https://docs.oracle.com/javase/8/docs/api/java/time/LocalDate.html)
-
-### Tutorials
-- [JavaMail Tutorial - Baeldung](https://www.baeldung.com/java-email)
-- [Java Date Time - W3Schools](https://www.w3schools.com/java/java_date.asp)
-- [JavaMail Example - GeeksforGeeks](https://www.geeksforgeeks.org/sending-email-java/)
-
-### Video Resources
-- [JavaMail Tutorial](https://www.youtube.com/results?search_query=java+send+email+tutorial)
-- [Java Date Time Tutorial](https://www.youtube.com/results?search_query=java+date+time+tutorial)
-
-### Practice Platforms
-- [Email Projects](https://github.com/karan/Projects#email)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| SMTP | Email protocol | `smtp.gmail.com` |
-| JavaMail | Email API | `javax.mail` package |
-| LocalDate | Date class | `LocalDate.now()` |
-| DateTimeFormatter | Date formatting | `DateTimeFormatter.ofPattern()` |
-| Automation | Scheduled tasks | Check dates and send emails |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **JavaMail:** Re-read **Step 1 & 2** — add dependency; Properties for SMTP; Session with Authenticator — see **Step 2**
-- **Dates:** Re-read **Step 3** — `LocalDate.now()`, `DateTimeFormatter.ofPattern("yyyy-MM-dd")` — see **Step 3**
-- **Credentials:** Use environment variables or config file; never hardcode — see **Troubleshooting**
-- **Main day README** → **Step 2** for send logic; **Key Concepts** for SMTP/LocalDate
-
-**Related days:** Day 24 (file I/O for config); Day 33 (HTTP for APIs). **Quick reference:** Gmail: use App Password; `Transport.send(message)`
+- **`DateTimeParseException`**: `LocalDate.parse` wants `yyyy-MM-dd` with leading zeros: `1991-10-02`, not `1991-10-2`.
+- **A 29 February birthday crashes**: `LocalDate.of(2027, 2, 29)` throws, because 2027 has no 29 February. Compare month and day numbers instead of building a date in this year.
+- **The contribution reminder never fires at the start of a month**: if today is 30 September and the due date is the 3rd, the next due date is in October. Work out this month's due date, and if it has already passed, use next month's.
+- **Day names come out in another language**: pass `Locale.ENGLISH` to `ofPattern`.
 
 ## ✅ Checklist
-- [ ] Can send emails
-- [ ] Understand JavaMail API
-- [ ] Can work with dates
-- [ ] Can format dates
-- [ ] Can automate tasks
-- [ ] Completed Birthday Wisher
+- [ ] Calculated an age and the days until a birthday
+- [ ] Formatted a date with a pattern and a `Locale`
+- [ ] Handled 29 February and short months
+- [ ] Sent email through an interface, and tested it with a fake
+- [ ] The tests pass
 - [ ] Committed code to Git
 
-## 💻 How to Run Java Files
+## ➡️ Next
 
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to your project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day32\src"
-   ```
-
-3. **Compile** (if using Maven: `mvn compile exec:java` or run from IDE)
-   ```cmd
-   javac BirthdayWisher.java
-   ```
-
-4. **Run the compiled program**
-   ```cmd
-   java BirthdayWisher
-   ```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to your project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day32/src
-   ```
-
-3. **Compile** (JavaMail requires JARs on classpath; Maven recommended)
-   ```bash
-   javac BirthdayWisher.java
-   ```
-
-4. **Run the compiled program**
-   ```bash
-   java BirthdayWisher
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA / Eclipse / VS Code:**
-1. Open the project (or create a Maven project with JavaMail dependency)
-2. Right-click on the main class
-3. Select "Run 'BirthdayWisher.main()'"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **JavaMail / dependencies**: Use Maven/Gradle for dependency management: `mvn compile exec:java -Dexec.mainClass="BirthdayWisher"`
-- **Email credentials**: Use environment variables or a config file; never hardcode passwords
-
-## 🚀 Next Steps
-After completing Day 32, you should be able to:
-- Send emails programmatically
-- Work with dates effectively
-- Automate tasks
-- Build notification systems
-
-**Ready for Day 33?** You'll learn about REST API endpoints and HTTP clients!
-
-
-
-
-
-
-
+Day 33 leaves your own computer: call a real weather API over HTTP and decide whether today's laundry will dry.

@@ -1,31 +1,37 @@
-# Exercise 2
+# Day 32 - Exercise 2: Build an email
 
-## Objective
-Date Operations
-Practice with:
-- Date formatting
-- Date parsing
-- Date calculations
-- Date comparisons
+Before a program hands an email to a mail server, it has to check the address and write the message out as plain text. Write two methods in `src/EmailText.java`:
 
-## Requirements
-Date Operations
-Practice with:
-- Date formatting
-- Date parsing
-- Date calculations
-- Date comparisons
+**`isValidAddress(String address)`**: a simple check, not a perfect one. `true` when there's exactly one `@`, at least one character before it, and a dot somewhere after it with characters on both sides, and no spaces anywhere.
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+| Address | Valid? |
+|---|---|
+| `wanjiku@example.com` | yes |
+| `wanjiku.k@mail.co.ke` | yes |
+| `wanjiku@localhost` | no (no dot after the `@`) |
+| `@example.com` | no |
+| `wan jiku@example.com` | no |
+| `a@b@example.com` | no |
 
-## Starter Code
-Check the src/ directory for starter code files.
+**`toMessageText(String to, String subject, String body)`**: the text a mail server receives, with each header on its own line, then a blank line, then the body:
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+```
+To: wanjiku@example.com
+Subject: Happy birthday!
+
+Have a wonderful day.
+```
+
+If the address isn't valid, throw an `IllegalArgumentException` instead.
+
+## Files
+
+- `src/EmailText.java`: your code goes here.
+- `src/EmailTextTest.java`: the tests.
+- `solution/EmailText.java`: one answer.
+
+## 📌 Stuck?
+
+- `indexOf('@')` and `lastIndexOf('@')` are equal only when there's exactly one `@`.
+- Split the address at the `@` and check each half separately; it's much easier than one long condition.
+- A regular expression works too: `address.matches("[^@\\s]+@[^@\\s]+\\.[^@\\s]+")`. Try writing it with `indexOf` first.

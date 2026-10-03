@@ -1,33 +1,26 @@
-# Exercise 1
+# Day 4 - Exercise 1: The picking team
 
-## Objective
-Array Basics
-Create a program that:
-- Creates an array of 5 numbers
-- Fills it with user input
-- Finds the maximum value
-- Finds the minimum value
-- Calculates the average
+During the harvest, neighbours help each other pick. The team for the day is written down in order of arrival:
 
-## Requirements
-Array Basics
-Create a program that:
-- Creates an array of 5 numbers
-- Fills it with user input
-- Finds the maximum value
-- Finds the minimum value
-- Calculates the average
+```java
+String[] team = {"Wanjiru", "Brian", "Mama Njeri", "Otieno"};
+```
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+Write four methods in `src/PickingTeam.java`:
 
-## Starter Code
-Check the src/ directory for starter code files.
+| Method | Example with the team above |
+|---|---|
+| `firstToArrive(String[] team)` | `"Wanjiru"` |
+| `lastToArrive(String[] team)` | `"Otieno"` |
+| `teamSize(String[] team)` | `4` |
+| `isOnTeam(String[] team, String name)` | `isOnTeam(team, "Brian")` is `true` |
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+## Files
+
+- `src/PickingTeam.java`: your code goes here.
+- `src/PickingTeamTest.java`: the tests.
+- `solution/PickingTeam.java`: one answer.
+
+## 📌 Stuck?
+
+The last index is always `team.length - 1`. For `isOnTeam`, loop over every index and compare with `equals`. Return `true` as soon as you find a match, and `false` after the loop.

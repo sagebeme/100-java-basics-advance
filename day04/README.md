@@ -1,297 +1,120 @@
-# Day 4 - Arrays and Collections
+# Day 4 - Rainfall Week
 
-## 📚 Learning Objectives
-- Understand arrays in Java
-- Learn about ArrayList and Collections
-- Work with array indexing and manipulation
-- Practice array operations (add, remove, search)
-- Understand the difference between arrays and ArrayLists
+> Seven days of rain, one variable. Meet the array.
 
-## 🎯 Topics Covered
-- Array declaration and initialization
-- Array indexing and access
-- ArrayList class
-- Collections framework basics
-- Array methods and operations
-- Multidimensional arrays
+## 🌱 On the shamba
 
-## 📝 Step-by-Step Instructions
+Coffee trees are fussy about rain. After a dry spell, a good shower makes them burst into white flowers that smell like jasmine. Every one of those flowers can become a cherry. Too little rain and the cherries stay small; too much and they split or catch disease.
 
-### Step 1: Arrays
-Arrays are fixed-size collections of elements:
+Wanjiru's son Brian keeps a rain gauge, a plastic tube marked in millimetres, behind the house. He writes down the reading every evening. Today's program stores a week of readings and reports on them:
 
-```java
-// Array declaration
-int[] numbers = new int[5];
-String[] names = {"Alice", "Bob", "Charlie"};
-
-// Accessing elements
-int first = numbers[0];
-names[1] = "Robert";
+```
+=== Rainfall Week ===
+Rain on Monday (mm)?
+12.5
+...
+Rain on Sunday (mm)?
+0
+Total: 31.0 mm
+Average: 4.4 mm a day
+Driest day: Tuesday
+Rainy days: 4
 ```
 
-### Step 2: ArrayList
-ArrayList is a dynamic array that can grow/shrink:
+## 🎯 By the end of today
+- Store many values of one type in an array
+- Read and change an element by its index, starting from `0`
+- Use `.length` and walk through an array with a `for` loop
+- Keep a growing list in an `ArrayList`, with `add`, `get`, `remove` and `size`
+
+## ☕ Bean fact
+
+Kenya's coffee areas get two rainy seasons a year: the **long rains** from about March to May and the **short rains** from about October to December. So many farms flower twice and harvest twice. The cherries take roughly seven to nine months to ripen after the flowers appear.
+
+## 🧰 Java you'll use
+
+**An array** holds a fixed number of values of one type. Each value has an index, and the first index is `0`:
+
+```java
+double[] rain = {12.5, 0.0, 3.2, 8.0, 0.4, 6.9, 0.0};
+rain[0];          // 12.5, Monday
+rain[6];          // 0.0, Sunday
+rain.length;      // 7
+rain[1] = 2.0;    // change Tuesday
+```
+
+You can also make an empty array of a given size. Every `double` in it starts at `0.0`:
+
+```java
+double[] rain = new double[7];
+```
+
+**Visiting every element** uses a `for` loop with an index. You'll learn loops properly tomorrow; for today, copy this pattern:
+
+```java
+double total = 0;
+for (int i = 0; i < rain.length; i++) {
+    total = total + rain[i];
+}
+```
+
+**`ArrayList`** is a list that grows and shrinks. It holds objects, so for numbers you write `Integer` or `Double` instead of `int` or `double`:
 
 ```java
 import java.util.ArrayList;
 
-ArrayList<String> names = new ArrayList<>();
-names.add("Alice");
-names.add("Bob");
-names.remove(0);
-names.get(0); // "Bob"
-names.size(); // Returns size
+ArrayList<String> queue = new ArrayList<>();
+queue.add("Wanjiru");     // ["Wanjiru"]
+queue.add("Otieno");      // ["Wanjiru", "Otieno"]
+queue.get(0);             // "Wanjiru"
+queue.remove(0);          // removes and returns "Wanjiru"
+queue.size();             // 1
+queue.contains("Otieno"); // true
 ```
 
-### Step 3: Array Operations
-Common operations on arrays:
+## 🪜 Steps
 
-```java
-// Length
-int length = array.length;
+1. **Exercise 1: The picking team** (`exercise1/`). Read from an array by index.
+2. **Exercise 2: The queue at the station** (`exercise2/`). Add to and remove from an `ArrayList`.
+3. **Project: Rainfall Week** (`_start/src/RainfallWeek.java`).
+   1. `DAYS` is an array of day names. Use it so `rain[i]` and `DAYS[i]` describe the same day.
+   2. Fill in `total` and `average`.
+   3. Fill in `driestDay`. Keep the index of the smallest reading so far, then return that day's name. If two days tie, return the first one.
+   4. Fill in `rainyDays`, which counts the days with at least `minMm` of rain.
+   5. In `main`, read seven readings into a `new double[7]` and print the report. Use 1.0 mm as the "rainy day" line.
 
-// Iteration
-for (int i = 0; i < array.length; i++) {
-    System.out.println(array[i]);
-}
+## 🧪 Taste test
 
-// Enhanced for loop
-for (String name : names) {
-    System.out.println(name);
-}
+```bash
+cd day04/_start/src
+javac RainfallWeek.java
+java RainfallWeek
 ```
 
-### Step 4: Collections Methods
-Useful ArrayList methods:
+To run the tests, copy `_end/src/RainfallWeekTest.java` next to your file, then from the repo root:
 
-```java
-list.add(element);        // Add element
-list.remove(index);       // Remove by index
-list.get(index);          // Get element
-list.size();              // Get size
-list.contains(element);   // Check if contains
-list.indexOf(element);    // Find index
+```bash
+javac -cp lib/junit-platform-console-standalone-6.1.3.jar -d day04/_start/src day04/_start/src/*.java
+java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp day04/_start/src --scan-classpath
 ```
 
-## 💻 Exercises
+For an exercise, use `day04/exercise1/src` or `day04/exercise2/src` in both commands.
 
-### Exercise 1: Array Basics
-Create a program that:
-- Creates an array of 5 numbers
-- Fills it with user input
-- Finds the maximum value
-- Finds the minimum value
-- Calculates the average
+## 🆘 Stuck?
 
-### Exercise 2: ArrayList Operations
-Create a program that:
-- Creates an ArrayList of names
-- Adds names from user input
-- Removes a name by index
-- Searches for a name
-- Displays all names
-
-### Exercise 3: Array Manipulation
-Create a program that:
-- Reverses an array
-- Finds duplicates
-- Merges two arrays
-- Sorts an array
-
-## 🎮 Project: Rock Paper Scissors
-
-### Requirements
-Create a Rock Paper Scissors game:
-1. Display game rules
-2. Get user choice (rock, paper, or scissors)
-3. Generate random computer choice
-4. Compare choices and determine winner
-5. Keep track of score
-6. Ask if user wants to play again
-
-### Example Output
-```
-Welcome to Rock Paper Scissors!
-What do you choose? Type 0 for Rock, 1 for Paper, or 2 for Scissors
-> 1
-You chose: Paper
-Computer chose: Rock
-You win!
-Your score: 1, Computer score: 0
-Do you want to play again? (yes/no)
-> yes
-```
-
-### Starter Code
-```java
-import java.util.Scanner;
-import java.util.Random;
-
-public class RockPaperScissors {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        Random random = new Random();
-        
-        // Your code here
-        
-        scanner.close();
-    }
-}
-```
-
-### Solution Hints
-- Use `Random` class for computer choice
-- Use arrays to store choices: `String[] choices = {"Rock", "Paper", "Scissors"};`
-- Create a method to determine winner
-- Use a loop for multiple rounds
-- Track scores with variables
-
-## 📚 Resources
-
-### Official Documentation
-- [Java Arrays - Oracle Docs](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/arrays.html)
-- [ArrayList Class - Java API](https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html)
-- [Collections Framework - Oracle Docs](https://docs.oracle.com/javase/tutorial/collections/)
-
-### Tutorials
-- [Java Arrays - W3Schools](https://www.w3schools.com/java/java_arrays.asp)
-- [Java ArrayList - Programiz](https://www.programiz.com/java-programming/arraylist)
-- [Collections in Java - GeeksforGeeks](https://www.geeksforgeeks.org/collections-in-java-2/)
-
-### Video Resources
-- [Java Arrays Tutorial](https://www.youtube.com/results?search_query=java+arrays+tutorial)
-- [Java ArrayList Tutorial](https://www.youtube.com/results?search_query=java+arraylist+tutorial)
-
-### Practice Platforms
-- [Array Practice - CodingBat](https://codingbat.com/java/Array-1)
-- [Java Array Exercises](https://www.w3resource.com/java-exercises/array/)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Array | Fixed-size collection | `int[] arr = new int[5];` |
-| ArrayList | Dynamic array | `ArrayList<String> list = new ArrayList<>();` |
-| Index | Position in array | `arr[0]` (first element) |
-| Length | Size of array | `arr.length` |
-| Enhanced For | Iterate over elements | `for (int x : arr) { ... }` |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **Array declaration:** Re-read **Step 1** — `int[] arr = new int[5];` or `int[] arr = {1, 2, 3};` · Index from 0 to length-1
-- **ArrayList:** `ArrayList<String> list = new ArrayList<>();` then `list.add()`, `list.get(i)`, `list.size()` — see **Step 2**
-- **Index out of bounds:** Valid indices are 0 to `arr.length - 1`; check before accessing
-- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for solution structure
-
-**Related days:** Day 5 (loops to iterate arrays); Day 9 (Maps, more collections).
-
-**Quick reference:** `arr.length` (no parentheses) · `list.size()` · Enhanced for: `for (Type item : collection)`
+- **`ArrayIndexOutOfBoundsException: Index 7 out of bounds for length 7`**: the last index is `length - 1`. Loop with `i < rain.length`, not `<=`.
+- **The driest day is always Monday**: compare each reading with the smallest one *so far*, and update both the index and the smallest value when you find a smaller one.
+- **`ArrayList<int>` doesn't compile**: lists hold objects. Use `ArrayList<Integer>`.
 
 ## ✅ Checklist
-- [ ] Understand array declaration
-- [ ] Know how to access array elements
-- [ ] Can use ArrayList
-- [ ] Understand Collections basics
-- [ ] Can iterate over arrays
-- [ ] Completed Rock Paper Scissors project
+- [ ] Created an array, read from it and changed one element
+- [ ] Looped over an array with `.length`
+- [ ] Found the smallest value and where it was
+- [ ] Used `ArrayList`'s `add`, `get`, `remove` and `size`
+- [ ] Finished both exercises
+- [ ] Rainfall Week's tests pass
 - [ ] Committed code to Git
 
-## 📂 Code Examples
+## ➡️ Next
 
-This day includes starter and completed code examples:
-- **`_start/`** - Starting code with TODO comments and learning notes
-- **`_end/`** - Completed solutions with detailed explanations
-
-Check these folders to see the progression from start to finish and learn from the learning curve notes!
-
-## 💻 How to Run Java Files
-
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to the project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day04\_end\src"
-   ```
-
-3. **Compile the Java file**
-   ```cmd
-   javac RockPaperScissors.java
-   ```
-
-4. **Run the compiled program**
-   ```cmd
-   java RockPaperScissors
-   ```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to the project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day04/_end/src
-   ```
-
-3. **Compile the Java file**
-   ```bash
-   javac RockPaperScissors.java
-   ```
-
-4. **Run the compiled program**
-   ```bash
-   java RockPaperScissors
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA:**
-1. Open the project folder in IntelliJ IDEA
-2. Right-click on the Java file
-3. Select "Run 'ClassName.main()'"
-
-**VS Code:**
-1. Install "Extension Pack for Java"
-2. Open the Java file
-3. Click "Run" button above `main` method or press `F5`
-
-**Eclipse:**
-1. Import project into Eclipse
-2. Right-click on the Java file
-3. Select "Run As" → "Java Application"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
-- **"package does not exist"** - Remove package declaration if running from command line, or use proper package structure
-
-
-## 🚀 Next Steps
-After completing Day 4, you should be able to:
-- Work with arrays and ArrayLists
-- Manipulate collections
-- Build games with random elements
-- Handle multiple data items
-
-**Ready for Day 5?** You'll learn about loops in detail!
-
-
-
-
-
-
-
+After picking, the beans are spread out in the sun to dry. On Day 5 you'll use loops to count how many days that takes.

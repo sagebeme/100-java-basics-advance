@@ -1,31 +1,23 @@
-# Exercise 2
+# Day 11 - Exercise 2: Weather dice
 
-## Objective
-Score Calculation
-Create methods to:
-- Calculate hand value
-- Handle Ace (1 or 11)
-- Detect blackjack (21 with 2 cards)
-- Detect bust (over 21)
+Weather is random, but a program that uses randomness still needs testing. Write two methods in `src/WeatherDice.java`, both taking the `Random` as a parameter:
 
-## Requirements
-Score Calculation
-Create methods to:
-- Calculate hand value
-- Handle Ace (1 or 11)
-- Detect blackjack (21 with 2 cards)
-- Detect bust (over 21)
+| Method | What it does |
+|---|---|
+| `between(Random rng, double min, double max)` | A random decimal from `min` up to, but not including, `max` |
+| `chance(Random rng, double percent)` | `true` about `percent` times in every 100 calls. `chance(rng, 0)` is never `true`, and `chance(rng, 100)` always is. |
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+Then, in `main`, roll `chance(rng, 5)` for each of the 90 days of the main crop, and count the days with a hailstorm.
 
-## Starter Code
-Check the src/ directory for starter code files.
+The tests use `new Random(7)`, a **seeded** `Random`, so the "random" numbers are the same every run. They check that your results stay in range, and that `chance(rng, 25)` comes out `true` roughly a quarter of the time over many tries.
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+## Files
+
+- `src/WeatherDice.java`: your code goes here.
+- `src/WeatherDiceTest.java`: the tests.
+- `solution/WeatherDice.java`: one answer.
+
+## 📌 Stuck?
+
+- `rng.nextDouble()` is from 0.0 up to 1.0. Stretch it: `min + rng.nextDouble() * (max - min)`.
+- `rng.nextDouble() * 100` is from 0 up to 100. It's below `percent` exactly `percent` times in 100, on average.

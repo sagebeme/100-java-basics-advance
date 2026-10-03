@@ -1,335 +1,120 @@
-# Day 11 - Blackjack Capstone Project
+# Day 11 - Season Simulator Capstone Project
 
-## 📚 Learning Objectives
-- Build a complete card game
-- Implement game rules and logic
-- Handle complex game state
-- Practice with arrays and random numbers
-- Create a polished, playable game
+> The Beginner capstone. Simulate a whole year on Wanjiru's farm, from the first rains to payday.
 
-## 🎯 Topics Covered
-- Game design and architecture
-- Card game logic
-- Random card dealing
-- Score calculation
-- Game flow control
-- User interaction
+## 🌱 On the shamba
 
-## 📝 Step-by-Step Instructions
+For ten days you've followed coffee one step at a time: picking (Day 1), weighing (Day 7), drying (Day 5), grading (Day 6), payday (Day 8). Today you put the whole journey into one program.
 
-### Step 1: Plan the Game
-Break down Blackjack:
-- Deck of cards (52 cards)
-- Deal cards to player and dealer
-- Calculate hand values
-- Player decisions (hit/stand)
-- Dealer rules (must hit until 17+)
-- Win/lose conditions
+Nobody knows how much rain a season will bring, so the simulator rolls the dice: it picks a random rainfall, and everything else follows from it. Run it a few times and you'll see why farmers worry about the weather.
 
-### Step 2: Create Card System
-Represent cards:
+```
+=== Season Simulator ===
+Farmer's name?
+Wanjiru
+How many coffee trees?
+300
+Season report for Wanjiru
+Rainfall: 1250 mm (a good year)
+Harvest: 750.0 kg of cherry from 300 trees
+Drying: 14 days on the beds
+Green beans: 125.0 kg (AA 37.5, AB 50.0, PB 12.5, C 25.0)
+Payout: KES 60,562.50
+Simulate another season? (yes/no)
+no
+```
+
+The rules of this simulated world (simplified, but the shape is real):
+
+| Step | Rule |
+|---|---|
+| Rainfall | A random number from 600 to 2200 mm a year |
+| Harvest per tree | Below 800 mm: 1.0 kg (drought). 800 to 1800 mm: 2.5 kg. Above 1800 mm: 1.8 kg (too wet, so disease) |
+| Drying | Beans start at 52% moisture and are dry at 11%. They lose 3 points a day, but only 2 a day after more than 1800 mm of rain |
+| Green beans | 6 kg of cherry makes 1 kg (Day 2) |
+| Grades | AA 30%, AB 40%, PB 10%, C 20% of the green beans |
+| Payout | KES 85 per kg of cherry, minus a 5% levy (Day 8) |
+
+## 🎯 By the end of today
+- Break a big problem into small methods, each with one job
+- Use `Random`, and pass it into methods so they can be tested
+- Combine a `Map`, loops, decisions and formatted output in one program
+- Reuse ideas from earlier days instead of starting from nothing
+
+## ☕ Bean fact
+
+A coffee tree takes three to four years after planting before it gives its first proper harvest, and it can keep producing for decades. That's why a single bad season hurts so much: a farmer can't just plant something else next month.
+
+## 🧰 Java you'll use
+
+**`Random`** makes random numbers:
 
 ```java
-// Option 1: Simple array
-String[] suits = {"Hearts", "Diamonds", "Clubs", "Spades"};
-String[] ranks = {"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
-
-// Option 2: Card class (more advanced)
-class Card {
-    String suit;
-    String rank;
-    int value;
-}
-```
-
-### Step 3: Calculate Hand Value
-Handle Ace as 1 or 11:
-
-```java
-public static int calculateHandValue(ArrayList<String> hand) {
-    int value = 0;
-    int aces = 0;
-    
-    for (String card : hand) {
-        // Extract value from card
-        // Handle Ace separately
-        // Add to total
-    }
-    
-    // Adjust for Aces
-    while (value > 21 && aces > 0) {
-        value -= 10;
-        aces--;
-    }
-    
-    return value;
-}
-```
-
-### Step 4: Game Loop
-Main game flow:
-
-```java
-// Deal initial cards
-// Player turn loop
-while (playerValue < 21) {
-    // Ask hit or stand
-    // Deal card if hit
-    // Check for bust
-}
-// Dealer turn
-// Compare scores
-// Determine winner
-```
-
-## 💻 Exercises
-
-### Exercise 1: Card Representation
-Create a system to:
-- Represent 52 cards
-- Shuffle cards
-- Deal random cards
-- Track dealt cards
-
-### Exercise 2: Score Calculation
-Create methods to:
-- Calculate hand value
-- Handle Ace (1 or 11)
-- Detect blackjack (21 with 2 cards)
-- Detect bust (over 21)
-
-### Exercise 3: Game Logic
-Create methods for:
-- Player turn
-- Dealer turn
-- Win/lose determination
-- Display game state
-
-## 🎮 Project: Blackjack Game
-
-### Requirements
-Create a complete Blackjack game:
-1. Deal 2 cards to player and dealer
-2. Show player cards and one dealer card
-3. Ask player to hit or stand
-4. Deal cards if player hits
-5. Check for bust (over 21)
-6. Dealer plays (hits until 17+)
-7. Compare scores
-8. Determine winner
-9. Ask to play again
-
-### Blackjack Rules
-- Goal: Get as close to 21 as possible without going over
-- Face cards (J, Q, K) = 10
-- Ace = 1 or 11 (whichever is better)
-- Dealer must hit until 17 or higher
-- Blackjack = 21 with 2 cards (automatic win unless dealer also has blackjack)
-
-### Example Output
-```
-Welcome to Blackjack!
-
-Your cards: [King of Hearts, 5 of Diamonds]
-Current score: 15
-Computer's first card: 7 of Clubs
-
-Type 'y' to get another card, type 'n' to pass: y
-Your cards: [King of Hearts, 5 of Diamonds, 8 of Clubs]
-Current score: 23
-You went over. You lose 😭
-
-Do you want to play a game of Blackjack? Type 'y' or 'n': y
-```
-
-### Starter Code
-```java
-import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
-public class Blackjack {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        Random random = new Random();
-        
-        System.out.println("Welcome to Blackjack!");
-        
-        // Your code here
-        
-        scanner.close();
-    }
-    
-    // Create helper methods
-    // dealCard(), calculateScore(), etc.
-}
+Random rng = new Random();
+rng.nextDouble();      // a decimal from 0.0 up to (not including) 1.0
+rng.nextInt(6);        // a whole number from 0 to 5
+600 + rng.nextDouble() * 1600; // a decimal from 600 up to 2200
 ```
 
-### Solution Hints
-- Use ArrayList to store hands
-- Create deck as list of card strings
-- Use Random to select cards
-- Remove dealt cards from deck
-- Create method to format card display
-- Handle Ace value dynamically
+**Pass the `Random` in.** A method that makes its own `new Random()` gives different answers every run, so you can't test it. A method that takes a `Random` as a parameter can be given one with a fixed **seed**, and then it gives the same numbers every time:
 
-### Bonus Features
-- Betting system
-- Multiple players
-- Split pairs
-- Double down option
-- Insurance for dealer blackjack
-- Statistics tracking
-- Card counting detection (just for fun!)
+```java
+static double randomRainfall(Random rng) { ... }
 
-## 📚 Resources
+randomRainfall(new Random());    // real use: different every season
+randomRainfall(new Random(42));  // in a test: the same every time
+```
 
-### Official Documentation
-- [ArrayList - Java API](https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html)
-- [Random Class - Java API](https://docs.oracle.com/javase/8/docs/api/java/util/Random.html)
-- [Collections - Oracle Docs](https://docs.oracle.com/javase/tutorial/collections/)
+Better still, keep the randomness in one small method and let everything else take plain numbers. Then most of the program doesn't need a `Random` at all to be tested.
 
-### Tutorials
-- [Blackjack Rules](https://bicyclecards.com/how-to-play/blackjack/)
-- [Card Game Design](https://www.geeksforgeeks.org/designing-card-game/)
-- [Java Game Development](https://www.javatpoint.com/java-game-development)
+## 🪜 Steps
 
-### Video Resources
-- [Blackjack Game Tutorial](https://www.youtube.com/results?search_query=java+blackjack+game+tutorial)
-- [Card Game Implementation](https://www.youtube.com/results?search_query=java+card+game+tutorial)
+1. **Exercise 1: What time of year is it?** (`exercise1/`). Kenya's two coffee seasons.
+2. **Exercise 2: Weather dice** (`exercise2/`). Randomness you can test.
+3. **Project: Season Simulator** (`_start/src/SeasonSimulator.java`). One method per row of the rules table. Test each before moving on.
+   1. `randomRainfall(Random rng)`.
+   2. `kgPerTree(rainfallMm)` and `harvestKg(trees, rainfallMm)`.
+   3. `dryingDays(rainfallMm)`: a `while` loop, like Day 5.
+   4. `gradeSplit(greenKg)`: a `LinkedHashMap` from grade to kilograms, in the order AA, AB, PB, C.
+   5. `payout(cherryKg)`.
+   6. `seasonReport(farmer, trees, rainfallMm)`: the six report lines, built from the methods above. Describe the rainfall as `a dry year` (below 800), `a very wet year` (above 1800) or `a good year`.
+   7. `main`: ask for the farmer and the trees, then loop: roll a rainfall, print the report, and ask whether to simulate another season.
 
-### Practice Platforms
-- [Game Development Projects](https://github.com/karan/Projects#games)
-- [Java Projects](https://www.geeksforgeeks.org/java-projects/)
+## 🧪 Taste test
 
-## 🔑 Key Concepts Summary
+```bash
+cd day11/_start/src
+javac SeasonSimulator.java
+java SeasonSimulator
+```
 
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Game State | Current game situation | Player hand, dealer hand, scores |
-| Random Selection | Pick random element | `cards.get(random.nextInt(cards.size()))` |
-| Hand Value | Total card points | Ace + King = 11 or 21 |
-| Game Loop | Main game execution | While game not over |
-| Win Conditions | Rules for winning | Closer to 21, not bust |
+To run the tests, copy `_end/src/SeasonSimulatorTest.java` next to your file, then from the repo root:
 
-## 📌 Notes & reference (use these when stuck)
+```bash
+javac -cp lib/junit-platform-console-standalone-6.1.3.jar -d day11/_start/src day11/_start/src/*.java
+java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp day11/_start/src --scan-classpath
+```
 
-**When you're stuck:**
-- **Hand value:** Re-read **Step 2** — sum card values; Ace = 1 or 11 (use 11 if total ≤ 21, else 1)
-- **Game flow:** Player hit/stand loop, then dealer draws until 17+ — see **Step 3**
-- **Bust:** Hand value > 21; check after each hit
-- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for full game logic
+For an exercise, use `day11/exercise1/src` or `day11/exercise2/src` in both commands.
 
-**Related days:** Day 7 (game loop), Day 9 (data structures), Day 10 (methods returning values).
+## 🆘 Stuck?
 
-**Quick reference:** Shuffle: `Collections.shuffle(list)` · Ace logic: try 11 first, if bust use 1
+- **Where do I start?** With the smallest methods: `kgPerTree`, then `harvestKg`. Leave `seasonReport` and `main` until the end.
+- **The grades come out in a strange order**: use a `LinkedHashMap`, which keeps the order you `put` them in.
+- **The report's numbers look wrong**: test each method on its own with the example (1250 mm, 300 trees) and compare with the report above.
+- **`1,250 mm` vs `1250 mm`**: print the rainfall with `%.0f`, without a comma, to match the tests.
 
 ## ✅ Checklist
-- [ ] Understand Blackjack rules
-- [ ] Can represent and shuffle cards
-- [ ] Can calculate hand values
-- [ ] Can handle Ace (1 or 11)
-- [ ] Can implement game flow
-- [ ] Can determine winner
-- [ ] Completed Blackjack game
+- [ ] Wrote one small method for each rule
+- [ ] Passed a `Random` into a method instead of creating one inside it
+- [ ] Built the report from the other methods
+- [ ] The menu loop asks to simulate another season
+- [ ] Finished both exercises
+- [ ] Season Simulator's tests pass
 - [ ] Committed code to Git
 
-## 📂 Code Examples
+## ➡️ Next
 
-This day includes starter and completed code examples:
-- **`_start/`** - Starting code with TODO comments and learning notes
-- **`_end/`** - Completed solutions with detailed explanations
-
-Check these folders to see the progression from start to finish and learn from the learning curve notes!
-
-## 💻 How to Run Java Files
-
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to the project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day11\_end\src"
-   ```
-
-3. **Compile the Java file**
-   ```cmd
-   javac Blackjack.java
-   ```
-
-4. **Run the compiled program**
-   ```cmd
-   java Blackjack
-   ```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to the project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day11/_end/src
-   ```
-
-3. **Compile the Java file**
-   ```bash
-   javac Blackjack.java
-   ```
-
-4. **Run the compiled program**
-   ```bash
-   java Blackjack
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA:**
-1. Open the project folder in IntelliJ IDEA
-2. Right-click on the Java file
-3. Select "Run 'ClassName.main()'"
-
-**VS Code:**
-1. Install "Extension Pack for Java"
-2. Open the Java file
-3. Click "Run" button above `main` method or press `F5`
-
-**Eclipse:**
-1. Import project into Eclipse
-2. Right-click on the Java file
-3. Select "Run As" → "Java Application"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
-- **"package does not exist"** - Remove package declaration if running from command line, or use proper package structure
-
-
-## 🚀 Next Steps
-After completing Day 11, you should be able to:
-- Design and build complete games
-- Handle complex game logic
-- Manage game state effectively
-- Create engaging user experiences
-
-**Congratulations!** You've completed your first major capstone project!
-
-**Ready for Day 12?** You'll learn about scope and access modifiers!
-
-
-
-
-
-
-
+Anyone could change a farmer's total in today's program with one line of code. On Day 12 you'll protect the records with `private` fields and scope.

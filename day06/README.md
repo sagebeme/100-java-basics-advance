@@ -1,294 +1,114 @@
-# Day 6 - Methods and Method Overloading
+# Day 6 - Grade Labeller
 
-## 📚 Learning Objectives
-- Understand methods (functions) in Java
-- Learn method declaration and calling
-- Master method parameters and return types
-- Practice method overloading
-- Understand scope and access modifiers
+> AA, AB, PB, C: Kenya's coffee grades, and the methods that print them.
 
-## 🎯 Topics Covered
-- Method declaration
-- Parameters and arguments
-- Return types
-- Method overloading
-- Void methods
-- Static methods
-- Method scope
+## 🌱 On the shamba
 
-## 📝 Step-by-Step Instructions
+Wanjiru's beans are dry. Before they're sold, the mill shakes them through a stack of metal sieves called **screens**, each with holes of a different size. Big beans stay on top and small ones fall through. Each size gets a grade, and buyers pay the most for the biggest.
 
-### Step 1: Method Declaration
-Methods are blocks of code that perform specific tasks:
+Some cherries grow a single, round bean instead of two flat ones. These **peaberries** roll through the sieves differently, so they're picked out and get their own grade whatever their size.
+
+Today you'll write the methods that decide a grade and print a label for the sack:
+
+```
+=== Grade Labeller ===
+Factory name?
+Othaya Hills
+Screen size?
+17
+Is it a peaberry? (yes/no)
+no
+Othaya Hills Factory | Grade AA | screen 17
+```
+
+| Grade | Rule (simplified) |
+|---|---|
+| `PB` | a peaberry, whatever its size |
+| `AA` | screen 17 or bigger |
+| `AB` | screen 15 or 16 |
+| `C` | smaller than screen 15 |
+
+## 🎯 By the end of today
+- Write your own methods with parameters and a return value
+- Call one method from another instead of repeating code
+- Overload a method: the same name with different parameters
+- Know the difference between a method that returns a value and one that only prints
+
+## ☕ Bean fact
+
+A **screen size** is the width of a sieve's holes in 64ths of an inch, so a screen 17 hole is 17/64 of an inch, about 6.7 mm wide. Kenya's top grade, **AA**, is famous around the world, but size isn't flavour: a cup of AB from a great farm can taste better than an AA from an ordinary one.
+
+## 🧰 Java you'll use
+
+**A method** is a named piece of code. Its parameters are the inputs, and its return type says what comes back:
 
 ```java
-// Method syntax
-accessModifier returnType methodName(parameters) {
-    // method body
-    return value; // if not void
-}
-
-// Example
-public static int add(int a, int b) {
-    return a + b;
-}
-```
-
-### Step 2: Calling Methods
-Invoke methods by their name:
-
-```java
-int result = add(5, 3); // result = 8
-printMessage("Hello");  // void method call
-```
-
-### Step 3: Method Overloading
-Multiple methods with same name but different parameters:
-
-```java
-public static int add(int a, int b) {
-    return a + b;
-}
-
-public static double add(double a, double b) {
-    return a + b;
-}
-
-public static int add(int a, int b, int c) {
-    return a + b + c;
-}
-```
-
-### Step 4: Void Methods
-Methods that don't return a value:
-
-```java
-public static void printMessage(String message) {
-    System.out.println(message);
-}
-```
-
-### Step 5: Static vs Instance Methods
-- Static: Belongs to class, called without object
-- Instance: Belongs to object, called on object
-
-```java
-// Static method
-Math.max(5, 10);
-
-// Instance method (we'll learn more in OOP)
-String name = "John";
-name.length();
-```
-
-## 💻 Exercises
-
-### Exercise 1: Basic Methods
-Create methods for:
-- Adding two numbers
-- Subtracting two numbers
-- Multiplying two numbers
-- Dividing two numbers
-- Finding maximum of two numbers
-
-### Exercise 2: String Methods
-Create methods for:
-- Reversing a string
-- Checking if string is palindrome
-- Counting vowels in a string
-- Converting string to title case
-
-### Exercise 3: Method Overloading
-Create overloaded methods:
-- `calculateArea(int side)` - square
-- `calculateArea(int length, int width)` - rectangle
-- `calculateArea(double radius)` - circle
-
-## 🎮 Project: Escaping the Maze (Karel-style)
-
-### Requirements
-Create a program that navigates through a maze:
-1. Use methods to represent movements (move, turnLeft, turnRight)
-2. Use methods to check conditions (isPathClear, isAtGoal)
-3. Create algorithm to solve maze
-4. Display progress
-
-### Example Output
-```
-Starting maze navigation...
-Moving forward...
-Turning right...
-Checking path...
-Path clear, moving forward...
-Reached the goal!
-```
-
-### Starter Code
-```java
-public class MazeSolver {
-    
-    public static void main(String[] args) {
-        System.out.println("Starting maze navigation...");
-        // Your code here
+//     return type   name    parameters
+public static String grade(int screen) {
+    if (screen >= 17) {
+        return "AA";
     }
-    
-    // Create your methods here
-    // move(), turnLeft(), turnRight(), etc.
+    return "C";
 }
+
+String g = grade(18); // "AA"
 ```
 
-### Solution Hints
-- Break down problem into smaller methods
-- Use methods for each action (move, turn, check)
-- Create a main navigation algorithm
-- Use conditionals to make decisions
-- Print status at each step
+A method that returns nothing has the return type `void`. It *does* something, like printing, but you can't store its result.
 
-## 📚 Resources
+**Overloading** means several methods with the same name but different parameters. Java picks the one that matches your call:
 
-### Official Documentation
-- [Java Methods - Oracle Docs](https://docs.oracle.com/javase/tutorial/java/javaOO/methods.html)
-- [Method Overloading - Oracle Docs](https://docs.oracle.com/javase/tutorial/java/javaOO/methods.html#overloadingMethods)
-- [Static Methods - Oracle Docs](https://docs.oracle.com/javase/tutorial/java/javaOO/classvars.html)
+```java
+static String grade(int screen) { ... }
+static String grade(int screen, boolean peaberry) { ... }
 
-### Tutorials
-- [Java Methods - W3Schools](https://www.w3schools.com/java/java_methods.asp)
-- [Method Overloading - Programiz](https://www.programiz.com/java-programming/method-overloading)
-- [Java Methods - GeeksforGeeks](https://www.geeksforgeeks.org/methods-in-java/)
+grade(17);        // calls the first
+grade(17, true);  // calls the second
+```
 
-### Video Resources
-- [Java Methods Tutorial](https://www.youtube.com/results?search_query=java+methods+tutorial)
-- [Method Overloading Explained](https://www.youtube.com/results?search_query=java+method+overloading)
+Overloads should do the same job. The longer one often just adds something and then calls the shorter one, so the rule lives in one place.
 
-### Practice Platforms
-- [Method Practice - CodingBat](https://codingbat.com/java)
-- [Java Method Exercises](https://www.w3resource.com/java-exercises/method/)
+## 🪜 Steps
 
-## 🔑 Key Concepts Summary
+1. **Exercise 1: Sieve maths** (`exercise1/`). Two methods that convert between screen sizes and millimetres.
+2. **Exercise 2: Sack labels** (`exercise2/`). Three overloads of the same method.
+3. **Project: Grade Labeller** (`_start/src/GradeLabeller.java`).
+   1. `grade(int screen)`: AA, AB or C, using the table above.
+   2. `grade(int screen, boolean peaberry)`: return `PB` for a peaberry, otherwise call `grade(screen)`. Don't copy the size rules.
+   3. `label(String factory, int screen, boolean peaberry)`: build `"<factory> Factory | Grade <grade> | screen <screen>"`. For a peaberry, leave out the screen part: `"Othaya Hills Factory | Grade PB"`.
+   4. In `main`, ask the three questions and print the label.
 
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Method | Block of reusable code | `public static int add(int a, int b)` |
-| Parameter | Input to method | `(int a, int b)` |
-| Return Type | Type of value returned | `int`, `String`, `void` |
-| Method Call | Invoking a method | `add(5, 3)` |
-| Overloading | Same name, different params | `add(int, int)` and `add(double, double)` |
+## 🧪 Taste test
 
-## 📌 Notes & reference (use these when stuck)
+```bash
+cd day06/_start/src
+javac GradeLabeller.java
+java GradeLabeller
+```
 
-**When you're stuck:**
-- **Method syntax:** Re-read **Step 1** — `public static returnType name(params) { }` · Use `void` if no return
-- **Parameters vs arguments:** Parameters in declaration; arguments when calling — see **Step 2**
-- **Overloading:** Same method name, different parameter list (number or types) — see **Step 3**
-- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for method design
+To run the tests, copy `_end/src/GradeLabellerTest.java` next to your file, then from the repo root:
 
-**Related days:** Day 5 (loops inside methods); Day 8 (parameters for Caesar Cipher).
+```bash
+javac -cp lib/junit-platform-console-standalone-6.1.3.jar -d day06/_start/src day06/_start/src/*.java
+java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp day06/_start/src --scan-classpath
+```
 
-**Quick reference:** Return with `return value;` · Call with `methodName(arg1, arg2)` · Overload by changing params only
+For an exercise, use `day06/exercise1/src` or `day06/exercise2/src` in both commands.
+
+## 🆘 Stuck?
+
+- **`missing return statement`**: some path through the method doesn't return. Make sure the last line returns something.
+- **`method grade(int,boolean) is already defined`**: two overloads have the same parameter types. They must differ in the number or types of parameters; different parameter *names* aren't enough.
+- **`'void' type not allowed here`**: you tried to use the result of a `void` method, for example by printing it. Make the method return a `String` and print that instead.
 
 ## ✅ Checklist
-- [ ] Understand method declaration
-- [ ] Know how to call methods
-- [ ] Understand parameters and return types
-- [ ] Can create method overloads
-- [ ] Understand void vs return methods
-- [ ] Completed Maze Solver project
+- [ ] Wrote methods that take parameters and return a value
+- [ ] Called one method from another
+- [ ] Overloaded a method
+- [ ] Finished both exercises
+- [ ] Grade Labeller's tests pass
 - [ ] Committed code to Git
 
-## 📂 Code Examples
+## ➡️ Next
 
-This day includes starter and completed code examples:
-- **`_start/`** - Starting code with TODO comments and learning notes
-- **`_end/`** - Completed solutions with detailed explanations
-
-Check these folders to see the progression from start to finish and learn from the learning curve notes!
-
-## 💻 How to Run Java Files
-
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to the project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day06\_end\src"
-   ```
-
-3. **Compile the Java file**
-   ```cmd
-   javac Maze.java
-   ```
-
-4. **Run the compiled program**
-   ```cmd
-   java Maze
-   ```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to the project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day06/_end/src
-   ```
-
-3. **Compile the Java file**
-   ```bash
-   javac Maze.java
-   ```
-
-4. **Run the compiled program**
-   ```bash
-   java Maze
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA:**
-1. Open the project folder in IntelliJ IDEA
-2. Right-click on the Java file
-3. Select "Run 'ClassName.main()'"
-
-**VS Code:**
-1. Install "Extension Pack for Java"
-2. Open the Java file
-3. Click "Run" button above `main` method or press `F5`
-
-**Eclipse:**
-1. Import project into Eclipse
-2. Right-click on the Java file
-3. Select "Run As" → "Java Application"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
-- **"package does not exist"** - Remove package declaration if running from command line, or use proper package structure
-
-
-## 🚀 Next Steps
-After completing Day 6, you should be able to:
-- Create and use methods
-- Organize code into reusable functions
-- Use method overloading
-- Build modular programs
-
-**Ready for Day 7?** You'll build your first major game - Hangman!
-
-
-
-
-
-
-
+Day 7 is your first project day: run the weighing station for a whole afternoon, with a menu that keeps going until the clerk goes home.

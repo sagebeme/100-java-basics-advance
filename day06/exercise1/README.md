@@ -1,33 +1,22 @@
-# Exercise 1
+# Day 6 - Exercise 1: Sieve maths
 
-## Objective
-Basic Methods
-Create methods for:
-- Adding two numbers
-- Subtracting two numbers
-- Multiplying two numbers
-- Dividing two numbers
-- Finding maximum of two numbers
+A screen size is the width of a sieve's holes in 64ths of an inch, and one inch is 25.4 mm. Write two methods in `src/SieveMaths.java`:
 
-## Requirements
-Basic Methods
-Create methods for:
-- Adding two numbers
-- Subtracting two numbers
-- Multiplying two numbers
-- Dividing two numbers
-- Finding maximum of two numbers
+| Method | Example |
+|---|---|
+| `screenToMm(int screen)` | `17` → about `6.75` |
+| `screenFromMm(double mm)` | `6.8` → `17` (the biggest screen whose holes are no wider than `mm`) |
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+Check your work with `screenFromMm(screenToMm(15))`, which should give `15` back.
 
-## Starter Code
-Check the src/ directory for starter code files.
+## Files
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+- `src/SieveMaths.java`: your code goes here.
+- `src/SieveMathsTest.java`: the tests.
+- `solution/SieveMaths.java`: one answer.
+
+## 📌 Stuck?
+
+- `screen * 25.4 / 64` converts to millimetres.
+- Going back, `mm * 64 / 25.4` gives a `double` like `17.13`. Cast it to `int` to drop the decimals.
+- Decimals aren't always exact in a computer, so `screenToMm(15)` turned back could be `14.9999...`, and a cast would give `14`. Add a tiny amount before casting, such as `+ 1e-9`.

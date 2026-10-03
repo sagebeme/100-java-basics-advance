@@ -1,31 +1,21 @@
-# Exercise 2
+# Day 6 - Exercise 2: Sack labels
 
-## Objective
-String Methods
-Create methods for:
-- Reversing a string
-- Checking if string is palindrome
-- Counting vowels in a string
-- Converting string to title case
+Kenyan green coffee travels in jute sacks that hold 60 kg when full. Write three overloads of `sackLabel` in `src/SackLabels.java`:
 
-## Requirements
-String Methods
-Create methods for:
-- Reversing a string
-- Checking if string is palindrome
-- Counting vowels in a string
-- Converting string to title case
+| Call | Result |
+|---|---|
+| `sackLabel("AA")` | `"AA | 60.0 kg"` (a full sack) |
+| `sackLabel("AB", 32.5)` | `"AB | 32.5 kg"` |
+| `sackLabel("PB", 18, "0412")` | `"Lot 0412 | PB | 18.0 kg"` |
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+Each overload should call another one rather than build the text from scratch.
 
-## Starter Code
-Check the src/ directory for starter code files.
+## Files
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+- `src/SackLabels.java`: your code goes here.
+- `src/SackLabelsTest.java`: the tests.
+- `solution/SackLabels.java`: one answer.
+
+## 📌 Stuck?
+
+Write the two-parameter version first, using `String.format("%s | %.1f kg", grade, kg)`. The one-parameter version calls it with `60`. The three-parameter version puts `"Lot " + lot + " | "` in front of it.

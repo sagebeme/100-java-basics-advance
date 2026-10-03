@@ -1,305 +1,124 @@
-# Day 13 - Debugging: How to Find and Fix Errors
+# Day 13 - Fix the Weighbridge
 
-## 📚 Learning Objectives
-- Understand common Java errors
-- Learn debugging techniques
-- Master exception handling
-- Use IDE debugging tools
-- Practice error prevention
+> The mill's weighbridge program crashes, and when it doesn't crash it gives the wrong numbers. Find the bugs like a professional.
 
-## 🎯 Topics Covered
-- Common error types (syntax, runtime, logical)
-- Exception handling (try-catch)
-- Debugging strategies
-- IDE debugging features
-- Error messages interpretation
-- Best practices
+## 🌱 On the shamba
 
-## 📝 Step-by-Step Instructions
+Lorries carry the dried parchment from the factories to the mill. Each lorry drives onto the **weighbridge**, a giant scale set into the road, once full on the way in and once empty on the way out. The difference is the coffee, and it decides what every factory, and so every farmer, is paid.
 
-### Step 1: Understanding Error Types
-Java has different error categories:
+The mill's program has three bugs, and the manager has noticed:
 
-```java
-// Syntax Error - Won't compile
-int x =  // Missing value
+- The program **crashes** before printing the total.
+- The **average per lorry** is always a round number, even though the weights aren't.
+- Typing `Othaya` for a factory total gives **0.0 kg**, though Othaya sent two lorries.
 
-// Runtime Error - Compiles but crashes
-int[] arr = new int[5];
-int value = arr[10]; // ArrayIndexOutOfBoundsException
+There's no new project to build today. Your job is to find and fix the bugs in `_start/src/Weighbridge.java`, and the real lesson is *how* you find them.
 
-// Logical Error - Runs but wrong result
-int average = (a + b) / 2; // Should be (a + b) / 2.0 for double
+## 🎯 By the end of today
+- Read a stack trace and jump straight to the line that failed
+- Use a debugger: set a breakpoint, step line by line, and watch variables change
+- Use a well-placed `println` when a debugger isn't handy
+- Recognise four classic Java bugs: off-by-one, `==` on `String`s, a hidden `int`, and `null`
+- Write down what you *expected* before checking what actually happened
+
+## ☕ Bean fact
+
+A loaded lorry weighs many tonnes, so a weighbridge reading that's off by even 1% can be more than a hundred kilos of coffee. In Kenya, weighing equipment used in trade has to be checked and certified by the government's Weights and Measures department.
+
+## 🧰 Java you'll use
+
+**Reading a stack trace.** Run the program as it is and you get this:
+
+```
+Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: Index 3 out of bounds for length 3
+	at Weighbridge.totalNet(Weighbridge.java:14)
+	at Weighbridge.main(Weighbridge.java:48)
 ```
 
-### Step 2: Exception Handling
-Handle errors gracefully:
+Read it from the top:
+
+1. **What went wrong**: `ArrayIndexOutOfBoundsException`, meaning something asked for index `3` of an array whose last index is `2`.
+2. **Where**: the first `at` line is where it happened, line 14 in `totalNet`.
+3. **How it got there**: each line below is the method that called the one above. `main` called `totalNet` on line 48.
+
+Always start with the first line that's in *your* code.
+
+**Using a debugger.** In IntelliJ IDEA or VS Code:
+
+1. Click in the margin next to a line number to set a **breakpoint**: a red dot.
+2. Start the program with **Debug** instead of **Run**. It pauses at the breakpoint.
+3. Hover over a variable, or look at the Variables panel, to see its value right now.
+4. **Step Over** (F8 in IntelliJ, F10 in VS Code) runs one line at a time. Watch the variables change and stop at the first one that surprises you.
+
+**`println` debugging** works anywhere. Print the values you're unsure of, then delete the lines when you're done:
 
 ```java
-try {
-    // Code that might throw exception
-    int result = 10 / 0;
-} catch (ArithmeticException e) {
-    // Handle division by zero
-    System.out.println("Cannot divide by zero!");
-} catch (Exception e) {
-    // Handle any other exception
-    System.out.println("An error occurred: " + e.getMessage());
-} finally {
-    // Always executes
-    System.out.println("Cleanup code");
-}
+System.out.println("DEBUG i=" + i + " total=" + total);
 ```
 
-### Step 3: Common Exceptions
-Learn about common exceptions:
+**Four classic bugs** worth checking first:
 
-```java
-// NullPointerException
-String str = null;
-int length = str.length(); // Error!
+| Bug | Looks like | Fix |
+|---|---|---|
+| Off-by-one | `i <= array.length` | `i < array.length` |
+| `==` on text | `name == "Othaya"` | `name.equals("Othaya")` |
+| A hidden `int` | `int total; total += 3.5;` compiles and drops the `.5` | Make it a `double` |
+| `null` | `map.get(key).trim()` when the key isn't there | Check with `containsKey` first |
 
-// ArrayIndexOutOfBoundsException
-int[] arr = {1, 2, 3};
-int value = arr[5]; // Error!
+## 🪜 Steps
 
-// NumberFormatException
-int num = Integer.parseInt("abc"); // Error!
+1. **Exercise 1: The missing phone number** (`exercise1/`). Read a `NullPointerException` and fix it.
+2. **Exercise 2: Lorry checks** (`exercise2/`). Two quiet bugs that only the tests reveal.
+3. **Project: Fix the Weighbridge** (`_start/src/Weighbridge.java`). For each bug:
+   1. **Reproduce it.** Run the program and type `Othaya` when it asks.
+   2. **Write down what you expected**, for example "Average should be 3970.17".
+   3. **Find the line.** Use the stack trace for the crash, and the debugger or a `println` for the wrong numbers.
+   4. **Fix the smallest thing you can**, then run the tests again.
+   5. **Commit each fix on its own**, with a message that says what was wrong.
 
-// InputMismatchException
-Scanner scanner = new Scanner(System.in);
-int num = scanner.nextInt(); // Error if user enters text!
+## 🧪 Taste test
+
+```bash
+cd day13/_start/src
+javac Weighbridge.java
+java Weighbridge
 ```
 
-### Step 4: Debugging Techniques
-Effective debugging strategies:
+When all three bugs are fixed, it prints:
 
-```java
-// 1. Print statements
-System.out.println("Debug: value = " + value);
-
-// 2. Use IDE debugger
-// Set breakpoints
-// Step through code
-// Inspect variables
-
-// 3. Read error messages carefully
-// Line numbers
-// Exception type
-// Stack trace
-
-// 4. Test incrementally
-// Test small parts
-// Verify assumptions
+```
+=== Weighbridge ===
+Total coffee in: 11910.5 kg
+Average per lorry: 3970.1666666666665 kg
+Which factory's total?
+Othaya
+Othaya: 8610.5 kg
 ```
 
-## 💻 Exercises
+To run the tests, copy `_end/src/WeighbridgeTest.java` next to your file, then from the repo root:
 
-### Exercise 1: Error Identification
-Identify errors in code:
-- Syntax errors
-- Runtime errors
-- Logical errors
-- Fix each error
-
-### Exercise 2: Exception Handling
-Create programs with:
-- Try-catch blocks
-- Multiple catch blocks
-- Finally blocks
-- Custom error messages
-
-### Exercise 3: Debugging Practice
-Practice debugging:
-- Use print statements
-- Use IDE debugger
-- Read stack traces
-- Fix common errors
-
-## 🎮 Project: Debugging Challenge
-
-### Requirements
-Create a program with intentional bugs, then:
-1. Identify all bugs
-2. Fix syntax errors
-3. Add exception handling
-4. Fix logical errors
-5. Test thoroughly
-6. Document fixes
-
-### Buggy Code Example
-```java
-public class BuggyProgram {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        
-        System.out.println("Enter two numbers:");
-        int a = scanner.nextInt();
-        int b = scanner.nextInt();
-        
-        int result = a / b;
-        System.out.println("Result: " + result);
-        
-        int[] numbers = {1, 2, 3};
-        System.out.println(numbers[5]);
-        
-        String text = null;
-        System.out.println(text.length());
-    }
-}
+```bash
+javac -cp lib/junit-platform-console-standalone-6.1.3.jar -d day13/_start/src day13/_start/src/*.java
+java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp day13/_start/src --scan-classpath
 ```
 
-### Fixed Version
-Add proper error handling and fix bugs!
+For an exercise, use `day13/exercise1/src` or `day13/exercise2/src` in both commands.
 
-## 📚 Resources
+## 🆘 Stuck?
 
-### Official Documentation
-- [Exceptions - Oracle Docs](https://docs.oracle.com/javase/tutorial/essential/exceptions/)
-- [Exception Hierarchy - Java API](https://docs.oracle.com/javase/8/docs/api/java/lang/Exception.html)
-- [Common Exceptions - Oracle Docs](https://docs.oracle.com/javase/tutorial/essential/exceptions/runtime.html)
-
-### Tutorials
-- [Java Exception Handling - W3Schools](https://www.w3schools.com/java/java_try_catch.asp)
-- [Debugging in Java - GeeksforGeeks](https://www.geeksforgeeks.org/debugging-java-programs/)
-- [Common Java Errors](https://www.programiz.com/java-programming/exceptions)
-
-### Video Resources
-- [Java Exception Handling Tutorial](https://www.youtube.com/results?search_query=java+exception+handling)
-- [Debugging in IntelliJ IDEA](https://www.youtube.com/results?search_query=intellij+debugger+tutorial)
-- [Common Java Errors](https://www.youtube.com/results?search_query=common+java+errors)
-
-### Practice Platforms
-- [Error Fixing Exercises](https://codingbat.com/java)
-- [Exception Handling Practice](https://www.w3resource.com/java-exercises/exception-handling/)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Syntax Error | Compile-time error | Missing semicolon |
-| Runtime Error | Exception during execution | Division by zero |
-| Logical Error | Wrong result | Incorrect formula |
-| Try-Catch | Handle exceptions | `try { ... } catch { ... }` |
-| Finally | Always executes | Cleanup code |
-| Stack Trace | Error location info | Line numbers, method calls |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **Try-catch:** Re-read **Step 1** — `try { risky code } catch (ExceptionType e) { handle }` · Use `finally` for cleanup
-- **Common exceptions:** NullPointerException (null reference), ArrayIndexOutOfBounds, NumberFormatException — see **Step 2**
-- **Debugger:** Set breakpoint, step through, inspect variables — see **Step 3**
-- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for error handling
-
-**Related days:** Day 24 (file I/O and FileNotFoundException); Day 30 (advanced exception handling).
-
-**Quick reference:** `e.getMessage()` for error text · `e.printStackTrace()` for full stack trace · Validate input before parsing
+- **Fixed the crash, but nothing else changed?** Good, that's progress. Now set a breakpoint inside `averageNet` and watch `total` as it adds each lorry.
+- **`totalFor` gives `0.0`, but `factories[i]` and `factory` both say `Othaya` in the debugger**: they hold the same text, but they're two different objects. Which operator compares text?
+- **The tests pass but you're not sure why**: compare your file with `_end/src/Weighbridge.java`. Each fix there has a comment explaining what it was.
 
 ## ✅ Checklist
-- [ ] Understand error types
-- [ ] Can read error messages
-- [ ] Can use try-catch blocks
-- [ ] Know common exceptions
-- [ ] Can use IDE debugger
-- [ ] Can fix common errors
-- [ ] Completed debugging exercises
-- [ ] Committed code to Git
+- [ ] Read the stack trace and found the line that crashed
+- [ ] Used a breakpoint and stepped through a loop
+- [ ] Fixed the off-by-one, the `==` and the hidden `int`
+- [ ] Fixed the `NullPointerException` in Exercise 1
+- [ ] Fixed both bugs in Exercise 2
+- [ ] Weighbridge's tests pass
+- [ ] Committed each fix separately
 
-## 📂 Code Examples
+## ➡️ Next
 
-This day includes starter and completed code examples:
-- **`_start/`** - Starting code with TODO comments and learning notes
-- **`_end/`** - Completed solutions with detailed explanations
-
-Check these folders to see the progression from start to finish and learn from the learning curve notes!
-
-## 💻 How to Run Java Files
-
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to the project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day13\_end\src"
-   ```
-
-3. **Compile the Java file**
-   ```cmd
-   javac DebuggingChallenge.java
-   ```
-
-4. **Run the compiled program**
-   ```cmd
-   java DebuggingChallenge
-   ```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to the project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day13/_end/src
-   ```
-
-3. **Compile the Java file**
-   ```bash
-   javac DebuggingChallenge.java
-   ```
-
-4. **Run the compiled program**
-   ```bash
-   java DebuggingChallenge
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA:**
-1. Open the project folder in IntelliJ IDEA
-2. Right-click on the Java file
-3. Select "Run 'ClassName.main()'"
-
-**VS Code:**
-1. Install "Extension Pack for Java"
-2. Open the Java file
-3. Click "Run" button above `main` method or press `F5`
-
-**Eclipse:**
-1. Import project into Eclipse
-2. Right-click on the Java file
-3. Select "Run As" → "Java Application"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
-- **"package does not exist"** - Remove package declaration if running from command line, or use proper package structure
-
-
-## 🚀 Next Steps
-After completing Day 13, you should be able to:
-- Identify and fix errors
-- Handle exceptions properly
-- Use debugging tools
-- Write robust code
-
-**Ready for Day 14?** You'll build the Higher Lower game!
-
-
-
-
-
-
-
+On Day 14, the last Beginner day, the coffee finally reaches a cup, and you'll learn to read a coffee shop menu.

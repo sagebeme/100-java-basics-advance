@@ -1,29 +1,25 @@
-# Exercise 1
+# Day 7 - Exercise 1: The menu
 
-## Objective
-Word Display
-Create a method that:
-- Takes a word and list of guessed letters
-- Returns string with blanks and revealed letters
-- Example: "JAVA" with guesses ['A', 'V'] → "_ A V A"
+The clerk types fast and makes mistakes. Write `parseChoice(String input, int options)`: if `input` is a whole number from `1` to `options`, return it; otherwise return `-1`. Ignore spaces around it.
 
-## Requirements
-Word Display
-Create a method that:
-- Takes a word and list of guessed letters
-- Returns string with blanks and revealed letters
-- Example: "JAVA" with guesses ['A', 'V'] → "_ A V A"
+| Call | Result |
+|---|---|
+| `parseChoice("2", 4)` | `2` |
+| `parseChoice(" 4 ", 4)` | `4` |
+| `parseChoice("5", 4)` | `-1` |
+| `parseChoice("two", 4)` | `-1` |
+| `parseChoice("", 4)` | `-1` |
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+You can't call `Integer.parseInt("two")`, because it crashes the program. Check that every character is a digit first.
 
-## Starter Code
-Check the src/ directory for starter code files.
+## Files
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+- `src/MenuChoice.java`: your code goes here.
+- `src/MenuChoiceTest.java`: the tests.
+- `solution/MenuChoice.java`: one answer.
+
+## 📌 Stuck?
+
+- `Character.isDigit(c)` is `true` for `'0'` to `'9'`.
+- Loop over `text.toCharArray()`, and return `-1` the moment you see something that isn't a digit.
+- An empty string has no characters, so the loop finds nothing wrong. Check for it separately.

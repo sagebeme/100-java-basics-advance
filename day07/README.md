@@ -1,308 +1,130 @@
-# Day 7 - Hangman Game
+# Day 7 - Weighing Station
 
-## 📚 Learning Objectives
-- Build a complete game from scratch
-- Practice using arrays/lists for word management
-- Implement game logic with loops and conditionals
-- Handle user input and validation
-- Create an interactive console game
+> Project day. Run the cooperative's weighing station for a whole afternoon.
 
-## 🎯 Topics Covered
-- Game design and planning
-- Random word selection
-- Character matching
-- Game state management
-- User input validation
-- Display formatting
+## 🌱 On the shamba
 
-## 📝 Step-by-Step Instructions
+Between 3pm and 6pm, the weighing station is the busiest place in the village. Farmers arrive with sacks of cherry, the clerk weighs each one and writes it down, and people keep asking, "How much have I brought this week?"
 
-### Step 1: Plan Your Game
-Break down Hangman into components:
-- Word list
-- Random word selection
-- Display word with blanks
-- Guess tracking
-- Lives/attempts counter
-- Win/lose conditions
+Today you'll build the clerk's program. It shows a menu, does what's chosen, and keeps going until the clerk closes the station. It brings together everything from Days 1 to 6: variables, input, decisions, lists, loops and methods.
 
-### Step 2: Create Word List
-Store words in an array or list:
-
-```java
-String[] wordList = {
-    "java", "python", "computer", "programming",
-    "algorithm", "software", "developer"
-};
+```
+=== Weighing Station ===
+1. Record a delivery
+2. A farmer's total
+3. Today's summary
+4. Close the station
+Choose 1-4:
+1
+Farmer's name?
+Wanjiru
+Kilograms?
+23.5
+Recorded.
+Choose 1-4:
+1
+Farmer's name?
+Otieno
+Kilograms?
+31
+Recorded.
+Choose 1-4:
+2
+Farmer's name?
+wanjiru
+Wanjiru: 1 deliveries, 23.5 kg
+Choose 1-4:
+3
+2 deliveries, 54.5 kg in total
+Choose 1-4:
+4
+Station closed. Safe journey home!
 ```
 
-### Step 3: Random Word Selection
-Pick a random word:
+## 🎯 By the end of today
+- Plan a program as small methods before writing `main`
+- Keep a program running with a loop and a menu
+- Keep two lists in step: a name at index `i` belongs to the weight at index `i`
+- Refuse bad input instead of storing it
+
+## ☕ Bean fact
+
+Farmers aren't paid when they deliver. The cooperative adds up every farmer's kilograms over the season, sells the coffee, and pays out months later. That's why the weighing records matter so much: they're the only proof of what each farmer brought.
+
+## 🧰 Java you'll use
+
+Nothing new today. That's the point of a project day. The patterns you'll lean on:
+
+**A menu loop** keeps running until a `boolean` says stop:
 
 ```java
-Random random = new Random();
-String word = wordList[random.nextInt(wordList.length)];
-```
-
-### Step 4: Display Logic
-Show word with blanks for unguessed letters:
-
-```java
-String display = "";
-for (char letter : word.toCharArray()) {
-    if (guessedLetters.contains(letter)) {
-        display += letter + " ";
+boolean open = true;
+while (open) {
+    String choice = scanner.nextLine().trim();
+    if (choice.equals("1")) {
+        // record
+    } else if (choice.equals("4")) {
+        open = false;
     } else {
-        display += "_ ";
+        System.out.println("Please choose 1-4.");
     }
 }
 ```
 
-### Step 5: Game Loop
-Create main game loop:
+**Two lists in step.** Adding to both at once keeps index `i` meaning the same delivery in each:
 
 ```java
-while (lives > 0 && !isWordComplete) {
-    // Display current state
-    // Get user guess
-    // Check guess
-    // Update game state
-    // Check win/lose conditions
-}
+ArrayList<String> farmers = new ArrayList<>();
+ArrayList<Double> kgs = new ArrayList<>();
+
+farmers.add("Wanjiru");
+kgs.add(23.5);
+// farmers.get(0) delivered kgs.get(0)
 ```
 
-## 💻 Exercises
+## 🪜 Steps
 
-### Exercise 1: Word Display
-Create a method that:
-- Takes a word and list of guessed letters
-- Returns string with blanks and revealed letters
-- Example: "JAVA" with guesses ['A', 'V'] → "_ A V A"
+1. **Exercise 1: The menu** (`exercise1/`). Turn whatever the clerk types into a menu choice, or `-1`.
+2. **Exercise 2: Biggest sack of the day** (`exercise2/`). Walk two lists together.
+3. **Project: Weighing Station** (`_start/src/WeighingStation.java`). Write and test the methods first, `main` last.
+   1. `record`: refuse an empty name or a weight of 0 or less by returning `false`. Otherwise add to both lists and return `true`.
+   2. `totalKg`: the weight of every delivery added together.
+   3. `totalFor` and `deliveriesBy`: one farmer's kilograms and number of deliveries. Match names with `equalsIgnoreCase`, because the clerk types `wanjiru` as often as `Wanjiru`.
+   4. `summary`: `"2 deliveries, 54.5 kg in total"`.
+   5. `main`: the menu loop.
 
-### Exercise 2: Guess Validation
-Create a method that:
-- Checks if guess is valid (single letter, not guessed before)
-- Returns true/false
-- Handles invalid input gracefully
+## 🧪 Taste test
 
-### Exercise 3: Game State
-Create methods for:
-- Checking if word is complete
-- Counting remaining lives
-- Determining win/lose status
-
-## 🎮 Project: Hangman Game
-
-### Requirements
-Create a complete Hangman game:
-1. Choose a random word from a list
-2. Display word as blanks (e.g., "_ _ _ _")
-3. Ask user to guess a letter
-4. Reveal letter if correct, reduce lives if wrong
-5. Track guessed letters
-6. Display hangman ASCII art (optional)
-7. Win if word completed, lose if lives reach 0
-
-### Example Output
-```
-Welcome to Hangman!
-_ _ _ _ _ _ _ 
-You have 6 lives remaining.
-Guess a letter: a
-Good guess!
-_ A _ _ _ _ A 
-You have 6 lives remaining.
-Guess a letter: e
-Sorry, that letter is not in the word.
-_ A _ _ _ _ A 
-You have 5 lives remaining.
-...
-You win! The word was: PROGRAMMING
+```bash
+cd day07/_start/src
+javac WeighingStation.java
+java WeighingStation
 ```
 
-### Starter Code
-```java
-import java.util.Scanner;
-import java.util.Random;
-import java.util.ArrayList;
+To run the tests, copy `_end/src/WeighingStationTest.java` next to your file, then from the repo root:
 
-public class Hangman {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        Random random = new Random();
-        
-        String[] wordList = {
-            "java", "python", "computer", "programming",
-            "algorithm", "software", "developer"
-        };
-        
-        // Your code here
-        
-        scanner.close();
-    }
-}
+```bash
+javac -cp lib/junit-platform-console-standalone-6.1.3.jar -d day07/_start/src day07/_start/src/*.java
+java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp day07/_start/src --scan-classpath
 ```
 
-### Solution Hints
-- Use ArrayList to track guessed letters
-- Create method to display word with blanks
-- Use contains() to check if letter guessed
-- Use indexOf() to find letter positions
-- Track lives as integer
-- Use loop until win or lose
+For an exercise, use `day07/exercise1/src` or `day07/exercise2/src` in both commands.
 
-### Bonus Features
-- Add ASCII art for hangman stages
-- Add difficulty levels (easy/medium/hard word lists)
-- Add hints system
-- Save high scores
-- Add word categories
+## 🆘 Stuck?
 
-## 📚 Resources
-
-### Official Documentation
-- [Java Random Class - Java API](https://docs.oracle.com/javase/8/docs/api/java/util/Random.html)
-- [String Methods - Oracle Docs](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)
-- [ArrayList - Java API](https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html)
-
-### Tutorials
-- [Java Game Development Basics](https://www.geeksforgeeks.org/java-game-development/)
-- [Building Console Games in Java](https://www.javatpoint.com/java-programs)
-
-### Video Resources
-- [Hangman Game Tutorial](https://www.youtube.com/results?search_query=java+hangman+game+tutorial)
-- [Java Game Development](https://www.youtube.com/results?search_query=java+console+game+tutorial)
-
-### Practice Platforms
-- [Game Development Exercises](https://www.w3resource.com/java-exercises/)
-- [Project Ideas](https://github.com/karan/Projects)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Game Loop | Main game execution | `while (!gameOver) { ... }` |
-| State Management | Track game progress | `lives`, `guessedLetters` |
-| Random Selection | Pick random element | `random.nextInt(array.length)` |
-| String Manipulation | Work with strings | `word.indexOf(letter)` |
-| User Validation | Check input validity | `if (input.length() == 1) { ... }` |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **Game loop:** Re-read **Step 1** — use `while (!gameOver)` and update state (lives, guessed letters) each turn
-- **Random word:** `Random random = new Random(); int i = random.nextInt(words.length);` — see **Step 2**
-- **Display blanks:** Build a string: show letter if in `guessedLetters`, else `_` — see **Step 3**
-- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for win/lose logic
-
-**Related days:** Day 5 (loops), Day 6 (methods), Day 3 (conditions) — combine for game flow.
-
-**Quick reference:** `String.contains(String)` · `word.indexOf(letter)` · Validate input length before using
+- **The totals are wrong after a refused delivery**: `record` must add to *both* lists or *neither*. Check for bad input before adding anything.
+- **The menu skips a question**: mixing `nextInt()` and `nextLine()` leaves a leftover line break. Read everything with `nextLine()` and convert it yourself.
+- **The program never ends**: option 4 must set the loop's `boolean` to `false`.
+- **Where do I start?** Get option 4 working first, so you can always get out. Then option 1, then 3, then 2.
 
 ## ✅ Checklist
-- [ ] Understand game design principles
-- [ ] Can select random words
-- [ ] Can display word with blanks
-- [ ] Can handle user guesses
-- [ ] Can track game state
-- [ ] Can determine win/lose
-- [ ] Completed Hangman game
+- [ ] Planned the methods before writing `main`
+- [ ] The menu loop keeps going until option 4
+- [ ] Bad weights and empty names are refused
+- [ ] Finished both exercises
+- [ ] Weighing Station's tests pass
 - [ ] Committed code to Git
 
-## 📂 Code Examples
+## ➡️ Next
 
-This day includes starter and completed code examples:
-- **`_start/`** - Starting code with TODO comments and learning notes
-- **`_end/`** - Completed solutions with detailed explanations
-
-Check these folders to see the progression from start to finish and learn from the learning curve notes!
-
-## 💻 How to Run Java Files
-
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to the project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day07\_end\src"
-   ```
-
-3. **Compile the Java file**
-   ```cmd
-   javac Hangman.java
-   ```
-
-4. **Run the compiled program**
-   ```cmd
-   java Hangman
-   ```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to the project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day07/_end/src
-   ```
-
-3. **Compile the Java file**
-   ```bash
-   javac Hangman.java
-   ```
-
-4. **Run the compiled program**
-   ```bash
-   java Hangman
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA:**
-1. Open the project folder in IntelliJ IDEA
-2. Right-click on the Java file
-3. Select "Run 'ClassName.main()'"
-
-**VS Code:**
-1. Install "Extension Pack for Java"
-2. Open the Java file
-3. Click "Run" button above `main` method or press `F5`
-
-**Eclipse:**
-1. Import project into Eclipse
-2. Right-click on the Java file
-3. Select "Run As" → "Java Application"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
-- **"package does not exist"** - Remove package declaration if running from command line, or use proper package structure
-
-
-## 🚀 Next Steps
-After completing Day 7, you should be able to:
-- Design and build complete games
-- Manage game state
-- Handle user interaction
-- Implement game logic
-
-**Ready for Day 8?** You'll learn about function parameters and build a Caesar Cipher!
-
-
-
-
-
-
-
+At the end of the season, farmers get paid for those kilograms, minus a few deductions. On Day 8 you'll work out the payout, and see what really happens to the values you pass into a method.

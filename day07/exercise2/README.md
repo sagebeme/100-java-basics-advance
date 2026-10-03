@@ -1,29 +1,20 @@
-# Exercise 2
+# Day 7 - Exercise 2: Biggest sack of the day
 
-## Objective
-Guess Validation
-Create a method that:
-- Checks if guess is valid (single letter, not guessed before)
-- Returns true/false
-- Handles invalid input gracefully
+At closing time the clerk announces who brought the heaviest single delivery. Write `biggestDelivery(ArrayList<String> farmers, ArrayList<Double> kgs)`, which walks both lists together:
 
-## Requirements
-Guess Validation
-Create a method that:
-- Checks if guess is valid (single letter, not guessed before)
-- Returns true/false
-- Handles invalid input gracefully
+```java
+farmers: ["Wanjiru", "Otieno", "Achieng"]
+kgs:     [23.5,      31.0,     12.0]
+```
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+returns `"Otieno with 31.0 kg"`. If two deliveries tie, the first one wins. With no deliveries at all, return `"No deliveries yet"`.
 
-## Starter Code
-Check the src/ directory for starter code files.
+## Files
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+- `src/BiggestDelivery.java`: your code goes here.
+- `src/BiggestDeliveryTest.java`: the tests.
+- `solution/BiggestDelivery.java`: one answer.
+
+## 📌 Stuck?
+
+This is the same idea as Day 4's driest day, only looking for the biggest instead of the smallest. Remember the *index* of the biggest so far, then use it in both lists at the end.

@@ -1,268 +1,93 @@
-# Day 44 - Advanced Web Scraping
+# Day 44 - Mitumba Price Watch: Scraping Many Pages Responsibly
 
-## 📚 Learning Objectives
-- Master advanced scraping techniques
-- Handle dynamic content
-- Work with multiple pages
-- Implement pagination
-- Build robust scrapers
+> One page is easy. Real listings are spread over many pages, repeat themselves, and are written by a hundred different sellers. Crawl them properly.
 
-## 🎯 Topics Covered
-- Pagination handling
-- Multiple page scraping
-- Data cleaning
-- Rate limiting
-- Error recovery
-- Scraping best practices
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Kevin resells second-hand (**mitumba**) clothes, and he buys from an online listings site for Gikomba market. Every morning he scrolls through page after page, comparing prices typed as `KES 1,200`, `Ksh 2,500`, `850/=` and `KES 1.8k`. Today you'll build him a price watcher that reads every page and gives a short report:
 
-### Step 1: Pagination
-Handle multiple pages:
+```
+$ java PriceWatch
+Found 9 listings for sale (4 requests, 1 second apart)
+Average price: KES 1,333
+Cheapest in each category:
+  jackets  KES  1,200  Denim jacket, Levi's (Like new)
+  shirts   KES    650  Football jersey, Harambee Stars (Like new)
+  shoes    KES    900  Canvas sneakers (Worn)
+Saved listings.csv, cheapest first
+```
+
+The site, *Gikomba Online*, is a practice website that runs on your own computer (`PracticeShop`), with three pages of listings and a `robots.txt`. You can crawl it as often as you like.
+
+## 🎯 Learning Objectives
+- Follow "next page" links until there are no more, with a safety limit
+- Remove duplicates that appear on more than one page
+- Clean messy text and numbers into a single format
+- Read and obey `robots.txt`
+- Wait between requests, and identify your program with a user agent
+- Summarise scraped data: cheapest per category and averages
+
+## 🧰 What you'll use
+
+**Following links.** Each page links to the next one with `rel="next"`, a standard way of saying "this is the following page":
 
 ```java
-public class PaginatedScraper {
-    public List<Item> scrapeAllPages(String baseUrl) {
-        List<Item> allItems = new ArrayList<>();
-        int page = 1;
-        boolean hasMore = true;
-        
-        while (hasMore) {
-            String url = baseUrl + "?page=" + page;
-            List<Item> items = scrapePage(url);
-            
-            if (items.isEmpty()) {
-                hasMore = false;
-            } else {
-                allItems.addAll(items);
-                page++;
-                
-                // Rate limiting
-                try {
-                    Thread.sleep(1000); // Wait 1 second
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        
-        return allItems;
-    }
-}
+Element link = page.selectFirst("a[rel=next]");
+URI next = link == null ? null : URI.create(link.absUrl("href"));
 ```
 
-### Step 2: Data Cleaning
-Clean extracted data:
+Loop while `next` isn't `null`. Always add a page limit too, because a site with a bug (or a trap) can link to "next" forever.
+
+**Duplicates.** Listings move between pages while you're reading them. Keep them in a `LinkedHashMap` keyed by the listing's ID (its SKU), and use `putIfAbsent`, so each appears once, in the order first seen.
+
+**Politeness**, in code:
 
 ```java
-public class DataCleaner {
-    public String cleanText(String text) {
-        // Remove extra whitespace
-        text = text.trim().replaceAll("\\s+", " ");
-        
-        // Remove HTML entities
-        text = text.replace("&nbsp;", " ");
-        text = text.replace("&amp;", "&");
-        
-        // Remove special characters if needed
-        text = text.replaceAll("[^\\w\\s]", "");
-        
-        return text;
-    }
-    
-    public double parsePrice(String priceText) {
-        // Extract number from "$99.99" or "99.99 USD"
-        String cleaned = priceText.replaceAll("[^\\d.]", "");
-        return Double.parseDouble(cleaned);
-    }
-}
+if (pages > 0) Thread.sleep(delayMs);          // wait between requests
+.header("User-Agent", "PriceWatch/1.0 (learning project)")
+if (!robots.isAllowed(next.getPath())) break;  // respect the owner's wishes
 ```
 
-### Step 3: Error Handling
-Robust error handling:
+**Regular expressions for messy numbers**: remove the commas, then find `digits`, an optional `.digits`, and an optional `k`.
 
-```java
-public class RobustScraper {
-    public Document fetchWithRetry(String url, int maxRetries) {
-        for (int i = 0; i < maxRetries; i++) {
-            try {
-                return Jsoup.connect(url)
-                    .userAgent("Mozilla/5.0")
-                    .timeout(10000)
-                    .get();
-            } catch (IOException e) {
-                if (i == maxRetries - 1) {
-                    throw new RuntimeException("Failed after " + maxRetries + " attempts", e);
-                }
-                try {
-                    Thread.sleep(2000 * (i + 1)); // Exponential backoff
-                } catch (InterruptedException ie) {
-                    Thread.currentThread().interrupt();
-                }
-            }
-        }
-        return null;
-    }
-}
+## 🪜 Steps
+
+1. **Exercise 1: Cleaning prices** (`exercise1/`). Spaces, commas, `/=` and `k`.
+2. **Exercise 2: Reading robots.txt** (`exercise2/`). Which paths your robot must leave alone.
+3. **Project: Mitumba Price Watch** (`_start/src/`).
+   1. `readPage(page)`: a `Listing` for each card, cleaned, and without sold items.
+   2. `crawl(first)`: read `robots.txt`, then follow the `rel="next"` links with a delay, a page limit and duplicate removal.
+   3. `cheapestPerCategory` and `averagePrice`.
+   4. Run it, and open `listings.csv`.
+
+## 🧪 Run it and test it
+
+From the repo root (on Windows, use `;` instead of `:`):
+
+```bash
+javac -cp "lib/*" -d day44/_end/src day44/_end/src/*.java
+cd day44/_end/src && java -cp ".:../../../lib/*" PriceWatch && cd ../../..
+java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp "day44/_end/src:lib/*" --scan-classpath
 ```
 
-### Step 4: Save Data
-Save scraped data:
+The program waits one second between pages, so it takes about three seconds. That's on purpose. The tests use a delay of zero.
 
-```java
-public void saveToCSV(List<Item> items, String filename) {
-    try {
-        FileWriter writer = new FileWriter(filename);
-        writer.write("Title,Price,Link\n");
-        
-        for (Item item : items) {
-            writer.write(String.format("%s,%.2f,%s\n",
-                item.getTitle(),
-                item.getPrice(),
-                item.getLink()));
-        }
-        
-        writer.close();
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-}
-```
+## 🆘 Stuck?
 
-## 💻 Exercises
-
-### Exercise 1: Pagination
-Implement:
-- Page navigation
-- Next page detection
-- Page number extraction
-- Complete site scraping
-
-### Exercise 2: Data Processing
-Process:
-- Text cleaning
-- Data normalization
-- Format conversion
-- Validation
-
-### Exercise 3: Robust Scraping
-Build:
-- Retry mechanisms
-- Error recovery
-- Rate limiting
-- Logging
-
-## 🎮 Project: E-commerce Price Tracker
-
-### Requirements
-Create price tracking scraper:
-1. Scrape product pages
-2. Extract product names
-3. Extract prices
-4. Handle pagination
-5. Save to CSV
-6. Compare prices over time
-7. Error handling and retries
-
-### Example Output
-```
-Scraping products...
-
-Page 1: 20 products found
-Page 2: 20 products found
-Page 3: 15 products found
-
-Total: 55 products scraped
-Saved to products.csv
-```
-
-### Starter Code
-```java
-public class PriceTracker {
-    public void trackPrices(String baseUrl) {
-        List<Product> products = new ArrayList<>();
-        int page = 1;
-        
-        while (true) {
-            String url = baseUrl + "/page/" + page;
-            List<Product> pageProducts = scrapeProducts(url);
-            
-            if (pageProducts.isEmpty()) break;
-            
-            products.addAll(pageProducts);
-            page++;
-            
-            // Rate limiting
-            sleep(1000);
-        }
-        
-        saveToCSV(products, "products.csv");
-    }
-}
-```
-
-## 📚 Resources
-
-### Official Documentation
-- [Jsoup Documentation](https://jsoup.org/)
-- [Web Scraping Best Practices](https://www.scrapehero.com/web-scraping-best-practices/)
-
-### Tutorials
-- [Advanced Jsoup](https://jsoup.org/cookbook/)
-- [Web Scraping Ethics](https://www.scrapehero.com/web-scraping-ethics/)
-
-### Video Resources
-- [Advanced Web Scraping](https://www.youtube.com/results?search_query=advanced+web+scraping+java)
-- [Pagination Scraping](https://www.youtube.com/results?search_query=scraping+multiple+pages)
-
-### Practice Platforms
-- [Scraping Challenges](https://www.scrapehero.com/)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Pagination | Multiple pages | Loop through pages |
-| Data Cleaning | Normalize data | Remove whitespace, format |
-| Rate Limiting | Control requests | `Thread.sleep()` |
-| Error Recovery | Handle failures | Retry with backoff |
-| Data Persistence | Save results | CSV, JSON files |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **Pagination:** Re-read **Step 1** — loop with page param; stop when empty — see **Starter Code**
-- **Rate limiting:** Use `Thread.sleep(ms)` between requests — see **Step 2**
-- **Data cleaning:** Trim, normalize; save with Day 24/25 patterns — see **Step 2**
-- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
-
-**Related days:** Day 43 (Jsoup); Day 24 (file I/O). **Quick reference:** Maven + Jsoup; run main class from IDE
-
-## 💻 How to Run
-
-**Java + Jsoup** — run main class (e.g. PriceTracker) from IDE or: `mvn compile exec:java -Dexec.mainClass="YourMainClass"`. Set env for any API keys.
+- **The puffer jacket appears twice**: it's on pages 1 and 2. Key your map by SKU and use `putIfAbsent`.
+- **The crawl never ends**: check that `next` becomes `null` when there's no `rel="next"` link, and that `pages` goes up every time round.
+- **`absUrl` returns an empty string**: you parsed the page without a base URI. Pass the page's own URL to `Jsoup.parse(html, url)`.
+- **The average is a long decimal**: round it with `Math.round`.
 
 ## ✅ Checklist
-- [ ] Can handle pagination
-- [ ] Can clean data
-- [ ] Can implement retries
-- [ ] Can limit request rate
-- [ ] Can save scraped data
-- [ ] Completed Price Tracker
+- [ ] Followed `rel="next"` links with a page limit
+- [ ] Removed duplicate listings by SKU
+- [ ] Cleaned prices written in many ways
+- [ ] Read `robots.txt` and stayed out of disallowed paths
+- [ ] Waited between requests and sent a user agent
+- [ ] Finished both exercises, and the tests pass
 - [ ] Committed code to Git
 
-## 🚀 Next Steps
-After completing Day 44, you should be able to:
-- Build advanced scrapers
-- Handle complex scenarios
-- Process large datasets
-- Create production-ready tools
+## ➡️ Next
 
-**Ready for Day 45?** You'll integrate with Spotify API!
-
-
-
-
-
-
-
+Day 45 combines scraping with an API that needs a login: build a playlist of the songs that topped the charts on any date, with OAuth.

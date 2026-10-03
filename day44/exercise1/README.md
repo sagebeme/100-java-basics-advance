@@ -1,34 +1,27 @@
-# Exercise 1
+# Day 44 - Exercise 1: Cleaning prices
 
-## Objective
-Pagination
-Implement:
-- Page navigation
-- Next page detection
-- Page number extraction
-- Complete site scraping
+Sellers on a mitumba site type prices however they like. Write two methods in `src/Cleaning.java`:
 
-## Requirements
-Pagination
-Implement:
-- Page navigation
-- Next page detection
-- Page number extraction
-- Complete site scraping
+**`collapseSpaces(String text)`**: trim the ends and turn every run of spaces, tabs or line breaks into one space.
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+**`priceKes(String text)`**: the price in whole shillings, or `-1` if there's no number.
 
-## Starter Code
-Check the src/ directory for starter code files.
+| Text | Result |
+|---|---|
+| `KES 1,200` | `1200` |
+| `Ksh 2,500` | `2500` |
+| `850/=` | `850` |
+| `KES 1.8k` | `1800` |
+| `2K` | `2000` |
+| `SOLD` | `-1` |
 
-## 📌 Refer to (when stuck)
-- **Day 44 README** ([day44/README.md](../README.md)) → **Notes & reference** and **Step-by-Step Instructions**. Use main day README for structure and hints.
+## Files
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+- `src/Cleaning.java`: your code goes here.
+- `src/CleaningTest.java`: the tests.
+- `solution/Cleaning.java`: one answer.
+
+## 📌 Stuck?
+
+- `text.replaceAll("\\s+", " ")`: `\s+` means "one or more whitespace characters".
+- Remove commas first. Then a regular expression with two groups, the number and an optional `k`: `(\d+(?:\.\d+)?)\s*(k)?` with `Pattern.CASE_INSENSITIVE`. `m.group(2)` is `null` when there's no `k`.

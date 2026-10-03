@@ -1,0 +1,18 @@
+/* TODO: make it look like a painted kibanda sign. Start by naming your colours once: */
+:root {
+    --wall: #fdf1dc;
+    --ink: #2b1d0e;
+    --red: #d7263d;
+    --yellow: #ffcb05;
+    --green: #1b998b;
+}
+
+body {
+    margin: 0;
+    background: var(--wall);
+    color: var(--ink);
+    font-family: system-ui, sans-serif;
+}
+
+/* TODO: .sign, h1, nav, main, .board (the chalkboard menu), table, .card, form, label, input, button, footer */
+/* TODO: one @media rule that puts the hours and "find us" cards side by side on wide screens */

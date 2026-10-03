@@ -1,35 +1,22 @@
-# Exercise 2
+# Day 41 - Exercise 2: Style a matatu ticket
 
-## Objective
-CSS Styling
-Style pages with:
-- Colors and fonts
-- Layouts
-- Spacing
-- Responsive design
+`src/ticket.html` is a finished ticket for a matatu sacco. It has no style at all. Write `src/ticket.css` so it looks like a real printed ticket. The design is up to you, but the test checks that you used today's tools:
 
-## Requirements
-CSS Styling
-Style pages with:
-- Colors and fonts
-- Layouts
-- Spacing
-- Responsive design
+- a `:root` rule with **at least three** colour variables (`--something: ...`), used with `var(...)`
+- a `.ticket` rule with a `border-radius` and a `box-shadow`
+- a `font-family` with a fallback, like `font-family: "Courier New", monospace;`
+- the `.stamp` turned slightly with `transform: rotate(...)`
+- a `:hover` style somewhere
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+Open `ticket.html` in a browser while you work.
 
-## Starter Code
-Check the src/ directory for starter code files.
+## Files
 
-## 📌 Refer to (when stuck)
-- **Day 41 README** ([day41/README.md](../README.md)) → **Notes & reference** and **Key Concepts Summary**
-- Use main day README for CSS and layout examples
+- `src/ticket.html`: the ticket (don't change it).
+- `src/ticket.css`: your styles (it starts empty).
+- `src/TicketStyleTest.java`: the checks.
+- `solution/ticket.css`: one design.
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+## 📌 Stuck?
+
+A dashed line across the ticket, like a tear-off strip: `border-top: 2px dashed var(--ink);`. Round "bites" out of the sides are a classic ticket look: a `radial-gradient` background can do it, but get the basics right first.

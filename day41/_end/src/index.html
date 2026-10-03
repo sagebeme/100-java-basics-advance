@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mama Njeri's Kibanda · Chapati, Mandazi & Chai in Kangemi</title>
+    <meta name="description" content="Hot chapati, mandazi and chai every morning at Mama Njeri's kibanda, Kangemi stage, Nairobi.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Nunito:wght@400;700;900&display=swap">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="sign">
+        <p class="sign-top">Karibu · Since 2009</p>
+        <h1>Mama Njeri's <span>Kibanda</span></h1>
+        <p class="sign-tag">Chapati · Mandazi · Chai ya Maziwa</p>
+        <nav aria-label="On this page">
+            <ul>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#hours">Hours</a></li>
+                <li><a href="#find-us">Find us</a></li>
+                <li><a href="#order">Order</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="menu" class="board">
+            <h2>Today's menu</h2>
+            <p class="note">Everything is made fresh from 6am. When it's gone, it's gone!</p>
+            <table>
+                <caption>Prices in Kenya shillings</caption>
+                <thead>
+                    <tr><th scope="col">Item</th><th scope="col">What it is</th><th scope="col">KES</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Chapati</td><td>Soft, layered flatbread, straight off the pan</td><td>20</td></tr>
+                    <tr><td>Mandazi</td><td>Coconut doughnut, lightly sweet</td><td>10</td></tr>
+                    <tr><td>Chai ya maziwa</td><td>Milky tea boiled with ginger</td><td>30</td></tr>
+                    <tr><td>Ndengu</td><td>Green gram stew, best with chapati</td><td>60</td></tr>
+                    <tr class="special"><td>Kibanda breakfast</td><td>2 chapati, ndengu and a chai</td><td>120</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="hours" class="card">
+            <h2>Opening hours</h2>
+            <ul class="hours">
+                <li><strong>Monday – Friday</strong> <span>6:00am – 2:00pm</span></li>
+                <li><strong>Saturday</strong> <span>7:00am – 1:00pm</span></li>
+                <li><strong>Sunday</strong> <span>Closed. Mama Njeri is at church!</span></li>
+            </ul>
+        </section>
+
+        <section id="find-us" class="card">
+            <h2>Find us</h2>
+            <p>Opposite the Kangemi matatu stage, next to the green M-Pesa shop. Look for the yellow umbrella.</p>
+            <p><a class="button" href="https://www.openstreetmap.org/search?query=Kangemi%2C%20Nairobi">Open the map</a></p>
+        </section>
+
+        <section id="order" class="card">
+            <h2>Order ahead</h2>
+            <p>Busy morning? Tell us what you want and it'll be wrapped and waiting.</p>
+            <form action="#order" method="post">
+                <label for="name">Your name</label>
+                <input id="name" name="name" type="text" autocomplete="name" required>
+
+                <label for="phone">Phone number</label>
+                <input id="phone" name="phone" type="tel" placeholder="0712 345 678" autocomplete="tel" required>
+
+                <label for="item">What would you like?</label>
+                <select id="item" name="item">
+                    <option>Kibanda breakfast</option>
+                    <option>Chapati</option>
+                    <option>Mandazi</option>
+                    <option>Chai ya maziwa</option>
+                </select>
+
+                <label for="quantity">How many?</label>
+                <input id="quantity" name="quantity" type="number" min="1" max="20" value="1">
+
+                <label for="notes">Anything else?</label>
+                <textarea id="notes" name="notes" rows="3" placeholder="Extra ginger in the chai, please"></textarea>
+
+                <button type="submit">Send my order</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>Mama Njeri's Kibanda · Kangemi, Nairobi · Pay with cash or M-Pesa</p>
+    </footer>
+</body>
+</html>

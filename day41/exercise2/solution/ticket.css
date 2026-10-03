@@ -1,0 +1,70 @@
+:root {
+    --paper: #fff8e7;
+    --ink: #1f2a44;
+    --accent: #e4572e;
+    --route: #29a19c;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    display: grid;
+    place-items: center;
+    background: #3c4a6b;
+    font-family: "Courier New", Courier, monospace;
+    color: var(--ink);
+}
+
+.ticket {
+    position: relative;
+    width: min(100% - 2rem, 22rem);
+    padding: 1.5rem 1.6rem 1.2rem;
+    border-radius: 16px;
+    background:
+        radial-gradient(circle at 0 62%, #3c4a6b 12px, transparent 13px),
+        radial-gradient(circle at 100% 62%, #3c4a6b 12px, transparent 13px),
+        var(--paper);
+    box-shadow: 0 18px 30px -12px rgba(0, 0, 0, 0.6);
+    transition: transform 0.2s ease;
+}
+.ticket:hover { transform: translateY(-4px) rotate(-1deg); }
+
+.sacco {
+    margin: 0;
+    color: var(--route);
+    font-weight: bold;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+h1 { margin: 0.2rem 0 1rem; font-size: 1.6rem; }
+
+.details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem 1rem;
+    margin: 0;
+    padding-bottom: 1rem;
+    border-bottom: 2px dashed var(--ink);
+}
+dt { font-size: 0.7rem; text-transform: uppercase; opacity: 0.7; }
+dd { margin: 0; font-size: 1.2rem; font-weight: bold; }
+
+.stamp {
+    position: absolute;
+    top: 1.2rem;
+    right: 1rem;
+    margin: 0;
+    padding: 0.3rem 0.6rem;
+    border: 3px double var(--accent);
+    border-radius: 6px;
+    color: var(--accent);
+    font-weight: bold;
+    text-transform: uppercase;
+    transform: rotate(-12deg);
+    opacity: 0.85;
+}
+
+footer p { margin: 1rem 0 0; font-size: 0.8rem; }
+a { color: var(--accent); }
+a:hover { color: var(--route); }

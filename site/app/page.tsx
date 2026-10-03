@@ -50,7 +50,7 @@ export default function Home() {
             <div className="section-head">
               <span className="over">Why Java?</span>
               <h2 id="demo-title">Catch the bug before your customers do</h2>
-              <p>This course follows the famous Python &ldquo;100 Days of Code&rdquo;. Here&apos;s the same small bug in both.</p>
+              <p>A farmer&apos;s pay, typed into a form. Here&apos;s the same small bug in Python and in Java.</p>
             </div>
             <JavaDemo />
           </div>
@@ -113,7 +113,7 @@ export default function Home() {
         <section className="cta" aria-labelledby="cta-title">
           <div className="container">
             <h2 id="cta-title">Your first cup takes about an hour</h2>
-            <p>Day 1 is variables: storing and changing data. By Day 100 your loyalty card is full, and so is your portfolio.</p>
+            <p>Day 1 is a coffee farmer&apos;s harvest log: your first variables. By Day 100 your loyalty card is full, and so is your portfolio.</p>
             <StartButton days={days} className="btn btn-sun" />
           </div>
         </section>

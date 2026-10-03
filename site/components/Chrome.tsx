@@ -38,7 +38,7 @@ export function Footer({ full = false }: { full?: boolean }) {
               <h4>Course</h4>
               <ul>
                 <li><Link href="/syllabus/">Full syllabus</Link></li>
-                <li><Link href="/day/1/">Day 1: Variables</Link></li>
+                <li><Link href="/day/1/">Day 1: The Harvest Log</Link></li>
                 <li><Link href="/day/100/">Day 100: Machine Learning</Link></li>
               </ul>
             </div>

@@ -9,7 +9,7 @@ const ROOT = path.join(process.cwd(), ".."); // the course repo; the site lives 
 
 // The five stages, as the main README describes them.
 export const STAGES = [
-  { n: 1, name: "Beginner", first: 1, last: 14, learn: "variables, types, control flow, loops, methods, collections", ends: "Blackjack and Higher Lower" },
+  { n: 1, name: "Beginner", first: 1, last: 14, learn: "variables, types, control flow, loops, methods, collections, following a coffee bean from the farm to the cup", ends: "a coffee season simulator and a coffee shop menu decoder" },
   { n: 2, name: "Intermediate", first: 15, last: 31, learn: "object-oriented programming, JavaFX, files, CSV, streams, JSON", ends: "a flash card app" },
   { n: 3, name: "Intermediate+", first: 32, last: 58, learn: "HTTP APIs, email, scraping, Selenium automation, then Spring Boot", ends: "a flight deal finder and your first Spring app" },
   { n: 4, name: "Advanced", first: 59, last: 80, learn: "forms, JPA databases, REST APIs, Spring Security, Docker, data analysis, algorithms, testing", ends: "a house price predictor" },
@@ -125,7 +125,7 @@ export function allDays(): Day[] {
       title,
       folder,
       capstone: /capstone/i.test(raw),
-      objectives: bullets(md, /Learning Objectives/),
+      objectives: bullets(md, /Learning Objectives|By the end of today/),
       checklist: checklist.length ? checklist : ["Read the lesson", "Built the project", "Tests pass", "Committed code to Git"],
       tests: countTests(dir),
       testDirs: testDirs(dir),

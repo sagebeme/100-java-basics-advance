@@ -18,7 +18,7 @@ Foundation concepts: variables, data types, control flow, loops, methods, collec
 Object-Oriented Programming, GUI basics, file handling, and intermediate projects.
 
 ### 💪 Intermediate+ (Days 32-58)
-APIs, web scraping, automation, web development basics, and real-world applications.
+Real-world Java with a Kenyan setting: dates and email, HTTP APIs and JSON, secrets and configuration, a SQL database, HTML and CSS, web scraping, OAuth, and browser automation with Selenium against practice sites that run on your own computer. Then Spring Boot.
 
 ### 🚀 Advanced (Days 59-80)
 Advanced frameworks, databases, REST APIs, authentication, data science, and advanced projects.
@@ -30,13 +30,13 @@ Portfolio projects, enterprise patterns, microservices, and professional-level a
 
 What the course actually uses, and from when:
 
-- **Java**: JDK 21 (Days 1–53 also run on JDK 11+; see [Java versions](#-java-versions) below)
+- **Java**: JDK 21 (Days 1–46 also run on JDK 11+; see [Java versions](#-java-versions) below)
 - **IDEs**: IntelliJ IDEA, Eclipse or VS Code
-- **Build tool**: Maven, from Day 54 (Days 1–53 use plain `javac`/`java`)
+- **Build tool**: plain `javac`/`java` for Days 1–46 (with a few jars in `lib/`), then Maven: the Selenium projects on Days 47–53, and every project from Day 54
 - **Frameworks**: Spring Boot 4 (web, Thymeleaf, Spring Data JPA with Hibernate, validation, Spring Security) and JavaFX
 - **Testing**: JUnit 5 and Mockito, with JaCoCo for coverage (Day 79)
 - **Databases**: H2 (in-memory) for most days; PostgreSQL with Docker on Day 70
-- **Libraries**: Jsoup (scraping), Selenium (browser automation), Apache PDFBox (PDFs), JFreeChart (charts)
+- **Libraries**: org.json (JSON), H2 (an embedded SQL database), jsoup (scraping), Selenium (browser automation), Apache PDFBox (PDFs), JFreeChart (charts)
 - **APIs**: REST, built with Spring and called with Java's HTTP client
 - **DevOps**: Docker and Docker Compose (Day 70)
 - **Version Control**: Git, GitHub
@@ -79,28 +79,28 @@ What the course actually uses, and from when:
 - [Day 31](day31): Capstone Project - Flash Card App
 
 ### 💪 Intermediate+ (Days 32-58)
-- [Day 32](day32): Email (JavaMail) & Date Management
-- [Day 33](day33): REST API Endpoints and HTTP Client
-- [Day 34](day34): API Practice: Creating a GUI Quiz App
-- [Day 35](day35): Environment Variables and Configuration
-- [Day 36](day36): Stock Trading News Alert Project
-- [Day 37](day37): Habit Tracking Application
-- [Day 38](day38): Workout Tracking App with Database
-- [Day 39](day39): Capstone Part 1: Flight Deal Finder
-- [Day 40](day40): Capstone Part 2: Flight Club
-- [Day 41](day41): Introduction to HTML/CSS
-- [Day 42](day42): Intermediate HTML/CSS
-- [Day 43](day43): Web Scraping with Jsoup
-- [Day 44](day44): Advanced Web Scraping
-- [Day 45](day45): Create Spotify Playlist API Integration
-- [Day 46](day46): Automated Price Tracker
-- [Day 47](day47): Selenium WebDriver Automation
-- [Day 48](day48): Game Playing Bot
-- [Day 49](day49): Automated Job Application Bot
-- [Day 50](day50): Automated Social Media Bot
-- [Day 51](day51): Internet Speed Twitter Bot
-- [Day 52](day52): Instagram Automation Bot
-- [Day 53](day53): Automated Data Entry
+- [Day 32](day32): Chama Reminders (dates, CSV records, email behind an interface)
+- [Day 33](day33): Laundry Forecast (HttpClient, query strings, JSON, a live weather API)
+- [Day 34](day34): Quiz Night (an API in a JavaFX window, background loading, an offline fallback)
+- [Day 35](day35): SMS Alerts (environment variables, properties files, masked secrets)
+- [Day 36](day36): NSE Price Alert (two feeds, BigDecimal percentages, headline matching)
+- [Day 37](day37): Streak Garden (a habit tracker: streaks, rates, a terminal calendar)
+- [Day 38](day38): Mazoezi Log (JDBC with H2, prepared statements, GROUP BY)
+- [Day 39](day39): Capstone Part 1: Long Weekend Deal Finder (public holidays, a practice fare API)
+- [Day 40](day40): Capstone Part 2: Safari Club (members, validated records, personal digests)
+- [Day 41](day41): Mama Njeri's Kibanda (your first web page, and a Java page checker)
+- [Day 42](day42): Zuhura's Kanga Gallery (flexbox, grid, responsive design, dark mode)
+- [Day 43](day43): Headline Digest (scraping with jsoup, politely)
+- [Day 44](day44): Mitumba Price Watch (following pages, de-duplicating, robots.txt)
+- [Day 45](day45): Music Time Machine (scraping plus Spotify OAuth with PKCE)
+- [Day 46](day46): Bei Alert (structured data, price history, fake-sale detection)
+- [Day 47](day47): Tamasha Bot (Selenium, page objects, real waits)
+- [Day 48](day48): Chapati Clicker Bot (a game-playing strategy, stale elements, simulation)
+- [Day 49](day49): Kazi Bot (multi-step forms, a file upload, a ledger against repeats)
+- [Day 50](day50): Mtaa Feed Bot (scheduled posts, like rules, a rate limiter)
+- [Day 51](day51): Kasi Check (waiting out a live test, median verdicts, an evidence-based ticket)
+- [Day 52](day52): Picha Bot (checked actions, spam filtering, exponential backoff)
+- [Day 53](day53): Nyumba Data Entry (scrape, clean, type, and check your work)
 - [Day 54](day54): Introduction to Spring Boot
 - [Day 55](day55): Spring Boot REST APIs
 - [Day 56](day56): Spring Boot: Static Files and Templates
@@ -201,7 +201,7 @@ To put it online, import the repo into Netlify (`netlify.toml` is already set up
 2. **Set up your development environment**
    - Install JDK 11 or higher (JDK 21 is what this repo is built and tested against)
    - Install IntelliJ IDEA or your preferred IDE
-   - Days 1–53 compile with plain `javac`/`java` — no Maven or Gradle needed yet. Maven is required starting Day 54 (see `LEARNING_PATH.md`'s "Setup you'll need, and when")
+   - Days 1–46 compile with plain `javac`/`java`, with the jars in `lib/` on the classpath (`-cp "lib/*"`). Maven is needed for the Selenium projects on Days 47–53 and for every project from Day 54 (see `LEARNING_PATH.md`'s "Setup you'll need, and when")
 
 3. **Follow the daily structure**
    - Each day has its own folder (day01, day02, etc.)
@@ -231,7 +231,14 @@ To put it online, import the repo into Netlify (`netlify.toml` is already set up
 
 ## ✅ How to Run Tests
 
-Most days ship with real JUnit tests next to the solution, in `_end/src/` or `exerciseN/src/`, so you can check your own version against the same checks. No Maven or Gradle needed for these — a JUnit runner is already checked into `lib/`.
+Most days ship with real JUnit tests next to the solution, in `_end/src/` or `exerciseN/src/`, so you can check your own version against the same checks. No Maven or Gradle needed for these: a JUnit runner, and the few libraries Days 32–46 use (org.json, H2 and jsoup), are already checked into `lib/`.
+
+From Day 32 on, put the whole `lib/` folder on the classpath with `"lib/*"` (on Windows, separate classpath entries with `;` instead of `:`):
+
+```bash
+javac -cp "lib/*" -d day38/_end/src day38/_end/src/*.java
+java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp "day38/_end/src:lib/*" --scan-classpath
+```
 
 **Run every test for one day's solution** (from the repo root):
 
@@ -249,7 +256,7 @@ java -jar lib\junit-platform-console-standalone-6.1.3.jar execute -cp day08\_end
 
 Replace `day08\_end` with `dayNN\exercise1\src` or `dayNN\exercise2\src` to run an exercise's tests instead — the command is identical either way. On Days 1–14 an exercise's `src/` holds your starter code, so its tests fail until you've done the exercise; to check the bundled answer, compile `dayNN/exerciseN/solution/*.java` together with the test file from `src/`. A clean run ends with a line like `[  X tests successful ]` and `[  0 tests failed ]`. If you've written your own version of a day's code, drop your class next to the test and re-run the same two commands — the test doesn't care whether the code came from the day's own solution or from you, only that the method names and behavior match.
 
-**Day 54 onward is different: every day and exercise from here on is its own Maven project, each with its own `pom.xml`** (Spring Boot through Day 59, then a mix of Spring Boot and plain Maven projects through Day 100). Install [Apache Maven](https://maven.apache.org/download.cgi) (any recent 3.9.x), then from that day or exercise's own folder:
+**Days 47–53 and Day 54 onward are different: their projects are Maven projects, each with its own `pom.xml`.** On Days 47–53 that's the `_end/` and `_start/` project, which uses Selenium against a practice site that starts on your computer (their exercises are still plain `javac`). From Day 54 it's every day and exercise: Spring Boot through Day 59, then a mix of Spring Boot and plain Maven projects through Day 100. Install [Apache Maven](https://maven.apache.org/download.cgi) (any recent 3.9.x), then from that day or exercise's own folder:
 
 ```bash
 mvn test
@@ -263,25 +270,26 @@ mvn spring-boot:run
 
 Then open `http://localhost:8080`. Stop it with Ctrl+C.
 
-**Which days have tests today:** the main project's solution (`_end/`) on every day from 1 to 31 except 18; every exercise on Days 1–14 and most exercises from 15 to 30, plus 35, 37 and 40; and every day from 54 to 100, each with its own `mvn test` suite. Days 32–53 have no tests yet. See `LEARNING_PATH.md` for what's intentionally untested and why, and for the remaining gaps in Days 32–53.
+**Which days have tests today:** the main project's solution (`_end/`) on every day from 1 to 53 except 18; every exercise on Days 1–14 and 32–53, and most exercises from 15 to 31; and every day from 54 to 100, each with its own `mvn test` suite. On Days 47–53, the browser tests need Google Chrome, and skip themselves (rather than fail) if it isn't installed. See `LEARNING_PATH.md` for the few things that are intentionally untested and why.
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- **Java JDK 21** (JDK 11+ is enough for Days 1–53; see [Java versions](#-java-versions) below)
+- **Java JDK 21** (JDK 11+ is enough for Days 1–46; see [Java versions](#-java-versions) below)
 - IDE (IntelliJ IDEA recommended)
 - Git
-- Maven 3.9+ (from Day 54)
+- Maven 3.9+ (from Day 47)
+- Google Chrome (for the browser automation on Days 47–53)
 
 ### ☕ Java versions
-**Use JDK 21.** Every Maven project from Day 54 on targets Java 21 and uses Spring Boot 4, so it won't build on an older JDK. Days 1–53 are plain Java and also run on JDK 11 or newer. Here's what matters when choosing a version:
+**Use JDK 21.** Every Maven project (Days 47–53, and Day 54 on) targets Java 21, and from Day 54 they use Spring Boot 4, so they won't build on an older JDK. Days 1–46 are plain Java and also run on JDK 11 or newer. Here's what matters when choosing a version:
 
 | Version | Notes |
 |--------|--------|
 | **JDK 8** | Still common in older projects. Some examples may work, but later days use features from Java 11+ (e.g. `var`, HTTP Client). |
-| **JDK 11 (LTS)** | First LTS with modules. Enough for Days 1–53 only. JavaFX is not included; use the [JavaFX SDK](https://gluonhq.com/products/javafx/) and `--module-path` / `--add-modules` when running GUI days (18, 22–23, 27–31). |
-| **JDK 17 (LTS)** | Enough for Days 1–53 only: Days 54–100 target Java 21. Same JavaFX note as 11. |
-| **JDK 21 (LTS)** | **What this course is built and tested on.** Needed from Day 54. |
+| **JDK 11 (LTS)** | First LTS with modules. Enough for Days 1–46 only. JavaFX is not included; use the [JavaFX SDK](https://gluonhq.com/products/javafx/) and `--module-path` / `--add-modules` when running GUI days (18–23, 27–31 and 34). |
+| **JDK 17 (LTS)** | Enough for Days 1–46 only: Days 47–100 target Java 21. Same JavaFX note as 11. |
+| **JDK 21 (LTS)** | **What this course is built and tested on.** Needed from Day 47. |
 
 - **LTS** = Long Term Support: Oracle (and others) provide updates for several years.
 - **Check your version:** `java -version` and `javac -version`.

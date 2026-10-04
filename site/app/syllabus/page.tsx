@@ -34,7 +34,8 @@ export default function Syllabus() {
             </li>
             <li><strong>Start Day 1:</strong> read <code>day01/README.md</code>, do the exercises in <code>exercise1/</code> and <code>exercise2/</code>, then build the project from <code>_start/</code>.</li>
             <li><strong>For the GUI days</strong> (18, 22–23, 27–31), install the <a href="https://gluonhq.com/products/javafx/">JavaFX SDK</a>. The later JavaFX projects get it from Maven automatically.</li>
-            <li><strong>From Day 54</strong>, install <a href="https://maven.apache.org/download.cgi">Maven</a> 3.9+. Every day is then its own Maven project: <code>mvn test</code> and <code>mvn spring-boot:run</code>.</li>
+            <li><strong>From Day 32</strong>, put the jars in <code>lib/</code> on the classpath: <code>-cp "lib/*"</code>.</li>
+            <li><strong>From Day 47</strong>, install <a href="https://maven.apache.org/download.cgi">Maven</a> 3.9+ and Google Chrome for the browser bots. From Day 54 every day is its own Maven project: <code>mvn test</code> and <code>mvn spring-boot:run</code>.</li>
           </ol>
           <p style={{ margin: 0 }}>Commit your work every day. In three months you&apos;ll want to see how far you came.</p>
         </section>

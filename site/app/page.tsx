@@ -9,7 +9,7 @@ import { ChalkMenu } from "@/components/ChalkMenu";
 const BREW = [
   { n: 1, name: "Grind", what: "Read the lesson: the objectives, the key ideas, and the steps with their code." },
   { n: 2, name: "Brew", what: "Write the code: small exercises first, then the day's project." },
-  { n: 3, name: "Taste", what: "Run the tests: JUnit from Day 1, then mvn test from Day 54." },
+  { n: 3, name: "Taste", what: "Run the tests: JUnit from Day 1, then mvn test from Day 47." },
   { n: 4, name: "Serve", what: "Tick off the checklist, commit to Git, and collect your stamp." },
 ];
 
@@ -80,7 +80,7 @@ export default function Home() {
             <div className="section-head">
               <span className="over">Your path</span>
               <h2 id="path-title">Five stages, one at a time</h2>
-              <p>Plain Java until Day 53. Maven and Spring Boot from Day 54. Then twenty portfolio projects, with {capstones} capstones along the way.</p>
+              <p>Plain Java until Day 46. Maven and browser bots from Day 47, Spring Boot from Day 54. Then twenty portfolio projects, with {capstones} capstones along the way.</p>
             </div>
             <ChalkMenu days={days} stages={stages} />
           </div>
@@ -100,7 +100,8 @@ export default function Home() {
                   <tr><td>1 × JDK 21</td><td>Eclipse Temurin</td></tr>
                   <tr><td>1 × Editor</td><td>IntelliJ or VS Code</td></tr>
                   <tr><td>1 × Git</td><td>to save your work</td></tr>
-                  <tr><td>1 × Maven</td><td>from Day 54</td></tr>
+                  <tr><td>1 × Maven</td><td>from Day 47</td></tr>
+                  <tr><td>1 × Chrome</td><td>Days 47–53</td></tr>
                   <tr><td>100 × Lessons</td><td>with exercises</td></tr>
                   <tr className="total"><td>Total</td><td>1 hr a day</td></tr>
                 </tbody>

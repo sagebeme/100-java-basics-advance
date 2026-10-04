@@ -18,8 +18,8 @@ Do this for every day, in order:
 | Stage | Days | What's different |
 |---|---|---|
 | Beginner | 1–14 | Plain `.java` files, `javac`/`java` only. No extra tools. One story runs through all 14 days: a coffee bean's journey from a farm in Nyeri to a cup in Nairobi. |
-| Intermediate | 15–31 | Same tooling, plus JavaFX for GUI days (18, 22–23, 27–31) — see the JavaFX note below before you hit Day 18. |
-| Intermediate+ | 32–58 | APIs, credentials, scraping, and automation days start appearing — see "When a day needs something you don't have," below. Spring Boot and Maven arrive at Day 54. |
+| Intermediate | 15–31 | Same tooling, plus JavaFX for GUI days (18–23, 27–31) — see the JavaFX note below before you hit Day 18. |
+| Intermediate+ | 32–58 | Real APIs, secrets, a database, HTML/CSS, scraping and browser automation, each against a free API or a practice site — see "When a day needs something you don't have," below. A few jars in `lib/` join the classpath from Day 32; Maven arrives with Selenium on Day 47, and Spring Boot on Day 54. |
 | Advanced | 59–80 | Everything is a self-contained Maven project from here on (own `pom.xml` per day) — plain `javac` no longer applies past Day 59. |
 | Professional | 81–100 | "Portfolio Projects": each day is a complete, real, working system on its own (a game, a web app, a small ML pipeline), not a guided exercise. Treat these as practice building something from a one-paragraph brief, the way a real assignment or side project actually starts. |
 
@@ -49,22 +49,23 @@ Do this for every day, in order:
     └── README.md               # Portfolio project brief
 ```
 
-- **`exercise1/`, `exercise2/`** (most days 1–40): small, focused practice on the day's concept. Starter code has `// TODO` comments; the README says what's expected. On Days 1–14 the starter and its test sit in `src/` (the test fails until you've done the exercise), and one answer sits in `solution/`. On Day 13 the "starter" is buggy code to fix.
-- **`_start/`, `_end/`** (Days 1–31 only): the day's main project. `_start` is where you begin; use `_end` only to check your own work, not as a template to copy from.
-- **From Day 32 on**, most days are project-only: read the `README.md` and build directly into the day's folder.
+- **`exercise1/`, `exercise2/`** (Days 1–53): small, focused practice on the day's concept. Starter code has `// TODO` comments; the README says what's expected. On Days 1–14 and 32–53 the starter and its test sit in `src/` (the test fails until you've done the exercise), and one answer sits in `solution/`. On Day 13 the "starter" is buggy code to fix.
+- **`_start/`, `_end/`** (Days 1–53): the day's main project. `_start` is where you begin; use `_end` only to check your own work, not as a template to copy from. On Days 47–53 both are small Maven projects.
 - **From Day 54 on**, every day/exercise is its own Maven project (its own `pom.xml`) instead of loose `.java` files, because that's what those days are teaching (Spring Boot, JPA, etc.).
 
 ## Verifying your work
 
-Most early and late days ship with real JUnit tests you can run against your own solution, not just the bundled one — see the root README's **"How to Run Tests"** for the exact commands (plain JUnit for Days 1–17/24–26/exercises through Day 40; `mvn test` for every day from 54 onward). If a day has a test, get it green before moving on — that's a stronger signal than "it compiles" or "it looks right."
+Most early and late days ship with real JUnit tests you can run against your own solution, not just the bundled one — see the root README's **"How to Run Tests"** for the exact commands (plain JUnit for Days 1–46 and every exercise up to Day 53; `mvn test` for the projects on Days 47–53 and every day from 54 onward). If a day has a test, get it green before moving on — that's a stronger signal than "it compiles" or "it looks right."
 
-**Skipped on purpose, not by oversight:** a handful of exercises ask you to demonstrate a concept (explain variable scope, spot the bug in given code, draw some shapes) rather than compute a value with one right answer, so there's nothing a test could assert. Day 18 and Day 27's exercise1 fall in this group — read the README's own checklist for those instead.
+**What the tests can't check:** windows and drawings. JavaFX days test their logic classes (the maths, the rules, the file formats), not what appears on screen, so run the window and look at it too. Likewise, Days 41–42 test the structure of your HTML and the tools your CSS uses, not whether it looks good: that part is your eye.
 
 ## Setup you'll need, and when
 
-- **Days 1–53**: nothing beyond a JDK (11+, this repo is built/tested against 21) and `javac`/`java`.
-- **JavaFX (Days 18, 22–23, 27–31)**: JavaFX hasn't shipped with the JDK since Java 11, so you'll need to install it yourself — grab the [JavaFX SDK](https://gluonhq.com/products/javafx/) and run with `--module-path`/`--add-modules` pointed at it. If you'd rather learn the logic before wrestling with a GUI toolchain, Days 19–23 and 27–31 each have the real decision logic (collision detection, ball physics, timers, file formats) pulled out into a plain `*Logic.java` class next to the GUI file — no JavaFX needed to compile or test that part, and it's fully covered by JUnit tests you can run today. The later JavaFX days (83, 86, 89 and 94) are Maven projects that fetch JavaFX for you: `mvn javafx:run` just works.
-- **Maven (Day 54 onward)**: install [Apache Maven](https://maven.apache.org/download.cgi) (any recent 3.9.x). Every project from here on has its own `pom.xml` — run `mvn test` from the folder that holds it: the day's folder, or for Days 55–59 its `exercise1/` or `exercise2/` folder. Each day's README has the exact commands under **How to Run** and **How to Test**. These projects target **JDK 21**.
+- **Days 1–31**: nothing beyond a JDK (11+, this repo is built/tested against 21) and `javac`/`java`.
+- **Days 32–46**: the same, with the jars in `lib/` on the classpath: `-cp "lib/*"` (org.json for JSON, H2 for Day 38's database, jsoup for scraping). Days 33, 34 and 45 can call real free APIs, and fall back to saved data when you're offline.
+- **Days 47–53**: Maven and Google Chrome. Each project starts its own practice website on your computer, and Selenium downloads the matching ChromeDriver for you the first time. Browser tests skip themselves if Chrome isn't installed.
+- **JavaFX (Days 18–23, 27–31 and 34)**: JavaFX hasn't shipped with the JDK since Java 11, so you'll need to install it yourself — grab the [JavaFX SDK](https://gluonhq.com/products/javafx/) and run with `--module-path`/`--add-modules` pointed at it. If you'd rather learn the logic before wrestling with a GUI toolchain, Days 19–23 and 27–31 each have the real decision logic (collision detection, ball physics, timers, file formats) pulled out into a plain `*Logic.java` class next to the GUI file — no JavaFX needed to compile or test that part, and it's fully covered by JUnit tests you can run today. The later JavaFX days (83, 86, 89 and 94) are Maven projects that fetch JavaFX for you: `mvn javafx:run` just works.
+- **Maven (Days 47–53, and Day 54 onward)**: install [Apache Maven](https://maven.apache.org/download.cgi) (any recent 3.9.x). From Day 54 every project has its own `pom.xml` — run `mvn test` from the folder that holds it: the day's folder, or for Days 55–59 its `exercise1/` or `exercise2/` folder. Each day's README has the exact commands under **How to Run** and **How to Test**. These projects target **JDK 21**.
 - **Docker (Day 70)**: optional for that day specifically — you can read and understand the Dockerfile/compose setup, and verify the app itself with `mvn test`, without a working Docker daemon.
 
 ## When a day needs something you don't have
@@ -76,16 +77,16 @@ A handful of days (sending real email, calling a paid or OAuth-gated API, drivin
 3. **Swap in the real SDK later**, once you have credentials, by writing a second implementation of the same interface — your business logic doesn't change.
 
 This is a genuinely useful pattern to practice, not just a workaround: it's exactly how you'd want to structure real code that depends on a service you can't hit from your test suite (rate limits, cost, flakiness, secrets management). A few specific days where you'll want it:
-- **Day 32** (email) — a real send needs a real SMTP account; swap in one once you have credentials.
-- **Days 33, 34, 36, 39, 45, 46** (weather/news/Spotify/OAuth APIs) — need live network calls and real API keys.
-- **Day 38** (databases) — needs a real database engine (or use an embedded one like H2 to get moving without installing a server).
-- **Days 43, 44** (web scraping) — need a real page to scrape; test your parsing logic against a saved local copy of the HTML so your tests don't depend on the live page staying unchanged.
-- **Days 47–53** (Selenium automation) — need a real browser plus a WebDriver. Modern Selenium (4.6+) auto-detects your installed Chrome and downloads a matching driver for you — no manual setup required, just add the dependency.
+- **Day 32** (email): emails go through a `Mailer` interface into an `outbox/` folder; the README shows where a real SMTP sender would plug in.
+- **Days 33, 34, 45** (weather, trivia and Spotify): the first two use free APIs with no key, and fall back to saved responses offline; Day 45 runs against a practice catalogue unless you set `SPOTIFY_CLIENT_ID`.
+- **Days 35, 36, 39, 40, 46** (SMS, market data, fares, shop pages): recorded responses and practice servers stand in for paid services, behind interfaces you could point at the real thing.
+- **Day 38** (databases): H2 runs inside your program, so there's nothing to install.
+- **Days 43, 44** (web scraping): saved pages and a practice shop, so your tests never depend on a live site staying the same.
+- **Days 47–53** (Selenium): every bot works on a practice site that starts on your computer. Automating real social media, job or shopping accounts usually breaks their terms; the patterns (waits, rate limits, backoff, checking your work) are what their official APIs expect from you.
 - **Day 96** (payments), **Day 97** (WhatsApp) — see above; both include a working fake you can extend.
 
 ## Known gaps worth knowing about upfront
 
-- **Days 41–42's briefs are HTML/CSS** (flexbox, grid, basic pages), but their stub files are `.java` — a content mismatch in the course materials, not something you're doing wrong. Treat these two days as an HTML/CSS detour and build plain `.html`/`.css` files instead of forcing the topic into Java.
 - **Days 60–100 are each a fully separate, real project** (own `pom.xml`, own tests) rather than exercises with a fixed right answer — if your approach to a portfolio-project day looks different from any reference you find, that's expected; judge it against the day's own checklist, not a diff.
 
 ## Gotchas you'll actually hit

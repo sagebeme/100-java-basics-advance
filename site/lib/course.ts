@@ -11,7 +11,7 @@ const ROOT = path.join(process.cwd(), ".."); // the course repo; the site lives 
 export const STAGES = [
   { n: 1, name: "Beginner", first: 1, last: 14, learn: "variables, types, control flow, loops, methods, collections, following a coffee bean from the farm to the cup", ends: "a coffee season simulator and a coffee shop menu decoder" },
   { n: 2, name: "Intermediate", first: 15, last: 31, learn: "object-oriented programming, JavaFX, files, CSV, streams, JSON", ends: "a flash card app" },
-  { n: 3, name: "Intermediate+", first: 32, last: 58, learn: "HTTP APIs, email, scraping, Selenium automation, then Spring Boot", ends: "a flight deal finder and your first Spring app" },
+  { n: 3, name: "Intermediate+", first: 32, last: 58, learn: "dates, HTTP APIs, secrets, a SQL database, HTML and CSS, scraping and polite Selenium bots, then Spring Boot", ends: "a long weekend deal finder and your first Spring app" },
   { n: 4, name: "Advanced", first: 59, last: 80, learn: "forms, JPA databases, REST APIs, Spring Security, Docker, data analysis, algorithms, testing", ends: "a house price predictor" },
   { n: 5, name: "Professional", first: 81, last: 100, learn: "20 portfolio projects: games, web apps, automation, analytics", ends: "an earnings prediction system" },
 ] as const;

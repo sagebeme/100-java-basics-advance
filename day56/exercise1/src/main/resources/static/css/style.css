@@ -1,11 +1,20 @@
+/* Served from /css/style.css: Spring Boot hands out everything under static/ as-is. */
+:root { --bg: #fff8ef; --ink: #2d1b0e; --accent: #e85d04; --muted: #7d6450; --line: #f1dcc4; }
+* { box-sizing: border-box; }
 body {
-    font-family: sans-serif;
     margin: 0;
-    padding: 2rem;
-    background-color: #f6f8fb;
-    color: #16202e;
+    padding: 2rem clamp(1rem, 5vw, 4rem);
+    background: linear-gradient(180deg, #ffe8cc, var(--bg) 40%);
+    color: var(--ink);
+    font-family: "Trebuchet MS", system-ui, sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.6;
 }
-
 h1 {
-    color: #2b6cb0;
+    color: var(--accent);
+    font-size: clamp(2rem, 6vw, 3.2rem);
+    letter-spacing: -0.02em;
 }
+img { max-width: 120px; }
+a { color: var(--accent); font-weight: 700; }
+p { color: var(--muted); max-width: 40rem; }

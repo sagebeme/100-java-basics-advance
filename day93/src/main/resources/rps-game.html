@@ -3,6 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Rock Paper Scissors</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        /* Arcade cabinet: neon on black. The ids the bot uses are unchanged. */
+        :root { --bg: #07060f; --neon: #39ff14; --pink: #ff2e88; --cyan: #00e5ff; --ink: #e9e7ff; }
+        body { margin: 0; min-height: 100vh; display: grid; place-content: center; gap: .6rem; text-align: center;
+               background: radial-gradient(circle at 50% 20%, #241046, var(--bg) 60%); color: var(--ink);
+               font: 1.05rem/1.4 "Courier New", ui-monospace, monospace; }
+        h1 { margin: 0 0 1rem; font-size: clamp(1.8rem, 6vw, 3rem); letter-spacing: .15em; text-transform: uppercase;
+             color: var(--neon); text-shadow: 0 0 8px var(--neon), 0 0 24px var(--neon); }
+        button { margin: 0 .3rem; padding: 1rem 1.4rem; border: 3px solid var(--cyan); border-radius: 14px; background: transparent;
+                 color: var(--cyan); font: 700 1.1rem "Courier New", monospace; text-transform: uppercase; cursor: pointer;
+                 box-shadow: 0 0 12px rgba(0, 229, 255, .45), inset 0 0 12px rgba(0, 229, 255, .25); }
+        button:hover, button:focus-visible { background: var(--cyan); color: var(--bg); outline: none; }
+        p { margin: .15rem 0; }
+        span { color: var(--pink); font-weight: 700; }
+        #result { font-size: 1.5rem; letter-spacing: .1em; text-shadow: 0 0 10px var(--pink); }  /* no text-transform: Selenium reads the visible text */
+        #wins, #losses, #ties { color: var(--neon); }
+    </style>
 </head>
 <body>
     <h1>Rock Paper Scissors</h1>

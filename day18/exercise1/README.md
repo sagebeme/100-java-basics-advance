@@ -1,31 +1,17 @@
-# Exercise 1
+# Exercise 1: A shape garden
 
-## Objective
-Basic Shapes
-Create programs that draw:
-- Squares and rectangles
-- Circles and ovals
-- Lines and polygons
-- Different colors
+Draw squares, rectangles, circles, ovals, lines and polygons on a JavaFX `Canvas`, in different colours.
 
 ## Requirements
-Basic Shapes
-Create programs that draw:
-- Squares and rectangles
-- Circles and ovals
-- Lines and polygons
-- Different colors
+- `Shapes.java` holds the maths, with no JavaFX, so it can be tested:
+  - `regularPolygon(cx, cy, radius, sides)`: the corners of a regular polygon, the first corner straight up, as `{xs, ys}`
+  - `centredRectangle(cx, cy, w, h)`: the top-left corner of a rectangle centred on a point
+  - `circleFits(cx, cy, r, width, height)`: whether a circle fits inside the canvas
+- `ShapesDemo.java` draws a "shape garden" with `fillRect`, `fillRoundRect`, `fillOval`, `strokeOval`, `strokeLine` and `fillPolygon`, using `Shapes` for the polygons.
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+## Run it
+`ShapesTest.java` needs no JavaFX: compile `Shapes.java` and the test with the JUnit jar, as on other days. To see the drawing, run `ShapesDemo` with the JavaFX SDK (see LEARNING_PATH.md).
 
-## Starter Code
-Check the src/ directory for starter code files.
-
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+## 📌 Refer to (when stuck)
+- Corner `i` of an `n`-sided polygon is at angle `-π/2 + i × 2π/n`: `x = cx + r·cos(angle)`, `y = cy + r·sin(angle)`. Screen `y` grows downwards, which is why "up" is `-π/2`.
+- **Day 18 README**: drawing on a `Canvas` with `GraphicsContext`.

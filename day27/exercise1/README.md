@@ -1,31 +1,15 @@
-# Exercise 1
+# Exercise 1: A currency converter window
 
-## Objective
-Basic GUI
-Create GUIs with:
-- Labels and buttons
-- Text fields
-- Event handlers
-- Multiple layouts
+Build a small JavaFX window with labels, a text field, a button, an event handler, and two layouts: a `VBox` for the page, with an `HBox` row for the field and button.
 
 ## Requirements
-Basic GUI
-Create GUIs with:
-- Labels and buttons
-- Text fields
-- Event handlers
-- Multiple layouts
+- `ConverterLogic.kesToUsd(text, rate)` (no JavaFX, tested): `"1,500"` → `"KES 1,500 = USD 11.58"`; blank → `"Type an amount in shillings."`; anything that isn't a positive amount → a message saying so.
+- `ConverterApp`: typing an amount and pressing **Convert** (or Enter) shows the result in a label.
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+## Run it
+`ConverterLogicTest.java` needs no JavaFX. Run `ConverterApp` with the JavaFX SDK (see LEARNING_PATH.md).
 
-## Starter Code
-Check the src/ directory for starter code files.
-
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+## 📌 Refer to (when stuck)
+- `button.setOnAction(e -> label.setText(...))` is the event handler.
+- `button.setDefaultButton(true)` makes Enter press it.
+- Divide money with `BigDecimal.divide(rate, 2, RoundingMode.HALF_UP)` (Day 36).

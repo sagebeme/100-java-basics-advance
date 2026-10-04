@@ -1,34 +1,12 @@
-# Exercise 2
+# Day 49 - Exercise 2: A daily limit
 
-## Objective
-Job Search
-Implement:
-- Keyword search
-- Location filtering
-- Job filtering
-- Results extraction
+A bot that sends 200 applications in a minute looks like spam, and probably is. Write two methods in `src/DailyLimit.java`:
 
-## Requirements
-Job Search
-Implement:
-- Keyword search
-- Location filtering
-- Job filtering
-- Results extraction
+| Method | Returns |
+|---|---|
+| `sentOn(List<LocalDate> history, LocalDate day)` | how many applications were sent on that day |
+| `remaining(List<LocalDate> history, LocalDate day, int limit)` | how many more are allowed that day, never below 0 |
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+## 📌 Stuck?
 
-## Starter Code
-Check the src/ directory for starter code files.
-
-## 📌 Refer to (when stuck)
-- **Day 49 README** ([day49/README.md](../README.md)) → **Notes & reference** and **Key Concepts Summary**. Use main day README for structure and hints.
-
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+`history.stream().filter(day::equals).count()`, and `Math.max(0, ...)`. One answer is in `solution/DailyLimit.java`.

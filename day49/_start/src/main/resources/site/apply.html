@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apply · Kazi Board (practice site)</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+<header><h1>Kazi<span>Board</span></h1><p id="job-name">Application</p></header>
+<main>
+    <ol class="steps"><li id="s1" class="current">1. You</li><li id="s2">2. Experience</li><li id="s3">3. CV &amp; letter</li></ol>
+    <form id="apply" novalidate>
+        <fieldset id="step1">
+            <legend>About you</legend>
+            <label for="name">Full name</label><input id="name">
+            <label for="email">Email</label><input id="email" type="email">
+            <label for="phone">Phone</label><input id="phone" type="tel">
+            <button type="button" id="next1">Next</button>
+        </fieldset>
+        <fieldset id="step2" hidden>
+            <legend>Experience</legend>
+            <label for="years">Years of experience</label>
+            <select id="years"><option value="0">Less than 1</option><option value="1">1–2</option><option value="3">3–5</option><option value="6">6 or more</option></select>
+            <span>Skills</span>
+            <label class="check"><input type="checkbox" name="skill" value="java"> Java</label>
+            <label class="check"><input type="checkbox" name="skill" value="sql"> SQL</label>
+            <label class="check"><input type="checkbox" name="skill" value="spring"> Spring</label>
+            <label class="check"><input type="checkbox" name="skill" value="selenium"> Selenium</label>
+            <label class="check"><input type="checkbox" name="skill" value="git"> Git</label>
+            <button type="button" id="next2">Next</button>
+        </fieldset>
+        <fieldset id="step3" hidden>
+            <legend>CV and cover letter</legend>
+            <label for="cv">CV (PDF or text)</label><input id="cv" type="file" accept=".pdf,.txt">
+            <label for="letter">Cover letter</label><textarea id="letter" rows="6"></textarea>
+            <button type="submit" id="send">Send application</button>
+        </fieldset>
+        <div id="errors" role="alert"></div>
+    </form>
+    <div id="done" hidden></div>
+</main>
+<script>
+const job = new URLSearchParams(location.search).get('job');
+fetch('/jobs.json').then(r => r.json()).then(list => {
+    const j = list.find(x => x.id === job);
+    document.getElementById('job-name').textContent = j ? `${j.title} at ${j.company}` : 'Unknown job';
+});
+const show = n => { [1, 2, 3].forEach(i => { document.getElementById('step' + i).hidden = i !== n; document.getElementById('s' + i).className = i === n ? 'current' : ''; }); };
+const fail = msgs => { document.getElementById('errors').innerHTML = msgs.map(m => `<p class="error">${m}</p>`).join(''); return msgs.length > 0; };
+document.getElementById('next1').onclick = () => {
+    const e = [];
+    if (!document.getElementById('name').value.trim()) e.push('Enter your name.');
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(document.getElementById('email').value.trim())) e.push('Enter a valid email.');
+    if (!/^(\+254|0)[17]\d{8}$/.test(document.getElementById('phone').value.replace(/\s/g, ''))) e.push('Enter a Kenyan mobile number.');
+    if (!fail(e)) show(2);
+};
+document.getElementById('next2').onclick = () => {
+    if (!fail(document.querySelectorAll('input[name=skill]:checked').length ? [] : ['Tick at least one skill.'])) show(3);
+};
+document.getElementById('apply').onsubmit = ev => {
+    ev.preventDefault();
+    const e = [];
+    if (!document.getElementById('cv').files.length) e.push('Attach your CV.');
+    if (document.getElementById('letter').value.trim().length < 50) e.push('Write a cover letter of at least 50 characters.');
+    if (fail(e)) return;
+    document.getElementById('apply').hidden = true;
+    const done = document.getElementById('done');
+    done.hidden = false;
+    done.innerHTML = `Application sent! Reference <strong id="reference">${job}-${document.getElementById('cv').files[0].name.length}</strong>`;
+};
+</script>
+</body></html>

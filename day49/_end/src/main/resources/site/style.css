@@ -1,0 +1,24 @@
+:root { --bg: #f4f7f2; --ink: #17301f; --muted: #5b6e60; --brand: #1f7a4d; --accent: #f2a541; --card: #fff; --line: #d6e2d6; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 1rem/1.5 "Segoe UI", system-ui, sans-serif; }
+header { background: var(--brand); color: white; padding: 1.4rem 1rem; }
+header h1 { margin: 0; font-size: 1.8rem; } header h1 span { color: var(--accent); }
+header p { margin: .2rem 0 0; opacity: .85; }
+main { width: min(100% - 2rem, 48rem); margin: 1.5rem auto 3rem; display: grid; gap: 1rem; }
+.job { display: grid; gap: .3rem; padding: 1.1rem 1.2rem; background: var(--card); border: 1px solid var(--line); border-radius: 14px; }
+.job h2 { margin: 0; font-size: 1.15rem; } .job .company { color: var(--muted); margin: 0; }
+.tags { display: flex; flex-wrap: wrap; gap: .4rem; padding: 0; margin: .3rem 0; list-style: none; }
+.tags li { padding: .15rem .6rem; border-radius: 999px; background: #e3efe6; color: var(--brand); font-size: .85rem; font-weight: 600; }
+.meta { display: flex; flex-wrap: wrap; gap: 1rem; color: var(--muted); font-size: .9rem; }
+a.apply, button { justify-self: start; display: inline-block; padding: .55rem 1.1rem; border: 0; border-radius: 10px; background: var(--brand); color: white; font: 700 1rem inherit; text-decoration: none; cursor: pointer; }
+button.secondary { background: transparent; color: var(--brand); border: 2px solid var(--brand); }
+.steps { display: flex; gap: .5rem; padding: 0; list-style: none; }
+.steps li { flex: 1; padding: .4rem; text-align: center; border-radius: 8px; background: #e3efe6; color: var(--muted); font-weight: 600; }
+.steps li.current { background: var(--brand); color: white; }
+fieldset { display: grid; gap: .35rem; padding: 1.2rem; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
+legend { font-weight: 800; padding: 0 .3rem; }
+input, select, textarea { padding: .6rem .7rem; border: 1px solid var(--line); border-radius: 8px; font: inherit; }
+label { font-weight: 600; margin-top: .4rem; }
+.check { display: flex; gap: .4rem; align-items: center; font-weight: 400; margin: 0; }
+.error { color: #b3261e; font-weight: 700; }
+#done { padding: 1.4rem; border-radius: 14px; background: var(--brand); color: white; }

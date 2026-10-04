@@ -35,3 +35,7 @@ node_modules/
 # H2 databases (Day 38 and later): personal data, never committed
 *.mv.db
 *.trace.db
+
+# Files the Day 49 bot creates when it runs
+applied.csv
+my-cv.txt

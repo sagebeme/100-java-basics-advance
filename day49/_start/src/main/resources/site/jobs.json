@@ -1,0 +1,7 @@
+[
+  {"id": "K-201", "title": "Junior Java Developer", "company": "Mfuko Payments", "location": "Nairobi", "remote": false, "skills": ["java", "sql", "git"]},
+  {"id": "K-202", "title": "Backend Engineer (Spring Boot)", "company": "Shamba Data", "location": "Remote", "remote": true, "skills": ["java", "spring", "postgresql", "docker"]},
+  {"id": "K-203", "title": "Frontend Developer", "company": "Duka Digital", "location": "Mombasa", "remote": false, "skills": ["javascript", "react", "css"]},
+  {"id": "K-204", "title": "Java Intern", "company": "Kilimo Tech", "location": "Nakuru", "remote": false, "skills": ["java", "git"]},
+  {"id": "K-205", "title": "QA Automation Tester", "company": "Tamasha Events", "location": "Remote", "remote": true, "skills": ["java", "selenium", "junit"]}
+]

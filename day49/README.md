@@ -1,264 +1,80 @@
-# Day 49 - Automated Job Application Bot
+# Day 49 - Kazi Bot: Automating a Multi-Step Application
 
-## 📚 Learning Objectives
-- Automate job applications
-- Fill application forms
-- Handle file uploads
-- Manage application data
-- Build job search automation
+> Applying for jobs means the same name, email and phone number typed into form after form. Automate the boring part, and keep the judgement part yours.
 
-## 🎯 Topics Covered
-- Form automation
-- File handling
-- Data management
-- Application tracking
-- Resume management
-- Cover letter generation
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+*Kazi Board* (kazi means work) is a practice jobs site with tech jobs from made-up companies. The bot reads every listing, scores each against your skills, and applies to the best matches through a three-step form with a CV upload:
 
-### Step 1: Application Data
-Store application information:
+```
+$ mvn -q compile exec:java
+Applied: Junior Java Developer              Mfuko Payments   100% match, reference K-201-9
+Applied: Java Intern                        Kilimo Tech      100% match, reference K-204-9
+Applied: QA Automation Tester               Tamasha Events   100% match, reference K-205-9
+```
+
+It remembers every application in `applied.csv`, so running it again applies only to new jobs.
+
+**Why a practice site?** Real job sites forbid bots in their terms. More importantly, an employer can tell a mass-produced application from a real one. Use what you learn here for your *own* forms and tests, and write real applications yourself.
+
+## 🎯 Learning Objectives
+- Score and filter jobs with plain, tested Java
+- Fill a multi-step form, checking each step before moving on
+- Upload a file with Selenium
+- Tick exactly the right checkboxes, and choose from a dropdown
+- Remember what the bot has done, so it never repeats itself
+- Limit how much a bot does in one run
+
+## 🧰 What you'll use
+
+**Uploading a file**: type the file's full path into the file input:
 
 ```java
-public class ApplicationData {
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String phone;
-    private String address;
-    private String resumePath;
-    private String coverLetter;
-    
-    // Load from file
-    public static ApplicationData loadFromFile(String filename) {
-        // Read JSON/CSV and create object
-    }
-}
+driver.findElement(By.id("cv")).sendKeys(Path.of("my-cv.txt").toAbsolutePath().toString());
 ```
 
-### Step 2: Form Filling
-Automate form completion:
+**Checkboxes** are clicks that toggle. Click only when the current state is wrong:
 
 ```java
-public class JobApplicationBot {
-    public void fillApplication(WebDriver driver, ApplicationData data) {
-        // Fill personal information
-        driver.findElement(By.id("firstName")).sendKeys(data.getFirstName());
-        driver.findElement(By.id("lastName")).sendKeys(data.getLastName());
-        driver.findElement(By.id("email")).sendKeys(data.getEmail());
-        driver.findElement(By.id("phone")).sendKeys(data.getPhone());
-        
-        // Upload resume
-        WebElement fileInput = driver.findElement(By.id("resume"));
-        fileInput.sendKeys(data.getResumePath());
-        
-        // Fill cover letter
-        driver.findElement(By.id("coverLetter")).sendKeys(data.getCoverLetter());
-    }
-}
+if (wanted != box.isSelected()) box.click();
 ```
 
-### Step 3: Job Search
-Search for jobs:
+**A step at a time.** After each "Next", read the page's error messages, and stop with them if there are any, before waiting for the next step to appear.
 
-```java
-public class JobSearcher {
-    public List<JobListing> searchJobs(String keywords, String location) {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://jobsite.com");
-        
-        // Enter search criteria
-        driver.findElement(By.id("keywords")).sendKeys(keywords);
-        driver.findElement(By.id("location")).sendKeys(location);
-        driver.findElement(By.id("search")).click();
-        
-        // Extract job listings
-        List<WebElement> jobElements = driver.findElements(By.className("job-listing"));
-        List<JobListing> jobs = new ArrayList<>();
-        
-        for (WebElement element : jobElements) {
-            JobListing job = extractJobInfo(element);
-            jobs.add(job);
-        }
-        
-        return jobs;
-    }
-}
+## 🪜 Steps
+
+1. **Exercise 1: A safe template** (`exercise1/`). Fill `{{placeholders}}`, and refuse to send a letter with a gap in it.
+2. **Exercise 2: A daily limit** (`exercise2/`). How many more is the bot allowed to send today?
+3. **Project: Kazi Bot** (`_start/`, a Maven project).
+   1. `JobMatcher.score` and `worthApplying`: skills, places, remote, already applied, best first.
+   2. `ApplyPage.apply`: three steps, a dropdown, checkboxes and an upload.
+   3. Run it twice and see the second run skip the jobs from the first.
+
+## 🧪 Run it and test it
+
+From `day49/_end` (or `_start`), with Maven and Chrome:
+
+```bash
+mvn test
+mvn -q compile exec:java            # creates my-cv.txt and applied.csv; delete applied.csv to start over
 ```
 
-### Step 4: Application Tracking
-Track applications:
+The exercises are plain Java: compile and test `day49/exercise1/src` as on earlier days, with `lib/*` on the classpath.
 
-```java
-public class ApplicationTracker {
-    private List<Application> applications;
-    
-    public void saveApplication(JobListing job, ApplicationData data) {
-        Application app = new Application(job, data, LocalDateTime.now());
-        applications.add(app);
-        saveToDatabase(app);
-    }
-    
-    public void generateReport() {
-        // Generate application statistics
-    }
-}
-```
+## 🆘 Stuck?
 
-## 💻 Exercises
-
-### Exercise 1: Form Automation
-Automate:
-- Personal info forms
-- Education forms
-- Experience forms
-- File uploads
-
-### Exercise 2: Job Search
-Implement:
-- Keyword search
-- Location filtering
-- Job filtering
-- Results extraction
-
-### Exercise 3: Application Management
-Build:
-- Application tracking
-- Status updates
-- Follow-up reminders
-- Statistics
-
-## 🎮 Project: Job Application Automation
-
-### Requirements
-Create job application bot:
-1. Search for jobs by keywords
-2. Filter jobs by criteria
-3. Fill application forms
-4. Upload resume
-5. Submit applications
-6. Track applications
-7. Generate reports
-
-### Example Output
-```
-Job Application Bot
-
-Searching for: "Java Developer" in "Remote"
-
-Found 25 jobs matching criteria
-
-Applying to jobs...
-✓ Applied to: Senior Java Developer at Tech Corp
-✓ Applied to: Java Backend Engineer at Startup Inc
-✓ Applied to: Full Stack Java Developer at BigTech
-
-Applications submitted: 3
-Success rate: 100%
-
-Application Report:
-- Total applications: 3
-- Pending: 3
-- Interviews: 0
-- Rejected: 0
-```
-
-### Starter Code
-```java
-public class JobApplicationBot {
-    private ApplicationData personalData;
-    private ApplicationTracker tracker;
-    
-    public void start() {
-        personalData = ApplicationData.loadFromFile("data.json");
-        tracker = new ApplicationTracker();
-        
-        // Search for jobs
-        List<JobListing> jobs = searchJobs("Java Developer", "Remote");
-        
-        // Apply to each job
-        for (JobListing job : jobs) {
-            if (shouldApply(job)) {
-                applyToJob(job);
-            }
-        }
-        
-        // Generate report
-        tracker.generateReport();
-    }
-    
-    private void applyToJob(JobListing job) {
-        // Navigate to application page
-        // Fill form
-        // Submit
-        // Track application
-    }
-}
-```
-
-## 📚 Resources
-
-### Official Documentation
-- [Selenium Documentation](https://www.selenium.dev/documentation/)
-- [File Upload - Selenium](https://www.selenium.dev/documentation/webdriver/elements/file_upload/)
-
-### Tutorials
-- [Form Automation](https://www.selenium.dev/documentation/webdriver/elements/)
-- [File Handling](https://www.baeldung.com/java-file-upload)
-
-### Video Resources
-- [Job Application Bot](https://www.youtube.com/results?search_query=job+application+bot+selenium)
-- [Form Automation](https://www.youtube.com/results?search_query=selenium+form+automation)
-
-### Practice Platforms
-- [Automation Projects](https://github.com/karan/Projects#automation)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Form Automation | Fill forms automatically | Personal info, files |
-| File Upload | Upload documents | Resume, cover letter |
-| Job Search | Find opportunities | Keyword, location search |
-| Application Tracking | Monitor applications | Status, statistics |
-| Data Management | Store application data | JSON, database |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **Forms:** Re-read **Step 1** — Selenium (Day 47): find inputs, sendKeys, file upload via sendKeys(path) — see **Step 2**
-- **Job search:** Re-read **Step 2** — navigate to job site; scrape or use API — see **Step 2**
-- **Tracking:** Re-read **Step 3** — store applications in JSON/DB (Day 30/38) — see **Step 3**
-- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
-
-**Related days:** Day 47 (Selenium); Day 38 (DB); Day 30 (JSON). **Quick reference:** Run main class; env for credentials
-
-## 💻 How to Run
-
-**Java + Selenium** — run main class from IDE. Set env for any job-site credentials. Browser will open for form automation.
+- **`ElementNotInteractableException`**: you're typing into a step that's still hidden. Wait for the step to be visible.
+- **The upload does nothing**: send an absolute path, and to the `<input type="file">` itself, not its label.
+- **A skill is ticked that shouldn't be**: checkboxes remember their state. Compare with `isSelected()` first.
 
 ## ✅ Checklist
-- [ ] Can automate forms
-- [ ] Can handle file uploads
-- [ ] Can search jobs
-- [ ] Can track applications
-- [ ] Can generate reports
-- [ ] Completed Job Application Bot
+- [ ] Scored and filtered jobs in plain Java, with tests
+- [ ] Filled a three-step form, checking each step
+- [ ] Uploaded a file and set checkboxes and a dropdown
+- [ ] Kept a ledger so the bot never repeats itself
+- [ ] Finished both exercises, and the tests pass
 - [ ] Committed code to Git
 
-## 🚀 Next Steps
-After completing Day 49, you should be able to:
-- Automate job applications
-- Handle complex forms
-- Manage application data
-- Build automation tools
+## ➡️ Next
 
-**Ready for Day 50?** You'll build an Automated Social Media Bot!
-
-
-
-
-
-
-
+Day 50 schedules posts and replies on a practice social site, with rules that keep a bot polite.

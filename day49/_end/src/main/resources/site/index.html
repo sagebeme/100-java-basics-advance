@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kazi Board · Jobs (practice site)</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+<header><h1>Kazi<span>Board</span></h1><p>Tech jobs in Kenya. A practice site: these companies and jobs are made up.</p></header>
+<main id="jobs" aria-live="polite"></main>
+<script>
+fetch('/jobs.json').then(r => r.json()).then(jobs => {
+    const main = document.getElementById('jobs');
+    for (const j of jobs) {
+        const a = document.createElement('article');
+        a.className = 'job';
+        a.dataset.id = j.id;
+        a.dataset.remote = j.remote;
+        a.innerHTML = `<h2>${j.title}</h2><p class="company">${j.company}</p>
+            <ul class="tags">${j.skills.map(s => `<li>${s}</li>`).join('')}</ul>
+            <p class="meta"><span class="location">${j.location}</span><span>${j.remote ? 'Remote OK' : 'On site'}</span></p>
+            <a class="apply" href="/apply.html?job=${j.id}">Apply</a>`;
+        main.appendChild(a);
+    }
+    main.dataset.ready = 'true';
+});
+</script>
+</body></html>

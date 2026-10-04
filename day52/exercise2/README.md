@@ -1,34 +1,9 @@
-# Exercise 2
+# Day 52 - Exercise 2: Spotting spam accounts
 
-## Objective
-Automation
-Implement:
-- Like posts
-- Follow users
-- Comment on posts
-- Search hashtags
+Following back a spam account helps it look real to everyone else. Write `looksReal(Follower f)` in `src/SpamFilter.java`. An account looks real when it has **at least 3 posts**, **at least 20 followers**, and a username with none of: `free`, `win`, `giveaway`, `promo`, `xx`, or a run of **3 or more digits** (ignoring capitals).
 
-## Requirements
-Automation
-Implement:
-- Like posts
-- Follow users
-- Comment on posts
-- Search hashtags
+Rules like these are never perfect. They're a first filter, and a person should still look at the edge cases.
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+## 📌 Stuck?
 
-## Starter Code
-Check the src/ directory for starter code files.
-
-## 📌 Refer to (when stuck)
-- **Day 52 README** ([day52/README.md](../README.md)) → **Notes & reference** and **Key Concepts Summary**. Use main day README for structure and hints.
-
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+One regular expression with `|` between the alternatives and `Pattern.CASE_INSENSITIVE`; `\d{3,}` is "three or more digits". One answer is in `solution/SpamFilter.java`.

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Picha · Followers (practice site)</title>
+<style>
+:root { --bg: #fffaf5; --ink: #2a1b12; --muted: #8a776a; --brand: #e4405f; --sun: #f9a03f; --line: #f0e2d6; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 1rem/1.5 system-ui, sans-serif; }
+header { padding: 1.2rem 1rem; background: linear-gradient(120deg, var(--sun), var(--brand)); color: white; }
+header h1 { margin: 0; font: italic 800 2rem Georgia, serif; }
+main { width: min(100% - 2rem, 32rem); margin: 1rem auto 3rem; }
+#throttle { padding: .8rem 1rem; border-radius: 12px; background: #2a1b12; color: white; font-weight: 700; }
+ul { list-style: none; padding: 0; display: grid; gap: .5rem; }
+li { display: grid; grid-template-columns: 3rem 1fr auto; gap: .8rem; align-items: center; padding: .7rem; background: white; border: 1px solid var(--line); border-radius: 14px; }
+.avatar { width: 3rem; height: 3rem; border-radius: 50%; background: conic-gradient(var(--sun), var(--brand), var(--sun)); padding: 3px; }
+.avatar span { display: grid; place-items: center; width: 100%; height: 100%; border-radius: 50%; background: white; font-weight: 800; }
+.name { font-weight: 800; margin: 0; } .stats { margin: 0; color: var(--muted); font-size: .85rem; }
+button { padding: .45rem 1rem; border-radius: 10px; border: 0; background: var(--brand); color: white; font-weight: 800; cursor: pointer; }
+button[aria-pressed="true"] { background: #eee; color: var(--ink); }
+</style></head>
+<body>
+<header><h1>picha</h1></header>
+<main>
+<p>A practice photo site. These followers are made up. Follow back at most 3 people in 10 seconds, or the site makes you wait.</p>
+<p id="throttle" role="alert" hidden></p>
+<ul id="followers"></ul>
+</main>
+<script>
+const window_ms = Number(new URLSearchParams(location.search).get('window') || 10000);
+const followers = [
+  ['amina_designs', 214, 830], ['brian.k', 37, 412], ['free_phones_4u', 0, 9], ['wanjiru.codes', 58, 960],
+  ['otieno_photos', 402, 2210], ['xx_win_now_xx', 1, 4], ['kevin_mitumba', 120, 550], ['neema.art', 75, 1300],
+];
+const recent = [];
+let blockedUntil = 0;
+const list = document.getElementById('followers');
+for (const [name, posts, fans] of followers) {
+  const li = document.createElement('li');
+  li.dataset.user = name; li.dataset.posts = posts; li.dataset.followers = fans;
+  li.innerHTML = `<div class="avatar"><span>${name[0].toUpperCase()}</span></div>
+     <div><p class="name">${name}</p><p class="stats">${posts} posts · ${fans} followers</p></div>
+     <button aria-pressed="false">Follow back</button>`;
+  li.querySelector('button').onclick = e => {
+    const now = Date.now();
+    if (now < blockedUntil) return;   // ignored while you're being told to slow down
+    while (recent.length && now - recent[0] > window_ms) recent.shift();
+    if (recent.length >= 3) {
+      blockedUntil = now + window_ms / 2;
+      const t = document.getElementById('throttle');
+      t.hidden = false; t.textContent = 'Slow down! Try again in a few seconds.';
+      setTimeout(() => { t.hidden = true; }, window_ms / 2);
+      return;
+    }
+    recent.push(now);
+    e.target.setAttribute('aria-pressed', 'true');
+    e.target.textContent = 'Following';
+  };
+  list.appendChild(li);
+}
+</script></body></html>

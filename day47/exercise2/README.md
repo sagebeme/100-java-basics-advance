@@ -1,34 +1,15 @@
-# Exercise 2
+# Day 47 - Exercise 2: How a wait works
 
-## Objective
-Dynamic Content
-Handle:
-- Loading waits
-- Dynamic elements
-- AJAX content
-- JavaScript rendering
+`WebDriverWait.until(...)` isn't magic. It checks a condition, sleeps a little, and checks again, until the condition is true or time runs out. Write your own in `src/Waiter.java`:
 
-## Requirements
-Dynamic Content
-Handle:
-- Loading waits
-- Dynamic elements
-- AJAX content
-- JavaScript rendering
+```java
+boolean until(BooleanSupplier condition, Duration timeout, Duration poll)
+```
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+- Check `condition` straight away; if it's `true`, return `true`.
+- Otherwise sleep for `poll` and check again, until `timeout` has passed since you started. Then return `false`.
+- Use the `Clock` and `Sleeper` given to the constructor, never `System.currentTimeMillis()` or `Thread.sleep` directly. That way the tests can use a fake clock and finish instantly.
 
-## Starter Code
-Check the src/ directory for starter code files.
+## 📌 Stuck?
 
-## 📌 Refer to (when stuck)
-- **Day 47 README** ([day47/README.md](../README.md)) → **Notes & reference** and **Key Concepts Summary**. Use main day README for structure and hints.
-
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+`Instant deadline = clock.instant().plus(timeout);` then loop while `clock.instant().isBefore(deadline)`. Check the condition one last time at the deadline. One answer is in `solution/Waiter.java`.

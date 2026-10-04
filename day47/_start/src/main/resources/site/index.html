@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tamasha · What's on in Kenya (practice site)</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <h1>Tamasha</h1>
+        <p>Gigs, festivals and comedy. A practice site for automation: none of these events are real.</p>
+    </header>
+    <main>
+        <form class="search" id="search-form">
+            <label class="visually-hidden" for="q">Search</label>
+            <input id="q" name="q" placeholder="jazz, comedy, gengetone…">
+            <label class="visually-hidden" for="city">City</label>
+            <select id="city" name="city">
+                <option value="">Anywhere</option>
+                <option value="Nairobi">Nairobi</option><option value="Mombasa">Mombasa</option><option value="Kisumu">Kisumu</option>
+            </select>
+            <button id="search" type="submit">Search</button>
+        </form>
+        <p id="status" role="status"></p>
+        <ul class="results" id="results"></ul>
+    </main>
+    <script>
+        const form = document.getElementById('search-form');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const q = document.getElementById('q').value.trim().toLowerCase();
+            const city = document.getElementById('city').value;
+            const results = document.getElementById('results');
+            results.innerHTML = '';
+            document.getElementById('status').textContent = 'Searching…';
+            await new Promise(r => setTimeout(r, 700)); // a slow network, on purpose
+            const events = (await (await fetch('/events.json')).json())
+                .filter(ev => (!q || (ev.title + ' ' + ev.tags).toLowerCase().includes(q)) && (!city || ev.city === city));
+            for (const ev of events) {
+                const d = new Date(ev.date);
+                const li = document.createElement('li');
+                li.className = 'event';
+                li.dataset.id = ev.id;
+                li.innerHTML = `<span class="date">${d.getDate()}<br>${d.toLocaleString('en', {month: 'short'})}</span>
+                    <div><h2 class="title">${ev.title}</h2><p class="venue">${ev.venue}, ${ev.city} · <time datetime="${ev.date}">${ev.date}</time></p>
+                    <a class="register" href="/register.html?id=${ev.id}">Register</a></div>
+                    <span class="price" data-kes="${ev.price}">KES ${ev.price.toLocaleString('en')}</span>`;
+                results.appendChild(li);
+            }
+            document.getElementById('status').textContent = events.length ? `${events.length} events` : 'No events found';
+            results.dataset.ready = 'true';
+        });
+    </script>
+    <style>.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }</style>
+</body>
+</html>

@@ -1,0 +1,7 @@
+[
+  {"id": 101, "title": "Jioni Jazz Night", "city": "Nairobi", "venue": "Uhuru Gardens", "date": "2026-12-12", "price": 1800, "tags": "jazz music"},
+  {"id": 102, "title": "Sunday Jazz Brunch", "city": "Nairobi", "venue": "Karura Forest Glade", "date": "2026-12-06", "price": 1200, "tags": "jazz food"},
+  {"id": 103, "title": "Coast Jazz Festival", "city": "Mombasa", "venue": "Fort Jesus Grounds", "date": "2026-12-19", "price": 2500, "tags": "jazz music festival"},
+  {"id": 104, "title": "Gengetone Block Party", "city": "Nairobi", "venue": "Kasarani Annex", "date": "2026-12-05", "price": 800, "tags": "gengetone music"},
+  {"id": 105, "title": "Comedy Ya Mtaa", "city": "Kisumu", "venue": "Lakeside Hall", "date": "2026-12-11", "price": 600, "tags": "comedy"}
+]

@@ -1,34 +1,17 @@
-# Exercise 1
+# Day 47 - Exercise 1: Locators
 
-## Objective
-Basic Automation
-Automate:
-- Page navigation
-- Form filling
-- Button clicking
-- Text extraction
+A bot is only as good as its **locators**, the selectors it uses to find things on a page. Bad ones break the moment a designer moves a button. In `src/Locators.java`, fill in each constant with a CSS selector for `src/practice.html`. The test checks each one with jsoup, which understands the same selectors as Selenium's `By.cssSelector`:
 
-## Requirements
-Basic Automation
-Automate:
-- Page navigation
-- Form filling
-- Button clicking
-- Text extraction
+| Constant | Must select |
+|---|---|
+| `SEARCH_BOX` | the search input |
+| `ALL_EVENTS` | all three event cards |
+| `BOOKABLE_EVENTS` | only the events that aren't `sold-out` |
+| `EVENT_104_REGISTER` | the Register link inside the event with `data-id="104"` |
+| `PRICES_IN_KES` | every element with a `data-kes` attribute |
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+Prefer ids and meaningful classes or attributes over positions like `li:nth-child(3)`. Positions change; meaning rarely does.
 
-## Starter Code
-Check the src/ directory for starter code files.
+## 📌 Stuck?
 
-## 📌 Refer to (when stuck)
-- **Day 47 README** ([day47/README.md](../README.md)) → **Notes & reference** and **Step-by-Step Instructions**. Use main day README for structure and hints.
-
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+`#q` (id), `li.event` (tag and class), `li.event:not(.sold-out)`, `li[data-id='104'] a.register`, `[data-kes]`. One answer is in `solution/Locators.java`.

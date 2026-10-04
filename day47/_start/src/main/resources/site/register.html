@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Register · Tamasha (practice site)</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header><h1>Tamasha</h1><p id="event-name">Registration</p></header>
+    <main>
+        <section class="card">
+            <form id="register" novalidate>
+                <label for="name">Full name</label>
+                <input id="name" autocomplete="name">
+                <label for="email">Email</label>
+                <input id="email" type="email" autocomplete="email">
+                <label for="tickets">Tickets</label>
+                <input id="tickets" type="number" min="1" max="6" value="1">
+                <label class="check"><input id="terms" type="checkbox"> I agree to the practice terms</label>
+                <button id="submit" type="submit">Get my tickets</button>
+                <div id="errors" role="alert"></div>
+            </form>
+            <div id="confirmation" hidden></div>
+        </section>
+    </main>
+    <script>
+        const id = new URLSearchParams(location.search).get('id');
+        fetch('/events.json').then(r => r.json()).then(list => {
+            const ev = list.find(e => String(e.id) === id);
+            document.getElementById('event-name').textContent = ev ? ev.title : 'Unknown event';
+        });
+        document.getElementById('register').addEventListener('submit', e => {
+            e.preventDefault();
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const tickets = Number(document.getElementById('tickets').value);
+            const errors = [];
+            if (!name) errors.push('Please enter your name.');
+            if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) errors.push('Please enter a valid email address.');
+            if (!(tickets >= 1 && tickets <= 6)) errors.push('Choose 1 to 6 tickets.');
+            if (!document.getElementById('terms').checked) errors.push('Please accept the terms.');
+            document.getElementById('errors').innerHTML = errors.map(m => `<p class="error">${m}</p>`).join('');
+            if (errors.length) return;
+            const initials = name.split(/\s+/).map(w => w[0].toUpperCase()).join('');
+            const code = `TAM-${id}-${tickets}-${initials}`;
+            setTimeout(() => {   // the "server" takes a moment
+                document.getElementById('register').hidden = true;
+                const box = document.getElementById('confirmation');
+                box.hidden = false;
+                box.innerHTML = `You're in! Your code is <code id="code">${code}</code>`;
+            }, 500);
+        });
+    </script>
+</body>
+</html>

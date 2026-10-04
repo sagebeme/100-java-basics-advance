@@ -1,0 +1,9 @@
+/* A vault: dark steel, teal lights. */
+.root { -fx-background-color: #101820; -fx-font-family: "DejaVu Sans", "Segoe UI", sans-serif; }
+.label { -fx-text-fill: #8fb3c4; -fx-font-weight: bold; }
+.text-field, .password-field { -fx-background-color: #1a2733; -fx-text-fill: #e6f1f6; -fx-background-radius: 8; -fx-border-color: #26394a; -fx-border-radius: 8; -fx-padding: 8; }
+.text-field:focused { -fx-border-color: #2ec4b6; }
+.button { -fx-background-color: #2ec4b6; -fx-text-fill: #05201d; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 6 16; -fx-cursor: hand; }
+.list-view { -fx-background-color: #0b1218; -fx-control-inner-background: #0b1218; -fx-border-color: #26394a; }
+.list-cell { -fx-text-fill: #cfe3ec; -fx-background-color: transparent; -fx-padding: 8 12; }
+.list-cell:odd { -fx-background-color: #121c25; }

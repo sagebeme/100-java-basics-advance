@@ -64,6 +64,12 @@ public class FlashCardApp extends Application {
         root.getChildren().addAll(cardBox, addBox, loadButton, saveButton);
         
         Scene scene = new Scene(root, 600, 600);
+        
+        cardLabel.setId("card");
+        
+        java.net.URL css = getClass().getResource("/kadi.css"); // the look lives in kadi.css, next to this file
+        
+        if (css != null) scene.getStylesheets().add(css.toExternalForm());
         stage.setTitle("Flash Card App");
         stage.setScene(scene);
         stage.show();

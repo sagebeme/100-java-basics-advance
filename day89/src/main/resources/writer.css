@@ -1,0 +1,8 @@
+/* A quiet writing desk: warm paper, ink-blue serif, and a countdown that glows red. */
+.root { -fx-background-color: #2b2d42; -fx-padding: 16; -fx-font-family: "DejaVu Serif", Georgia, serif; }
+.text-area { -fx-font-size: 18px; -fx-text-fill: #2b2d42; -fx-highlight-fill: #ffd166; -fx-background-radius: 10; -fx-background-color: #fdf6e3; }
+.text-area .content { -fx-background-color: #fdf6e3; -fx-padding: 18; }
+.label { -fx-text-fill: #edf2f4; -fx-font-size: 14px; }
+#countdown { -fx-text-fill: #ef233c; -fx-font-weight: bold; }
+.button { -fx-background-color: #8d99ae; -fx-text-fill: #2b2d42; -fx-font-weight: bold; -fx-background-radius: 999; -fx-padding: 6 20; }
+.button:hover { -fx-background-color: #edf2f4; }

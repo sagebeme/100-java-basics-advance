@@ -72,26 +72,42 @@ public class SpaceInvadersApp extends Application {
     }
 
     private void render(GraphicsContext gc) {
-        gc.setFill(Color.BLACK);
+        gc.setFill(Color.web("#05040f"));
         gc.fillRect(0, 0, WIDTH, HEIGHT);
+        java.util.Random stars = new java.util.Random(94);        // the same starfield every frame
+        for (int i = 0; i < 90; i++) {
+            gc.setFill(Color.web("#ffffff", 0.25 + stars.nextDouble() * 0.6));
+            double size = stars.nextDouble() < 0.1 ? 2.5 : 1.2;
+            gc.fillOval(stars.nextDouble() * WIDTH, stars.nextDouble() * HEIGHT, size, size);
+        }
+        Color[] waves = {Color.web("#f72585"), Color.web("#b5179e"), Color.web("#7209b7"), Color.web("#4361ee"), Color.web("#4cc9f0")};
 
-        gc.setFill(Color.LIMEGREEN);
+        // invaders: a body, two legs and two eyes, coloured by row
         for (Enemy enemy : game.getEnemies()) {
             if (enemy.isAlive()) {
-                gc.fillRect(enemy.getLeft(), enemy.getTop(), enemy.getWidth(), enemy.getHeight());
+                double x = enemy.getLeft(), y = enemy.getTop(), w = enemy.getWidth(), h = enemy.getHeight();
+                gc.setFill(waves[(int) (y / Math.max(1, h * 1.5)) % waves.length]);
+                gc.fillRoundRect(x, y, w, h * 0.7, 8, 8);
+                gc.fillRect(x + w * 0.1, y + h * 0.6, w * 0.15, h * 0.4);
+                gc.fillRect(x + w * 0.75, y + h * 0.6, w * 0.15, h * 0.4);
+                gc.setFill(Color.web("#05040f"));
+                gc.fillRect(x + w * 0.25, y + h * 0.2, w * 0.15, h * 0.18);
+                gc.fillRect(x + w * 0.6, y + h * 0.2, w * 0.15, h * 0.18);
             }
         }
 
-        gc.setFill(Color.YELLOW);
+        gc.setFill(Color.web("#ffd60a"));
         for (Bullet bullet : game.getPlayerBullets()) {
             gc.fillRect(bullet.getLeft(), bullet.getTop(), SpaceInvadersGame.BULLET_WIDTH, SpaceInvadersGame.BULLET_HEIGHT);
         }
 
-        gc.setFill(Color.DODGERBLUE);
-        gc.fillRect(game.getPlayer().getX(), game.getPlayer().getY(), game.getPlayer().getWidth(), game.getPlayer().getHeight());
+        double px = game.getPlayer().getX(), py = game.getPlayer().getY(), pw = game.getPlayer().getWidth(), ph = game.getPlayer().getHeight();
+        gc.setFill(Color.web("#4cc9f0"));                           // the ship: a body and a nose
+        gc.fillRoundRect(px, py + ph * 0.35, pw, ph * 0.65, 8, 8);
+        gc.fillPolygon(new double[]{px + pw * 0.35, px + pw / 2, px + pw * 0.65}, new double[]{py + ph * 0.4, py, py + ph * 0.4}, 3);
 
         gc.setFill(Color.WHITE);
-        gc.setFont(new Font(16));
+        gc.setFont(javafx.scene.text.Font.font("System", javafx.scene.text.FontWeight.BOLD, 15));
         gc.fillText("Score: " + game.getScore() + "   Wave: " + game.getWave(), 10, 20);
 
         if (game.isGameOver()) {

@@ -43,6 +43,10 @@ public class PasswordManager extends Application {
         root.getChildren().addAll(inputBox, passwordList);
         
         Scene scene = new Scene(root, 600, 400);
+        
+        java.net.URL css = getClass().getResource("/vault.css"); // the look lives in vault.css, next to this file
+        
+        if (css != null) scene.getStylesheets().add(css.toExternalForm());
         stage.setTitle("Password Manager");
         stage.setScene(scene);
         stage.show();

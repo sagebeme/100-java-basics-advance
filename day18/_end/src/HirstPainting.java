@@ -11,13 +11,10 @@ public class HirstPainting extends Application {
     private static final int DOT_SIZE = 20;
     private static final int SPACING = 50;
     private static final Color[] COLORS = {
-        Color.rgb(0, 0, 0),      // Black
-        Color.rgb(255, 0, 0),    // Red
-        Color.rgb(0, 255, 0),    // Green
-        Color.rgb(0, 0, 255),    // Blue
-        Color.rgb(255, 255, 0),  // Yellow
-        Color.rgb(255, 0, 255),  // Magenta
-        Color.rgb(0, 255, 255)   // Cyan
+        // Soft, chalky colours like Damien Hirst's real spot paintings, not pure screen primaries
+        Color.web("#e8b04b"), Color.web("#d8584a"), Color.web("#4a8fbf"), Color.web("#7bb46a"),
+        Color.web("#c0729c"), Color.web("#f2d45c"), Color.web("#3c6e71"), Color.web("#e98a5b"),
+        Color.web("#8d6cab"), Color.web("#9fc8d6"), Color.web("#2d3047"), Color.web("#b5c96a")
     };
     
     @Override
@@ -26,6 +23,8 @@ public class HirstPainting extends Application {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         
         Random random = new Random();
+        gc.setFill(Color.web("#f6f1e7"));   // a primed canvas, not screen white
+        gc.fillRect(0, 0, 800, 800);
         
         // Draw grid of colored circles
         for (int x = SPACING; x < 800 - SPACING; x += SPACING) {

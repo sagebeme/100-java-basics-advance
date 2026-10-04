@@ -29,6 +29,12 @@ public class UnitConverter extends Application {
         root.setStyle("-fx-padding: 20;");
         
         Scene scene = new Scene(root, 300, 200);
+        
+        outputLabel.setId("result");
+        
+        java.net.URL css = getClass().getResource("/barabara.css"); // the look lives in barabara.css, next to this file
+        
+        if (css != null) scene.getStylesheets().add(css.toExternalForm());
         stage.setTitle("Mile to Kilometer Converter");
         stage.setScene(scene);
         stage.show();

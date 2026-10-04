@@ -73,12 +73,22 @@ public class SnakeGame extends Application {
     }
     
     private void draw(GraphicsContext gc) {
-        gc.setFill(Color.BLACK);
-        gc.fillRect(0, 0, WIDTH, HEIGHT);
-        
-        gc.setFill(Color.GREEN);
-        for (int[] segment : snake) {
-            gc.fillRect(segment[0], segment[1], CELL_SIZE, CELL_SIZE);
+        // A board of soft checkered tiles
+        for (int x = 0; x < WIDTH; x += CELL_SIZE) {
+            for (int y = 0; y < HEIGHT; y += CELL_SIZE) {
+                gc.setFill(((x + y) / CELL_SIZE) % 2 == 0 ? Color.web("#1b2a1f") : Color.web("#1f3124"));
+                gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+            }
+        }
+        for (int s = 0; s < snake.size(); s++) {
+            int[] segment = snake.get(s);
+            gc.setFill(s == 0 ? Color.web("#a7e05f") : Color.web("#6cc04a").interpolate(Color.web("#2e7d32"), (double) s / Math.max(1, snake.size())));
+            gc.fillRoundRect(segment[0] + 1, segment[1] + 1, CELL_SIZE - 2, CELL_SIZE - 2, 8, 8);
+            if (s == 0) {                     // eyes on the head
+                gc.setFill(Color.web("#10170f"));
+                gc.fillOval(segment[0] + CELL_SIZE * 0.25, segment[1] + CELL_SIZE * 0.25, CELL_SIZE * 0.18, CELL_SIZE * 0.18);
+                gc.fillOval(segment[0] + CELL_SIZE * 0.6, segment[1] + CELL_SIZE * 0.25, CELL_SIZE * 0.18, CELL_SIZE * 0.18);
+            }
         }
     }
     

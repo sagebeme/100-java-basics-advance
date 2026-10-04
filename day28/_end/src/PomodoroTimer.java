@@ -35,6 +35,12 @@ public class PomodoroTimer extends Application {
         root.setStyle("-fx-padding: 20; -fx-alignment: center;");
         
         Scene scene = new Scene(root, 400, 300);
+        
+        timeLabel.setId("time");
+        
+        java.net.URL css = getClass().getResource("/nyanya.css"); // the look lives in nyanya.css, next to this file
+        
+        if (css != null) scene.getStylesheets().add(css.toExternalForm());
         stage.setTitle("Pomodoro Timer");
         stage.setScene(scene);
         stage.show();

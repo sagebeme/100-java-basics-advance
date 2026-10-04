@@ -1,0 +1,7 @@
+/* A cork board with an index card pinned to it. */
+.root { -fx-background-color: #c69c6d; -fx-font-family: "DejaVu Sans", "Segoe UI", sans-serif; }
+#card { -fx-background-color: white; -fx-background-radius: 6; -fx-border-color: #e63946 transparent transparent transparent; -fx-border-width: 6 0 0 0; -fx-text-fill: #1d3557; -fx-font-size: 22px; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(0,0,0,.35), 16, 0.2, 2, 6); -fx-min-width: 420; -fx-alignment: center; }
+.label { -fx-text-fill: #2b1b0e; -fx-font-weight: bold; }
+.text-field { -fx-background-color: #fffdf6; -fx-background-radius: 6; -fx-padding: 7; }
+.button { -fx-background-color: #f1faee; -fx-text-fill: #1d3557; -fx-font-weight: bold; -fx-background-radius: 999; -fx-padding: 6 16; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(0,0,0,.2), 4, 0, 0, 2); }
+.button:hover { -fx-background-color: #a8dadc; }

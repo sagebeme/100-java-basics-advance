@@ -50,6 +50,10 @@ public class ImprovedPasswordManager extends Application {
         root.getChildren().addAll(inputBox, passwordList);
         
         Scene scene = new Scene(root, 600, 500);
+        
+        java.net.URL css = getClass().getResource("/safe.css"); // the look lives in safe.css, next to this file
+        
+        if (css != null) scene.getStylesheets().add(css.toExternalForm());
         stage.setTitle("Improved Password Manager");
         stage.setScene(scene);
         stage.show();

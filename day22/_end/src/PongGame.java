@@ -87,20 +87,35 @@ public class PongGame extends Application {
     }
     
     private void draw(GraphicsContext gc) {
-        gc.setFill(Color.BLACK);
+        // A night court
+        gc.setFill(Color.web("#0d1b2a"));
         gc.fillRect(0, 0, WIDTH, HEIGHT);
-        
-        // Draw paddles
-        gc.setFill(Color.WHITE);
-        gc.fillRect(10, paddle1Y, 10, 100);
-        gc.fillRect(WIDTH - 20, paddle2Y, 10, 100);
-        
-        // Draw ball
+        gc.setStroke(Color.web("#e0e1dd", 0.25));
+        gc.setLineWidth(4);
+        gc.setLineDashes(18, 16);
+        gc.strokeLine(WIDTH / 2.0, 0, WIDTH / 2.0, HEIGHT);
+        gc.setLineDashes();
+        gc.strokeOval(WIDTH / 2.0 - 60, HEIGHT / 2.0 - 60, 120, 120);
+
+        // Big scores, behind the play
+        gc.setFill(Color.web("#e0e1dd", 0.18));
+        gc.setFont(javafx.scene.text.Font.font("System", javafx.scene.text.FontWeight.BOLD, 96));
+        gc.fillText(String.valueOf(score1), WIDTH / 2.0 - 130, 120);
+        gc.fillText(String.valueOf(score2), WIDTH / 2.0 + 70, 120);
+        gc.setFont(javafx.scene.text.Font.font("System", javafx.scene.text.FontWeight.BOLD, 14));
+        gc.setFill(Color.web("#e0e1dd", 0.7));
+        gc.fillText("Player 1: " + score1, 50, 40);
+        gc.fillText("Player 2: " + score2, WIDTH - 150, 40);
+
+        // Paddles in two team colours, and a glowing ball
+        gc.setFill(Color.web("#ff4d6d"));
+        gc.fillRoundRect(10, paddle1Y, 10, 100, 10, 10);
+        gc.setFill(Color.web("#4cc9f0"));
+        gc.fillRoundRect(WIDTH - 20, paddle2Y, 10, 100, 10, 10);
+        gc.setFill(Color.web("#f9c74f", 0.25));
+        gc.fillOval(ballX - 6, ballY - 6, 32, 32);
+        gc.setFill(Color.web("#f9c74f"));
         gc.fillOval(ballX, ballY, 20, 20);
-        
-        // Draw scores
-        gc.fillText("Player 1: " + score1, 50, 50);
-        gc.fillText("Player 2: " + score2, WIDTH - 150, 50);
     }
     
     public static void main(String[] args) {

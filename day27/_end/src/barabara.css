@@ -1,0 +1,7 @@
+/* A green highway sign: white letters, a yellow button. */
+.root { -fx-background-color: #0b6b3a; -fx-font-family: "DejaVu Sans", "Segoe UI", sans-serif; }
+.label { -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; }
+.text-field { -fx-background-color: white; -fx-background-radius: 8; -fx-border-color: white; -fx-border-width: 3; -fx-border-radius: 8; -fx-font-size: 18px; -fx-padding: 8; }
+.button { -fx-background-color: #ffd23f; -fx-text-fill: #1b1b1b; -fx-font-weight: bold; -fx-font-size: 16px; -fx-background-radius: 8; -fx-padding: 8 20; -fx-cursor: hand; }
+.button:hover { -fx-background-color: #ffe27a; }
+#result { -fx-font-size: 22px; -fx-text-fill: #ffd23f; }

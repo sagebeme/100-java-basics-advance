@@ -51,7 +51,11 @@ public class DisappearingTextApp extends Application {
         root.setCenter(textArea);
         root.setBottom(statusBar);
 
-        stage.setScene(new Scene(root, 500, 400));
+        Scene scene = new Scene(root, 560, 420);
+        java.net.URL css = getClass().getResource("/writer.css"); // calm paper, in src/main/resources
+        if (css != null) scene.getStylesheets().add(css.toExternalForm());
+        countdownLabel.setId("countdown");
+        stage.setScene(scene);
         stage.setTitle("Disappearing Text");
         stage.show();
 

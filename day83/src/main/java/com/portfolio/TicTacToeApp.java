@@ -18,13 +18,14 @@ public class TicTacToeApp extends Application {
     @Override
     public void start(Stage stage) {
         GridPane grid = new GridPane();
+        grid.getStyleClass().add("grid-pane");
         grid.setAlignment(Pos.CENTER);
 
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
                 Button cell = new Button(" ");
                 cell.setMinSize(80, 80);
-                cell.setStyle("-fx-font-size: 28px;");
+                cell.getStyleClass().add("cell");
                 int r = row;
                 int c = col;
                 cell.setOnAction(e -> handleMove(r, c));
@@ -34,10 +35,11 @@ public class TicTacToeApp extends Application {
         }
 
         statusLabel = new Label("Player X's turn");
-        statusLabel.setStyle("-fx-font-size: 16px;");
+        statusLabel.setId("status");
 
         Button resetButton = new Button("Reset");
         resetButton.setOnAction(e -> handleReset());
+        resetButton.setId("reset");
 
         BorderPane root = new BorderPane();
         root.setCenter(grid);
@@ -46,7 +48,10 @@ public class TicTacToeApp extends Application {
         BorderPane.setAlignment(statusLabel, Pos.CENTER);
         BorderPane.setAlignment(resetButton, Pos.CENTER);
 
-        stage.setScene(new Scene(root, 320, 400));
+        Scene scene = new Scene(root, 340, 420);
+        java.net.URL css = getClass().getResource("/tictactoe.css"); // a wooden board, in src/main/resources
+        if (css != null) scene.getStylesheets().add(css.toExternalForm());
+        stage.setScene(scene);
         stage.setTitle("Tic Tac Toe");
         stage.show();
     }

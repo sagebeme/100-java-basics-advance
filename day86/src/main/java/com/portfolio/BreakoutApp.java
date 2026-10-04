@@ -68,23 +68,32 @@ public class BreakoutApp extends Application {
     }
 
     private void render(GraphicsContext gc) {
-        gc.setFill(Color.BLACK);
+        gc.setFill(new javafx.scene.paint.LinearGradient(0, 0, 0, 1, true, javafx.scene.paint.CycleMethod.NO_CYCLE,
+                new javafx.scene.paint.Stop(0, Color.web("#1a1033")), new javafx.scene.paint.Stop(1, Color.web("#0b0618"))));
         gc.fillRect(0, 0, WIDTH, HEIGHT);
+        Color[] rows = {Color.web("#ef476f"), Color.web("#f78c6b"), Color.web("#ffd166"), Color.web("#06d6a0"), Color.web("#118ab2"), Color.web("#9b5de5")};
 
-        gc.setFill(Color.ORANGE);
+        // each row of bricks gets its own kanga colour
         for (Brick brick : game.getBricks()) {
             if (brick.isAlive()) {
-                gc.fillRect(brick.getLeft(), brick.getTop(), brick.getWidth(), brick.getHeight());
+                gc.setFill(rows[(int) (brick.getTop() / Math.max(1, brick.getHeight() + 4)) % rows.length]);
+                gc.fillRoundRect(brick.getLeft() + 1, brick.getTop() + 1, brick.getWidth() - 2, brick.getHeight() - 2, 6, 6);
+                gc.setFill(Color.web("#ffffff", 0.25));
+                gc.fillRect(brick.getLeft() + 3, brick.getTop() + 2, brick.getWidth() - 6, 2);
             }
         }
 
-        gc.setFill(Color.DODGERBLUE);
-        gc.fillRect(game.getPaddle().getX(), game.getPaddle().getY(), game.getPaddle().getWidth(), game.getPaddle().getHeight());
+        gc.setFill(Color.web("#e0e1dd"));
+        gc.fillRoundRect(game.getPaddle().getX(), game.getPaddle().getY(), game.getPaddle().getWidth(), game.getPaddle().getHeight(), 12, 12);
 
-        gc.setFill(Color.WHITE);
-        gc.fillOval(game.getBall().getLeft(), game.getBall().getTop(), game.getBall().getRadius() * 2, game.getBall().getRadius() * 2);
+        double r = game.getBall().getRadius();
+        gc.setFill(Color.web("#ffd166", 0.25));
+        gc.fillOval(game.getBall().getLeft() - r, game.getBall().getTop() - r, r * 4, r * 4);
+        gc.setFill(Color.web("#ffd166"));
+        gc.fillOval(game.getBall().getLeft(), game.getBall().getTop(), r * 2, r * 2);
+        gc.setFill(Color.web("#e0e1dd"));
 
-        gc.setFont(new Font(16));
+        gc.setFont(javafx.scene.text.Font.font("System", javafx.scene.text.FontWeight.BOLD, 15));
         gc.fillText("Score: " + game.getScore() + "   Lives: " + game.getLives() + "   Level: " + game.getLevel(), 10, 20);
 
         if (game.isGameOver()) {

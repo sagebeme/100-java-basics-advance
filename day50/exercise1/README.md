@@ -1,34 +1,9 @@
-# Exercise 1
+# Day 50 - Exercise 1: A rate limiter
 
-## Objective
-Posting Automation
-Automate:
-- Text posts
-- Image posts
-- Scheduled posts
-- Multiple platforms
+Write `tryAcquire()` in `src/RateLimiter.java`: allow at most `max` actions in any window of `per` (say, 5 a minute). Keep the times of recent actions in a queue; drop the ones older than the window; if fewer than `max` remain, record this one and return `true`, otherwise return `false`.
 
-## Requirements
-Posting Automation
-Automate:
-- Text posts
-- Image posts
-- Scheduled posts
-- Multiple platforms
+This "sliding window" is how many real APIs limit you, and how a polite bot limits itself. The tests use a fake clock, so they run instantly.
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+## 📌 Stuck?
 
-## Starter Code
-Check the src/ directory for starter code files.
-
-## 📌 Refer to (when stuck)
-- **Day 50 README** ([day50/README.md](../README.md)) → **Notes & reference** and **Step-by-Step Instructions**. Use main day README for structure and hints.
-
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+`recent.peekFirst()` is the oldest time. It's too old when it isn't after `now.minus(per)`. One answer is in `solution/RateLimiter.java`.

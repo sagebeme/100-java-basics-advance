@@ -1,34 +1,15 @@
-# Exercise 2
+# Day 50 - Exercise 2: Check before you post
 
-## Objective
-Interaction Automation
-Implement:
-- Liking posts
-- Following users
-- Commenting
-- Responding
+Before the bot posts anything, it should check it. Write `problems(String text, String lastPost)` in `src/PostCheck.java`, returning every problem, in this order:
 
-## Requirements
-Interaction Automation
-Implement:
-- Liking posts
-- Following users
-- Commenting
-- Responding
+| Problem | Message |
+|---|---|
+| empty or only spaces | `Nothing to post.` |
+| over 280 characters | `Too long: 281 characters (max 280).` |
+| more than 3 hashtags (words starting with `#`) | `Too many hashtags.` |
+| 10 or more letters and every letter is a capital | `Don't shout.` |
+| the same as `lastPost`, ignoring spaces at the ends and capitals | `You just posted that.` |
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+## 📌 Stuck?
 
-## Starter Code
-Check the src/ directory for starter code files.
-
-## 📌 Refer to (when stuck)
-- **Day 50 README** ([day50/README.md](../README.md)) → **Notes & reference** and **Key Concepts Summary**. Use main day README for structure and hints.
-
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+Count hashtags with `text.split("\\s+")` and `startsWith("#")`. For shouting, keep only the letters (`text.replaceAll("[^\\p{L}]", "")`) and compare with their upper-case version. One answer is in `solution/PostCheck.java`.

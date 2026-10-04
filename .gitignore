@@ -39,3 +39,4 @@ node_modules/
 # Files the Day 49 bot creates when it runs
 applied.csv
 my-cv.txt
+posts.txt

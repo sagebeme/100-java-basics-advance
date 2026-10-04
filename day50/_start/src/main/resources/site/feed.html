@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mtaa · Feed (practice site)</title><link rel="stylesheet" href="/style.css"></head>
+<body><main class="wrap">
+<h1>mtaa<span>.</span></h1>
+<section class="box">
+    <label for="compose">What's happening in your mtaa?</label>
+    <textarea id="compose" rows="3"></textarea>
+    <span class="counter" id="counter">280</span>
+    <button id="post" type="button">Post</button>
+</section>
+<ul id="feed"></ul>
+<button id="more" type="button">Load more</button>
+</main>
+<script>
+if (sessionStorage.getItem('user') !== 'demo') location.href = '/';
+const all = [
+  ['amina', 'Mandazi still warm at the Kangemi stage, come through ☕'],
+  ['brian', 'Who is watching the Harambee Stars match tonight?'],
+  ['spam_king', 'CLICK HERE to win a phone!!!'],
+  ['wanjiru', 'Just shipped my first Java project with tests. Day 50!'],
+  ['otieno', 'Matatu traffic on Waiyaki Way is wild this morning'],
+  ['amina', 'New kitenge designs drop on Friday'],
+  ['kevin', 'Selling mitumba jackets, DM me'],
+  ['wanjiru', 'Selenium waits finally make sense to me'],
+  ['brian', 'Football practice moved to Saturday 9am'],
+];
+let shown = 0, next = 1000;
+const feed = document.getElementById('feed');
+function add([author, text], atTop) {
+    const li = document.createElement('li');
+    li.className = 'post';
+    li.dataset.id = 'p' + (atTop ? next++ : shown + 1);
+    li.innerHTML = `<span class="author">${author}</span><p class="text"></p><button class="like" aria-pressed="false">♥ Like</button>`;
+    li.querySelector('.text').textContent = text;
+    li.querySelector('.like').onclick = b => { const p = b.target.getAttribute('aria-pressed') === 'true'; b.target.setAttribute('aria-pressed', String(!p)); };
+    atTop ? feed.prepend(li) : feed.appendChild(li);
+}
+function loadMore() {
+    const btn = document.getElementById('more');
+    btn.disabled = true;
+    setTimeout(() => {   // the next batch comes over a slow network
+        for (const p of all.slice(shown, shown + 4)) { add(p, false); shown++; }
+        btn.disabled = shown >= all.length;
+        btn.textContent = shown >= all.length ? 'No more posts' : 'Load more';
+        feed.dataset.count = feed.children.length;
+    }, 400);
+}
+document.getElementById('more').onclick = loadMore;
+const compose = document.getElementById('compose');
+compose.oninput = () => {
+    const left = 280 - compose.value.length;
+    const c = document.getElementById('counter');
+    c.textContent = left; c.className = left < 0 ? 'counter over' : 'counter';
+    document.getElementById('post').disabled = left < 0 || !compose.value.trim();
+};
+document.getElementById('post').onclick = () => {
+    if (!compose.value.trim() || compose.value.length > 280) return;
+    add(['demo', compose.value.trim()], true);
+    compose.value = ''; compose.oninput();
+    feed.dataset.count = feed.children.length;
+};
+loadMore();
+</script></body></html>

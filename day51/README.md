@@ -1,254 +1,75 @@
-# Day 51 - Internet Speed Twitter Bot
+# Day 51 - Kasi Check: An Internet Speed Bot
 
-## 📚 Learning Objectives
-- Measure internet speed programmatically
-- Integrate with speed test APIs
-- Automate Twitter posting
-- Handle API rate limits
-- Build automated monitoring tools
+> You pay for 20 Mbps. Is that what you get? Measure it properly, keep a record, and complain with evidence.
 
-## 🎯 Topics Covered
-- Internet speed testing
-- Twitter API integration
-- Automated posting
-- Data formatting
-- Scheduling tasks
-- Error handling
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Brian's home internet feels slow every evening, and the provider's help desk always says "it looks fine on our side". Today's bot runs a speed test three times, takes the **median** download speed, compares it with the plan, and if it's under 70%, opens a help-desk ticket with all the numbers:
 
-### Step 1: Speed Test Integration
-Measure internet speed:
+```
+$ mvn -q compile exec:java
+Median download: 6.2 Mbps on a 20 Mbps plan.
+Under 70% of the plan. Opened ticket KC-517-271:
+My plan is 20 Mbps, but I measured a median download speed of 6.2 Mbps (31% of the plan) over 3 tests:
+  test 1: 6.2 Mbps down, 1.6 Mbps up, 18 ms ping
+  test 2: 7.8 Mbps down, 1.9 Mbps up, 21 ms ping
+  test 3: 5.9 Mbps down, 1.5 Mbps up, 24 ms ping
+Please check my line.
+```
+
+The speed test and the help desk are **practice pages** with simulated results (`?profile=slow`, `typical` or `fast`). Run `mvn -q compile exec:java -Dexec.args=fast` to see a line that's fine.
+
+## 🎯 Learning Objectives
+- Wait for a long-running task in a page, ignoring the animation along the way
+- Read final results from data attributes
+- Use the median to make a fair judgement from noisy measurements
+- Write a clear, evidence-based message from data
+- Log every measurement to a CSV file
+
+## 🧰 What you'll use
+
+**Waiting for a finish line.** The dial's number moves for two seconds. Reading it then is a random snapshot. Wait for a clear signal instead:
 
 ```java
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.URI;
-
-public class SpeedTest {
-    public SpeedResult testSpeed() {
-        long startTime = System.currentTimeMillis();
-        
-        // Download test file
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create("https://example.com/test-file"))
-            .GET()
-            .build();
-        
-        try {
-            HttpResponse<String> response = client.send(request,
-                HttpResponse.BodyHandlers.ofString());
-            long endTime = System.currentTimeMillis();
-            
-            long duration = endTime - startTime;
-            double speedMbps = calculateSpeed(response.body().length(), duration);
-            
-            return new SpeedResult(speedMbps, duration);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-    
-    private double calculateSpeed(long bytes, long milliseconds) {
-        double seconds = milliseconds / 1000.0;
-        double bits = bytes * 8;
-        return (bits / seconds) / 1_000_000; // Convert to Mbps
-    }
-}
+new WebDriverWait(driver, Duration.ofSeconds(15))
+        .until(d -> "done".equals(results.getDomAttribute("data-state")));
 ```
 
-### Step 2: Twitter API Setup
-Set up Twitter API:
+**The median**: sort the numbers and take the middle one. One test that ran while someone was streaming can't drag the median down the way it drags an average down.
 
-```java
-public class TwitterBot {
-    private String bearerToken;
-    
-    public void postTweet(String text) {
-        String url = "https://api.twitter.com/2/tweets";
-        
-        String jsonBody = String.format("{\"text\":\"%s\"}", 
-            text.replace("\"", "\\\""));
-        
-        HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(url))
-            .header("Authorization", "Bearer " + bearerToken)
-            .header("Content-Type", "application/json")
-            .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
-            .build();
-        
-        // Send request and handle response
-    }
-}
+## 🪜 Steps
+
+1. **Exercise 1: Middle values** (`exercise1/`). Median and trimmed mean.
+2. **Exercise 2: Bits and bytes** (`exercise2/`). Why 20 Mbps isn't 20 MB a second.
+3. **Project: Kasi Check** (`_start/`, a Maven project).
+   1. `Verdict.median` and `shouldComplain`.
+   2. `SpeedTestPage.runOnce`: click, wait for the finish, read the data attributes.
+   3. Run it for all three profiles.
+
+## 🧪 Run it and test it
+
+From `day51/_end` (or `_start`), with Maven and Chrome:
+
+```bash
+mvn test
+mvn -q compile exec:java                     # the slow line
+mvn -q compile exec:java -Dexec.args=fast    # a line that's fine
 ```
 
-### Step 3: Format Speed Tweet
-Create tweet message:
+## 🆘 Stuck?
 
-```java
-public String formatSpeedTweet(SpeedResult result) {
-    return String.format(
-        "Internet Speed Test Results:\n" +
-        "Download: %.2f Mbps\n" +
-        "Upload: %.2f Mbps\n" +
-        "Ping: %d ms\n" +
-        "Time: %s",
-        result.getDownloadSpeed(),
-        result.getUploadSpeed(),
-        result.getPing(),
-        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
-    );
-}
-```
-
-### Step 4: Scheduled Testing
-Automate speed tests:
-
-```java
-public class SpeedMonitor {
-    private SpeedTest speedTest;
-    private TwitterBot twitterBot;
-    
-    public void startMonitoring(int intervalHours) {
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        
-        scheduler.scheduleAtFixedRate(() -> {
-            SpeedResult result = speedTest.testSpeed();
-            if (result != null) {
-                String tweet = formatSpeedTweet(result);
-                twitterBot.postTweet(tweet);
-            }
-        }, 0, intervalHours, TimeUnit.HOURS);
-    }
-}
-```
-
-## 💻 Exercises
-
-### Exercise 1: Speed Testing
-Implement:
-- Download speed test
-- Upload speed test
-- Ping measurement
-- Result formatting
-
-### Exercise 2: Twitter Integration
-Practice with:
-- Posting tweets
-- Formatting messages
-- Handling errors
-- Rate limiting
-
-### Exercise 3: Automation
-Build:
-- Scheduled tests
-- Automatic posting
-- Error recovery
-- Logging
-
-## 🎮 Project: Internet Speed Twitter Bot
-
-### Requirements
-Create automated speed test bot:
-1. Test internet speed periodically
-2. Format results nicely
-3. Post to Twitter automatically
-4. Handle API errors
-5. Schedule regular tests
-6. Log results
-
-### Example Output
-```
-Internet Speed Test Results:
-Download: 45.23 Mbps
-Upload: 12.45 Mbps
-Ping: 15 ms
-Time: 2024-12-01 14:30
-
-Posted to Twitter successfully!
-```
-
-### Starter Code
-```java
-public class InternetSpeedBot {
-    public static void main(String[] args) {
-        SpeedTest speedTest = new SpeedTest();
-        TwitterBot twitterBot = new TwitterBot();
-        
-        // Test speed
-        SpeedResult result = speedTest.testSpeed();
-        
-        // Format and post
-        String tweet = formatTweet(result);
-        twitterBot.postTweet(tweet);
-    }
-}
-```
-
-## 📚 Resources
-
-### Official Documentation
-- [Twitter API v2](https://developer.twitter.com/en/docs/twitter-api)
-- [Speed Test APIs](https://www.speedtest.net/api)
-
-### Tutorials
-- [Twitter API Java](https://developer.twitter.com/en/docs)
-- [Internet Speed Testing](https://www.geeksforgeeks.org/)
-
-### Video Resources
-- [Twitter Bot Tutorial](https://www.youtube.com/results?search_query=twitter+bot+java)
-- [Speed Test Automation](https://www.youtube.com/results?search_query=internet+speed+test+java)
-
-### Practice Platforms
-- [Twitter Developer](https://developer.twitter.com/)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Speed Testing | Measure internet speed | Download/upload tests |
-| Twitter API | Social media API | Post tweets |
-| Automation | Scheduled tasks | Regular speed tests |
-| Data Formatting | Format results | Create tweet messages |
-| Rate Limiting | API limits | Handle 429 errors |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **Speed test:** Re-read **Step 1** — use speedtest API or library; measure download/upload — see **Step 2**
-- **Twitter:** Re-read **Step 2** — OAuth/API (Day 33/50 style); format tweet; post — see **Step 2**
-- **Scheduling:** Re-read **Step 3** — run at interval (Day 46 style) — see **Step 3**
-- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
-
-**Related days:** Day 33 (HTTP); Day 50 (Twitter/social); Day 35 (env). **Quick reference:** Env for Twitter keys; run main class from IDE
-
-## 💻 How to Run
-
-**Java + Twitter API** — set env vars for Twitter API keys/tokens. Run main class from IDE or: `mvn compile exec:java -Dexec.mainClass="YourMainClass"`.
+- **Results are a random number between 0 and the real speed**: you read the dial during the animation. Wait for `data-state="done"`.
+- **The second run reads the first run's result**: wait until GO is enabled again as well.
+- **`1.9` instead of `2.0`**: JavaScript's `toFixed` rounds binary fractions, so 1.95 can show as 1.9. Test against what the page really shows.
 
 ## ✅ Checklist
-- [ ] Can test internet speed
-- [ ] Can use Twitter API
-- [ ] Can format tweets
-- [ ] Can schedule tasks
-- [ ] Can handle errors
-- [ ] Completed Speed Twitter Bot
+- [ ] Waited for a long task to finish, not a fixed time
+- [ ] Judged with the median of several runs
+- [ ] Opened a ticket with the evidence
+- [ ] Logged every result
+- [ ] Finished both exercises, and the tests pass
 - [ ] Committed code to Git
 
-## 🚀 Next Steps
-After completing Day 51, you should be able to:
-- Measure internet speed
-- Integrate with Twitter
-- Automate social media
-- Build monitoring tools
+## ➡️ Next
 
-**Ready for Day 52?** You'll build an Instagram Automation Bot!
-
-
-
-
-
-
+Day 52 automates follow-backs on a practice photo site, and learns how to back off when the site says "slow down".

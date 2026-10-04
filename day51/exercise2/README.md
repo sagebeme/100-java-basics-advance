@@ -1,34 +1,15 @@
-# Exercise 2
+# Day 51 - Exercise 2: Bits and bytes
 
-## Objective
-Twitter Integration
-Practice with:
-- Posting tweets
-- Formatting messages
-- Handling errors
-- Rate limiting
+Internet plans are sold in **megabits** per second (Mbps), but files are measured in **bytes**, and one byte is 8 bits. Mixing them up is why a "20 Mbps" line downloads a 100 MB file in about 40 seconds, not 5. Write three methods in `src/Units.java`:
 
-## Requirements
-Twitter Integration
-Practice with:
-- Posting tweets
-- Formatting messages
-- Handling errors
-- Rate limiting
+| Method | Example |
+|---|---|
+| `mbps(long bytes, long millis)` | `2_500_000` bytes in `1000` ms → `20.0` Mbps |
+| `secondsToDownload(double megabytes, double mbps)` | `100` MB at `20` Mbps → `40.0` |
+| `describe(double mbps)` | below 5: `"slow"`; below 25: `"fine for HD video"`; otherwise `"fast"` |
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+Use 1 megabit = 1,000,000 bits, as internet providers do.
 
-## Starter Code
-Check the src/ directory for starter code files.
+## 📌 Stuck?
 
-## 📌 Refer to (when stuck)
-- **Day 51 README** ([day51/README.md](../README.md)) → **Notes & reference** and **Key Concepts Summary**. Use main day README for structure and hints.
-
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+Bits per second = bytes × 8 ÷ seconds. One answer is in `solution/Units.java`.

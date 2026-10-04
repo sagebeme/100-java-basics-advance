@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kasi · Help desk (practice site)</title><link rel="stylesheet" href="/style.css"></head>
+<body><main>
+<h1>KASI<span>.</span> help</h1>
+<p>Report a problem with your connection. A practice form: nothing is sent anywhere.</p>
+<form id="ticket-form">
+  <label for="account">Account number</label><input id="account">
+  <label for="topic">Topic</label>
+  <select id="topic"><option value="">Choose…</option><option value="speed">Slow speeds</option><option value="outage">No connection</option><option value="billing">Billing</option></select>
+  <label for="details">Details</label><textarea id="details" rows="7"></textarea>
+  <button class="send" id="send" type="submit">Open a ticket</button>
+  <p id="error" role="alert"></p>
+</form>
+<div id="ticket" hidden></div>
+</main>
+<script>
+document.getElementById('ticket-form').onsubmit = e => {
+  e.preventDefault();
+  const acc = document.getElementById('account').value.trim();
+  const topic = document.getElementById('topic').value;
+  const details = document.getElementById('details').value.trim();
+  if (!/^\d{6}$/.test(acc) || !topic || details.length < 40) {
+    document.getElementById('error').textContent = 'Enter a 6-digit account number, a topic and at least 40 characters of detail.';
+    return;
+  }
+  document.getElementById('ticket-form').hidden = true;
+  const t = document.getElementById('ticket');
+  t.hidden = false;
+  t.innerHTML = `Ticket <span id="ticket-number">KC-${acc.slice(-3)}-${details.length}</span> opened. We'll reply within 48 hours.`;
+};
+</script></body></html>

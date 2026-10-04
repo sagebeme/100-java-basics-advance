@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kasi · Speed test (practice site)</title><link rel="stylesheet" href="/style.css"></head>
+<body><main>
+<h1>KASI<span>.</span></h1>
+<p>A practice speed test. It pretends to measure your connection; the numbers are simulated.</p>
+<div class="dial" id="dial"><output id="live">0</output><small>Mbps</small></div>
+<button id="go" type="button">GO</button>
+<dl class="results" id="results">
+  <div><dt>Download</dt><dd id="down">–</dd></div>
+  <div><dt>Upload</dt><dd id="up">–</dd></div>
+  <div><dt>Ping</dt><dd id="ping">–</dd></div>
+</dl>
+</main>
+<script>
+// ?profile=slow or ?profile=fast gives predictable results for practice; otherwise a typical home line.
+const profile = new URLSearchParams(location.search).get('profile') || 'typical';
+const base = { slow: [6.2, 7.8, 5.9, 7.1], fast: [21.5, 23.0, 22.4, 24.1], typical: [14.3, 18.9, 12.6, 16.2] }[profile];
+let run = 0;
+document.getElementById('go').onclick = () => {
+    const go = document.getElementById('go');
+    go.disabled = true;
+    document.getElementById('results').dataset.state = 'running';
+    const target = base[run % base.length];
+    let t = 0;
+    const timer = setInterval(() => {
+        t += 0.1;
+        const v = Math.min(target, target * t / 1.5 + Math.sin(t * 9) * 0.6);
+        document.getElementById('live').textContent = v.toFixed(1);
+        document.getElementById('dial').style.setProperty('--p', Math.min(100, v / 30 * 100));
+        if (t >= 1.8) {
+            clearInterval(timer);
+            document.getElementById('live').textContent = target.toFixed(1);
+            document.getElementById('down').textContent = target.toFixed(1);
+            document.getElementById('up').textContent = (target / 4).toFixed(1);
+            document.getElementById('ping').textContent = String(18 + run * 3);
+            const r = document.getElementById('results');
+            r.dataset.down = target; r.dataset.up = (target / 4).toFixed(1); r.dataset.ping = 18 + run * 3;
+            r.dataset.state = 'done';
+            run++;
+            go.disabled = false;
+        }
+    }, 100);
+};
+</script></body></html>

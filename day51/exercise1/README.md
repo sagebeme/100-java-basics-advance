@@ -1,34 +1,14 @@
-# Exercise 1
+# Day 51 - Exercise 1: Middle values
 
-## Objective
-Speed Testing
-Implement:
-- Download speed test
-- Upload speed test
-- Ping measurement
-- Result formatting
+One slow test can mean the router was busy. Write two methods in `src/Stats.java`:
 
-## Requirements
-Speed Testing
-Implement:
-- Download speed test
-- Upload speed test
-- Ping measurement
-- Result formatting
+| Method | Example |
+|---|---|
+| `median(List<Double> values)` | `[6.2, 30.0, 7.1]` → `7.1`; `[6.2, 7.1, 30.0, 6.0]` → `6.65`; empty → `IllegalArgumentException` |
+| `trimmedMean(List<Double> values)` | the average after removing the single lowest and highest value: `[5, 6, 7, 30]` → `6.5`. With fewer than 3 values, the plain average. |
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+Neither may change the list it's given.
 
-## Starter Code
-Check the src/ directory for starter code files.
+## 📌 Stuck?
 
-## 📌 Refer to (when stuck)
-- **Day 51 README** ([day51/README.md](../README.md)) → **Notes & reference** and **Step-by-Step Instructions**. Use main day README for structure and hints.
-
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+`values.stream().sorted().toList()` gives a sorted copy. One answer is in `solution/Stats.java`.

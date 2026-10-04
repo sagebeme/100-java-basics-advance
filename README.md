@@ -128,7 +128,7 @@ What the course actually uses, and from when:
 - [Day 76](day76): Collections and Data Structures
 - [Day 77](day77): Algorithms and Data Structures
 - [Day 78](day78): Advanced Algorithms
-- [Day 79](day79): Testing and Quality Assurance
+- [Day 79](day79): Testing and Quality Assurance (unit, integration and end-to-end tests with Selenium)
 - [Day 80](day80): Capstone Project - Predict House Prices
 
 ### 👨‍💻 Professional (Days 81-100)
@@ -270,7 +270,7 @@ mvn spring-boot:run
 
 Then open `http://localhost:8080`. Stop it with Ctrl+C.
 
-**Which days have tests today:** the main project's solution (`_end/`) on every day from 1 to 53 except 18; every exercise on Days 1–14 and 32–53, and most exercises from 15 to 31; and every day from 54 to 100, each with its own `mvn test` suite. On Days 47–53, the browser tests need Google Chrome, and skip themselves (rather than fail) if it isn't installed. See `LEARNING_PATH.md` for the few things that are intentionally untested and why.
+**Which days have tests today:** the main project's solution (`_end/`) on every day from 1 to 53 except 18; every exercise on Days 1–14 and 32–53, and most exercises from 15 to 31; and every day from 54 to 100, each with its own `mvn test` suite. On Days 47–53 and in Day 79's end-to-end tests (`day79/e2e`), the browser tests need Google Chrome, and skip themselves (rather than fail) if it isn't installed. See `LEARNING_PATH.md` for the few things that are intentionally untested and why.
 
 ## 🚀 Getting Started
 

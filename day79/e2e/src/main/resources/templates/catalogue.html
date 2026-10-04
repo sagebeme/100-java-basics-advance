@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Maktaba · Borrow a book</title>
+    <link rel="stylesheet" href="../static/css/maktaba.css" th:href="@{/css/maktaba.css}">
+</head>
+<body>
+<header><a href="/"><h1>Maktaba</h1></a><p>The community library, Kibera</p></header>
+<main>
+    <ul class="shelf" id="shelf">
+        <li class="book" th:each="book : ${books}" th:attr="data-id=${book.id}">
+            <h2 th:text="${book.title}">Title</h2>
+            <p class="author" th:text="${book.author}">Author</p>
+            <span class="copies" th:classappend="${book.available} ? '' : 'none'"
+                  th:text="${book.available} ? ${book.copiesLeft} + ' on the shelf' : 'All out on loan'">2 on the shelf</span><br>
+            <a class="button borrow" th:if="${book.available}" th:href="@{/borrow/{id}(id=${book.id})}">Borrow</a>
+            <span class="unavailable" th:unless="${book.available}">Check back soon</span>
+        </li>
+    </ul>
+</main>
+</body>
+</html>

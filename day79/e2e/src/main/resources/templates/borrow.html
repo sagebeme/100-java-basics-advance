@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Maktaba · Borrow</title>
+    <link rel="stylesheet" href="../static/css/maktaba.css" th:href="@{/css/maktaba.css}">
+</head>
+<body>
+<header><a href="/"><h1>Maktaba</h1></a><p>The community library, Kibera</p></header>
+<main>
+    <h2>Borrow <em id="book-title" th:text="${book.title}">Title</em></h2>
+    <p class="problem" id="problem" th:if="${problem}" th:text="${problem}" role="alert">No copies</p>
+    <form method="post" th:action="@{/borrow/{id}(id=${book.id})}" th:object="${form}" novalidate>
+        <label for="memberNumber">Library card number</label>
+        <input id="memberNumber" th:field="*{memberNumber}" placeholder="M-1234" autocomplete="off">
+        <p class="error" th:if="${#fields.hasErrors('memberNumber')}" th:errors="*{memberNumber}">Card error</p>
+        <label for="days">For how long?</label>
+        <select id="days" th:field="*{days}">
+            <option value="7">1 week</option>
+            <option value="14">2 weeks</option>
+            <option value="21">3 weeks</option>
+        </select>
+        <p class="error" th:if="${#fields.hasErrors('days')}" th:errors="*{days}">Days error</p>
+        <button id="confirm" type="submit">Borrow this book</button>
+    </form>
+</main>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rent survey (practice form)</title>
+<style>
+:root { --bg: #eef1f8; --ink: #1f2440; --brand: #4f46e5; --line: #d7dbea; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 1rem/1.5 system-ui, sans-serif; }
+main { width: min(100% - 2rem, 36rem); margin: 0 auto; padding: 1.5rem 0 3rem; display: grid; gap: 1rem; }
+.top { height: 10px; background: var(--brand); border-radius: 10px 10px 0 0; }
+.card { padding: 1.2rem 1.4rem; background: white; border: 1px solid var(--line); border-radius: 10px; display: grid; gap: .4rem; }
+h1 { margin: 0; } label { font-weight: 600; margin-top: .4rem; }
+input, select { padding: .6rem; border: 0; border-bottom: 2px solid var(--line); font: inherit; }
+input:focus, select:focus { outline: none; border-color: var(--brand); }
+button { justify-self: start; padding: .6rem 1.4rem; border: 0; border-radius: 6px; background: var(--brand); color: white; font-weight: 700; cursor: pointer; }
+.error { color: #c0262d; font-weight: 600; }
+table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+th, td { padding: .4rem; border-bottom: 1px solid var(--line); text-align: left; }
+#thanks { color: var(--brand); font-weight: 700; }
+</style></head>
+<body><main>
+<div><div class="top"></div>
+<form class="card" id="survey">
+  <h1>Nairobi rent survey</h1>
+  <p>One response per house. A practice form: responses stay in this page.</p>
+  <label for="area">Area</label><input id="area">
+  <label for="bedrooms">Bedrooms</label>
+  <select id="bedrooms"><option value="">Choose…</option><option value="0">Bedsitter / studio</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4 or more</option></select>
+  <label for="rent">Monthly rent (KES)</label><input id="rent" inputmode="numeric">
+  <button id="submit" type="submit">Submit</button>
+  <p id="error" class="error" role="alert"></p>
+  <p id="thanks" aria-live="polite"></p>
+</form></div>
+<section class="card"><h2>Responses</h2>
+<table><thead><tr><th>Area</th><th>Bedrooms</th><th>Rent</th></tr></thead><tbody id="responses"></tbody></table></section>
+</main>
+<script>
+document.getElementById('survey').onsubmit = e => {
+  e.preventDefault();
+  const area = document.getElementById('area').value.trim();
+  const bedrooms = document.getElementById('bedrooms').value;
+  const rent = document.getElementById('rent').value.trim();
+  const err = document.getElementById('error');
+  if (!area || bedrooms === '' || !/^\d{4,7}$/.test(rent)) { err.textContent = 'Fill in every field. Rent is a whole number of shillings.'; return; }
+  err.textContent = '';
+  setTimeout(() => {   // a pretend server
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td></td><td>${bedrooms}</td><td>${rent}</td>`;
+    tr.firstChild.textContent = area;
+    document.getElementById('responses').appendChild(tr);
+    document.getElementById('responses').dataset.count = document.getElementById('responses').children.length;
+    document.getElementById('survey').reset();
+    document.getElementById('thanks').textContent = 'Response recorded.';
+  }, 250);
+};
+</script></body></html>

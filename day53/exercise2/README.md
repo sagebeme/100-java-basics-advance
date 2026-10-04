@@ -1,34 +1,12 @@
-# Exercise 2
+# Day 53 - Exercise 2: CSV that survives a round trip
 
-## Objective
-Form Automation
-Automate:
-- Text inputs
-- Dropdowns
-- Checkboxes
-- File uploads
+Data-entry jobs often end with "and send me a spreadsheet". Write two methods in `src/Csv.java`:
 
-## Requirements
-Form Automation
-Automate:
-- Text inputs
-- Dropdowns
-- Checkboxes
-- File uploads
+- `line(List<String> fields)`: one CSV line. A field containing a comma, a quote or a line break is wrapped in quotes, with quotes inside doubled.
+- `parse(String line)`: the fields of one line, undoing exactly that.
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+The test writes awkward values like `2BR, 3rd floor` and `"Mama" Njeri` and checks that `parse(line(x))` gives `x` back.
 
-## Starter Code
-Check the src/ directory for starter code files.
+## 📌 Stuck?
 
-## 📌 Refer to (when stuck)
-- **Day 53 README** ([day53/README.md](../README.md)) → **Notes & reference** and **Key Concepts Summary**. Use main day README for structure and hints.
-
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+For `parse`, walk the characters with a `boolean inQuotes`. Inside quotes, `""` means one `"`; outside, a comma ends the field. One answer is in `solution/Csv.java`.

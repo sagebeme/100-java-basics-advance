@@ -1,34 +1,11 @@
-# Exercise 1
+# Day 53 - Exercise 1: Cleaning listings
 
-## Objective
-Data Loading
-Load data from:
-- CSV files
-- JSON files
-- Databases
-- Excel files
+Write the three methods in `src/Cleaner.java` (`Rental` is given):
 
-## Requirements
-Data Loading
-Load data from:
-- CSV files
-- JSON files
-- Databases
-- Excel files
+- `rent(text)`: the first number, ignoring commas, or empty: `"KES 65,000 / month"` → `65000`.
+- `bedrooms(title)`: `"2BR"`, `"3 bedroom"` and `"1 Bed"` give the number; `"Bedsitter"` and `"Studio"` give `0`; anything else is empty.
+- `clean(raw)`: one `Rental` per row (area trimmed) that has both, without duplicates, in the original order.
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+## 📌 Stuck?
 
-## Starter Code
-Check the src/ directory for starter code files.
-
-## 📌 Refer to (when stuck)
-- **Day 53 README** ([day53/README.md](../README.md)) → **Notes & reference** and **Step-by-Step Instructions**. Use main day README for structure and hints.
-
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+Records compare by their values, so a `LinkedHashSet<Rental>` removes duplicates and keeps the order. A regular expression `(\d+)\s*(?:br|bed|bedroom)` with `CASE_INSENSITIVE` finds a bedroom count. One answer is in `solution/Cleaner.java`.

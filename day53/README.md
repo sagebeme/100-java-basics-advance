@@ -1,300 +1,65 @@
-# Day 53 - Automated Data Entry
+# Day 53 - Nyumba Data Entry: Scrape, Clean, Type, Check
 
-## 📚 Learning Objectives
-- Automate data entry tasks
-- Work with forms and databases
-- Use Selenium for form filling
-- Handle data validation
-- Build data entry automation
+> "Copy these listings into our survey form." It's the classic data-entry job. Do it with a bot, and make the bot check its own work.
 
-## 🎯 Topics Covered
-- Form automation
-- Data processing
-- Database integration
-- Validation
-- Error handling
-- Batch processing
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+A housing researcher wants Nairobi rents in her survey form, one response per house. The listings are on a website, written by landlords in every style: `KES 65,000 / month`, `Ksh 12,500`, `Bedsitter near TRM`, `Call for price`. Some appear twice. Today's bot does the whole job:
 
-### Step 1: Data Source
-Load data to enter:
-
-```java
-public class DataLoader {
-    public List<EntryData> loadFromCSV(String filename) {
-        List<EntryData> entries = new ArrayList<>();
-        
-        try {
-            File file = new File(filename);
-            Scanner scanner = new Scanner(file);
-            
-            // Skip header
-            if (scanner.hasNextLine()) {
-                scanner.nextLine();
-            }
-            
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                String[] values = line.split(",");
-                
-                EntryData entry = new EntryData(
-                    values[0], // name
-                    values[1], // email
-                    values[2], // phone
-                    values[3]  // address
-                );
-                entries.add(entry);
-            }
-            scanner.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        
-        return entries;
-    }
-}
+```
+$ mvn -q compile exec:java
+Scraped 8 listings; 6 clean rows after removing duplicates and gaps.
+Entered and checked 6 responses. Saved rentals.csv too.
 ```
 
-### Step 2: Form Automation
-Fill forms automatically:
+Both the listings page (*Nyumba Listings*) and the survey form are practice pages that run on your computer.
 
-```java
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+This is the last automation day. You've driven browsers, waited, retried, backed off and checked results. Day 54 starts building the *other* side, the web apps that bots and people use.
 
-public class FormFiller {
-    private WebDriver driver;
-    
-    public void fillForm(EntryData data) {
-        // Navigate to form
-        driver.get("https://example.com/form");
-        
-        // Fill fields
-        driver.findElement(By.id("name")).sendKeys(data.getName());
-        driver.findElement(By.id("email")).sendKeys(data.getEmail());
-        driver.findElement(By.id("phone")).sendKeys(data.getPhone());
-        driver.findElement(By.id("address")).sendKeys(data.getAddress());
-        
-        // Submit
-        driver.findElement(By.id("submit")).click();
-    }
-}
+## 🎯 Learning Objectives
+- Combine two tools: jsoup for static pages, Selenium for interactive ones
+- Clean messy data into records, and remove duplicates
+- Enter data one row at a time, waiting for each to be saved
+- Verify the result by reading it back
+- Write CSV that handles commas and quotes
+
+## 🧰 What you'll use
+
+**Pick the lightest tool.** If a page works without JavaScript, fetching it with `HttpClient` and parsing it with jsoup is ten times faster than a browser. Use Selenium only where you must.
+
+**Records and sets.** Records compare by their values, so a `LinkedHashSet<Rental>` removes exact duplicates and keeps the order.
+
+**Check your work.** After entering everything, read back what the site recorded and compare it with your list. A bot that types into the void without checking will happily get every row wrong.
+
+## 🪜 Steps
+
+1. **Exercise 1: Cleaning listings** (`exercise1/`).
+2. **Exercise 2: CSV that survives a round trip** (`exercise2/`).
+3. **Project: Nyumba Data Entry** (`_start/`, a Maven project): `Cleaner.clean`, `SurveyForm.submit` and `DataEntryBot.enterAll`.
+
+## 🧪 Run it and test it
+
+From `day53/_end` (or `_start`), with Maven and Chrome:
+
+```bash
+mvn test
+mvn -q compile exec:java -Dexec.args=--watch
 ```
 
-### Step 3: Data Validation
-Validate before entry:
+## 🆘 Stuck?
 
-```java
-public class DataValidator {
-    public boolean validate(EntryData data) {
-        // Validate email
-        if (!isValidEmail(data.getEmail())) {
-            return false;
-        }
-        
-        // Validate phone
-        if (!isValidPhone(data.getPhone())) {
-            return false;
-        }
-        
-        // Check required fields
-        if (data.getName().isEmpty()) {
-            return false;
-        }
-        
-        return true;
-    }
-    
-    private boolean isValidEmail(String email) {
-        return email.matches("^[A-Za-z0-9+_.-]+@(.+)$");
-    }
-    
-    private boolean isValidPhone(String phone) {
-        return phone.matches("^\\+?[1-9]\\d{1,14}$");
-    }
-}
-```
-
-### Step 4: Batch Processing
-Process multiple entries:
-
-```java
-public class DataEntryBot {
-    public void processEntries(List<EntryData> entries) {
-        int success = 0;
-        int failed = 0;
-        
-        for (EntryData entry : entries) {
-            if (validator.validate(entry)) {
-                try {
-                    formFiller.fillForm(entry);
-                    success++;
-                    
-                    // Log success
-                    logEntry(entry, "SUCCESS");
-                    
-                    // Rate limiting
-                    Thread.sleep(2000);
-                } catch (Exception e) {
-                    failed++;
-                    logEntry(entry, "FAILED: " + e.getMessage());
-                }
-            } else {
-                failed++;
-                logEntry(entry, "VALIDATION FAILED");
-            }
-        }
-        
-        System.out.println("Processed: " + entries.size());
-        System.out.println("Success: " + success);
-        System.out.println("Failed: " + failed);
-    }
-}
-```
-
-## 💻 Exercises
-
-### Exercise 1: Data Loading
-Load data from:
-- CSV files
-- JSON files
-- Databases
-- Excel files
-
-### Exercise 2: Form Automation
-Automate:
-- Text inputs
-- Dropdowns
-- Checkboxes
-- File uploads
-
-### Exercise 3: Validation
-Implement:
-- Email validation
-- Phone validation
-- Required fields
-- Format checking
-
-## 🎮 Project: Automated Data Entry System
-
-### Requirements
-Create data entry automation:
-1. Load data from CSV/JSON
-2. Validate data
-3. Fill forms automatically
-4. Handle errors
-5. Log results
-6. Generate reports
-
-### Example Output
-```
-Data Entry Bot
-
-Loading data from entries.csv...
-Found 100 entries
-
-Validating data...
-✓ 95 entries valid
-✗ 5 entries invalid
-
-Processing entries...
-Entry 1/95: ✓ Success
-Entry 2/95: ✓ Success
-Entry 3/95: ✗ Failed: Invalid email
-
-Summary:
-- Total: 100
-- Valid: 95
-- Processed: 95
-- Success: 90
-- Failed: 5
-```
-
-### Starter Code
-```java
-public class DataEntryBot {
-    public static void main(String[] args) {
-        DataLoader loader = new DataLoader();
-        DataValidator validator = new DataValidator();
-        FormFiller filler = new FormFiller();
-        
-        // Load data
-        List<EntryData> entries = loader.loadFromCSV("entries.csv");
-        
-        // Process
-        for (EntryData entry : entries) {
-            if (validator.validate(entry)) {
-                filler.fillForm(entry);
-            }
-        }
-    }
-}
-```
-
-## 📚 Resources
-
-### Official Documentation
-- [Selenium Documentation](https://www.selenium.dev/documentation/)
-- [CSV Processing](https://www.baeldung.com/java-csv)
-
-### Tutorials
-- [Form Automation](https://www.selenium.dev/documentation/webdriver/elements/)
-- [Data Validation](https://www.baeldung.com/java-validation)
-
-### Video Resources
-- [Data Entry Automation](https://www.youtube.com/results?search_query=data+entry+automation+java)
-- [Selenium Form Filling](https://www.youtube.com/results?search_query=selenium+form+filling)
-
-### Practice Platforms
-- [Automation Projects](https://github.com/karan/Projects#automation)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Data Loading | Read from sources | CSV, JSON, database |
-| Form Automation | Fill forms | Selenium WebDriver |
-| Validation | Check data | Email, phone, format |
-| Batch Processing | Process multiple | Loop through entries |
-| Error Handling | Handle failures | Try-catch, logging |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **Load data:** Re-read **Step 1** — CSV (Day 25) or JSON (Day 30); DataLoader class — see **Starter Code**
-- **Validation:** Re-read **Step 2** — validate email, phone, required fields — see **Step 2**
-- **Forms:** Re-read **Step 3** — Selenium (Day 47) to fill inputs; submit — see **Step 3**
-- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
-
-**Related days:** Day 25 (CSV); Day 47 (Selenium); Day 30 (JSON). **Quick reference:** Run main class; env for credentials; browser opens
-
-## 💻 How to Run
-
-**Java + Selenium + CSV** — run main class from IDE. Ensure entries CSV path is correct; browser will open for form filling.
+- **Rows go missing**: you typed the next row before the last one was saved. Wait until the response count goes up.
+- **`2BR` isn't recognised**: make the pattern case-insensitive and allow no space: `(\d+)\s*(?:br|bed|bedroom)`.
+- **The final check fails on areas**: trim spaces when cleaning, because the form trims them too.
 
 ## ✅ Checklist
-- [ ] Can load data from files
-- [ ] Can validate data
-- [ ] Can automate forms
-- [ ] Can handle errors
-- [ ] Can generate reports
-- [ ] Completed Data Entry Bot
+- [ ] Scraped a static page with jsoup
+- [ ] Cleaned and de-duplicated the data
+- [ ] Entered each row and waited for it to save
+- [ ] Read the results back and compared them
+- [ ] Finished both exercises, and the tests pass
 - [ ] Committed code to Git
 
-## 🚀 Next Steps
-After completing Day 53, you should be able to:
-- Automate data entry
-- Process batch data
-- Validate information
-- Build automation tools
+## ➡️ Next
 
-**Ready for Day 54?** You'll learn Spring Boot (already exists, but we'll continue with 55-58)!
-
-
-
-
-
-
+Day 54 introduces Spring Boot: your first web application in Java.

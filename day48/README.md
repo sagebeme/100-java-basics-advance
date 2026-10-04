@@ -1,248 +1,86 @@
-# Day 48 - Game Playing Bot
+# Day 48 - Chapati Clicker Bot: A Game-Playing Bot
 
-## 📚 Learning Objectives
-- Build game automation bots
-- Implement game logic
-- Handle game interactions
-- Create winning strategies
-- Build interactive bots
+> A bot that only clicks is a machine. A bot that decides what to buy is a strategy. Write both, and prove which strategy wins before you run it.
 
-## 🎯 Topics Covered
-- Game automation
-- Strategy implementation
-- Pattern recognition
-- Decision making
-- Game state tracking
-- Bot optimization
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+*Chapati Clicker* is a little practice game: click the chapati to cook one, then spend chapatis on upgrades (an extra pan, a helper, a bigger jiko, a second stall) that cook for you every second. Each upgrade costs 15% more than the last one. Today's bot plays it:
 
-### Step 1: Game Analysis
-Understand game mechanics:
+```
+$ mvn -q compile exec:java
+In 41.2 seconds: 12 upgrades bought, 1188 chapatis in the pan, 47 a second.
+```
+
+Clicking is the easy part. The interesting question is **what to buy**: the cheapest thing? The biggest? The bot uses **payback time**, cost ÷ income, which is how long an upgrade takes to earn its price back, and sometimes it decides to save up instead.
+
+The game is a practice page that runs on your computer, like Day 47's site. Botting real online games usually breaks their rules and spoils them for other players.
+
+## 🎯 Learning Objectives
+- Read live state from a page that keeps changing
+- Handle `StaleElementReferenceException` when the page redraws an element you're holding
+- Turn a goal into a strategy: payback time and "save up or buy now"
+- Simulate a strategy in plain Java before running it in a browser
+- Keep the strategy separate from the clicking, and test each one
+
+## 🧰 What you'll use
+
+**Stale elements.** A `WebElement` points at one exact element. If the page replaces it (and this game redraws ten times a second), using your old reference throws `StaleElementReferenceException`. The fix is to find it again:
 
 ```java
-public class GameAnalyzer {
-    public void analyzeGame(String gameUrl) {
-        // Identify game elements
-        // Understand game rules
-        // Map game state
-        // Plan strategy
+static <T> T retrying(Supplier<T> read) {
+    for (int attempt = 1; ; attempt++) {
+        try { return read.get(); }
+        catch (StaleElementReferenceException e) { if (attempt == 3) throw e; }
     }
 }
+long chapatis = retrying(() -> Long.parseLong(driver.findElement(By.id("count")).getText()));
 ```
 
-### Step 2: Game State Tracking
-Track game progress:
+**Payback time**: an upgrade costing 100 that earns 5 a second pays for itself in 20 seconds. Lower is better.
 
-```java
-public class GameState {
-    private int score;
-    private int level;
-    private boolean gameOver;
-    private List<String> actions;
-    
-    public void updateState(WebDriver driver) {
-        // Extract current game state
-        score = extractScore(driver);
-        level = extractLevel(driver);
-        gameOver = checkGameOver(driver);
-    }
-}
+**Data attributes** make pages easy for bots *and* tests to read: each upgrade button carries `data-cost`, `data-rate` and `data-owned`.
+
+## 🪜 Steps
+
+1. **Exercise 1: Rising prices** (`exercise1/`). The 15% rule, and the cost of buying several.
+2. **Exercise 2: Which strategy wins?** (`exercise2/`). Simulate ten minutes of play without a browser.
+3. **Project: Chapati Clicker Bot** (`_start/`, a Maven project).
+   1. `Strategy.bestBuy`: the affordable upgrade with the shortest payback.
+   2. `Strategy.shouldSaveFor`: is waiting for a better deal quicker than buying now?
+   3. `ClickerBot.play`: click in bursts, and after each burst buy until the strategy says stop.
+   4. Watch it with `--watch`.
+
+## 🧪 Run it and test it
+
+From `day48/_end` (or `_start`), with Maven and Chrome installed:
+
+```bash
+mvn test
+mvn -q compile exec:java
+mvn -q compile exec:java -Dexec.args=--watch
 ```
 
-### Step 3: Strategy Implementation
-Implement game strategy:
+The exercises are plain Java. From the repo root (on Windows, use `;` instead of `:`):
 
-```java
-public class GameStrategy {
-    public String decideNextMove(GameState state) {
-        // Analyze current state
-        // Calculate best move
-        // Return action
-    }
-    
-    public void playGame(WebDriver driver) {
-        while (!isGameOver()) {
-            GameState state = getCurrentState(driver);
-            String action = decideNextMove(state);
-            performAction(driver, action);
-            waitForUpdate();
-        }
-    }
-}
+```bash
+javac -cp "lib/*" -d day48/exercise2/src day48/exercise2/src/*.java
+java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp "day48/exercise2/src:lib/*" --scan-classpath
 ```
 
-### Step 4: Action Execution
-Perform game actions:
+## 🆘 Stuck?
 
-```java
-public class GameBot {
-    public void performAction(WebDriver driver, String action) {
-        switch (action) {
-            case "click":
-                clickElement(driver, action);
-                break;
-            case "key":
-                sendKey(driver, action);
-                break;
-            case "wait":
-                waitForCondition(driver);
-                break;
-        }
-    }
-}
-```
-
-## 💻 Exercises
-
-### Exercise 1: Simple Games
-Automate:
-- Click-based games
-- Keyboard games
-- Puzzle games
-- Arcade games
-
-### Exercise 2: Strategy Games
-Implement:
-- Decision trees
-- Scoring algorithms
-- Pattern matching
-- Optimization
-
-### Exercise 3: Advanced Bots
-Build:
-- Learning algorithms
-- Adaptive strategies
-- Performance tracking
-- Multi-game support
-
-## 🎮 Project: Cookie Clicker Bot
-
-### Requirements
-Create Cookie Clicker automation:
-1. Automate cookie clicking
-2. Buy upgrades automatically
-3. Optimize strategy
-4. Track performance
-5. Handle game updates
-
-### Example Output
-```
-Cookie Clicker Bot
-
-Starting automation...
-Cookies: 0
-Clicking cookies...
-Cookies: 1000
-Buying upgrade: Cursor
-Cookies: 500
-Clicking cookies...
-Cookies: 2000
-
-Score: 2,000 cookies
-Upgrades purchased: 1
-```
-
-### Starter Code
-```java
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-
-public class CookieClickerBot {
-    private WebDriver driver;
-    
-    public void start() {
-        driver = new ChromeDriver();
-        driver.get("https://orteil.dashnet.org/cookieclicker/");
-        
-        // Wait for game to load
-        waitForGame();
-        
-        // Start clicking
-        while (true) {
-            clickCookie();
-            checkUpgrades();
-            Thread.sleep(100);
-        }
-    }
-    
-    private void clickCookie() {
-        WebElement cookie = driver.findElement(By.id("bigCookie"));
-        cookie.click();
-    }
-    
-    private void checkUpgrades() {
-        // Check if affordable upgrades available
-        // Buy if possible
-    }
-}
-```
-
-## 📚 Resources
-
-### Official Documentation
-- [Selenium Documentation](https://www.selenium.dev/documentation/)
-- [Game Automation](https://www.selenium.dev/documentation/webdriver/)
-
-### Tutorials
-- [Game Bot Tutorial](https://www.geeksforgeeks.org/)
-- [Automation Strategies](https://www.baeldung.com/)
-
-### Video Resources
-- [Game Bot Tutorial](https://www.youtube.com/results?search_query=game+bot+selenium)
-- [Automation Projects](https://www.youtube.com/results?search_query=selenium+automation+projects)
-
-### Practice Platforms
-- [Cookie Clicker](https://orteil.dashnet.org/cookieclicker/)
-- [Game Automation](https://github.com/karan/Projects#games)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Game Automation | Automate gameplay | Click, type, wait |
-| Strategy | Decision making | Best move algorithm |
-| State Tracking | Monitor game | Score, level, status |
-| Optimization | Improve performance | Better strategies |
-| Pattern Recognition | Identify patterns | Game patterns |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **Automation:** Re-read **Step 1** — use Selenium (Day 47) to click/type; locate game elements — see **Step 2**
-- **Strategy:** Re-read **Step 2** — read game state from DOM; decide next action — see **Step 2**
-- **Timing:** Use waits and small delays; avoid rate limits — see **Step 3**
-- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
-
-**Related days:** Day 47 (Selenium); Day 46 (scheduling). **Quick reference:** Run main class; browser runs in foreground
-
-## 💻 How to Run
-
-**Java + Selenium** — run main class from IDE. Browser will open; bot interacts with the game page.
+- **`StaleElementReferenceException`**: find the element again rather than keeping it in a field. `GamePage.retrying` shows the pattern.
+- **The bot never buys anything**: it may be saving up forever. `shouldSaveFor` must return `false` when there's no income.
+- **The bot is slow**: every `findElement` is a round trip to Chrome. Read the shop once per burst, not once per click.
 
 ## ✅ Checklist
-- [ ] Can analyze games
-- [ ] Can implement strategies
-- [ ] Can track game state
-- [ ] Can automate actions
-- [ ] Can optimize bots
-- [ ] Completed Game Bot
+- [ ] Read changing state from a live page
+- [ ] Handled stale elements
+- [ ] Wrote and tested a payback-time strategy
+- [ ] Simulated two strategies and compared them
+- [ ] Finished both exercises, and the tests pass
 - [ ] Committed code to Git
 
-## 🚀 Next Steps
-After completing Day 48, you should be able to:
-- Build game automation
-- Implement strategies
-- Create interactive bots
-- Optimize performance
+## ➡️ Next
 
-**Ready for Day 49?** You'll build an Automated Job Application Bot!
-
-
-
-
-
-
-
+Day 49 automates a job application, on a practice jobs board: filter listings by your skills, then fill in multi-step forms.

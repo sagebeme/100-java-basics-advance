@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chapati Clicker (practice game)</title>
+    <style>
+        :root { --dough: #f6d7a7; --crust: #c27c2c; --char: #6b3a10; --bg: #fff4e0; --ink: #3a2410; --green: #2e8b57; }
+        * { box-sizing: border-box; }
+        body { margin: 0; min-height: 100vh; background: repeating-linear-gradient(45deg, var(--bg) 0 24px, #fdebcf 24px 48px); color: var(--ink); font: 1rem/1.4 "Trebuchet MS", system-ui, sans-serif; display: grid; place-items: center; }
+        .game { width: min(100% - 2rem, 44rem); display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start; }
+        @media (max-width: 40rem) { .game { grid-template-columns: 1fr; } }
+        h1 { grid-column: 1 / -1; margin: 1rem 0 0; text-align: center; font-size: 2.4rem; }
+        .stage { text-align: center; }
+        #chapati { width: 14rem; height: 14rem; border-radius: 50%; border: 0; cursor: pointer;
+            background: radial-gradient(circle at 40% 35%, rgba(255,255,255,.45), transparent 30%),
+                        radial-gradient(circle at 30% 60%, var(--char) 0 4%, transparent 5%),
+                        radial-gradient(circle at 65% 40%, var(--char) 0 3%, transparent 4%),
+                        radial-gradient(circle at 60% 72%, var(--crust) 0 6%, transparent 7%),
+                        radial-gradient(circle, var(--dough) 55%, var(--crust) 70%, var(--char) 72%);
+            box-shadow: 0 16px 30px -10px rgba(58,36,16,.5); transition: transform .06s; }
+        #chapati:active { transform: scale(.95) rotate(-6deg); }
+        .score { font-size: 2.6rem; font-weight: 900; margin: .6rem 0 0; }
+        .rate { color: var(--crust); font-weight: 700; margin: 0; }
+        .shop { display: grid; gap: .6rem; padding: 1rem; background: white; border: 3px solid var(--ink); border-radius: 18px; box-shadow: 6px 6px 0 var(--ink); }
+        .shop h2 { margin: 0; }
+        .upgrade { display: grid; grid-template-columns: 1fr auto; gap: .2rem .8rem; align-items: center; width: 100%; padding: .7rem .9rem; border: 2px solid var(--ink); border-radius: 12px; background: var(--bg); font: inherit; text-align: left; cursor: pointer; }
+        .upgrade:disabled { opacity: .45; cursor: not-allowed; }
+        .upgrade strong { font-size: 1.05rem; }
+        .upgrade .cost { font-weight: 900; color: var(--green); }
+        .upgrade small { grid-column: 1 / -1; color: #7a5a3a; }
+    </style>
+</head>
+<body>
+    <main class="game">
+        <h1>Chapati Clicker</h1>
+        <section class="stage">
+            <button id="chapati" aria-label="Cook a chapati"></button>
+            <p class="score"><span id="count">0</span> chapatis</p>
+            <p class="rate"><span id="rate">0</span> per second</p>
+        </section>
+        <section class="shop">
+            <h2>Upgrades</h2>
+            <div id="upgrades"></div>
+        </section>
+    </main>
+    <script>
+        const upgrades = [
+            { id: 'pan', name: 'Extra pan', base: 15, rate: 1, note: '+1 chapati a second' },
+            { id: 'helper', name: 'Helper', base: 100, rate: 5, note: '+5 a second' },
+            { id: 'jiko', name: 'Big jiko', base: 600, rate: 24, note: '+24 a second' },
+            { id: 'stall', name: 'Second stall', base: 3000, rate: 100, note: '+100 a second' },
+        ];
+        const owned = Object.fromEntries(upgrades.map(u => [u.id, 0]));
+        let count = 0;
+        const cost = u => Math.round(u.base * Math.pow(1.15, owned[u.id]));
+        const rate = () => upgrades.reduce((s, u) => s + u.rate * owned[u.id], 0);
+        const box = document.getElementById('upgrades');
+        for (const u of upgrades) {   // build the buttons once; render() only updates them
+            const b = document.createElement('button');
+            b.className = 'upgrade';
+            b.id = 'buy-' + u.id;
+            b.dataset.rate = u.rate;
+            b.onclick = () => { if (count >= cost(u)) { count -= cost(u); owned[u.id]++; render(); } };
+            box.appendChild(b);
+        }
+        function render() {
+            document.getElementById('count').textContent = Math.floor(count);
+            document.getElementById('rate').textContent = rate();
+            for (const u of upgrades) {
+                const b = document.getElementById('buy-' + u.id);
+                b.dataset.cost = cost(u);
+                b.dataset.owned = owned[u.id];
+                b.disabled = count < cost(u);
+                b.innerHTML = `<strong>${u.name} ×${owned[u.id]}</strong><span class="cost">${cost(u)}</span><small>${u.note}</small>`;
+            }
+        }
+        document.getElementById('chapati').onclick = () => { count += 1; render(); };
+        setInterval(() => { count += rate() / 10; render(); }, 100);
+        render();
+    </script>
+</body>
+</html>

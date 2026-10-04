@@ -1,34 +1,12 @@
-# Exercise 1
+# Day 48 - Exercise 1: Rising prices
 
-## Objective
-Simple Games
-Automate:
-- Click-based games
-- Keyboard games
-- Puzzle games
-- Arcade games
+In clicker games, every upgrade you buy makes the next one dearer, usually by 15%. Write two methods in `src/Pricing.java`:
 
-## Requirements
-Simple Games
-Automate:
-- Click-based games
-- Keyboard games
-- Puzzle games
-- Arcade games
+| Method | Example (base 15) |
+|---|---|
+| `costAfter(base, owned)` | the price when you already own `owned`: `round(base × 1.15^owned)`. `costAfter(15, 0)` is `15`, `costAfter(15, 1)` is `17`, `costAfter(15, 10)` is `61` |
+| `totalCost(base, owned, more)` | the price of buying `more` in a row: `totalCost(15, 0, 3)` is `15 + 17 + 20 = 52` |
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+## 📌 Stuck?
 
-## Starter Code
-Check the src/ directory for starter code files.
-
-## 📌 Refer to (when stuck)
-- **Day 48 README** ([day48/README.md](../README.md)) → **Notes & reference** and **Step-by-Step Instructions**. Use main day README for structure and hints.
-
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+`Math.pow(1.15, owned)` and `Math.round(...)`. For `totalCost`, add up `costAfter(base, owned + i)` for each `i`. One answer is in `solution/Pricing.java`.

@@ -1,34 +1,14 @@
-# Exercise 2
+# Day 48 - Exercise 2: Which strategy wins?
 
-## Objective
-Strategy Games
-Implement:
-- Decision trees
-- Scoring algorithms
-- Pattern matching
-- Optimization
+Before letting a bot loose, simulate it. `src/Simulator.java` plays a simplified Chapati Clicker second by second: each second you earn your clicks plus your income, then the strategy buys what it wants. Write `simulate(boolean smart, int seconds, int clicksPerSecond)`, returning the **total** chapatis earned:
 
-## Requirements
-Strategy Games
-Implement:
-- Decision trees
-- Scoring algorithms
-- Pattern matching
-- Optimization
+- **naive**: keep buying the *cheapest* affordable upgrade
+- **smart**: keep buying the affordable upgrade with the shortest payback (cost ÷ income)
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+Upgrades: pan (base 15, +1/s), helper (base 100, +5/s), jiko (base 600, +24/s), stall (base 3000, +100/s). Each costs 15% more for every one you own (Exercise 1's rule).
 
-## Starter Code
-Check the src/ directory for starter code files.
+The test checks that over 10 minutes at 5 clicks a second, the smart strategy earns more. Run it with different numbers and see how big the gap is.
 
-## 📌 Refer to (when stuck)
-- **Day 48 README** ([day48/README.md](../README.md)) → **Notes & reference** and **Key Concepts Summary**. Use main day README for structure and hints.
+## 📌 Stuck?
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+Keep `owned` in an `int[4]`. Each second: add the earnings to both `total` and `wallet`, then loop "pick an affordable upgrade, pay, own one more" until nothing's affordable. One answer is in `solution/Simulator.java`.

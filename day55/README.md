@@ -219,6 +219,8 @@ public class TodoController {
 | Path Variable | URL parameter | `@PathVariable Long id` |
 | Request Body | JSON payload | `@RequestBody User user` |
 
+**HTTP methods and status codes, from `1xx` to `5xx`:** [the reference page](https://github.com/sagebeme/100-Days-of-TypeScript/blob/main/reference/http.md) (from the 100 Days of TypeScript course; HTTP works the same in every language).
+
 ## 📌 Notes & reference (use these when stuck)
 
 **When you're stuck:**

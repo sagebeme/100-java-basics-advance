@@ -149,6 +149,8 @@ Paste an access token into any JWT decoder to see that the payload is readable. 
 
 **One Spring detail:** Spring accepts a token during its `exp` second itself, and by default allows 60 more seconds for servers whose clocks disagree. `JwtConfig` turns that allowance off, because Tikiti is a single server.
 
+**HTTP methods and status codes, from `1xx` to `5xx`:** [the reference page](https://github.com/sagebeme/100-Days-of-TypeScript/blob/main/reference/http.md) (from the 100 Days of TypeScript course; HTTP works the same in every language).
+
 ## 📌 Notes & reference (use these when stuck)
 
 **When you're stuck:** Re-read **Step-by-Step Instructions** above; use main README for structure. **Quick reference:** `mvn spring-boot:run` or run from IDE.

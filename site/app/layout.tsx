@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Abril_Fatface, Caveat, Montserrat, Open_Sans, Pacifico, Source_Code_Pro } from "next/font/google";
-import "highlight.js/styles/monokai-sublime.css";
 import "./globals.css";
 import { ToTop } from "@/components/ToTop";
 

@@ -6,12 +6,14 @@ import { githubUrl } from "./course";
 const escape = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
 
 // The day's own title is shown in the page header, and its checklist in the sidebar, so neither is
-// repeated in the body.
+// repeated in the body. Headings lose their leading emoji ("## 📚 Learning Objectives"): on the site
+// the letterpress type does that job, and the READMEs keep theirs for GitHub.
 export function lessonBody(md: string): string {
   return md
     .replace(/\r\n/g, "\n")
     .replace(/^# .*\n/, "")
-    .replace(/^## ✅ Checklist\n[\s\S]*?(?=^## |(?![\s\S]))/m, "");
+    .replace(/^## ✅ Checklist\n[\s\S]*?(?=^## |(?![\s\S]))/m, "")
+    .replace(/^(#{2,6} )(?:[\p{Extended_Pictographic}\u{1F1E6}-\u{1F1FF}\u200d\ufe0f]+\s*)+/gmu, "$1");
 }
 
 // A link in a README is relative to its day folder. Another day becomes that day's page on this

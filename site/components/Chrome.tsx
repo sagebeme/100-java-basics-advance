@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { REPO } from "@/lib/course";
 
-// The navbar, the Fork-me ribbon and the footer: the same on every page.
+// The navbar and the footer: the same on every page.
 export function Navbar({ current }: { current?: "path" | "syllabus" }) {
   return (
     <>
@@ -16,10 +16,10 @@ export function Navbar({ current }: { current?: "path" | "syllabus" }) {
             <li><Link href="/#demo">Why Java</Link></li>
             <li><Link href="/#path" aria-current={current === "path" ? "page" : undefined}>The path</Link></li>
             <li className="keep"><Link href="/syllabus/" aria-current={current === "syllabus" ? "page" : undefined}>Syllabus</Link></li>
+            <li><a href={REPO}>GitHub</a></li>
           </ul>
         </div>
       </nav>
-      <div className="ribbon"><a href={REPO}>Fork me on GitHub</a></div>
     </>
   );
 }

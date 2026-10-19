@@ -1,16 +1,17 @@
-/* 100 Days of Java: the site's look. (The same 2014 design system as the 100 Days of TypeScript site.)
-   Deliberately 2014: the Flat UI palette, Montserrat headings, a Pacifico logo, chunky "embossed"
-   buttons, long shadows, striped progress bars and a Fork-me ribbon. Modern where it matters:
+/* 100 Days of Java: the site's look. A coffee house: a dark-roast sign, a loyalty card, a chalkboard
+   menu and a receipt. Complementary palette: roast browns and cream for 90% of the page, Java orange
+   as the one accent (buttons, "up next"), and a grayed Java blue for links only. The last block,
+   "The house style", sets the type and tone over the base rules. Modern where it matters:
    AA contrast, visible focus, reduced motion, dark mode, and it works on a phone. */
 
 :root {
   color-scheme: light;
-  --bg: #ecf0f1;             /* "clouds" */
-  --surface: #ffffff;
-  --surface-2: #f4f6f7;
-  --ink: #2c3e50;            /* "midnight blue" */
-  --muted: #5d6d7e;
-  --line: #d5dbdf;
+  --bg: #f1eadf;             /* steamed milk: every neutral leans toward the roast */
+  --surface: #fbf8f2;
+  --surface-2: #f2ebe0;
+  --ink: #2b1d14;            /* dark roast, 15:1 on --bg */
+  --muted: #6a5646;          /* 6.0:1 on --bg */
+  --line: #ddd0bd;
   --nav: #2b1d14;            /* dark roast: the Java site's own chrome */
   --nav-ink: #f3e9dc;
   --brand: #c25400;          /* Java orange, deep enough for white text */
@@ -21,13 +22,13 @@
   --coffee-dark: #4a3324;
   --sun: #f1c40f;            /* "sunflower" */
   --sun-dark: #c29d0b;
-  --link: #1f6fb2;
+  --link: #2c4d66;           /* Java blue, the cool complement to the orange; 8:1 on --bg */
   --focus: #e67e22;
   --code-bg: #272822;        /* Monokai, as in Sublime Text 2 */
   --code-ink: #f8f8f2;
   --shadow: 0 2px 0 rgba(0, 0, 0, 0.06), 0 10px 30px rgba(44, 62, 80, 0.08);
-  /* One colour per stage: the deeper Flat UI shades, so white text on them passes AA. */
-  --p1: #117a65; --p2: #2471a3; --p3: #7d3c98; --p4: #b03a2e; --p5: #6f4e37;
+  /* One colour per stage, light roast to dark: the course gets stronger as you go. White text passes AA on all five. */
+  --p1: #9a5a22; --p2: #80461b; --p3: #6a3a19; --p4: #55301a; --p5: #3f2617;
   --head: var(--font-montserrat), "Helvetica Neue", Arial, sans-serif;
   --body: var(--font-open-sans), "Helvetica Neue", Arial, sans-serif;
   --logo: var(--font-pacifico), "Brush Script MT", cursive;
@@ -42,9 +43,9 @@
   :root {
     color-scheme: dark;
     --bg: #17110d; --surface: #221913; --surface-2: #2b2019; --ink: #f1e9df; --muted: #c2b3a3; --line: #3d2d22; /* coffee, not slate */
-    --nav: #1a110b; --link: #7fc4ff; --focus: #f5b041;
+    --nav: #1a110b; --link: #9cc3e0; --focus: #f5b041;
     --shadow: 0 2px 0 rgba(0, 0, 0, 0.25), 0 10px 30px rgba(0, 0, 0, 0.3);
-    --p5: #8d6e57;
+    --p5: #6b4a35;
   }
 }
 
@@ -501,4 +502,49 @@ p { margin: 0 0 1em; }
 @media (prefers-reduced-motion: reduce) {
   .stamp { transition: none; }
   .stamp:hover { transform: none; }
+}
+
+/* ================= The house style: type and tone over the base rules ================= */
+body::before { content: ""; position: fixed; inset: 0; z-index: 100; pointer-events: none; opacity: 0.2; mix-blend-mode: multiply;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .2 0 0 0 0 .1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)'/%3E%3C/svg%3E"); }
+.ribbon { display: none; } /* GitHub sits in the nav now */
+.nav-links { margin-right: 0; }
+.nav-links a { font: 500 12px var(--mono); letter-spacing: 0.12em; color: #cdbba6; }
+.nav-links a:hover, .nav-links a[aria-current="page"] { background: none; color: #fff; text-decoration: underline; text-decoration-color: #e76f00; text-underline-offset: 6px; }
+
+/* section heads: left-aligned, a letterpress title, a mono eyebrow, no underline bar */
+.section-head { margin: 0 0 52px; text-align: left; }
+.section-head .over { color: var(--muted); font: 500 12px var(--mono); letter-spacing: 0.16em; }
+.section-head h2 { font: 400 clamp(36px, 5vw, 58px)/1.02 var(--display); text-transform: none; letter-spacing: 0.2px; }
+.section-head h2::after { display: none; }
+.section-head p { max-width: 36em; }
+
+/* one accent: Java orange. The yellow "sunflower" is gone. */
+.btn { border-radius: 999px; letter-spacing: 0.06em; font-weight: 700; }
+.btn-sun { background: #c25400; color: #fff; --edge: #8f3e00; }
+.skip, .label-next, .here, .plan .popular { background: #e76f00; color: #2b1d14; }
+.prose blockquote { border-left-color: #c25400; }
+.rows tr.capstone td { background: color-mix(in srgb, #c25400 8%, var(--surface)); }
+.brew h3, .demo h3 { letter-spacing: 0.2px; }
+
+/* the closing call to action: plain roast, the letterpress face, no dots or shadowed caps */
+.cta { background: var(--coffee-dark); background-image: none; text-align: left; padding: 88px 0; }
+.cta h2 { font: 400 clamp(34px, 5vw, 56px)/1.05 var(--display); text-transform: none; text-shadow: none; max-width: 15em; }
+.cta p { margin: 16px 0 30px; color: #e9dccb; }
+
+/* the receipt sits to the right of its heading, not in the middle of the page */
+#need .receipt { margin: -24px 6% 0 auto; transform: rotate(1.6deg); }
+.board-band { background: #e6dbcb; }
+/* lesson and syllabus pages: the stage's roast, no stripes, the letterpress face for titles */
+.page-head { background-image: radial-gradient(ellipse at 15% 0%, rgba(231, 111, 0, 0.22), transparent 55%); background-size: auto; }
+.page-head h1 { font: 400 clamp(32px, 4.6vw, 54px)/1.06 var(--display); letter-spacing: 0.3px; text-shadow: none; }
+.badge-day { box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.18); }
+.prose h2 { font: 400 28px/1.15 var(--display); letter-spacing: 0.3px; border-bottom-width: 1px; }
+.syllabus-phase .top h2 { font: 400 26px var(--display); letter-spacing: 0.3px; }
+@media (prefers-color-scheme: dark) {
+  body::before { opacity: 0.3; mix-blend-mode: screen; filter: invert(1); }
+  .board-band { background: #1c1712; }
+}
+@media (max-width: 720px) {
+  #need .receipt { margin: 0 auto; transform: none; }
 }

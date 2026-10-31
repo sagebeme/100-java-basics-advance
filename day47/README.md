@@ -37,6 +37,17 @@ Done! Confirmation code: TAM-102-2-WK
 </dependency>
 ```
 
+**Where Maven puts things.** If you've used npm, you'll look for a `node_modules` folder. Maven doesn't make one. It downloads each library version once into `~/.m2/repository`, a cache every project on your computer shares, so there's nothing to install after a `git clone`: the first `mvn test` fetches what's missing. What Maven builds (compiled classes, test reports, the `.jar`) goes in `target/` inside the project. `target/` is gitignored and `mvn clean` deletes it.
+
+| npm | Maven |
+|---|---|
+| `package.json` lists your dependencies | `pom.xml` |
+| `package-lock.json` pins exact versions | the `pom.xml` already names exact versions |
+| `node_modules/`, one per project, gitignored | `~/.m2/repository`, one per computer, outside the repo |
+| `dist/` or `build/`, gitignored | `target/`, gitignored |
+
+Days 1–46 didn't need any of this, because their few jars are committed in `lib/`. That's fine for a handful of libraries; past that, a build tool keeps the versions in one file instead of the jars in the repo.
+
 Install [Maven](https://maven.apache.org/download.cgi) and Google Chrome. Selenium finds the right ChromeDriver by itself the first time it runs.
 
 **Driving the browser**:

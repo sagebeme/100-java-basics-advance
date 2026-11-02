@@ -59,7 +59,7 @@ cd day90
 mvn test
 ```
 
-Runs `PdfTextExtractorTest`, `PdfToAudioConverterTest` and `WindowsSpeechSynthesizerTest`. A clean run ends with `BUILD SUCCESS`.
+Runs `PdfTextExtractorTest`, `PdfToAudioConverterTest` and `WindowsSpeechSynthesizerTest`. A clean run ends with `BUILD SUCCESS`. On macOS and Linux the three tests that make real audio are skipped (they need Windows' speech engine), so expect `Skipped: 3`.
 
 ## 🚀 Next Steps
 **Ready for Day 91?** You'll build a Color Palette Generator!

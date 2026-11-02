@@ -6,6 +6,8 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.io.TempDir;
 
 import javax.sound.sampled.Clip;
@@ -36,6 +38,7 @@ class PdfToAudioConverterTest {
     }
 
     @Test
+    @EnabledOnOs(OS.WINDOWS) // the speech step needs Windows' speech engine
     void convertsARealPdfIntoARealPlayableWavFile(@TempDir Path tempDir) throws Exception {
         File pdf = createPdf(tempDir, "This text came from a PDF and should become audio.");
         File wav = tempDir.resolve("output.wav").toFile();

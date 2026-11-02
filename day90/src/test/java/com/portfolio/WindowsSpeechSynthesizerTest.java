@@ -1,6 +1,8 @@
 package com.portfolio;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.io.TempDir;
 
 import javax.sound.sampled.AudioInputStream;
@@ -13,13 +15,15 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Exercises the real Windows SAPI engine via PowerShell - these tests actually shell out and
  * synthesize audio, so they're slower than a typical unit test but they prove the feature works
- * end to end rather than mocking the one part that matters.
+ * end to end rather than mocking the one part that matters. The engine only exists on Windows,
+ * so those two tests skip themselves elsewhere instead of failing.
  */
 class WindowsSpeechSynthesizerTest {
 
     private final WindowsSpeechSynthesizer synthesizer = new WindowsSpeechSynthesizer();
 
     @Test
+    @EnabledOnOs(OS.WINDOWS)
     void producesARealPlayableWavFile(@TempDir Path tempDir) throws Exception {
         File output = tempDir.resolve("speech.wav").toFile();
 
@@ -35,6 +39,7 @@ class WindowsSpeechSynthesizerTest {
     }
 
     @Test
+    @EnabledOnOs(OS.WINDOWS)
     void producesLongerAudioForLongerText(@TempDir Path tempDir) throws Exception {
         File shortOutput = tempDir.resolve("short.wav").toFile();
         File longOutput = tempDir.resolve("long.wav").toFile();

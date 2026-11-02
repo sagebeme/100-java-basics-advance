@@ -70,7 +70,7 @@ From the repo root (on Windows, use `;` instead of `:`):
 ```bash
 javac -cp "lib/*" -d day36/_end/src day36/_end/src/*.java
 cd day36/_end/src && java -cp ".:../../../lib/*" PriceAlert && cd ../../..
-java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp "day36/_end/src:lib/*" --scan-classpath
+java -cp "day36/_end/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
 ```
 
 Change a price in `prices.json` and run it again to see a different alert.

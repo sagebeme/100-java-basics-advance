@@ -81,7 +81,7 @@ java -cp ".:../../../lib/*" SafariClub join "Wanjiku Kamau" wanjiku@example.com 
 java -cp ".:../../../lib/*" SafariClub join "Otieno Ouma" otieno@example.com Kisumu:KIS:4000
 java -cp ".:../../../lib/*" SafariClub send 2026-10-03
 cd ../../..
-java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp "day40/_end/src:lib/*" --scan-classpath
+java -cp "day40/_end/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
 ```
 
 `members.json` holds real people's email addresses once you use this for real, so think before you commit it. A file of addresses is personal data under Kenya's Data Protection Act.

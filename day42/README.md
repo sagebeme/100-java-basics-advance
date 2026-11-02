@@ -82,7 +82,7 @@ Open `index.html` in a browser. Use your browser's device toolbar (F12, then the
 ```bash
 javac -cp "lib/*" -d day42/_end/src day42/_end/src/*.java
 cd day42/_end/src && java -cp ".:../../../lib/*" PageCheck index.html && cd ../../..
-java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp "day42/_end/src:lib/*" --scan-classpath
+java -cp "day42/_end/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
 ```
 
 ## 🆘 Stuck?

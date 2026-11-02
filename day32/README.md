@@ -82,7 +82,7 @@ From the repo root (on Windows, use `;` instead of `:` between classpath entries
 ```bash
 javac -cp "lib/*" -d day32/_end/src day32/_end/src/*.java
 java -cp "day32/_end/src:lib/*" ChamaReminders day32/_end/src/members.csv 2026-10-02
-java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp "day32/_end/src:lib/*" --scan-classpath
+java -cp "day32/_end/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
 ```
 
 Work in `_start/src` the same way: copy `_end/src/ChamaRemindersTest.java` next to your files and swap `_end` for `_start` in the commands. For an exercise, compile and run `day32/exercise1/src`.

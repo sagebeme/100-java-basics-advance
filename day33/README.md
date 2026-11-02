@@ -73,7 +73,7 @@ From the repo root (on Windows, use `;` instead of `:`):
 javac -cp "lib/*" -d day33/_end/src day33/_end/src/*.java
 java -cp "day33/_end/src:lib/*" LaundryForecast
 java -cp "day33/_end/src:lib/*" LaundryForecast -0.42 36.95      # Nyeri
-java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp "day33/_end/src:lib/*" --scan-classpath
+java -cp "day33/_end/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
 ```
 
 The tests read `forecast-dry.json` and `forecast-wet.json`, real responses saved from the API, so they pass even offline.

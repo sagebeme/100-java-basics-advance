@@ -53,7 +53,7 @@ From the repo root (on Windows, use `;` instead of `:`):
 ```bash
 javac -cp "lib/*" -d day45/_end/src day45/_end/src/*.java
 cd day45/_end/src && java -cp ".:../../../lib/*" TimeMachine 2016-12-03 && cd ../../..
-java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp "day45/_end/src:lib/*" --scan-classpath
+java -cp "day45/_end/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
 ```
 
 ## 🆘 Stuck?

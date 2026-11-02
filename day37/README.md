@@ -80,7 +80,7 @@ java -cp ".:../../../lib/*" StreakGarden done "Java practice"
 java -cp ".:../../../lib/*" StreakGarden done "Java practice" 2026-10-01
 java -cp ".:../../../lib/*" StreakGarden show
 cd ../../..
-java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp "day37/_end/src:lib/*" --scan-classpath
+java -cp "day37/_end/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
 ```
 
 ## 🆘 Stuck?

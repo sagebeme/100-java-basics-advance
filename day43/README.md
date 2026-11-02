@@ -74,7 +74,7 @@ From the repo root (on Windows, use `;` instead of `:`):
 ```bash
 javac -cp "lib/*" -d day43/_end/src day43/_end/src/*.java
 cd day43/_end/src && java -cp ".:../../../lib/*" HeadlineScraper && cd ../../..
-java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp "day43/_end/src:lib/*" --scan-classpath
+java -cp "day43/_end/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
 ```
 
 ## 🆘 Stuck?

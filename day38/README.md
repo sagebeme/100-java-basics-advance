@@ -88,7 +88,7 @@ cd day38/_end/src
 java -cp ".:../../../lib/*" Mazoezi log "run 30, skipping 15"
 java -cp ".:../../../lib/*" Mazoezi week
 cd ../../..
-java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp "day38/_end/src:lib/*" --scan-classpath
+java -cp "day38/_end/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
 ```
 
 The tests use `jdbc:h2:mem:...` databases, so they never touch your real log. Your log lives in `mazoezi.mv.db`, which `.gitignore` keeps out of Git (`*.db` files are personal data).

@@ -237,8 +237,10 @@ From Day 32 on, put the whole `lib/` folder on the classpath with `"lib/*"` (on 
 
 ```bash
 javac -cp "lib/*" -d day38/_end/src day38/_end/src/*.java
-java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp "day38/_end/src:lib/*" --scan-classpath
+java -cp "day38/_end/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
 ```
+
+The test runner starts with `java -cp ... ConsoleLauncher` here, not `java -jar ...`, because only `java` itself turns `lib/*` into every jar in the folder. Handed to `java -jar` as `execute -cp "...:lib/*"`, the `*` is passed through untouched, the H2, org.json and jsoup jars never load, and correct code fails with errors like `No suitable driver found for jdbc:h2:...`.
 
 **Run every test for one day's solution** (from the repo root):
 

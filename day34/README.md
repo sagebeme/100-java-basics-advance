@@ -70,7 +70,7 @@ The tests don't need JavaFX. From the repo root (on Windows, use `;` instead of 
 
 ```bash
 javac -cp "lib/*" -d day34/_end/src day34/_end/src/Html.java day34/_end/src/Question.java day34/_end/src/QuizLogic.java day34/_end/src/TriviaSource.java day34/_end/src/QuizLogicTest.java
-java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp "day34/_end/src:lib/*" --scan-classpath
+java -cp "day34/_end/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
 ```
 
 To play, you need the [JavaFX SDK](https://gluonhq.com/products/javafx/) (see LEARNING_PATH.md). With it unzipped at `$FX`:

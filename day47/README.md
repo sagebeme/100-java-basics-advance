@@ -89,7 +89,7 @@ The exercises are plain Java. From the repo root (on Windows, use `;` instead of
 
 ```bash
 javac -cp "lib/*" -d day47/exercise1/src day47/exercise1/src/*.java
-java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp "day47/exercise1/src:lib/*" --scan-classpath
+java -cp "day47/exercise1/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
 ```
 
 ## 🆘 Stuck?

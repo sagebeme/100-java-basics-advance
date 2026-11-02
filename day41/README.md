@@ -84,7 +84,7 @@ Open `index.html` in a browser for the page itself. For the checks, from the rep
 ```bash
 javac -cp "lib/*" -d day41/_end/src day41/_end/src/*.java
 cd day41/_end/src && java -cp ".:../../../lib/*" PageCheck index.html && cd ../../..
-java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp "day41/_end/src:lib/*" --scan-classpath
+java -cp "day41/_end/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
 ```
 
 ## 🆘 Stuck?

@@ -67,7 +67,7 @@ From the repo root (on Windows, use `;` instead of `:`):
 ```bash
 javac -cp "lib/*" -d day44/_end/src day44/_end/src/*.java
 cd day44/_end/src && java -cp ".:../../../lib/*" PriceWatch && cd ../../..
-java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp "day44/_end/src:lib/*" --scan-classpath
+java -cp "day44/_end/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
 ```
 
 The program waits one second between pages, so it takes about three seconds. That's on purpose. The tests use a delay of zero.

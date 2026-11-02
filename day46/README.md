@@ -65,7 +65,7 @@ From the repo root (on Windows, use `;` instead of `:`):
 ```bash
 javac -cp "lib/*" -d day46/_end/src day46/_end/src/*.java
 cd day46/_end/src && java -cp ".:../../../lib/*" BeiAlert you@example.com 2026-10-03 && cd ../../..
-java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp "day46/_end/src:lib/*" --scan-classpath
+java -cp "day46/_end/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
 ```
 
 Each run adds three lines to `history.csv`. Run `git checkout day46/_end/src/history.csv` to reset it.

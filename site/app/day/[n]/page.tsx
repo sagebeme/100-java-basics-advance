@@ -21,11 +21,15 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   return { title: `Day ${day.day}: ${day.title}`, description: day.objectives.slice(0, 2).join(". ") || `Day ${day.day} of 100 Days of Java.` };
 }
 
-// The exact commands to run a folder's tests, as the course README gives them.
-const JUNIT = "lib/junit-platform-console-standalone-6.1.3.jar";
+// The exact commands to run a folder's tests, as the course README gives them. "lib/*" puts
+// the JUnit runner and the org.json, H2 and jsoup jars on the classpath. Only `java` itself
+// expands the *, so the runner is started by class name, not with `java -jar`.
 function testCommands(dir: string, maven: boolean): string[] {
   if (maven) return [`cd ${dir}`, "mvn test"];
-  return [`javac -cp ${JUNIT} -d ${dir} ${dir}/*.java`, `java -jar ${JUNIT} execute -cp ${dir} --scan-classpath`];
+  return [
+    `javac -cp "lib/*" -d ${dir} ${dir}/*.java`,
+    `java -cp "${dir}:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath`,
+  ];
 }
 
 export default async function DayPage({ params }: Params) {

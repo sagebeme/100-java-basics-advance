@@ -84,7 +84,7 @@ cd day35/_end/src
 SMS_API_KEY=atsk_9f2c1e7a55d04b8e java -cp ".:../../../lib/*" SmsAlerts 0712345678 "Your cake is ready"
 java -cp ".:../../../lib/*" SmsAlerts 0712345678 "Your cake is ready"    # no key: a clear error
 cd ../../..
-java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp "day35/_end/src:lib/*" --scan-classpath
+java -cp "day35/_end/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
 ```
 
 `config.properties` is committed and has no secrets in it. `config.example.properties` shows every setting, including the secret ones, with placeholder values. The repo's `.gitignore` ignores `config.local.properties` and `.env`, so real secrets in those files can't be committed by accident.

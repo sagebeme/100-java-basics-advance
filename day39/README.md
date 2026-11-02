@@ -72,7 +72,7 @@ From the repo root (on Windows, use `;` instead of `:`):
 ```bash
 javac -cp "lib/*" -d day39/_end/src day39/_end/src/*.java
 cd day39/_end/src && java -cp ".:../../../lib/*" DealFinder && cd ../../..
-java -jar lib/junit-platform-console-standalone-6.1.3.jar execute -cp "day39/_end/src:lib/*" --scan-classpath
+java -cp "day39/_end/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
 ```
 
 Pass a date to pretend it's a different day: `java ... DealFinder 2027-02-01` looks for Easter instead. Edit `wishlist.csv` to change your limits.

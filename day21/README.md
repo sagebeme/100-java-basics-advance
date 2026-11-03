@@ -103,26 +103,10 @@ private void eatFood() {
 
 ## 💻 Exercises
 
-### Exercise 1: List Operations
-Practice with:
-- Adding/removing from lists
-- Accessing list elements
-- Iterating over lists
-- Sublists (`subList`)
+Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`.
 
-### Exercise 2: Collision Detection
-Create methods for:
-- Wall collision
-- Object collision
-- Self collision
-- Food collision
-
-### Exercise 3: Game State
-Implement:
-- Score tracking
-- Game over detection
-- Restart functionality
-- High score tracking
+- **[Exercise 1: The snake's body is a list](exercise1/README.md)**: moving, growing and getting bitten as list operations, with `subList` as a view rather than a copy.
+- **[Exercise 2: What did the snake hit?](exercise2/README.md)**: wall, self, food or clear for the next square, including the tail that moves out of the way.
 
 ## 🎮 Project: Complete Snake Game
 

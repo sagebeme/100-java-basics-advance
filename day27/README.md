@@ -106,26 +106,10 @@ grid.add(button, 1, 0);
 
 ## 💻 Exercises
 
-### Exercise 1: Basic GUI
-Create GUIs with:
-- Labels and buttons
-- Text fields
-- Event handlers
-- Multiple layouts
+Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`. The window in each is already written; you write the rules it calls, which the tests check without JavaFX.
 
-### Exercise 2: Form GUI
-Create forms with:
-- Input fields
-- Submit buttons
-- Validation
-- Result display
-
-### Exercise 3: Interactive GUI
-Create interactive apps with:
-- Multiple controls
-- Event handling
-- State management
-- User feedback
+- **[Exercise 1: A currency converter window](exercise1/README.md)**: a text field, a button and an event handler, with the money maths and the friendly error messages kept testable.
+- **[Exercise 2: A sign-up form that says everything at once](exercise2/README.md)**: checking every field and showing each problem next to its field, and phone numbers typed four different ways.
 
 ## 🎮 Project: Mile to Kilometer Converter
 

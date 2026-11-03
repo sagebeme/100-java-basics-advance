@@ -46,3 +46,7 @@ rentals.csv
 
 # Letters the Day 24 mail merge writes
 output_*.txt
+
+# Saved passwords from the Day 29-30 password managers: never commit them
+passwords.txt
+passwords.json

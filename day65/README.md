@@ -98,4 +98,4 @@ mvn test
 
 ## ➡️ Next
 
-Day 66 builds a REST API for a café directory, with search, filters and a key for the requests that change data.
+Day 66 builds a versioned products API, and shows exactly how PUT and PATCH differ.

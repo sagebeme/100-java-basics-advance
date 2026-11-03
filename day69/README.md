@@ -1,106 +1,105 @@
-# Day 69 - Blog Capstone Part 4: Adding Users
+# Day 69 - Blog Capstone Part 4: Posts Belong to Their Authors
 
-## 📚 Learning Objectives
-- Add user management to blog
-- Implement user roles
-- Create user profiles
-- Link posts to users
-- Complete blog application
+> Mtaa News has writers now, and every story should know who wrote it, and every writer should be able to see their own stories. That's a relationship between two tables, and JPA can manage both ends of it.
 
-## 🎯 Topics Covered
-- User management
-- User roles
-- User profiles
-- Post ownership
-- User relationships
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+With accounts in place (Day 68), Kevo and Shiru have three more writers: Brian covers football, Mercy covers the market, Otieno covers the county assembly. Readers want a byline on every story and a "more from this writer" list. In the database that means:
 
-### Step 1: User Entity
-Add user to blog:
+- a `blog_user` table and a `post` table;
+- each post has a `user_id` column pointing at the user who wrote it: a **foreign key**;
+- one user, many posts: a **one-to-many** relationship (and, seen from the post, **many-to-one**).
 
-```java
-@Entity
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
-    private String username;
-    private String email;
-    private String password;
-    
-    @OneToMany(mappedBy = "author")
-    private List<Post> posts;
-}
+```
+blog_user                    post
+id | username              id | title                               | user_id
+ 1 | brian                  1 | Kayole Stars win the final 2-1      | 1
+ 2 | mercy                  2 | New market stalls at Mihango        | 2
+                            3 | Under-14 football final on Saturday | 1
 ```
 
-### Step 2: Post-User Relationship
-Link posts to users:
+`BlogService` creates writers and posts, and finds every post by one writer. The tests check that a post records its author, and that one writer's posts never turn up in another's list.
+
+## 🎯 Learning Objectives
+- Model a one-to-many relationship with `@ManyToOne` and `@OneToMany(mappedBy = ...)`
+- Know which side owns the relationship (the one with the foreign key), and keep the other side in step
+- Query across a relationship with a method name: `findByAuthorId`
+- Understand lazy loading, and why it needs an open transaction
+- Use `@Transactional` on service methods, and test them both inside and outside a test transaction
+
+## 🧰 What you'll use
+
+**Both ends of the relationship:**
 
 ```java
 @Entity
 public class Post {
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User author;
+    @JoinColumn(name = "user_id")          // the foreign key column: this is the owning side
+    private BlogUser author;
+}
+
+@Entity
+@Table(name = "blog_user")
+public class BlogUser {
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    private List<Post> posts = new ArrayList<>();   // the other side: no column of its own
 }
 ```
 
-## 🎮 Project: Blog with Users
+`mappedBy = "author"` says "this list is just the posts whose `author` is me". Saving a `Post` with its author is what writes `user_id`. The `posts` list is only Java, so after saving a post you add it to the list yourself, or the object in memory is out of date.
 
-### Requirements
-Add users to blog:
-1. User registration
-2. User profiles
-3. Post ownership
-4. User dashboard
-5. User management
+**Lazy loading.** A writer's `posts` aren't loaded until something asks for them, which saves a big query every time you load a user. But loading them later needs the database session to still be open. Outside a transaction it isn't, and you get `LazyInitializationException`. So service methods that touch relationships are `@Transactional`:
 
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:** Re-read **Step-by-Step Instructions** above; use main README for structure. **Quick reference:** `mvn spring-boot:run` or run from IDE.
-
-## ✅ Checklist
-- [ ] Added user entity
-- [ ] Linked posts to users
-- [ ] Created user profiles
-- [ ] Added user dashboard
-- [ ] Completed blog with users
-- [ ] Committed code to Git
-
-## 📂 What's in this folder
-
-A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
-
-| File | What it does |
-|---|---|
-| `Application.java` | Starts Spring Boot |
-| `model/BlogUser.java` | A blog user, with the posts they wrote |
-| `model/Post.java` | A post with its author |
-| `repository/BlogUserRepository.java` | Spring Data repository for users |
-| `repository/PostRepository.java` | Spring Data repository for posts |
-| `service/BlogService.java` | Registers users, creates posts for an author, lists an author's posts |
-
-## 💻 How to Run
-
-Needs JDK 21 and Maven (see the main README). From the repository root:
-
-```bash
-cd day69
-mvn spring-boot:run
+```java
+@Transactional
+public Post createPost(Long authorId, String title) {
+    BlogUser author = blogUserRepository.findById(authorId).orElseThrow(...);
+    Post post = postRepository.save(new Post(title, author));
+    author.getPosts().add(post);        // loads the lazy list: needs the transaction
+    return post;
+}
 ```
 
-It has no pages: today is about the data model. The tests show users and posts working together. Stop it with Ctrl+C.
+**A test-only transaction can hide this bug.** `BlogServiceTest` is `@Transactional`, so everything inside it works with or without the service's own transaction. `BlogServiceWithoutATestTransactionTest` calls the service the way a controller would, and fails if the service forgets `@Transactional`.
 
-## 🧪 How to Test
+## 🪜 Steps
+
+**Project: Writers and their stories** (the `day69/` folder is a finished version: build your own first, then compare).
+
+1. `BlogUser` (username, email, posts) and `Post` (title, author), with both relationship annotations.
+2. `BlogUserRepository`, and `PostRepository.findByAuthorId`.
+3. `BlogService`: `registerUser`, `createPost` (an unknown author is an error) and `getPostsByAuthor`, with `@Transactional` where they need it.
+4. Tests: the author is recorded, one writer's posts, no leaking between writers, the in-memory list kept in step, an unknown author, and a call without a test transaction.
+5. Add bylines and a "more from this writer" list to your Mtaa News pages.
+
+## 🧪 Run it and test it
+
+Needs JDK 21 and Maven. From the repository root:
 
 ```bash
 cd day69
 mvn test
 ```
 
-Runs `BlogServiceTest`. A clean run ends with `BUILD SUCCESS`.
+To see the join Hibernate writes for `findByAuthorId`, add `spring.jpa.show-sql=true` to `application.properties`.
 
-## 🚀 Next Steps
-**Ready for Day 70?** You'll learn deployment with Docker and Cloud!
+## 🆘 Stuck?
+
+- **`LazyInitializationException: ... no session`**: something touched a lazy list outside a transaction. Add `@Transactional` to the service method.
+- **`user_id` is always null**: you set the post on the user's list but not the user on the post. The `@ManyToOne` side is the one that's saved.
+- **`author.getPosts()` is empty right after creating a post**: the list is only Java. Add the new post to it in `createPost`.
+- **JSON for a user never ends (`StackOverflowError`)**: the user lists posts, each post has the user, which lists posts… Send a DTO, or mark one side `@JsonIgnore`.
+- **A table called `user` fails to create**: it's a reserved word. That's why this one is `blog_user`.
+
+## ✅ Checklist
+- [ ] A one-to-many relationship with both ends mapped
+- [ ] Posts found by their author with a method name
+- [ ] Service methods that touch relationships are `@Transactional`
+- [ ] A test proves the service works without a test transaction
+- [ ] The tests pass
+- [ ] Committed code to Git
+
+## ➡️ Next
+
+Day 70 packages the app for deployment: environment-based configuration, health checks, and a Docker image.

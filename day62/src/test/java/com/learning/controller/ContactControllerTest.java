@@ -56,4 +56,22 @@ class ContactControllerTest {
 
         org.junit.jupiter.api.Assertions.assertEquals(before, contactController.getContacts().size());
     }
+
+    @Test
+    void theListPageShowsWhatAnImportDid() throws Exception {
+        mockMvc.perform(get("/contacts").flashAttr("imported", 2).flashAttr("errors", java.util.List.of("Row 3: name and email are required")))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Imported 2 contacts.")))
+                .andExpect(content().string(containsString("Row 3: name and email are required")))
+                .andExpect(content().string(containsString("Amina")));
+    }
+
+    @Test
+    void importingWithNoFileSaysSo() throws Exception {
+        MockMultipartFile empty = new MockMultipartFile("file", "", "text/csv", new byte[0]);
+
+        mockMvc.perform(multipart("/contacts/import").file(empty))
+                .andExpect(redirectedUrl("/contacts"))
+                .andExpect(flash().attribute("errors", java.util.List.of("Choose a CSV file first.")));
+    }
 }

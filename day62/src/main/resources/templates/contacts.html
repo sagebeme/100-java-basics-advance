@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Contacts · Bidii Women's Group</title>
+    <style>
+        body { font-family: system-ui, sans-serif; max-width: 44rem; margin: 2rem auto; padding: 0 1rem; color: #2a2723; background: #faf7f2; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { text-align: left; padding: .4rem .6rem; border-bottom: 1px solid #ddd5c8; }
+        .message { background: #dcefd9; padding: .5rem; }
+        .error { background: #f6d6d3; padding: .5rem; }
+        form { margin: 1.5rem 0; }
+    </style>
+</head>
+<body>
+<h1>Contacts</h1>
+
+<p th:if="${imported != null}" class="message" role="status" th:text="|Imported ${imported} contacts.|">Imported 3 contacts.</p>
+<div th:if="${errors != null and !#lists.isEmpty(errors)}" class="error" role="alert">
+    <p>Some rows were not imported:</p>
+    <ul><li th:each="e : ${errors}" th:text="${e}">Row 4: name and email are required</li></ul>
+</div>
+
+<table>
+    <thead><tr><th>Name</th><th>Email</th><th>Phone</th></tr></thead>
+    <tbody>
+    <tr th:each="c : ${contacts}">
+        <td th:text="${c.name}">Amina</td>
+        <td th:text="${c.email}">amina@example.com</td>
+        <td th:text="${c.phone}">0700000001</td>
+    </tr>
+    </tbody>
+</table>
+<p th:text="|${#lists.size(contacts)} contacts|">2 contacts</p>
+
+<p><a th:href="@{/contacts/export}">Download all as CSV</a></p>
+
+<form th:action="@{/contacts/import}" method="post" enctype="multipart/form-data">
+    <label for="file">Import a CSV with the columns Name, Email, Phone</label><br>
+    <input id="file" type="file" name="file" accept=".csv,text/csv">
+    <button type="submit">Import</button>
+</form>
+</body>
+</html>

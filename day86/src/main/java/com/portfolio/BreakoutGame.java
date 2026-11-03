@@ -13,6 +13,7 @@ public class BreakoutGame {
     public static final int STARTING_LIVES = 3;
     private static final double BASE_BALL_SPEED = 200; // pixels/second
     static final double MAX_STEP_SECONDS = 1.0 / 120;
+    static final int MAX_BRICK_ROWS = 8;
     private static final int BRICK_COLS = 5;
     private static final double BRICK_HEIGHT = 20;
     private static final double BRICK_GAP = 5;
@@ -38,7 +39,8 @@ public class BreakoutGame {
     }
 
     private List<Brick> buildBricksForLevel(int level) {
-        int rows = 3 + level; // more rows each level
+        // More rows each level, up to a limit: unlimited rows would eventually reach the paddle.
+        int rows = Math.min(3 + level, MAX_BRICK_ROWS);
         double brickWidth = (boardWidth - BRICK_GAP * (BRICK_COLS + 1)) / BRICK_COLS;
         List<Brick> result = new ArrayList<>();
         for (int row = 0; row < rows; row++) {

@@ -183,4 +183,18 @@ class BreakoutGameTest {
         game.movePaddleTo(WIDTH + 100);
         assertEquals(WIDTH - game.getPaddle().getWidth(), game.getPaddle().getX(), 0.001);
     }
+
+    @Test
+    void theWallStopsGrowingBeforeItReachesThePaddle() {
+        BreakoutGame game = new BreakoutGame(WIDTH, HEIGHT);
+        for (int level = 1; level < 30; level++) {
+            game.getBricks().forEach(Brick::destroy);
+            game.update(0.001); // clears the level
+        }
+
+        assertEquals(30, game.getLevel());
+        assertEquals(BreakoutGame.MAX_BRICK_ROWS * 5, game.getBricks().size());
+        double lowestBrick = game.getBricks().stream().mapToDouble(Brick::getBottom).max().orElseThrow();
+        assertTrue(lowestBrick < game.getPaddle().getTop() - 100, "bricks must leave room above the paddle");
+    }
 }

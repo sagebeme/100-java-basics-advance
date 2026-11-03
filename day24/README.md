@@ -1,289 +1,104 @@
-# Day 24 - File I/O and Paths
+# Day 24 - Mail Merge: Harambee Invitations From Two Files
 
-## 📚 Learning Objectives
-- Read and write files
-- Understand file paths
-- Work with directories
-- Handle file operations
-- Practice with different file formats
+> The Wambui family is holding a harambee for school fees, and fifty people need a letter with their own name on it. Nobody is typing fifty letters.
 
-## 🎯 Topics Covered
-- File reading and writing
-- Path and Paths classes
-- File and FileReader/FileWriter
-- BufferedReader/BufferedWriter
-- Scanner for file reading
-- Exception handling for files
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Wambui got into a good secondary school, and the fees are more than her parents can pay alone. So the family is holding a **harambee**: friends, neighbours and church members come together, eat, sing and contribute. Her uncle has written the invitation once, with `[name]` where each guest's name goes, and he has a list of guests, one per line. Your program does the rest:
 
-### Step 1: Reading Files
-Read text files:
+```
+$ java MailMerge
+Mail merge complete! Created 5 files.
+
+$ cat output_2.txt
+Dear Mwalimu Otieno,
+
+You are warmly invited to the harambee for Wambui's school fees,
+on Saturday 14 November at 2pm, at the PCEA church hall in Kikuyu.
+...
+```
+
+That's a **mail merge**: one template plus one list gives one letter per person. Offices do it every day for invitations, payslips and reminders.
+
+`template.txt` and `names.txt` are in `_start/src` and `_end/src`. Change them and run it again.
+
+## 🎯 Learning Objectives
+- Read a text file line by line, and all at once
+- Write text to a new file, and append to an existing one
+- Understand relative paths: where a program looks for `names.txt`
+- Handle `FileNotFoundException` and `IOException` with clear messages
+- Close files properly, ideally with try-with-resources
+
+## 🧰 Java you'll use
+
+**Reading.** The project uses `Scanner` on a `File`. The newer `Files` class does the same in one line:
 
 ```java
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
-
-try {
-    File file = new File("data.txt");
-    Scanner scanner = new Scanner(file);
-    
-    while (scanner.hasNextLine()) {
-        String line = scanner.nextLine();
-        System.out.println(line);
-    }
-    scanner.close();
-} catch (FileNotFoundException e) {
-    System.out.println("File not found!");
-}
+List<String> names = Files.readAllLines(Path.of("names.txt"));
+String template = Files.readString(Path.of("template.txt"));
 ```
 
-### Step 2: Writing Files
-Write to files:
+**Writing.** `Files.writeString` creates or replaces a file; with `StandardOpenOption.APPEND` it adds to the end instead:
 
 ```java
-import java.io.FileWriter;
-import java.io.IOException;
-
-try {
-    FileWriter writer = new FileWriter("output.txt");
-    writer.write("Hello, World!\n");
-    writer.write("This is a new line.");
-    writer.close();
-} catch (IOException e) {
-    System.out.println("Error writing file!");
-}
+Files.writeString(Path.of("output_1.txt"), letter);
 ```
 
-### Step 3: Working with Paths
-Use Path and Paths:
+**Replacing.** `template.replace("[name]", name)` replaces *every* `[name]`, not just the first, and returns a new string: the template itself doesn't change, so you can use it again for the next guest.
+
+**Relative paths** are relative to the folder you ran `java` from, not the folder the `.java` file is in. Run from `_end/src` and it finds `names.txt` there.
+
+**Try-with-resources** closes a file even when something goes wrong:
 
 ```java
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-Path path = Paths.get("folder", "subfolder", "file.txt");
-String absolutePath = path.toAbsolutePath().toString();
-String fileName = path.getFileName().toString();
+try (FileWriter writer = new FileWriter("output_1.txt")) {
+    writer.write(letter);
+}   // closed here, always
 ```
 
-### Step 4: Directory Operations
-Work with directories:
+## 🪜 Steps
 
-```java
-import java.io.File;
+1. **[Exercise 1: Reading Mama Njeri's shop log](exercise1/README.md)** (`exercise1/`): counting lines and words, finding a word with its line number, and adding up the sales, from a file read with `Files.readAllLines`.
+2. **[Exercise 2: Receipts that line up](exercise2/README.md)** (`exercise2/`): writing files that never overwrite each other, appending to a day book, and lining up columns with `String.format`.
+3. **Project: Mail Merge** (`_start/src/MailMerge.java`).
+   1. `merge(template, name)`: replace every `[name]` with the name. The tests check this.
+   2. In `main`, read `template.txt` into one string.
+   3. Read `names.txt` and, for each name, write `output_1.txt`, `output_2.txt` and so on.
+   4. Print how many letters you made, and a clear message if a file is missing.
 
-File directory = new File("myFolder");
-if (!directory.exists()) {
-    directory.mkdir(); // Create directory
-}
+## 🧪 Run it and test it
 
-File[] files = directory.listFiles();
-for (File file : files) {
-    System.out.println(file.getName());
-}
+```bash
+cd day24/_end/src
+javac MailMerge.java
+java MailMerge
 ```
 
-## 💻 Exercises
+The letters it writes (`output_*.txt`) are kept out of Git by `.gitignore`. To test your own version, copy `_end/src/MailMergeTest.java` into `_start/src`, then from the repo root:
 
-Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`. The tests make their own files in a temporary folder.
-
-- **[Exercise 1: Reading Mama Njeri's shop log](exercise1/README.md)**: counting lines and words, finding a word with its line number, and adding up the sales, from a file read with `Files.readAllLines`.
-- **[Exercise 2: Receipts that line up](exercise2/README.md)**: writing files that never overwrite each other, appending to a day book, and lining up columns with `String.format`.
-
-## 🎮 Project: Mail Merge
-
-### Requirements
-Create a mail merge program:
-1. Read names from a file
-2. Read letter template from file
-3. Replace placeholder with each name
-4. Create personalized letters
-5. Save each letter to separate file
-
-### Example Files
-**names.txt:**
-```
-Alice
-Bob
-Charlie
+```bash
+javac -cp "lib/*" -d day24/_start/src day24/_start/src/*.java
+java -cp "day24/_start/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
 ```
 
-**letter_template.txt:**
-```
-Dear [NAME],
+For an exercise, use `day24/exercise1/src` or `day24/exercise2/src` in both commands. On Windows, use `;` instead of `:` in `-cp`.
 
-You are invited to our event!
+## 🆘 Stuck?
 
-Best regards,
-Event Team
-```
-
-### Example Output
-Creates files: `letter_Alice.txt`, `letter_Bob.txt`, `letter_Charlie.txt`
-
-### Starter Code
-```java
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Scanner;
-
-public class MailMerge {
-    public static void main(String[] args) {
-        // Read names
-        // Read template
-        // Create personalized letters
-        // Save to files
-    }
-}
-```
-
-## 📚 Resources
-
-### Official Documentation
-- [File I/O - Oracle Docs](https://docs.oracle.com/javase/tutorial/essential/io/)
-- [Path Interface - Java API](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html)
-- [File Class - Java API](https://docs.oracle.com/javase/8/docs/api/java/io/File.html)
-
-### Tutorials
-- [Java File I/O - W3Schools](https://www.w3schools.com/java/java_files.asp)
-- [File Reading/Writing - Programiz](https://www.programiz.com/java-programming/file-operations)
-- [Java NIO - GeeksforGeeks](https://www.geeksforgeeks.org/java-nio-file/)
-
-### Video Resources
-- [Java File I/O Tutorial](https://www.youtube.com/results?search_query=java+file+io+tutorial)
-- [Reading and Writing Files](https://www.youtube.com/results?search_query=java+read+write+files)
-
-### Practice Platforms
-- [File I/O Exercises](https://www.w3resource.com/java-exercises/io/)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| File Reading | Read from file | `Scanner scanner = new Scanner(file)` |
-| File Writing | Write to file | `FileWriter writer = new FileWriter()` |
-| Path | File location | `Paths.get("folder", "file.txt")` |
-| Exception Handling | Handle file errors | `try-catch` blocks |
-| Directory | Folder operations | `File.mkdir()`, `listFiles()` |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **Reading:** Re-read **Step 1** — `Scanner scanner = new Scanner(new File("path"));` then `hasNextLine()` / `nextLine()` — close when done
-- **Writing:** Re-read **Step 2** — `FileWriter writer = new FileWriter("path");` then `writer.write(str);` — close when done
-- **File not found:** Path is relative to current working directory; use try-catch for `FileNotFoundException`
-- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for Mail Merge flow
-
-**Related days:** Day 13 (try-catch); Day 25 (CSV = read line, split); Day 30 (JSON).
-
-**Quick reference:** `Paths.get("a","b","file.txt")` · `file.exists()` before read · Always close Scanner/Writer in finally or try-with-resources
+- **`File not found: template.txt`**: you ran `java` from another folder. `cd` into the folder that holds the text files first.
+- **Only the first `[name]` is replaced**: that's `replaceFirst`. Use `replace`.
+- **Every letter has the first guest's name**: you replaced inside the template itself and kept the result. Replace into a new variable each time.
+- **The letters are empty**: the `FileWriter` was never closed, so nothing was written. Use try-with-resources.
+- **There's an extra empty letter**: `names.txt` ends with a blank line. Skip names that are blank after `trim()`.
 
 ## ✅ Checklist
-- [ ] Can read from files
-- [ ] Can write to files
-- [ ] Understand file paths
-- [ ] Can work with directories
-- [ ] Can handle file exceptions
-- [ ] Completed Mail Merge project
-- [ ] Committed code to Git
+- [ ] Read the template and the names from files
+- [ ] Wrote one letter per guest, with every `[name]` replaced
+- [ ] A missing file gives a clear message, not a stack trace
+- [ ] Closed every file
+- [ ] Finished both exercises, and the tests pass
+- [ ] Committed code to Git (but not the letters)
 
-## 📂 Code Examples
+## ➡️ Next
 
-This day includes starter and completed code examples:
-- **`_start/`** - Starting code with TODO comments and learning notes
-- **`_end/`** - Completed solutions with detailed explanations
-
-Check these folders to see the progression from start to finish and learn from the learning curve notes!
-
-## 💻 How to Run Java Files
-
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to the project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day24\_end\src"
-   ```
-
-3. **Compile** (if multiple files: `javac *.java`)
-   ```cmd
-   javac MailMerge.java
-   ```
-
-4. **Run the compiled program**
-   ```cmd
-   java MailMerge
-   ```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to the project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day24/_end/src
-   ```
-
-3. **Compile** (if multiple files: `javac *.java`)
-   ```bash
-   javac MailMerge.java
-   ```
-
-4. **Run the compiled program**
-   ```bash
-   java MailMerge
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA:**
-1. Open the project folder in IntelliJ IDEA
-2. Right-click on the Java file
-3. Select "Run 'MailMerge.main()'"
-
-**VS Code:**
-1. Install "Extension Pack for Java"
-2. Open the Java file
-3. Click "Run" button above `main` method or press `F5`
-
-**Eclipse:**
-1. Import project into Eclipse
-2. Right-click on the Java file
-3. Select "Run As" → "Java Application"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
-- **"File not found"** - Run from the directory that contains your data files, or use absolute paths
-
-## 🚀 Next Steps
-After completing Day 24, you should be able to:
-- Work with files effectively
-- Handle file operations
-- Process file data
-- Create file-based applications
-
-**Ready for Day 25?** You'll learn about working with CSV data!
-
-
-
-
-
-
-
+Day 25 reads a CSV file and turns it into a guessing game.

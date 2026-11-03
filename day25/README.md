@@ -1,309 +1,122 @@
-# Day 25 - Working with CSV Data
+# Day 25 - Working With CSV: Name All 47 Counties
 
-## 📚 Learning Objectives
-- Read and parse CSV files
-- Process CSV data
-- Write CSV files
-- Work with data analysis
-- Create data-driven applications
+> Kenya has 47 counties. Most people can name about thirty before they get stuck. Today's game reads the list from a CSV file and keeps score.
 
-## 🎯 Topics Covered
-- CSV format
-- CSV parsing
-- Data processing
-- CSV writing
-- Data analysis basics
-- Working with datasets
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Mwalimu Chebet teaches Standard 7 social studies in Eldoret. Every year she runs the same challenge: "Name all 47 counties." Every year the class gets stuck somewhere around Tharaka-Nithi and Elgeyo-Marakwet. This year she wants a game the pupils can play on the lab computers:
 
-### Step 1: Reading CSV Files
-Parse CSV data:
+```
+How many of Kenya's 47 counties can you name?
+Type 'exit' to stop.
 
-```java
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Scanner;
+0/47 named. Next county: nairobi
+Yes! Nairobi.
 
-public class CSVReader {
-    public static ArrayList<String[]> readCSV(String filename) {
-        ArrayList<String[]> data = new ArrayList<>();
-        
-        try {
-            File file = new File(filename);
-            Scanner scanner = new Scanner(file);
-            
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                String[] values = line.split(",");
-                data.add(values);
-            }
-            scanner.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found!");
-        }
-        
-        return data;
-    }
-}
+1/47 named. Next county: Kampala
+Kampala isn't one of the 47 counties.
+
+1/47 named. Next county: exit
+
+You named 1. You missed: Mombasa, Kwale, Kilifi, ...
 ```
 
-### Step 2: Processing CSV Data
-Work with CSV data:
+The counties live in `counties.csv`, one per line, numbered in the order the Constitution's First Schedule lists them:
 
-```java
-// Skip header row
-for (int i = 1; i < data.size(); i++) {
-    String[] row = data.get(i);
-    String name = row[0];
-    int value = Integer.parseInt(row[1]);
-    // Process data
-}
 ```
-
-### Step 3: Writing CSV Files
-Write data to CSV:
-
-```java
-import java.io.FileWriter;
-import java.io.IOException;
-
-public static void writeCSV(String filename, ArrayList<String[]> data) {
-    try {
-        FileWriter writer = new FileWriter(filename);
-        
-        for (String[] row : data) {
-            writer.write(String.join(",", row) + "\n");
-        }
-        
-        writer.close();
-    } catch (IOException e) {
-        System.out.println("Error writing file!");
-    }
-}
-```
-
-### Step 4: Data Analysis
-Analyze CSV data:
-
-```java
-// Count items
-int count = data.size() - 1; // Exclude header
-
-// Sum values
-int total = 0;
-for (int i = 1; i < data.size(); i++) {
-    total += Integer.parseInt(data.get(i)[1]);
-}
-
-// Find maximum
-int max = Integer.MIN_VALUE;
-for (int i = 1; i < data.size(); i++) {
-    int value = Integer.parseInt(data.get(i)[1]);
-    if (value > max) max = value;
-}
-```
-
-## 💻 Exercises
-
-Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`.
-
-- **[Exercise 1: A CSV reader that survives commas in names](exercise1/README.md)**: why `split(",")` breaks on real CSV, and a reader that handles quoted fields, `""` and a choice of delimiter.
-- **[Exercise 2: The co-op's weekly milk report](exercise2/README.md)**: totals per farmer, a top list with ties broken by name, averages and shares, with plain loops and a `TreeMap`.
-
-## 🎮 Project: U.S. States Game
-
-### Requirements
-Create a U.S. States guessing game:
-1. Load states data from CSV
-2. Display map/image
-3. Ask user to name states
-4. Mark correct guesses on map
-4. Track score
-5. Save states to learn to CSV
-6. Game ends when all states guessed
-
-### Example CSV (50_states.csv)
-```csv
-state,x,y
-Alabama,139,112
-Alaska,204,51
-Arizona,113,143
+code,county
+1,Mombasa
+2,Kwale
 ...
+47,Nairobi
 ```
 
-### Example Output
-```
-Guess a state's name: California
-Correct! 1/50 states found.
+**CSV** ("comma-separated values") is the plainest way to store a table: one row per line, commas between columns, usually a header line first. Every spreadsheet can open and save it, which is why so much real data arrives as CSV.
 
-Guess a state's name: Texas
-Correct! 2/50 states found.
+## 🎯 Learning Objectives
+- Read a CSV file: skip the header, split each line into columns
+- Pick out one column and keep it in a `List`
+- Compare text without caring about capitals or extra spaces
+- Use an `enum` for a fixed set of answers (`CORRECT`, `ALREADY_GUESSED`, `INVALID`)
+- Know where `split(",")` breaks, and how real CSV handles commas inside a field
 
-[Map with marked states]
-```
+## 🧰 Java you'll use
 
-### Starter Code
+**Reading the table:**
+
 ```java
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-public class StatesGame {
-    private Map<String, int[]> states;
-    private ArrayList<String> guessedStates;
-    
-    public void loadStates() {
-        // Read CSV and populate states map
-    }
-    
-    public void playGame() {
-        // Game loop
+try (Scanner scanner = new Scanner(new File("counties.csv"))) {
+    scanner.nextLine();                              // the header: code,county
+    while (scanner.hasNextLine()) {
+        String[] parts = scanner.nextLine().split(",");
+        counties.add(parts[1].trim());               // the second column
     }
 }
 ```
 
-## 📚 Resources
+**An enum** is a type with a fixed list of values. A method that returns one can't return a typo:
 
-### Official Documentation
-- [File I/O - Oracle Docs](https://docs.oracle.com/javase/tutorial/essential/io/)
-- [String Methods - Java API](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)
+```java
+public enum GuessResult { CORRECT, ALREADY_GUESSED, INVALID }
+```
 
-### Tutorials
-- [CSV Processing in Java](https://www.baeldung.com/java-csv)
-- [Reading CSV Files](https://www.geeksforgeeks.org/reading-csv-file-java/)
-- [CSV Libraries](https://www.baeldung.com/java-csv-file-array)
+and a `switch` on it is easy to read:
 
-### Video Resources
-- [Java CSV Tutorial](https://www.youtube.com/results?search_query=java+csv+tutorial)
-- [CSV File Processing](https://www.youtube.com/results?search_query=java+read+csv+file)
+```java
+switch (evaluateGuess(guess, counties, guessed)) {
+    case CORRECT -> ...
+    case ALREADY_GUESSED -> ...
+    case INVALID -> ...
+}
+```
 
-### Practice Platforms
-- [Data Processing Exercises](https://www.w3resource.com/java-exercises/)
+**One spelling.** Players type `nairobi` and `NAIROBI `. `spelling(guess, counties)` finds the county with `equalsIgnoreCase` and returns it as the list spells it, so `Nairobi` is only ever stored one way.
 
-## 🔑 Key Concepts Summary
+**Where `split` breaks.** A county name has no commas, but plenty of real data does: `"Mama Njeri, Kayole",250`. Exercise 1 builds a reader that copes with quotes.
 
-| Concept | Description | Example |
-|---------|-------------|---------|
-| CSV Format | Comma-separated values | `name,value,date` |
-| Parsing | Extract data | `line.split(",")` |
-| Data Processing | Analyze data | Count, sum, average |
-| CSV Writing | Save to CSV | `String.join(",", values)` |
-| Data Structure | Organize data | Map, List for CSV data |
+## 🪜 Steps
 
-## 📌 Notes & reference (use these when stuck)
+1. **[Exercise 1: A CSV reader that survives commas in names](exercise1/README.md)** (`exercise1/`): why `split(",")` breaks on real CSV, and a reader that handles quoted fields, `""` and a choice of delimiter.
+2. **[Exercise 2: The co-op's weekly milk report](exercise2/README.md)** (`exercise2/`): totals per farmer, a top list with ties broken by name, averages and shares, with plain loops and a `TreeMap`.
+3. **Project: The Counties Game** (`_start/src/CountiesGame.java`).
+   1. `spelling(guess, counties)`: the county as the list spells it, or `null`.
+   2. `evaluateGuess(guess, counties, guessed)`: `INVALID`, `ALREADY_GUESSED` or `CORRECT`.
+   3. `readCounties(file)`: the second column of every line after the header.
+   4. `main`: the guessing loop, `exit`, and the list of missed counties at the end.
 
-**When you're stuck:**
-- **Reading CSV:** Re-read **Step 1** — read line by line; `line.split(",")` for columns; skip or use header row — see **Step 2**
-- **Parsing:** Handle quoted fields and commas inside quotes if needed; trim whitespace: `s.trim()`
-- **Writing CSV:** Re-read **Step 2** — `String.join(",", values)` or build line manually — see **Step 2**
-- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for States Game logic
+## 🧪 Run it and test it
 
-**Related days:** Day 24 (file read/write); Day 26 (streams for processing). **Quick reference:** `line.split(",", -1)` keeps trailing empty fields
+```bash
+cd day25/_end/src
+javac CountiesGame.java
+java CountiesGame
+```
+
+To test your own version, copy `_end/src/CountiesGameTest.java` into `_start/src`, then from the repo root:
+
+```bash
+javac -cp "lib/*" -d day25/_start/src day25/_start/src/*.java
+java -cp "day25/_start/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
+```
+
+For an exercise, use `day25/exercise1/src` or `day25/exercise2/src` in both commands. On Windows, use `;` instead of `:` in `-cp`.
+
+## 🆘 Stuck?
+
+- **`counties.csv not found`**: run `java` from the folder that holds the CSV.
+- **"code" or "county" turns up as a county**: you didn't skip the header line.
+- **The numbers come out instead of the names**: the name is the second column, `parts[1]`. Arrays start at 0.
+- **`nairobi` is wrong but `Nairobi` is right**: compare with `equalsIgnoreCase`, after `trim()`.
+- **`Murang'a` never matches**: players type a different apostrophe on some phones (`’`). You could treat both as the same.
 
 ## ✅ Checklist
-- [ ] Can read CSV files
-- [ ] Can parse CSV data
-- [ ] Can process CSV data
-- [ ] Can write CSV files
-- [ ] Can analyze data
-- [ ] Completed U.S. States Game
+- [ ] Read the CSV, skipping the header
+- [ ] Guesses ignore capitals and spaces
+- [ ] A county can only be counted once
+- [ ] The game ends with the score and the missed counties
+- [ ] Finished both exercises, and the tests pass
 - [ ] Committed code to Git
 
-## 📂 Code Examples
+## ➡️ Next
 
-This day includes starter and completed code examples:
-- **`_start/`** - Starting code with TODO comments and learning notes
-- **`_end/`** - Completed solutions with detailed explanations
-
-Check these folders to see the progression from start to finish and learn from the learning curve notes!
-
-## 💻 How to Run Java Files
-
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to the project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day25\_end\src"
-   ```
-
-3. **Compile** (if multiple files: `javac *.java`)
-   ```cmd
-   javac StatesGame.java
-   ```
-
-4. **Run the compiled program**
-   ```cmd
-   java StatesGame
-   ```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to the project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day25/_end/src
-   ```
-
-3. **Compile** (if multiple files: `javac *.java`)
-   ```bash
-   javac StatesGame.java
-   ```
-
-4. **Run the compiled program**
-   ```bash
-   java StatesGame
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA:**
-1. Open the project folder in IntelliJ IDEA
-2. Right-click on the Java file
-3. Select "Run 'StatesGame.main()'"
-
-**VS Code:**
-1. Install "Extension Pack for Java"
-2. Open the Java file
-3. Click "Run" button above `main` method or press `F5`
-
-**Eclipse:**
-1. Import project into Eclipse
-2. Right-click on the Java file
-3. Select "Run As" → "Java Application"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
-- **CSV file not found** - Place your CSV file in the same directory or use the correct path
-
-## 🚀 Next Steps
-After completing Day 25, you should be able to:
-- Work with CSV files
-- Process data effectively
-- Create data-driven applications
-- Analyze datasets
-
-**Ready for Day 26?** You'll learn about Streams and Lambda Expressions!
-
-
-
-
-
-
-
+Day 26 meets streams and lambdas, through a call-centre agent spelling names over a crackly line.

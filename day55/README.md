@@ -128,27 +128,12 @@ public class GlobalExceptionHandler {
 
 ## 💻 Exercises
 
-### Exercise 1: Basic REST API
-Create endpoints for:
-- GET all items
-- GET by ID
-- POST new item
-- PUT update item
-- DELETE item
+## 💻 Exercises
 
-### Exercise 2: Advanced Features
-Implement:
-- Query parameters
-- Path variables
-- Request body validation
-- Error handling
+Each exercise is a small Maven project with its own README. The starter compiles and its tests fail until you're done; `solution/` holds one answer for each file you change, at the same path. Run `mvn test` inside the exercise folder.
 
-### Exercise 3: API Design
-Design:
-- RESTful URLs
-- HTTP status codes
-- Response formats
-- API documentation
+- **[Exercise 1: Mama Njeri's stock API](exercise1/README.md)**: the five CRUD endpoints with the status codes a client relies on: 201 with a `Location`, 204, and 404.
+- **[Exercise 2: A chama's members API that says what's wrong](exercise2/README.md)**: Bean Validation rules, a `@RestControllerAdvice` that turns exceptions into 400, 404 and 409 answers, and a `?name=` search.
 
 ## 🎮 Project: Todo REST API
 

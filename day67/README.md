@@ -1,101 +1,104 @@
-# Day 67 - Blog Capstone Part 3: RESTful Routing
+# Day 67 - Blog Capstone Part 3: A REST API for Mtaa News
 
-## 📚 Learning Objectives
-- Add REST API to blog
-- Create API endpoints
-- Integrate API with frontend
-- Build API-first application
-- Complete blog functionality
+> Mtaa News has web pages. Now a volunteer wants to build an Android app for it, and the app doesn't want HTML; it wants JSON. Today the blog gets an API next to its pages.
 
-## 🎯 Topics Covered
-- REST API integration
-- Frontend-backend separation
-- API endpoints
-- JSON responses
-- API testing
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Mtaa News (Days 57 and 59) is doing well in Kayole. Brian, a university student who reads it every morning, offers to build an Android app so people get stories without opening a browser. He asks Kevo for "an API": addresses that send and receive stories as JSON.
 
-### Step 1: Blog API
-Create REST endpoints:
+```
+GET    /api/posts        every story
+GET    /api/posts/7      story 7, or 404
+POST   /api/posts        a new story → 201, and Location: /api/posts/8
+PUT    /api/posts/7      replace story 7's title and content, or 404
+DELETE /api/posts/7      → 204, or 404
+```
+
+The routes follow **REST** conventions, so Brian can guess them without asking: the noun (`posts`) is in the address, the HTTP method is the verb, and an id picks one.
+
+There's one trap that every first API falls into. A new story arrives as JSON and is turned straight into a `Post`, and a `Post` has an `id` field. If the app (or an attacker) sends `{"id": 1, "title": "Hijacked", ...}`, saving it *overwrites story 1*. That's **over-posting**, and the fix is one line: the server, not the client, decides a new story's id.
+
+## 🎯 Learning Objectives
+- Design RESTful routes: nouns in the path, methods as verbs, ids for one item
+- Return `ResponseEntity` with the right status for each outcome: 200, 201, 204, 400 and 404
+- Use `Optional.map(...).orElse(...)` to answer found and not-found in one expression
+- Validate request bodies with `@Valid`
+- Stop over-posting: never let the request body decide fields the server owns
+- Test an API end to end with MockMvc and Jackson's `ObjectMapper`
+
+## 🧰 What you'll use
+
+**Found or not found, in one expression:**
 
 ```java
-@RestController
-@RequestMapping("/api/posts")
-public class PostRestController {
-    
-    @GetMapping
-    public List<Post> getAllPosts() {
-        return postService.getAllPosts();
-    }
-    
-    @GetMapping("/{id}")
-    public ResponseEntity<Post> getPost(@PathVariable Long id) {
-        return postService.getPostById(id)
+@GetMapping("/{id}")
+public ResponseEntity<Post> getPost(@PathVariable Long id) {
+    return postRepository.findById(id)
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
-    }
-    
-    @PostMapping
-    public ResponseEntity<Post> createPost(@RequestBody Post post) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-            .body(postService.save(post));
-    }
 }
 ```
 
-## 🎮 Project: Blog REST API
+**Creating, safely:**
 
-### Requirements
-Add REST API to blog:
-1. GET /api/posts
-2. GET /api/posts/{id}
-3. POST /api/posts
-4. PUT /api/posts/{id}
-5. DELETE /api/posts/{id}
+```java
+@PostMapping
+public ResponseEntity<Post> createPost(@Valid @RequestBody Post post) {
+    post.setId(null);                                   // the server picks the id
+    Post saved = postRepository.save(post);
+    return ResponseEntity.created(URI.create("/api/posts/" + saved.getId())).body(saved);
+}
+```
 
-## 📌 Notes & reference (use these when stuck)
+A tidier fix in bigger apps is a separate request class (a "DTO") with only the fields a client may send: `record NewPost(String title, String content)`. Then there's no `id` to abuse at all.
 
-**When you're stuck:** Re-read **Step-by-Step Instructions** above; use main README for structure. **Quick reference:** `mvn spring-boot:run` or run from IDE.
+**JSON in tests.** `ObjectMapper` (Jackson 3, package `tools.jackson.databind`) turns objects into JSON and reads values back out: `objectMapper.readTree(body).get("id").asLong()`.
 
-## ✅ Checklist
-- [ ] Created REST endpoints
-- [ ] Integrated with frontend
-- [ ] Tested API
-- [ ] Added error handling
-- [ ] Completed Blog REST API
-- [ ] Committed code to Git
+## 🪜 Steps
 
-## 📂 What's in this folder
+**Project: The Mtaa News API** (the `day67/` folder is a finished version: build your own first, then compare). Add it to your Day 59 project if you like, next to the page controllers.
 
-A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+1. `Post`: an entity with a `@NotBlank` title and content.
+2. `PostRestController` at `/api/posts`, with the five routes and their status codes.
+3. Clear the id on create, and return a `Location` header.
+4. Tests: list, get, a 404, a missing title, an update, a 201 with its `Location`, and a body with someone else's id that must not overwrite them.
 
-| File | What it does |
-|---|---|
-| `Application.java` | Starts Spring Boot |
-| `controller/PostRestController.java` | RESTful routes for posts at `/api/posts` |
-| `model/Post.java` | A JPA entity |
-| `repository/PostRepository.java` | Spring Data repository for posts |
+## 🧪 Run it and test it
 
-## 💻 How to Run
-
-Needs JDK 21 and Maven (see the main README). From the repository root:
+Needs JDK 21 and Maven. From the repository root:
 
 ```bash
 cd day67
 mvn spring-boot:run
 ```
 
-Then open http://localhost:8080/api/posts. Stop it with Ctrl+C. Or run `Application` from your IDE.
+From another terminal:
 
-## 🧪 How to Test
+```bash
+curl -i -X POST localhost:8080/api/posts -H "Content-Type: application/json" -d '{"title":"Footbridge opens","content":"At last."}'
+curl -i localhost:8080/api/posts
+```
 
 ```bash
 cd day67
 mvn test
 ```
 
-Runs `PostRestControllerTest`. A clean run ends with `BUILD SUCCESS`.
+## 🆘 Stuck?
 
-## 🚀 Next Steps
-**Ready for Day 68?** You'll learn authentication with Spring Security!
+- **POST answers 200, not 201**: `ResponseEntity.ok(...)` is always 200. Use `ResponseEntity.created(location).body(saved)`.
+- **A POST changed an existing story**: the body carried an `id`. Clear it before saving, or use a request record without one.
+- **`400` with an empty body when the title is missing**: that's validation working. Day 66's `@RestControllerAdvice` shows how to say *what* is missing.
+- **`InvalidDefinitionException: Cannot construct instance of Post`**: Jackson and JPA both need a constructor with no arguments.
+
+## ✅ Checklist
+- [ ] Five RESTful routes with the right status codes
+- [ ] 201 with a `Location` on create
+- [ ] A body with an `id` can't overwrite another post
+- [ ] Bad input is refused with 400
+- [ ] The tests pass
+- [ ] Committed code to Git
+
+## ➡️ Next
+
+Day 68 adds accounts: registering, logging in with Spring Security, passwords stored as hashes, and then tokens for apps like Brian's.

@@ -1,57 +1,40 @@
-# Day 66 - Building RESTful APIs
+# Day 66 - RESTful APIs Done Properly: PUT, PATCH and Honest Errors
 
-## 📚 Learning Objectives
-- Design RESTful APIs
-- Implement API best practices
-- Handle API versioning
-- Choose the right method (safe, idempotent, PUT vs PATCH) and status code
-- Create API documentation
-- Build production-ready APIs
+> On Day 55 you built your first CRUD API. Today's is the kind another team can build an app on without asking you questions: versioned, consistent errors, and PUT and PATCH that each do exactly what they promise.
 
-## 🎯 Topics Covered
-- REST principles
-- API design
-- HTTP status codes
-- API documentation
-- Error handling
-- API security
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Juma runs a wholesale shop in Eastleigh, and three different people are building things on his product list: a website, a till app and a WhatsApp bot. Each of them has hit the same problems with his first API:
 
-### Step 1: One resource, one path, the method says what to do
+- The till app changed a price with `PUT` and sent only `{"price": 300}`. The product's name vanished.
+- Two people added "Unga 2kg" on the same afternoon, and now there are two.
+- When something went wrong, sometimes the answer was a JSON error, sometimes an HTML error page, sometimes a stack trace.
 
-A REST API names *things* (resources) in its paths and uses the HTTP **method** for the action. No `/getProducts` or `/deleteProduct?id=3`:
+Today's API fixes all three:
 
-| Method and path | Does | Success | Can also answer |
-|---|---|---|---|
-| `GET /api/v1/products` | list | `200` | |
-| `GET /api/v1/products/{id}` | read one | `200` | `404` |
-| `POST /api/v1/products` | create | `201` + `Location` | `400`, `409`, `415`, `422` |
-| `PUT /api/v1/products/{id}` | replace it whole | `200` | `400`, `404`, `409`, `422` |
-| `PATCH /api/v1/products/{id}` | change some fields | `200` | `404`, `409`, `422` |
-| `DELETE /api/v1/products/{id}` | remove | `204` | `404` |
+- `/api/v1/products`: the `v1` means a future `v2` can change things without breaking the apps built on `v1`;
+- **PUT** replaces the whole product, so you must send every field, and sending the same PUT twice leaves the same result;
+- **PATCH** changes only the fields you send: `{"price": 300}` leaves the name alone;
+- a second product with the same name (ignoring capitals) gets **409 Conflict**;
+- every error, from any endpoint, has the same JSON shape: `{"status": 404, "message": "No product with id 9"}`.
 
-The `v1` in the path is the **version**. When you must change the API in a way that breaks existing apps, you add `/api/v2` and keep `v1` running until they've moved.
+## 🎯 Learning Objectives
+- Version an API in its path, and know why clients need that
+- Know the difference between PUT (replace) and PATCH (change some fields), and which methods are idempotent
+- Use a record for a PATCH body, where `null` means "not sent"
+- Validate request bodies, and answer 400, 404, 409 and 422 for the right reasons
+- Give every error the same shape with one `@RestControllerAdvice`
+- Build a `Location` header from the current request
 
-### Step 2: Safe and idempotent
+## 🧰 What you'll use
 
-- **Safe** methods (`GET`, `HEAD`, `OPTIONS`) change nothing. Browsers and crawlers call them freely, so a `GET` must never delete anything.
-- **Idempotent** methods give the same result whether you send them once or twice: `GET`, `PUT`, `DELETE`. That makes them safe to **retry** after a dropped connection. `POST` is not: "create an order" sent twice makes two orders.
-
-The tests send the same `PUT` twice and get the same product, and delete a product twice: the second `DELETE` answers `404`, but the product is just as gone. Idempotent means the *state* is the same, not the response.
-
-### Step 3: PUT or PATCH?
-
-`PUT` sends the **whole** product. Leave out the price and the request is refused, because a `PUT` can't guess the missing field. `PATCH` sends **only what changes**:
+**PUT vs PATCH:**
 
 ```java
-// null means "not sent, leave it alone"
-public record ProductPatch(
-        @Pattern(regexp = ".*\\S.*", message = "name can't be blank") String name,
-        @Positive(message = "price must be positive") Double price) {
-}
+@PutMapping("/{id}")        // every field: a missing one is replaced by nothing
+public ResponseEntity<Product> updateProduct(@PathVariable Long id, @Valid @RequestBody Product updated) { ... }
 
-@PatchMapping("/{id}")
+@PatchMapping("/{id}")      // only what's sent
 public ResponseEntity<Product> patchProduct(@PathVariable Long id, @Valid @RequestBody ProductPatch patch) {
     Product product = find(id);
     if (patch.name() != null) product.setName(patch.name());
@@ -60,96 +43,67 @@ public ResponseEntity<Product> patchProduct(@PathVariable Long id, @Valid @Reque
 }
 ```
 
-Note the boxed `Double`, not `double`: a primitive can't be `null`, so you couldn't tell "not sent" from zero.
+`ProductPatch` is a record with `String name` and `Double price`: the wrapper `Double`, not `double`, so "not sent" can be `null` rather than `0`.
 
-### Step 4: Say where a new thing lives
+**Idempotent** means doing it twice leaves things the same as doing it once. GET, PUT and DELETE are idempotent; POST isn't (two POSTs make two products). Phones on bad networks retry requests, so this matters.
 
-`201 Created` means "I made it". The `Location` header says where:
+**One error shape.** `ApiExceptionHandler` catches each exception type and answers with an `ApiError`:
 
-```java
-URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(saved.getId()).toUri();
-return ResponseEntity.created(location).body(saved);
-```
-
-### Step 5: Pick the status code that tells the client what to fix
-
-One `@RestControllerAdvice` turns exceptions into the same JSON error shape (`status`, `message`, `timestamp`):
-
-| Code | When | What the client should do |
+| Exception | Status | When |
 |---|---|---|
-| `400 Bad Request` | the body can't be read: broken JSON, a missing field Jackson can't fill | fix the request format |
-| `404 Not Found` | no product with that id | check the id |
-| `405 Method Not Allowed` | `DELETE /api/v1/products` (no id). Spring answers this itself, with an `Allow` header listing what *is* allowed | use another method |
-| `409 Conflict` | a product with that name already exists | pick another name, or edit the existing one |
-| `415 Unsupported Media Type` | the body isn't JSON. Spring answers this itself | send `Content-Type: application/json` |
-| `422 Unprocessable Content` | it was read fine but breaks a rule: a blank name, a negative price | fix the values |
+| `ProductNotFoundException` | 404 | no product with that id |
+| `DuplicateProductException` | 409 | the name is already taken |
+| `HttpMessageNotReadableException` | 400 | the body isn't valid JSON |
+| `MethodArgumentNotValidException` | 422 | valid JSON, but it breaks a rule |
 
-`400` or `422`? `400` when the request can't even be read, `422` when the values are wrong. Some APIs use `400` for both; whichever you pick, be consistent.
+## 🪜 Steps
 
-The full list of methods and status codes, from `1xx` to `5xx`, with when to use each: [HTTP: methods and status codes](https://github.com/sagebeme/100-Days-of-TypeScript/blob/main/reference/http.md) (from the 100 Days of TypeScript course; the HTTP part is the same in every language).
+**Project: Juma's Products API** (the `day66/` folder is a finished version: build your own first, then compare).
 
-### Step 6: Document the API
+1. `Product` (an entity with a `@NotBlank` name and a `@Positive` price) and `ProductRepository` with `existsByNameIgnoreCase` and `findByNameIgnoreCase`.
+2. The six endpoints under `/api/v1/products`: list, get, POST (201 and `Location`), PUT, PATCH and DELETE (204).
+3. `ProductPatch`, with the same rules as `Product` where a value is sent.
+4. The exceptions and `ApiExceptionHandler`.
+5. Tests: the same PUT twice, a PUT that loses a missing field, a PATCH that keeps it, and a PATCH that breaks a rule.
 
-Other developers need to know your endpoints. Add [springdoc-openapi](https://springdoc.org/) (`org.springdoc:springdoc-openapi-starter-webmvc-ui`, a version that supports your Spring Boot) and it generates an OpenAPI description and a Swagger UI page at `/swagger-ui.html` from your controllers. Older tutorials show `Docket` from springfox: that project is abandoned and doesn't run on current Spring Boot.
+## 🧪 Run it and test it
 
-## 🎮 Project: RESTful API
-
-### Requirements
-Build the product API above:
-1. Resource paths under `/api/v1`, with the method choosing the action
-2. `201` with a `Location` header on create, `204` on delete
-3. Both `PUT` (whole) and `PATCH` (some fields)
-4. `400`, `404`, `409` and `422` in one JSON shape, from one exception handler
-5. Tests for every status code, plus a `PUT` and a `DELETE` sent twice
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:** Re-read **Step-by-Step Instructions** above; use main README for structure. **Quick reference:** `mvn spring-boot:run` or run from IDE.
-
-## ✅ Checklist
-- [ ] Can design REST APIs
-- [ ] Can use proper HTTP methods, and explain safe, idempotent, and PUT vs PATCH
-- [ ] Can pick between 400, 404, 405, 409, 415 and 422
-- [ ] Can handle errors
-- [ ] Can document APIs
-- [ ] Completed RESTful API
-- [ ] Committed code to Git
-
-## 📂 What's in this folder
-
-A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
-
-| File | What it does |
-|---|---|
-| `Application.java` | Starts Spring Boot |
-| `controller/ProductRestController.java` | A REST API at `/api/v1/products`: list, get, create (with `Location`), replace (`PUT`), change some fields (`PATCH`), delete |
-| `exception/ApiError.java` | The JSON error body: status, message and timestamp |
-| `exception/ApiExceptionHandler.java` | Turns errors into `400` (unreadable), `404`, `409` (duplicate name) and `422` (broken rules), all in one JSON shape |
-| `exception/DuplicateProductException.java` | Thrown when another product already has that name |
-| `exception/ProductNotFoundException.java` | Thrown when a product id doesn't exist |
-| `model/Product.java` | A JPA entity with validation rules |
-| `model/ProductPatch.java` | The fields a `PATCH` may change; `null` means "leave it alone" |
-| `repository/ProductRepository.java` | Spring Data repository for products, with a case-insensitive name lookup |
-
-## 💻 How to Run
-
-Needs JDK 21 and Maven (see the main README). From the repository root:
+Needs JDK 21 and Maven. From the repository root:
 
 ```bash
 cd day66
 mvn spring-boot:run
 ```
 
-Then open http://localhost:8080/api/v1/products. Stop it with Ctrl+C. Or run `Application` from your IDE.
+Then, from another terminal:
 
-## 🧪 How to Test
+```bash
+curl -i -X POST localhost:8080/api/v1/products -H "Content-Type: application/json" -d '{"name":"Unga 2kg","price":210}'
+curl -i -X PATCH localhost:8080/api/v1/products/1 -H "Content-Type: application/json" -d '{"price":220}'
+curl -i localhost:8080/api/v1/products/99
+```
 
 ```bash
 cd day66
 mvn test
 ```
 
-Runs `ProductRestControllerTest` (16 tests, one or more for every status code above). A clean run ends with `BUILD SUCCESS`.
+## 🆘 Stuck?
 
-## 🚀 Next Steps
-**Ready for Day 67?** You'll add RESTful routing to your blog!
+- **A PATCH sets the price to 0**: the patch's `price` is a `double`, which can't be `null`. Use `Double`.
+- **PATCH `{"name": ""}` is accepted**: `@NotBlank` fails on `null` too, so it can't go on a PATCH field. `@Pattern(regexp = ".*\\S.*")` allows `null` (not sent) but refuses blank.
+- **Renaming a product to its own name gives 409**: the duplicate check found the product itself. Ignore a match with the same id.
+- **Errors come back as an HTML page**: the exception isn't handled in `ApiExceptionHandler`. Add a handler for it.
+- **Prices like 209.99999**: `double` can't hold most decimal fractions exactly. Here prices are whole numbers; for real money keep whole shillings (or cents) in a `long`, or use `BigDecimal`.
+
+## ✅ Checklist
+- [ ] A versioned API with all six endpoints
+- [ ] PUT replaces, PATCH changes only what's sent
+- [ ] 201 with a `Location`, 204, 400, 404, 409 and 422 where they belong
+- [ ] Every error has the same JSON shape
+- [ ] The tests pass
+- [ ] Committed code to Git
+
+## ➡️ Next
+
+Day 67 gives the blog its own REST API, so apps can read and write posts too.

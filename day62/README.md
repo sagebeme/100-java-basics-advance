@@ -1,110 +1,107 @@
-# Day 62 - Spring Boot, Forms, and CSV
+# Day 62 - CSV In and Out: The Group's Contact List
 
-## 📚 Learning Objectives
-- Export form data to CSV
-- Import CSV data via forms
-- Process CSV files
-- Generate CSV reports
-- Build data import/export
+> Every office runs on spreadsheets. Today your app reads one in and hands one back, and survives the names, commas and formulas real people put in them.
 
-## 🎯 Topics Covered
-- CSV generation
-- CSV parsing
-- File downloads
-- Data export
-- Data import
-- Report generation
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+The Bidii Women's Group in Machakos has 60 members, and the secretary, Mueni, keeps their contacts in Excel. She wants the group's new web app to:
 
-### Step 1: Export to CSV
-Generate CSV from data:
+- **import** her spreadsheet, saved as CSV, and tell her which rows it couldn't use and why;
+- **export** everyone back as a CSV she can open in Excel or Google Sheets.
+
+Two things make this harder than `split(",")`:
+
+1. **Commas in values.** `Mama Njeri, Kayole` is one name. CSV handles it with quotes: `"Mama Njeri, Kayole"`, and a quote inside a quoted value is written twice: `"Otieno ""Oti"" Omondi"`.
+2. **Formulas.** A spreadsheet treats a cell that starts with `=` as a formula. If a member's "name" is `=HYPERLINK("http://bad.example","Click")`, exporting it unchanged puts a working link in Mueni's spreadsheet. That's **CSV injection**. The export puts a `'` in front of anything a spreadsheet would run, so it shows as text, but leaves phone numbers like `+254 712 345678` alone.
+
+```
+Imported 57 contacts.
+Some rows were not imported:
+  • Row 14: name and email are required
+  • Row 33: a quote is never closed
+```
+
+## 🎯 Learning Objectives
+- Send a file download from a controller: `Content-Type` and `Content-Disposition: attachment`
+- Read an uploaded CSV with a `BufferedReader`, row by row, counting rows for error messages
+- Write and read CSV correctly: quoting, doubled quotes, and a byte-order mark from Excel
+- Report bad rows instead of silently dropping or silently importing them
+- Defend against CSV (formula) injection
+- Test that what you write, you can read back
+
+## 🧰 What you'll use
+
+**A download.** Writing straight to the response, with headers that make the browser save a file:
 
 ```java
-@GetMapping("/users/export")
-public void exportUsers(HttpServletResponse response) throws IOException {
-    response.setContentType("text/csv");
-    response.setHeader("Content-Disposition", "attachment; filename=users.csv");
-    
-    List<User> users = userService.getAllUsers();
-    PrintWriter writer = response.getWriter();
-    
-    writer.println("Name,Email,Phone");
-    for (User user : users) {
-        writer.println(String.format("%s,%s,%s", 
-            user.getName(), user.getEmail(), user.getPhone()));
-    }
+@GetMapping("/contacts/export")
+public void exportContacts(HttpServletResponse response) throws IOException {
+    response.setContentType("text/csv; charset=UTF-8");
+    response.setHeader("Content-Disposition", "attachment; filename=contacts.csv");
+    response.getWriter().print(csvService.toCsv(contacts));
 }
 ```
 
-### Step 2: Import from CSV
-Upload and parse CSV:
+**One safe cell:**
 
 ```java
-@PostMapping("/users/import")
-public String importUsers(@RequestParam("file") MultipartFile file) {
-    try {
-        List<User> users = csvService.parseCSV(file);
-        userService.saveAll(users);
-        return "redirect:/users?imported=true";
-    } catch (Exception e) {
-        return "redirect:/users?error=import";
+static String cell(String value) {
+    String text = value;
+    if (startsLikeAFormula(text) && !looksLikeAPhoneNumber(text)) text = "'" + text;
+    if (text.contains(",") || text.contains("\"") || text.contains("\n")) {
+        text = "\"" + text.replace("\"", "\"\"") + "\"";
     }
+    return text;
 }
 ```
 
-## 🎮 Project: Data Import/Export System
+**Reading a line with quotes** means walking it one character at a time and remembering whether you're inside quotes: a comma inside quotes is part of the value, a comma outside ends it. `CsvService.splitLine` does this, and returns `null` when a quote never closes, so that row can be reported.
 
-### Requirements
-Create system for:
-1. Export data to CSV
-2. Import data from CSV
-3. Validate CSV data
-4. Handle errors
-5. Generate reports
+**A report, not a guess.** `parseCsv` returns an `ImportResult` with the contacts it could read *and* a list of errors with row numbers. The controller passes both to the page as flash attributes.
 
-## 📌 Notes & reference (use these when stuck)
+## 🪜 Steps
 
-**When you're stuck:** Re-read **Step-by-Step Instructions** above; use main README for structure. **Quick reference:** `mvn spring-boot:run` or run from IDE.
+**Project: Bidii Contacts** (the `day62/` folder is a finished version: build your own first, then compare).
 
-## ✅ Checklist
-- [ ] Can export to CSV
-- [ ] Can import from CSV
-- [ ] Can validate data
-- [ ] Can handle errors
-- [ ] Completed import/export system
-- [ ] Committed code to Git
+1. `Contact`: name, email, phone.
+2. `CsvService.toCsv`: a header, then one safe line per contact.
+3. `CsvService.parseCsv`: skip the header, split each line with quotes in mind, and collect contacts and errors.
+4. `ContactController`: `GET /contacts` (the page), `GET /contacts/export` (the download) and `POST /contacts/import` (the upload, then a redirect with what happened).
+5. `templates/contacts.html`: the table, the messages, the import form and the export link.
+6. Tests: quoting, the formula guard, a full write-then-read round trip, bad rows, an unclosed quote, and the page showing an import's results.
 
-## 📂 What's in this folder
+## 🧪 Run it and test it
 
-A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
-
-| File | What it does |
-|---|---|
-| `Application.java` | Starts Spring Boot |
-| `controller/ContactController.java` | `GET /contacts` lists contacts, `GET /contacts/export` downloads them as CSV, `POST /contacts/import` uploads a CSV |
-| `model/Contact.java` | A contact: name, email and phone |
-| `service/CsvService.java` | Writes contacts as CSV and parses a CSV back, reporting bad rows instead of dropping them |
-
-## 💻 How to Run
-
-Needs JDK 21 and Maven (see the main README). From the repository root:
+Needs JDK 21 and Maven. From the repository root:
 
 ```bash
 cd day62
 mvn spring-boot:run
 ```
 
-Then open http://localhost:8080/contacts. Stop it with Ctrl+C. Or run `Application` from your IDE.
-
-## 🧪 How to Test
+Open http://localhost:8080/contacts, download the CSV, open it in a spreadsheet, add a row with a comma in the name, and import it back. Stop it with Ctrl+C.
 
 ```bash
 cd day62
 mvn test
 ```
 
-Runs `ContactControllerTest` and `CsvServiceTest`. A clean run ends with `BUILD SUCCESS`.
+## 🆘 Stuck?
 
-## 🚀 Next Steps
-**Ready for Day 63?** You'll learn databases with JPA and Hibernate!
+- **The download opens in the browser instead of saving**: the `Content-Disposition: attachment` header is missing.
+- **`Mama Njeri, Kayole` turns into two columns**: the value wasn't quoted on the way out, or the reader splits at every comma on the way in.
+- **The first name in Excel's CSV starts with `ï»¿`**: that's the byte-order mark Excel adds to UTF-8 files. Strip `﻿` from the start of the first line.
+- **The flash messages never appear**: flash attributes only reach a page you *redirect* to, and the page has to show them.
+- **Phone numbers lose their `+`**: your formula guard is too eager. A `+` followed only by digits and spaces is a number, not a formula.
+
+## ✅ Checklist
+- [ ] Exported contacts as a CSV download
+- [ ] Imported a CSV and reported bad rows by number
+- [ ] Commas and quotes survive a round trip
+- [ ] A formula is exported as text, and a phone number is exported unchanged
+- [ ] The tests pass
+- [ ] Committed code to Git
+
+## ➡️ Next
+
+Day 63 puts the data in a real database with Spring Data JPA: entities, repositories, and queries written as method names.

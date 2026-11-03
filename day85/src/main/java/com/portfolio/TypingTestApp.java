@@ -8,7 +8,9 @@ public class TypingTestApp {
     private static final List<String> SAMPLE_TEXTS = List.of(
             "The quick brown fox jumps over the lazy dog",
             "Practice makes perfect when learning to type quickly",
-            "Java is a popular language for building portable applications"
+            "Java is a popular language for building portable applications",
+            "The matatu from Githurai to town was full by six in the morning",
+            "Mama Njeri sells sukuma wiki and tomatoes at Gikomba market"
     );
 
     public static void main(String[] args) {
@@ -24,10 +26,16 @@ public class TypingTestApp {
             System.out.print("> ");
 
             stopwatch.start();
+            if (!scanner.hasNextLine()) {
+                System.out.println();
+                System.out.println("No answer typed.");
+                return;
+            }
             String typed = scanner.nextLine();
             stopwatch.stop();
 
-            TypingResult result = test.evaluate(typed, stopwatch.elapsedMillis());
+            // A pasted or piped answer can arrive in under a millisecond; count it as one.
+            TypingResult result = test.evaluate(typed, Math.max(1, stopwatch.elapsedMillis()));
 
             System.out.println();
             System.out.printf("Time: %.1f seconds%n", result.elapsedSeconds());

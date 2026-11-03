@@ -58,7 +58,7 @@ public class GreedyAlgorithms {
         );
         System.out.println("Selected activities: " + greedy.selectActivities(activities));
 
-        int[] usCoins = {25, 10, 5, 1};
-        System.out.println("Change for 41 cents: " + greedy.greedyCoinChange(usCoins, 41));
+        int[] kenyanCoins = {20, 10, 5, 1};
+        System.out.println("Change for KES 38: " + greedy.greedyCoinChange(kenyanCoins, 38));
     }
 }

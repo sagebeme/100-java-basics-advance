@@ -49,9 +49,9 @@ class GreedyAlgorithmsTest {
     }
 
     @Test
-    void greedyCoinChangeIsOptimalForCanonicalUsDenominations() {
-        int[] usCoins = {25, 10, 5, 1};
-        assertEquals(List.of(25, 10, 5, 1), greedy.greedyCoinChange(usCoins, 41));
+    void greedyCoinChangeIsOptimalForKenyanCoins() {
+        int[] kenyanCoins = {20, 10, 5, 1};
+        assertEquals(List.of(20, 10, 5, 1, 1, 1), greedy.greedyCoinChange(kenyanCoins, 38));
     }
 
     @Test
@@ -59,7 +59,7 @@ class GreedyAlgorithmsTest {
         // With coins {4, 3, 1} and amount 6: greedy takes 4 first, leaving 2, which it can only
         // make as 1+1, for 3 coins total [4, 1, 1]. The true optimum is 2 coins: [3, 3].
         // This demonstrates that the greedy "largest coin first" rule is NOT guaranteed optimal
-        // for arbitrary denominations, unlike canonical systems such as US currency.
+        // for arbitrary denominations, unlike canonical systems such as Kenya's 20, 10, 5 and 1 shilling coins.
         int[] nonCanonicalCoins = {4, 3, 1};
         List<Integer> greedyResult = greedy.greedyCoinChange(nonCanonicalCoins, 6);
 

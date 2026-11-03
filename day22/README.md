@@ -103,26 +103,10 @@ private void updateBall() {
 
 ## 💻 Exercises
 
-### Exercise 1: Paddle Class
-Create a Paddle class with:
-- Position and size
-- Movement methods
-- Boundary checking
-- Drawing method
+Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`.
 
-### Exercise 2: Ball Class
-Create a Ball class with:
-- Position and velocity
-- Movement method
-- Bounce methods
-- Collision detection
-
-### Exercise 3: Game Logic
-Implement:
-- Score tracking
-- Ball reset
-- Game over condition
-- Win detection
+- **[Exercise 1: The paddle](exercise1/README.md)**: moving up and down without leaving the court, and knowing whether, and where, the ball hit it.
+- **[Exercise 2: The ball, the paddles and the score](exercise2/README.md)**: one frame of Pong: walls, paddles that send the ball back faster, and a point when a paddle misses.
 
 ## 🎮 Project: Pong Game
 

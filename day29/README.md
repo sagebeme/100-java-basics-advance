@@ -110,26 +110,12 @@ public String searchPassword(String website) {
 
 ## 💻 Exercises
 
-### Exercise 1: Password Generation
-Create password generator with:
-- Configurable length
-- Character set options
-- Strength indicator
-- Multiple generation methods
+## 💻 Exercises
 
-### Exercise 2: File Operations
-Create systems for:
-- Saving passwords
-- Loading passwords
-- Searching passwords
-- Deleting passwords
+Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`.
 
-### Exercise 3: GUI Features
-Add features:
-- Password visibility toggle
-- Copy to clipboard
-- Password strength meter
-- Search functionality
+- **[Exercise 1: Passwords for the cyber café staff](exercise1/README.md)**: a generator that always includes every chosen kind of character, shuffled, plus a strength checker.
+- **[Exercise 2: The café's password vault, in a file](exercise2/README.md)**: save, load, search, replace and remove logins in a text file, and skip broken lines without losing count.
 
 ## 🎮 Project: Password Manager
 

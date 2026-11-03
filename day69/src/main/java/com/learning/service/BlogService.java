@@ -6,6 +6,7 @@ import com.learning.repository.BlogUserRepository;
 import com.learning.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,6 +23,8 @@ public class BlogService {
         return blogUserRepository.save(new BlogUser(username, email));
     }
 
+    // One transaction for the whole method, so author.getPosts() (a lazy list) can still be loaded.
+    @Transactional
     public Post createPost(Long authorId, String title) {
         BlogUser author = blogUserRepository.findById(authorId)
                 .orElseThrow(() -> new IllegalArgumentException("No user with id " + authorId));
@@ -34,6 +37,7 @@ public class BlogService {
         return post;
     }
 
+    @Transactional(readOnly = true)
     public List<Post> getPostsByAuthor(Long authorId) {
         return postRepository.findByAuthorId(authorId);
     }

@@ -73,4 +73,14 @@ class MovieServiceTest {
 
         assertEquals("A", movieService.getTop10Movies().get(0).getTitle());
     }
+
+    @Test
+    void aRankOutsideTheListIsRefused() {
+        Movie a = add("A");
+        add("B");
+
+        assertThrows(IllegalArgumentException.class, () -> movieService.setRank(a.getId(), 0));
+        assertThrows(IllegalArgumentException.class, () -> movieService.setRank(a.getId(), 99));
+        assertEquals("A", movieService.getTop10Movies().get(0).getTitle());
+    }
 }

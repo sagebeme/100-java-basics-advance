@@ -34,12 +34,16 @@ public class MovieService {
     public void setRank(Long movieId, int newRank) {
         Movie movie = movieRepository.findById(movieId)
                 .orElseThrow(() -> new IllegalArgumentException("No movie with id " + movieId));
+        List<Movie> all = movieRepository.findAllByOrderByRankAsc();
+        if (newRank < 1 || newRank > all.size()) {
+            // Rank 99 in a list of 7 would leave a gap that no "move" could ever close.
+            throw new IllegalArgumentException("Rank must be from 1 to " + all.size() + ", not " + newRank);
+        }
         int oldRank = movie.getRank();
         if (oldRank == newRank) {
             return;
         }
 
-        List<Movie> all = movieRepository.findAllByOrderByRankAsc();
         if (newRank < oldRank) {
             // Moving up: everything from newRank..oldRank-1 shifts down by one.
             for (Movie m : all) {

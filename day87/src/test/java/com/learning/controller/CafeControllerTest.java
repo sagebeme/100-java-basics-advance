@@ -27,7 +27,10 @@ class CafeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Java House")))
                 .andExpect(content().string(containsString("id=\"map\"")))
-                .andExpect(content().string(containsString("leaflet")));
+                .andExpect(content().string(containsString("leaflet")))
+                // The map library comes from a CDN, so the browser must check it wasn't tampered with.
+                .andExpect(content().string(containsString("leaflet.js\" integrity=\"sha256-")))
+                .andExpect(content().string(containsString("leaflet.css\" integrity=\"sha256-")));
     }
 
     @Test

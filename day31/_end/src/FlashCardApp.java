@@ -120,9 +120,19 @@ public class FlashCardApp extends Application {
         statusLabel.setText("Marked as unknown");
     }
     
+    // Skips the cards marked as known: practice time goes to the words you still get wrong.
     private void nextCard() {
         if (cards.isEmpty()) return;
-        currentIndex = (currentIndex + 1) % cards.size();
+        boolean[] known = new boolean[cards.size()];
+        for (int i = 0; i < cards.size(); i++) {
+            known[i] = cards.get(i).known;
+        }
+        int next = FlashCardAppLogic.nextToStudy(currentIndex, known);
+        if (next == -1) {
+            statusLabel.setText("You know all " + cards.size() + " cards! Mark one unknown to keep practising.");
+            return;
+        }
+        currentIndex = next;
         showCard();
     }
     

@@ -1,0 +1,15 @@
+Habari ya asubuhi|Good morning|false
+Asante sana|Thank you very much|false
+Karibu|Welcome|false
+Pole pole|Slowly, take it easy|false
+Rafiki|Friend|false
+Chakula|Food|false
+Maji|Water|false
+Shule|School|false
+Kesho|Tomorrow|false
+Jana|Yesterday|false
+Leo|Today|false
+Nyumbani|At home|false
+Safari|Journey|false
+Hakuna matata|No worries|false
+Tutaonana|See you later|false

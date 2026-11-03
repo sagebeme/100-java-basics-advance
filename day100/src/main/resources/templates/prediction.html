@@ -17,8 +17,8 @@
             <h2 class="h6 text-muted">Model Evaluation (held-out test set)</h2>
             <p class="mb-0" id="model-metrics">
                 R&sup2;: <span th:text="${#numbers.formatDecimal(metrics.r2(), 1, 3)}">0</span> &middot;
-                MAE: KES <span th:text="${#numbers.formatDecimal(metrics.mae(), 1, 0)}">0</span> &middot;
-                MSE: <span th:text="${#numbers.formatDecimal(metrics.mse(), 1, 0)}">0</span>
+                MAE: KES <span th:text="${#numbers.formatDecimal(metrics.mae(), 1, 'COMMA', 0, 'POINT')}">0</span> &middot;
+                MSE: <span th:text="${#numbers.formatDecimal(metrics.mse(), 1, 'COMMA', 0, 'POINT')}">0</span>
                 (trained on <span th:text="${metrics.trainSize()}">0</span> rows, evaluated on <span th:text="${metrics.testSize()}">0</span>)
             </p>
         </div>

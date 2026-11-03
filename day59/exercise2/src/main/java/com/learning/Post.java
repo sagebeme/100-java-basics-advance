@@ -1,17 +1,28 @@
 package com.learning;
 
+// One story on the editor's list. Already written.
 public class Post {
-    private final Long id;
-    private final String title;
-    private final String category;
 
-    public Post(Long id, String title, String category) {
+    private final long id;
+    private final String title;
+    private final String section;
+
+    public Post(long id, String title, String section) {
         this.id = id;
         this.title = title;
-        this.category = category;
+        this.section = section;
     }
 
-    public Long getId() { return id; }
-    public String getTitle() { return title; }
-    public String getCategory() { return category; }
+    public long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    // "News", "Sport", "Business" or "Health".
+    public String getSection() {
+        return section;
+    }
 }

@@ -88,19 +88,12 @@ Improve post creation form:
 
 ## 💻 Exercises
 
-### Exercise 1: Layout Upgrade
-Upgrade blog with:
-- Bootstrap navigation
-- Responsive grid
-- Card layouts
-- Better typography
+## 💻 Exercises
 
-### Exercise 2: Components
-Add Bootstrap components:
-- Alerts for messages
-- Badges for categories
-- Pagination for posts
-- Modals for confirmations
+Each exercise is a small Maven project with its own README. The starter compiles and its tests fail until you're done; `solution/` holds one answer for each file you change, at the same path. Run `mvn test` inside the exercise folder.
+
+- **[Exercise 1: Mtaa News, one story per page](exercise1/README.md)**: a detail page per story with a real 404, an `Optional` lookup, and excerpts that never break a word.
+- **[Exercise 2: The editor's desk: pages and deleting](exercise2/README.md)**: Bootstrap pagination with out-of-range redirects, and deleting by `POST` with a flash message, tested with a Mockito stand-in.
 
 ## 🎮 Project: Bootstrap Blog Upgrade
 

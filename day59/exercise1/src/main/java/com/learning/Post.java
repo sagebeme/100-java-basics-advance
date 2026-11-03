@@ -1,17 +1,46 @@
 package com.learning;
 
-public class Post {
-    private final Long id;
-    private final String title;
-    private final String content;
+import java.time.LocalDate;
+import java.util.List;
 
-    public Post(Long id, String title, String content) {
+// One story. Already written. Paragraphs in the body are separated by a blank line.
+public class Post {
+
+    private final long id;
+    private final String title;
+    private final String author;
+    private final LocalDate date;
+    private final String body;
+
+    public Post(long id, String title, String author, LocalDate date, String body) {
         this.id = id;
         this.title = title;
-        this.content = content;
+        this.author = author;
+        this.date = date;
+        this.body = body;
     }
 
-    public Long getId() { return id; }
-    public String getTitle() { return title; }
-    public String getContent() { return content; }
+    public long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public List<String> getParagraphs() {
+        return List.of(body.split("\\n\\s*\\n"));
+    }
 }

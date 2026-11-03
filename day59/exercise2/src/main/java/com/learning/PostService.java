@@ -1,51 +1,40 @@
 package com.learning;
 
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PostService {
 
-    private final List<Post> posts = new ArrayList<>();
+    private final List<Post> posts = new ArrayList<>(List.of(
+            new Post(1, "Kayole's new footbridge opens", "News"),
+            new Post(2, "Water rationing: the new timetable", "News"),
+            new Post(3, "Under-14 football final on Saturday", "Sport"),
+            new Post(4, "Free eye clinic at the health centre", "Health"),
+            new Post(5, "Boda boda riders form a Sacco", "Business"),
+            new Post(6, "Kayole Stars win the final 2-1", "Sport"),
+            new Post(7, "New market stalls at Mihango", "Business")));
 
-    public PostService() {
-        posts.add(new Post(1L, "Learn Java", "Java"));
-        posts.add(new Post(2L, "Build an API", "Spring"));
-        posts.add(new Post(3L, "Style with Bootstrap", "Frontend"));
-        posts.add(new Post(4L, "Write JUnit Tests", "Testing"));
-        posts.add(new Post(5L, "Deploy to the Cloud", "DevOps"));
-        posts.add(new Post(6L, "Database Basics", "Java"));
-        posts.add(new Post(7L, "REST Best Practices", "Spring"));
-    }
-
-    public int totalCount() {
+    public synchronized int count() {
         return posts.size();
     }
 
-    public int totalPages(int pageSize) {
-        return (int) Math.ceil((double) posts.size() / pageSize);
+    // Always at least 1, so an empty site still has a first page to show.
+    public synchronized int totalPages(int pageSize) {
+        // TODO
+        return 0;
     }
 
-    /**
-     * @param page 1-based page number.
-     */
-    public List<Post> getPage(int page, int pageSize) {
-        int fromIndex = (page - 1) * pageSize;
-        if (fromIndex >= posts.size() || fromIndex < 0) {
-            return List.of();
-        }
-        int toIndex = Math.min(fromIndex + pageSize, posts.size());
-        return posts.subList(fromIndex, toIndex);
+    // Page 1 is the first `pageSize` posts. A page past the end is empty.
+    public synchronized List<Post> getPage(int page, int pageSize) {
+        // TODO: refuse a page below 1 with an IllegalArgumentException
+        return List.of();
     }
 
-    public boolean deletePost(Long id) {
-        return posts.removeIf(p -> p.getId().equals(id));
-    }
-
-    public List<Post> getAllPosts() {
-        return Collections.unmodifiableList(posts);
+    // True if there was such a post to delete.
+    public synchronized boolean delete(long id) {
+        // TODO
+        return false;
     }
 }

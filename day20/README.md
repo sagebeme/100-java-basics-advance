@@ -103,26 +103,10 @@ scene.setOnKeyPressed(event -> {
 
 ## 💻 Exercises
 
-### Exercise 1: Basic Animation
-Create programs that:
-- Move a shape across screen
-- Bounce shape off walls
-- Animate multiple objects
-- Control speed
+Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`.
 
-### Exercise 2: Coordinate Systems
-Practice with:
-- Grid-based movement
-- Pixel-based movement
-- Coordinate conversion
-- Boundary checking
-
-### Exercise 3: Input Handling
-Create programs with:
-- Keyboard controls
-- Direction changes
-- Input validation
-- Multiple key support
+- **[Exercise 1: The bouncing ball](exercise1/README.md)**: one frame of animation at a time: move, then bounce off any edge, so the ball never leaves the screen.
+- **[Exercise 2: Squares and pixels](exercise2/README.md)**: converting between grid cells and pixels, and the two traps with negative numbers: `Math.floorDiv` and `Math.floorMod`.
 
 ## 🎮 Project: Snake Game Part 1
 

@@ -87,26 +87,10 @@ for (File file : files) {
 
 ## 💻 Exercises
 
-### Exercise 1: File Reading
-Create programs that:
-- Read text files line by line
-- Count lines and words
-- Search for specific text
-- Process file content
+Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`. The tests make their own files in a temporary folder.
 
-### Exercise 2: File Writing
-Create programs that:
-- Write data to files
-- Append to existing files
-- Format output
-- Create multiple files
-
-### Exercise 3: File Operations
-Create programs that:
-- List directory contents
-- Create directories
-- Copy files
-- Delete files
+- **[Exercise 1: Reading Mama Njeri's shop log](exercise1/README.md)**: counting lines and words, finding a word with its line number, and adding up the sales, from a file read with `Files.readAllLines`.
+- **[Exercise 2: Receipts that line up](exercise2/README.md)**: writing files that never overwrite each other, appending to a day book, and lining up columns with `String.format`.
 
 ## 🎮 Project: Mail Merge
 

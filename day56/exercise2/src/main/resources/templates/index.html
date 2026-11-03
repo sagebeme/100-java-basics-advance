@@ -1,17 +1,19 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title th:text="${title}">Home</title>
+    <title th:text="${title}">Pwani Day Trips</title>
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;800&family=Work+Sans:wght@400;600&display=swap">
     <link rel="stylesheet" href="../static/css/pwani.css" th:href="@{/css/pwani.css}">
 </head>
 <body>
-    <div th:insert="~{fragments/header :: header}"></div>
+    <header th:replace="~{fragments/header :: header('home')}"></header>
 
-    <h1 th:text="${title}">Title</h1>
-    <p th:text="${message}">Message</p>
+    <h1 th:text="${title}">Pwani Day Trips</h1>
+    <p>Small-group day trips along the Kenyan coast, with a guide who grew up here.</p>
+    <p><a th:href="@{/tours}">See this week's trips</a></p>
 
-    <div th:insert="~{fragments/footer :: footer}"></div>
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>

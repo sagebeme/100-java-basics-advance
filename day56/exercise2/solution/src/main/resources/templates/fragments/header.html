@@ -1,0 +1,9 @@
+<!-- The site header, shared by every page. `active` names the page being shown. -->
+<header th:fragment="header(active)">
+    <strong>Pwani Day Trips</strong>
+    <nav>
+        <a th:href="@{/}" th:attr="aria-current=${active == 'home'} ? 'page'">Home</a>
+        <a th:href="@{/tours}" th:attr="aria-current=${active == 'tours'} ? 'page'">Tours</a>
+        <a th:href="@{/about}" th:attr="aria-current=${active == 'about'} ? 'page'">About</a>
+    </nav>
+</header>

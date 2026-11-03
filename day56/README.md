@@ -97,26 +97,12 @@ spring.web.resources.static-locations=classpath:/static/
 
 ## 💻 Exercises
 
-### Exercise 1: Static Files
-Create and serve:
-- CSS files
-- JavaScript files
-- Images
-- Fonts
+## 💻 Exercises
 
-### Exercise 2: Templates
-Work with:
-- HTML templates
-- Template variables
-- Template inheritance
-- Layout templates
+Each exercise is a small Maven project with its own README. The starter compiles and its tests fail until you're done; `solution/` holds one answer for each file you change, at the same path. Run `mvn test` inside the exercise folder.
 
-### Exercise 3: Resource Organization
-Organize:
-- File structure
-- Asset management
-- Resource paths
-- CDN integration
+- **[Exercise 1: A juice kiosk's page, from static files](exercise1/README.md)**: a phone-friendly `static/index.html` with its CSS, script and logo, plus a custom resource handler with a cache header.
+- **[Exercise 2: One header for every page](exercise2/README.md)**: Thymeleaf fragments with a parameter that marks the current page, and a tours table with formatted prices.
 
 ## 🎮 Project: Static Website with Spring Boot
 

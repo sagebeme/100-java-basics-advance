@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title}">Day trips</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;800&family=Work+Sans:wght@400;600&display=swap">
+    <link rel="stylesheet" href="../static/css/pwani.css" th:href="@{/css/pwani.css}">
+</head>
+<body>
+    <header th:replace="~{fragments/header :: header('tours')}"></header>
+
+    <h1 th:text="${title}">Day trips</h1>
+    <table>
+        <thead>
+            <tr><th>Trip</th><th>From</th><th>Price</th></tr>
+        </thead>
+        <tbody>
+            <tr th:each="tour : ${tours}">
+                <td th:text="${tour.name}">Fort Jesus walk</td>
+                <td th:text="${tour.place}">Mombasa</td>
+                <td th:text="|KES ${#numbers.formatInteger(tour.shillings, 1, 'COMMA')}|">KES 2,500</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>

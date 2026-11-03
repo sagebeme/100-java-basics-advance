@@ -1,37 +1,56 @@
 public class CountdownTimer {
-    private int secondsLeft;
-    private boolean running = false;
+
+    // TODO: private fields: where it started, how many seconds are left, and whether it's running
 
     public CountdownTimer(int startSeconds) {
-        this.secondsLeft = startSeconds;
+        // TODO: refuse 0 or less. A new timer is stopped.
     }
 
     public void start() {
-        running = true;
+        // TODO: a finished timer can't start again until it's reset
     }
 
     public void pause() {
-        running = false;
+        // TODO
     }
 
-    /**
-     * Advances the timer by one second, if running. Has no effect once it reaches zero.
-     */
-    public void tick() {
-        if (running && secondsLeft > 0) {
-            secondsLeft--;
-        }
+    public void reset() {
+        // TODO: back to the start, stopped
+    }
+
+    // One second passes. Returns true only on the tick that reaches 0, so the alarm rings once.
+    public boolean tick() {
+        // TODO: nothing happens while stopped
+        return false;
+    }
+
+    public boolean isRunning() {
+        // TODO
+        return false;
     }
 
     public boolean isComplete() {
-        return secondsLeft == 0;
+        // TODO
+        return false;
     }
 
     public int getSecondsLeft() {
-        return secondsLeft;
+        // TODO
+        return -1;
     }
 
+    // 1500 → "25:00", 65 → "01:05", 4500 → "75:00": minutes keep counting past 59.
     public static String format(int seconds) {
-        return String.format("%02d:%02d", seconds / 60, seconds % 60);
+        // TODO
+        return "";
+    }
+
+    public static void main(String[] args) {
+        CountdownTimer timer = new CountdownTimer(3);
+        timer.start();
+        for (int i = 0; i < 5; i++) {
+            boolean rang = timer.tick();
+            System.out.println(format(timer.getSecondsLeft()) + (rang ? "  ring!" : ""));
+        }
     }
 }

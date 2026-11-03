@@ -2,39 +2,55 @@ public class PomodoroCycle {
 
     public enum Phase { WORK, SHORT_BREAK, LONG_BREAK }
 
-    private Phase phase = Phase.WORK;
-    private int completedWorkSessions = 0;
-    private final int sessionsBeforeLongBreak;
+    // TODO: private fields for the three lengths, the set size, the current phase and the sessions done
 
-    public PomodoroCycle(int sessionsBeforeLongBreak) {
-        this.sessionsBeforeLongBreak = sessionsBeforeLongBreak;
+    public PomodoroCycle(int workMinutes, int shortBreakMinutes, int longBreakMinutes, int sessionsPerSet) {
+        // TODO: refuse anything 0 or less. Every cycle starts on WORK with nothing done.
     }
 
-    public Phase getPhase() {
-        return phase;
+    // The usual: 25 minutes' work, 5 off, and 15 off after every 4th session.
+    public static PomodoroCycle classic() {
+        // TODO
+        return null;
     }
 
-    public int getCompletedWorkSessions() {
-        return completedWorkSessions;
+    public Phase phase() {
+        // TODO
+        return null;
     }
 
-    /**
-     * Call when the current phase's timer finishes, to move on to the next one.
-     */
+    public int minutes() {
+        // TODO: how long the current phase lasts
+        return 0;
+    }
+
+    // The current phase is over: move to the next one.
     public void advance() {
-        if (phase == Phase.WORK) {
-            completedWorkSessions++;
-            phase = (completedWorkSessions % sessionsBeforeLongBreak == 0) ? Phase.LONG_BREAK : Phase.SHORT_BREAK;
-        } else {
-            phase = Phase.WORK;
-        }
+        // TODO: after work, count the session and pick the break; after any break, back to work
+    }
+
+    public int completedSessions() {
+        // TODO
+        return 0;
+    }
+
+    // "Work 2 of 4", "Short break", "Long break".
+    public String label() {
+        // TODO
+        return "";
+    }
+
+    public int workMinutesDone() {
+        // TODO
+        return 0;
     }
 
     public static void main(String[] args) {
-        PomodoroCycle cycle = new PomodoroCycle(4);
-        for (int i = 0; i < 8; i++) {
-            System.out.println(cycle.getPhase());
+        PomodoroCycle cycle = classic();
+        for (int i = 0; i < 9; i++) {
+            System.out.println(cycle.label() + " (" + cycle.minutes() + " min)");
             cycle.advance();
         }
+        System.out.println(cycle.workMinutesDone() + " minutes of revision done");
     }
 }

@@ -88,26 +88,12 @@ private void startBreak() {
 
 ## 💻 Exercises
 
-### Exercise 1: Basic Timer
-Create a timer that:
-- Counts down from set time
-- Displays time remaining
-- Alerts when complete
-- Can be paused/resumed
+## 💻 Exercises
 
-### Exercise 2: Multiple Timers
-Create system with:
-- Work timer
-- Break timer
-- Long break timer
-- Cycle management
+Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`.
 
-### Exercise 3: Visual Feedback
-Add visual elements:
-- Progress bar
-- Color changes
-- Sound alerts
-- Notifications
+- **[Exercise 1: The invigilator's countdown](exercise1/README.md)**: a countdown that pauses, resets and rings exactly once, driven by `tick()` calls so it can be tested without waiting.
+- **[Exercise 2: A revision plan that knows when to rest](exercise2/README.md)**: the Pomodoro cycle of work, short breaks and a long break every few sessions, with an enum for the phase.
 
 ## 🎮 Project: Pomodoro Timer
 

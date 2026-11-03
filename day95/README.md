@@ -1,71 +1,100 @@
 # Day 95 - Portfolio Project: API Integration Website
 
-## 📚 Learning Objectives
-- Integrate multiple APIs
-- Build API-driven website
-- Handle API responses
-- Create dynamic content
-- Build modern web app
+> Most real apps are glue between other people's services. Today's dashboard calls three free public APIs and shows the results on one page, and it stays up when one of them goes down.
 
-## 🎯 Project Requirements
-Create API Integration Website:
-1. Integrate multiple APIs
-2. Display API data
-3. Handle errors
-4. Beautiful UI
-5. Real-time updates
+## 📖 The story
 
-## 📌 Notes & reference (use these when stuck)
+Kip runs the screens in the waiting area of a co-working space in Westlands. Members asked for something more interesting than the Wi-Fi password, so he wants a dashboard: the weather in Nairobi, today's Bitcoin and Ethereum prices (half the members trade), and, because it's fun, where the International Space Station is right now. It should refresh by itself every 30 seconds.
 
-**When you're stuck:** Re-read **Project Requirements** above; use main README for structure. **Quick reference:** `mvn spring-boot:run` or run from IDE; Day 33 for HTTP/APIs; open http://localhost:8080.
+| Section | API | Key needed? |
+|---|---|---|
+| Nairobi weather | Open-Meteo | no |
+| Crypto prices (USD) | CoinGecko | no, but rate-limited |
+| ISS location | Open Notify | no |
 
-## ✅ Checklist
-- [ ] Integrated APIs
-- [ ] Displays data
-- [ ] Handles errors
-- [ ] Created UI
-- [ ] Completed website
-- [ ] Committed code to Git
+Kip's real worry: if CoinGecko stops answering, the whole screen mustn't go blank. Each section has to fail on its own.
 
-## 📂 What's in this folder
+## 🎯 Learning Objectives
+- Call JSON APIs with Spring's `RestClient` and read the answers with Jackson's `JsonNode`
+- Build URLs with template variables, so values are encoded properly
+- Check every field of someone else's JSON before using it
+- Turn every kind of failure (network, HTTP error, odd response) into one `ApiException`
+- Keep one failing API from breaking the whole page
+- Test API clients offline with `MockRestServiceServer`, and the page with mocked services
 
-A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+## 🧰 What you'll use
 
-| File | What it does |
-|---|---|
-| `Application.java` | Starts Spring Boot |
-| `controller/DashboardController.java` | `GET /` shows all three live panels |
-| `dto/CryptoPrice.java` | One coin's price |
-| `dto/IssLocation.java` | Latitude and longitude |
-| `dto/WeatherInfo.java` | Weather data |
-| `exception/ApiException.java` | Thrown when an API fails, so one broken panel doesn't break the page |
-| `service/CryptoService.java` | Coin prices from CoinGecko |
-| `service/IssService.java` | Where the International Space Station is right now |
-| `service/WeatherService.java` | Nairobi's current weather from Open-Meteo |
+**Calling an API:**
 
-Also in `src/main/resources/`: `templates/dashboard.html`.
-
-Needs an internet connection: the panels call three free public APIs (no keys needed). If one is down, only its panel shows an error.
-
-## 💻 How to Run
-
-Needs JDK 21 and Maven (see the main README). From the repository root:
-
-```bash
-cd day95
-mvn spring-boot:run
+```java
+JsonNode root = restClient.get()
+        .uri("https://api.coingecko.com/api/v3/simple/price?ids={ids}&vs_currencies=usd", "bitcoin,ethereum")
+        .retrieve()                  // 4xx and 5xx answers throw a RestClientException
+        .body(JsonNode.class);
 ```
 
-Then open http://localhost:8080. Stop it with Ctrl+C. Or run `Application` from your IDE.
+`{ids}` is filled in and encoded for you (the comma becomes `%2C`), which is safer than gluing strings into a URL.
 
-## 🧪 How to Test
+**Don't trust the response.** A field can be missing, `null`, or a string where you expected a number. `root.get("x").asDouble()` on a missing field throws `NullPointerException`, which isn't an `ApiException`, so the controller wouldn't catch it and the whole page would fail. So each service checks first:
+
+```java
+JsonNode current = root == null ? null : root.get("current_weather");
+if (current == null || !current.path("temperature").isNumber()) {
+    throw new ApiException("Weather API response missing the current temperature", null);
+}
+```
+
+**Failing one section at a time.** The controller wraps each call in its own `try`/`catch` and puts either the data or an error message into the model, so the page always renders.
+
+**Testing without the internet.** Each service has a second constructor that takes a `RestClient.Builder`. A test binds that builder to a `MockRestServiceServer`, which answers with whatever the test chooses: a normal response, a missing field, a 503 or a 429:
+
+```java
+RestClient.Builder builder = RestClient.builder();
+MockRestServiceServer server = MockRestServiceServer.bindTo(builder).build();
+server.expect(requestTo(startsWith("https://api.open-meteo.com/")))
+      .andRespond(withSuccess("{\"current_weather\":{\"temperature\":23.4,\"windspeed\":11.2}}", APPLICATION_JSON));
+WeatherInfo weather = new WeatherService(builder).fetchCurrentWeather();
+```
+
+One test per service still calls the real API, and skips itself when the network isn't there.
+
+## 🪜 Steps
+
+**Your brief** (the `day95/` folder is one finished version: build your own first, then compare).
+
+1. `WeatherInfo`, `CryptoPrice` and `IssLocation` records, and `ApiException`.
+2. `WeatherService`, `CryptoService` and `IssService`, each checking its response.
+3. `DashboardController` and `dashboard.html`: three cards, an error in a card if its API fails, and `<meta http-equiv="refresh" content="30">`.
+4. Tests: each service with fixed responses (good, incomplete, an HTTP error) and once for real; the page with all services working, and with one failing.
+5. Make it yours: cache each answer for a minute so the page doesn't hit the APIs on every refresh (CoinGecko will thank you), show KES as well as USD, or put the ISS on a Leaflet map (Day 87).
+
+## 🧪 Run it and test it
+
+Needs JDK 21 and Maven. From the repository root:
 
 ```bash
 cd day95
 mvn test
+mvn spring-boot:run
 ```
 
-Runs `CryptoServiceTest`, `DashboardControllerTest`, `IssServiceTest` and `WeatherServiceTest`. A clean run ends with `BUILD SUCCESS`.
+Open <http://localhost:8080> and leave it open: it refreshes every 30 seconds.
 
-## 🚀 Next Steps
-**Ready for Day 96?** You'll build E-commerce with Payment!
+## 🆘 Stuck?
+
+- **The whole page is an error**: something other than `ApiException` escaped a service, usually a `NullPointerException` from a missing field. Check fields before reading them.
+- **`429 Too Many Requests` from CoinGecko**: the free API limits how often you can call it. Cache results, or refresh less often.
+- **The ISS section fails on a secure site**: Open Notify only serves plain `http`. Browsers block http requests from https pages, but this app calls it from the server, so it works.
+- **`MockRestServiceServer` says the request wasn't expected**: compare the URLs exactly, including encoding (`%2C` for a comma).
+
+## ✅ Checklist
+- [ ] Three APIs on one page
+- [ ] Every response checked, and every failure an `ApiException`
+- [ ] One API down leaves the others showing
+- [ ] Tests that run offline, plus one real call per API
+- [ ] Added caching, KES prices or a map
+- [ ] Committed code to Git
+
+## ➡️ Next
+
+Day 96 builds a small online shop with a real payment flow, using M-Pesa's sandbox.

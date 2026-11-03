@@ -97,4 +97,4 @@ Open <http://localhost:8080> and leave it open: it refreshes every 30 seconds.
 
 ## ➡️ Next
 
-Day 96 builds a small online shop with a real payment flow, using M-Pesa's sandbox.
+Day 96 builds a small online shop: a catalogue, a cart, checkout, and a simulated card payment.

@@ -83,4 +83,4 @@ mvn javafx:run     # play: left and right arrow keys
 
 ## ➡️ Next
 
-Day 87 is a web app: a café finder for remote workers, with search, filters and an API.
+Day 87 is a web app: a café finder for remote workers, with search, filters and a map.

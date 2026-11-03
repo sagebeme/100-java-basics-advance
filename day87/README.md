@@ -1,67 +1,91 @@
 # Day 87 - Portfolio Project: Cafe Finder Website
 
-## 📚 Learning Objectives
-- Build location-based app
-- Integrate maps API
-- Search functionality
-- Display locations
-- Create useful application
+> Where in Nairobi can you work for three hours on one coffee, with Wi-Fi that actually works? Today's site answers that: search cafés by area, filter by rating, Wi-Fi and price, and see them on a map.
 
-## 🎯 Project Requirements
-Create Cafe Finder:
-1. Search cafes by location
-2. Display on map
-3. Show cafe details
-4. Filter options
-5. Responsive design
+## 📖 The story
 
-## 📌 Notes & reference (use these when stuck)
+Njambi is a freelance designer. Her flat in Kilimani loses power whenever it rains, so she works from cafés, and her friends keep asking her which ones are good. She decides to put her list online: name, address, rating, whether there's Wi-Fi, and how pricey it is, searchable by area and shown on a map.
 
-**When you're stuck:** Re-read **Project Requirements** above; use main README for structure. **Quick reference:** `mvn spring-boot:run` or run from IDE; Maps API (Day 33); see Day 54–59.
-
-## ✅ Checklist
-- [ ] Integrated maps API
-- [ ] Added search
-- [ ] Created UI
-- [ ] Added filters
-- [ ] Completed website
-- [ ] Committed code to Git
-
-## 📂 What's in this folder
-
-A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
-
-| File | What it does |
-|---|---|
-| `Application.java` | Starts Spring Boot |
-| `config/DataSeeder.java` | Adds sample cafes when the app starts |
-| `controller/CafeController.java` | `GET /` searches cafes with filters |
-| `model/Cafe.java` | A JPA entity |
-| `model/PriceLevel.java` | Price bands, shown as $ to $$$ |
-| `repository/CafeRepository.java` | Spring Data repository |
-| `service/CafeService.java` | Searches by name or address, with minimum rating, Wi-Fi and maximum price filters |
-
-Also in `src/main/resources/`: `templates/index.html`.
-
-## 💻 How to Run
-
-Needs JDK 21 and Maven (see the main README). From the repository root:
-
-```bash
-cd day87
-mvn spring-boot:run
+```
+http://localhost:8080/?location=westlands&minRating=4&wifiOnly=true&maxPrice=TWO
 ```
 
-Then open http://localhost:8080. Stop it with Ctrl+C. Or run `Application` from your IDE.
+The page lists matching cafés from best-rated down, with pins on an OpenStreetMap map of Nairobi. The eight cafés seeded at startup are example data: the names and areas are real places, but the ratings and descriptions are made up for the demo.
 
-## 🧪 How to Test
+## 🎯 Learning Objectives
+- Model data as a JPA entity with an enum column
+- Seed a database at startup with a `CommandLineRunner`
+- Search with a derived query: `findByAddressContainingIgnoreCaseOrNameContainingIgnoreCase`
+- Combine optional filters cleanly: rating, Wi-Fi, price, each only when given
+- Keep a search form's values filled in after submitting
+- Show data on a Leaflet map: pass it to JavaScript safely, and load the map library with integrity hashes
+
+## 🧰 What you'll use
+
+**Optional request parameters** arrive as `null` when they're missing, so each filter only applies when it was given:
+
+```java
+candidates.stream()
+        .filter(cafe -> minRating == null || cafe.getRating() >= minRating)
+        .filter(cafe -> wifiOnly == null || !wifiOnly || cafe.isHasWifi())
+        .filter(cafe -> maxPrice == null || cafe.getPriceLevel().ordinal() <= maxPrice.ordinal())
+        .sorted(Comparator.comparing(Cafe::getRating).reversed())
+        .toList();
+```
+
+**Enums in forms and the database.** `@RequestParam PriceLevel maxPrice` turns `TWO` into `PriceLevel.TWO`. `@Enumerated(EnumType.STRING)` stores the name, not the position, so adding a price level later doesn't scramble the old rows.
+
+**Data into JavaScript.** Thymeleaf's inline JavaScript turns the list into a JSON array, safely escaped:
+
+```html
+<script th:inline="javascript">
+    const cafes = /*[[${cafes}]]*/ [];
+</script>
+```
+
+**Text, not HTML, in popups.** Building a popup as `` `<strong>${cafe.name}</strong>` `` would run any HTML hidden in a café's name. Creating elements and setting `textContent` shows it as plain text.
+
+**Integrity hashes.** The map library comes from a CDN. `integrity="sha256-..."` makes the browser refuse the file if its contents don't match, so a hacked CDN can't run code on your site.
+
+## 🪜 Steps
+
+**Your brief** (the `day87/` folder is one finished version: build your own first, then compare).
+
+1. `Cafe` (with `PriceLevel`) and `CafeRepository` with the name-or-address search.
+2. `DataSeeder` with your own favourite cafés.
+3. `CafeService.search` with all four filters, best-rated first.
+4. `CafeController` and `index.html`: the form (keeping its values), the results, a "no cafés found" message, and the map.
+5. Tests: the search and each filter in the service, and the page with results, filters, no results, the map and the viewport tag.
+6. Make it yours: a form to add a café (with validation!), a JSON API at `/api/cafes`, or "near me" using the browser's location and the distance between coordinates.
+
+## 🧪 Run it and test it
+
+Needs JDK 21 and Maven. From the repository root:
 
 ```bash
 cd day87
 mvn test
+mvn spring-boot:run
 ```
 
-Runs `CafeControllerTest`, `CafeRepositoryTest` and `CafeServiceTest`. A clean run ends with `BUILD SUCCESS`.
+Open <http://localhost:8080> and try a search.
 
-## 🚀 Next Steps
-**Ready for Day 88?** You'll build a Todo List Application!
+## 🆘 Stuck?
+
+- **A search for "westlands" finds nothing**: the query must ignore case: `ContainingIgnoreCase`.
+- **The filters are forgotten after searching**: put the values back in the model and use them in the form (`th:value`, `th:checked`, `th:selected`).
+- **`?maxPrice=CHEAP` shows an error page**: only `ONE`, `TWO` and `THREE` are valid. A select box only offers valid values; a hand-typed URL gets a 400.
+- **The map is grey**: Leaflet needs its CSS as well as its JavaScript, and the map `div` needs a height.
+- **The map library won't load after you upgrade it**: the integrity hash is for one exact file. Update the hash with the version.
+
+## ✅ Checklist
+- [ ] Cafés stored with JPA and seeded at startup
+- [ ] Search by area or name, plus rating, Wi-Fi and price filters
+- [ ] Results on a map, with safe popups
+- [ ] The tests pass
+- [ ] Added a form, an API or "near me"
+- [ ] Committed code to Git
+
+## ➡️ Next
+
+Day 88 builds a to-do list REST API: create, update, complete and delete tasks, with proper errors.

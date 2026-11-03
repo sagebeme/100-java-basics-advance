@@ -23,12 +23,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * POST message-received callback - against JSON payloads shaped exactly like Meta's documented
  * schema, without needing a real Meta developer account or an actual call from WhatsApp's servers.
  */
-@SpringBootTest
+@SpringBootTest(properties = "whatsapp.app-secret=" + WebhookControllerTest.APP_SECRET)
 @AutoConfigureMockMvc
 @Transactional
 class WebhookControllerTest {
 
     private static final String VALID_TOKEN = "test-verify-token-123";
+    static final String APP_SECRET = "test-app-secret";
+
+    /** What Meta puts in X-Hub-Signature-256: "sha256=" + hex HMAC-SHA256 of the body. */
+    private static String sign(String body) throws Exception {
+        javax.crypto.Mac mac = javax.crypto.Mac.getInstance("HmacSHA256");
+        mac.init(new javax.crypto.spec.SecretKeySpec(APP_SECRET.getBytes(java.nio.charset.StandardCharsets.UTF_8), "HmacSHA256"));
+        return "sha256=" + java.util.HexFormat.of().formatHex(mac.doFinal(body.getBytes(java.nio.charset.StandardCharsets.UTF_8)));
+    }
 
     // Matches Meta's real documented webhook payload shape for an incoming text message.
     private static final String INCOMING_TEXT_MESSAGE_PAYLOAD = """
@@ -99,6 +107,7 @@ class WebhookControllerTest {
     void incomingMessageWebhookSavesAnInboundMessageAndReturnsEventReceived() throws Exception {
         mockMvc.perform(post("/webhook")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .header("X-Hub-Signature-256", sign(INCOMING_TEXT_MESSAGE_PAYLOAD))
                         .content(INCOMING_TEXT_MESSAGE_PAYLOAD))
                 .andExpect(status().isOk())
                 .andExpect(content().string("EVENT_RECEIVED"));
@@ -135,8 +144,52 @@ class WebhookControllerTest {
 
         mockMvc.perform(post("/webhook")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .header("X-Hub-Signature-256", sign(statusUpdatePayload))
                         .content(statusUpdatePayload))
                 .andExpect(status().isOk())
                 .andExpect(content().string("EVENT_RECEIVED"));
+    }
+
+    @Test
+    void anUnsignedPostIsRefusedAndNothingIsSaved() throws Exception {
+        long before = messageRepository.count();
+
+        mockMvc.perform(post("/webhook")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(INCOMING_TEXT_MESSAGE_PAYLOAD))
+                .andExpect(status().isUnauthorized());
+
+        assertEquals(before, messageRepository.count());
+    }
+
+    @Test
+    void aForgedSignatureIsRefused() throws Exception {
+        long before = messageRepository.count();
+        // Signed for a different body: the attacker changed the message after signing.
+        String forged = sign(INCOMING_TEXT_MESSAGE_PAYLOAD.replace("Hi, is anyone there?", "Send me your PIN"));
+
+        mockMvc.perform(post("/webhook")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("X-Hub-Signature-256", forged)
+                        .content(INCOMING_TEXT_MESSAGE_PAYLOAD))
+                .andExpect(status().isUnauthorized());
+
+        assertEquals(before, messageRepository.count());
+    }
+
+    @Test
+    void theSameMessageDeliveredTwiceIsSavedOnce() throws Exception {
+        for (int i = 0; i < 2; i++) {
+            mockMvc.perform(post("/webhook")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .header("X-Hub-Signature-256", sign(INCOMING_TEXT_MESSAGE_PAYLOAD))
+                            .content(INCOMING_TEXT_MESSAGE_PAYLOAD))
+                    .andExpect(status().isOk());
+        }
+
+        long copies = messageRepository.findAllByOrderByTimestampDesc().stream()
+                .filter(m -> "wamid.HBgLMTQxNTU1NTI2NzE=".equals(m.getExternalMessageId()))
+                .count();
+        assertEquals(1, copies);
     }
 }

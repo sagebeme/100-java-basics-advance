@@ -8,4 +8,6 @@ import java.util.List;
 public interface WhatsAppMessageRepository extends JpaRepository<WhatsAppMessage, Long> {
 
     List<WhatsAppMessage> findAllByOrderByTimestampDesc();
+
+    boolean existsByExternalMessageId(String externalMessageId);
 }

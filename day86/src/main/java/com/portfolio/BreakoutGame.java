@@ -12,6 +12,7 @@ public class BreakoutGame {
     public static final int POINTS_PER_BRICK = 10;
     public static final int STARTING_LIVES = 3;
     private static final double BASE_BALL_SPEED = 200; // pixels/second
+    static final double MAX_STEP_SECONDS = 1.0 / 120;
     private static final int BRICK_COLS = 5;
     private static final double BRICK_HEIGHT = 20;
     private static final double BRICK_GAP = 5;
@@ -60,9 +61,17 @@ public class BreakoutGame {
     }
 
     public void update(double dtSeconds) {
-        if (gameOver) {
-            return;
+        // After a stall (dragging the window, a slow frame) dt can be large, and one big jump
+        // would carry the ball straight through the paddle or a brick. Take small steps instead.
+        double remaining = dtSeconds;
+        while (remaining > 0 && !gameOver) {
+            double step = Math.min(remaining, MAX_STEP_SECONDS);
+            step(step);
+            remaining -= step;
         }
+    }
+
+    private void step(double dtSeconds) {
         ball.advance(dtSeconds);
         handleWallCollisions();
         handlePaddleCollision();

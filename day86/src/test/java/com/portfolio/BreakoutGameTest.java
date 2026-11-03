@@ -41,7 +41,7 @@ class BreakoutGameTest {
 
         game.update(0.1); // would move to x = -2, past the left wall
 
-        assertEquals(game.getBall().getRadius(), game.getBall().getX(), 0.001);
+        assertTrue(game.getBall().getLeft() >= 0, "the ball should be back inside the board");
         assertEquals(50, game.getBall().getVx(), 0.001);
     }
 
@@ -53,7 +53,7 @@ class BreakoutGameTest {
 
         game.update(0.1);
 
-        assertEquals(WIDTH - game.getBall().getRadius(), game.getBall().getX(), 0.001);
+        assertTrue(game.getBall().getRight() <= WIDTH, "the ball should be back inside the board");
         assertEquals(-50, game.getBall().getVx(), 0.001);
     }
 
@@ -65,7 +65,7 @@ class BreakoutGameTest {
 
         game.update(0.1);
 
-        assertEquals(game.getBall().getRadius(), game.getBall().getY(), 0.001);
+        assertTrue(game.getBall().getTop() >= 0, "the ball should be back inside the board");
         assertEquals(50, game.getBall().getVy(), 0.001);
     }
 
@@ -79,7 +79,22 @@ class BreakoutGameTest {
         game.update(0.1); // would move the ball into the paddle
 
         assertTrue(game.getBall().getVy() < 0, "Ball should bounce upward off the paddle");
-        assertEquals(paddle.getTop() - game.getBall().getRadius(), game.getBall().getY(), 0.001);
+        assertTrue(game.getBall().getBottom() <= paddle.getTop(), "and end up above it, not inside it");
+    }
+
+    @Test
+    void aLongPauseBetweenFramesDoesNotLetTheBallPassThroughThePaddle() {
+        BreakoutGame game = new BreakoutGame(WIDTH, HEIGHT);
+        Paddle paddle = game.getPaddle();
+        game.getBall().setPosition(paddle.getCenterX(), paddle.getTop() - 30);
+        game.getBall().setVelocity(0, 400);
+
+        // Half a second at 400 px/s is 200 px: in one jump the ball would land far below the
+        // paddle without ever touching it.
+        game.update(0.5);
+
+        assertTrue(game.getBall().getVy() < 0, "the ball should have bounced off the paddle");
+        assertEquals(BreakoutGame.STARTING_LIVES, game.getLives(), "and no life should be lost");
     }
 
     @Test

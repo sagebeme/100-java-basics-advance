@@ -42,3 +42,7 @@ my-cv.txt
 posts.txt
 speeds.csv
 rentals.csv
+.cache/
+
+# Letters the Day 24 mail merge writes
+output_*.txt

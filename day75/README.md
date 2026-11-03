@@ -1,79 +1,92 @@
-# Day 75 - Charts and Data Visualization
+# Day 75 - Dashboard: One Dataset, Four Charts
 
-## 📚 Learning Objectives
-- Create advanced charts
-- Build interactive visualizations
-- Generate multiple chart types
-- Export visualizations
-- Create comprehensive dashboards
+> A dashboard is one set of numbers seen several ways at once. Today one `Dashboard` object holds the data, filters it, and exports bar, line, pie and area charts in a single call.
 
-## 🎯 Topics Covered
-- Advanced charting
-- Multiple chart types
-- Interactive features
-- Export functionality
-- Dashboard design
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Chebet (Day 72) liked her chart so much that her chama wants one for their monthly contributions. But the treasurer wants bars, the chair wants a line, and someone always asks "what share was each month?", which is a pie. Making four charts by hand every month isn't going to happen.
 
-### Step 1: Multiple Chart Types
-Create various charts:
+So today's `Dashboard` takes the data once and does the rest:
+
+```
+$ mvn -q compile exec:java
+bar: .../day75/dashboard-charts/bar.png (27697 bytes)
+line: .../day75/dashboard-charts/line.png (23269 bytes)
+pie: .../day75/dashboard-charts/pie.png (30491 bytes)
+area: .../day75/dashboard-charts/area.png (27870 bytes)
+```
+
+(Your byte counts will differ a little.) And `filterAbove(1000)` narrows the dashboard to the good months, after which every chart shows only those.
+
+## 🎯 Learning Objectives
+- Keep the data in one object and draw several views of it
+- Build bar, line, pie and area charts with JFreeChart
+- Change what the dashboard shows by filtering its data, keeping the order
+- Export a set of files in one call, and create the folder if it's missing
+- Test generated files by their contents, using JUnit's `@TempDir`
+
+## 🧰 What you'll use
+
+**One object, many views.** The `Dashboard` holds a `Map<String, Double>`, and each chart method builds its dataset from that map. Filter the map and every chart follows:
 
 ```java
-public class ChartCreator {
-    public JFreeChart createLineChart() { /* ... */ }
-    public JFreeChart createPieChart() { /* ... */ }
-    public JFreeChart createAreaChart() { /* ... */ }
+Dashboard dashboard = new Dashboard(contributions);
+dashboard.filterAbove(1000);
+dashboard.exportAll(new File("dashboard-charts"), "Contributions");
+```
+
+**An area chart** is a line chart with the space under it filled in. It's good for amounts that build up over time.
+
+**Folders.** `mkdirs()` creates a folder and any missing parents, and returns `false` if it couldn't. Turn that into an `IOException`, so a failure doesn't look like success.
+
+**`@TempDir`** gives each test a fresh empty folder, and deletes it afterwards, so tests never leave PNGs lying around:
+
+```java
+@Test
+void exportAllProducesFourRealPngFiles(@TempDir File tempDir) throws IOException {
+    Map<String, File> files = dashboard.exportAll(tempDir, "Sales");
+    // ...check each file starts with the PNG signature
 }
 ```
 
-## 🎮 Project: Comprehensive Dashboard
+## 🪜 Steps
 
-### Requirements
-Create dashboard with:
-1. Multiple chart types
-2. Interactive features
-3. Data filtering
-4. Export options
+**Project: The chama dashboard** (the `day75/` folder is a finished version: build your own first, then compare).
 
-## 📌 Notes & reference (use these when stuck)
+1. `Dashboard(Map<String, Double> data)`, using a `LinkedHashMap` so the months stay in order.
+2. `bar`, `line`, `pie` and `area`, each taking a title.
+3. `filterAbove(threshold)`: keep values at or above it, in order.
+4. `exportAll(directory, baseTitle)`: four PNGs, named by chart type, and their files returned.
+5. Tests: filtering, each chart's title, four real PNGs, and exporting after filtering.
+6. Add `resetFilter()`, which brings back all the data. (Hint: keep the original map as well as the filtered one.)
 
-**When you're stuck:** Re-read **Step-by-Step Instructions** above; use main README for structure. **Quick reference:** Run from IDE or `mvn exec:java`.
+## 🧪 Run it and test it
 
-## ✅ Checklist
-- [ ] Can create multiple chart types
-- [ ] Can build dashboards
-- [ ] Can add interactivity
-- [ ] Completed dashboard
-- [ ] Committed code to Git
-
-## 📂 What's in this folder
-
-A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
-
-| File | What it does |
-|---|---|
-| `Dashboard.java` | One dataset shown as bar, line, pie and area charts, filtered, and exported to PNG with JFreeChart |
-
-## 💻 How to Run
-
-Needs JDK 21 and Maven (see the main README). From the repository root:
-
-```bash
-cd day75
-mvn compile exec:java
-```
-
-Or run the main class from your IDE.
-
-## 🧪 How to Test
+Needs JDK 21 and Maven. From the repository root:
 
 ```bash
 cd day75
 mvn test
+mvn -q compile exec:java
 ```
 
-Runs `DashboardTest`. A clean run ends with `BUILD SUCCESS`.
+The charts go into `day75/dashboard-charts/`, which is in `.gitignore`.
 
-## 🚀 Next Steps
-**Ready for Day 76?** You'll learn collections and data structures!
+## 🆘 Stuck?
+
+- **The filter can't be undone**: `filterAbove` replaced the data. Keep the full map separately and filter from it.
+- **`FileNotFoundException` when saving**: the folder doesn't exist. Call `mkdirs()` first.
+- **A test passes even though no chart was saved**: check the file's first bytes, not just that a `File` object exists.
+- **Pie slices are tiny and unreadable**: too many categories. Show the top few and group the rest as "Other".
+
+## ✅ Checklist
+- [ ] One dashboard object, four chart types
+- [ ] A filter that keeps the order
+- [ ] All four charts exported in one call
+- [ ] Tests that use `@TempDir` and check real PNG files
+- [ ] Added a way to reset the filter
+- [ ] Committed code to Git
+
+## ➡️ Next
+
+Day 76 builds data structures yourself: a stack, a queue and a binary search tree.

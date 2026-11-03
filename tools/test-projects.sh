@@ -18,11 +18,13 @@ else
 fi
 
 failed=()
+tested=0
 for day in "${days[@]}"; do
   if [ ! -f "$day/pom.xml" ]; then
     echo "SKIP  $day (no pom.xml)"
     continue
   fi
+  tested=$((tested + 1))
   log=$(mktemp)
   if (cd "$day" && mvn $MVN_OFFLINE -B -q test >"$log" 2>&1); then
     echo "ok    $day"
@@ -35,5 +37,5 @@ for day in "${days[@]}"; do
 done
 
 echo
-echo "${#days[@]} projects tested, ${#failed[@]} failed${failed[*]:+: ${failed[*]}}."
+echo "$tested projects tested, ${#failed[@]} failed${failed[*]:+: ${failed[*]}}."
 [ ${#failed[@]} -eq 0 ]

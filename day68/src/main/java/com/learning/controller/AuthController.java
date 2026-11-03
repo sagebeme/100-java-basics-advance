@@ -30,10 +30,25 @@ public class AuthController {
         return "register";
     }
 
+    static final int MIN_PASSWORD_LENGTH = 8;
+
     @PostMapping("/register")
-    public String register(@RequestParam String username, @RequestParam String password) {
-        AppUser user = new AppUser(username, passwordEncoder.encode(password));
-        appUserRepository.save(user);
+    public String register(@RequestParam String username, @RequestParam String password, Model model) {
+        String name = username.strip();
+        String problem = null;
+        if (name.isEmpty()) {
+            problem = "Choose a username.";
+        } else if (password.length() < MIN_PASSWORD_LENGTH) {
+            problem = "Use a password of at least " + MIN_PASSWORD_LENGTH + " characters. A short sentence is easy to remember.";
+        } else if (appUserRepository.findByUsername(name).isPresent()) {
+            problem = "That username is taken.";
+        }
+        if (problem != null) {
+            model.addAttribute("error", problem);
+            model.addAttribute("username", name);   // never send the password back
+            return "register";
+        }
+        appUserRepository.save(new AppUser(name, passwordEncoder.encode(password)));
         return "redirect:/login";
     }
 

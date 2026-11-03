@@ -1,5 +1,6 @@
 package com.learning.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,9 +15,11 @@ public class AppUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Unique: two accounts called "amina" would make every login for amina fail.
+    @Column(unique = true, nullable = false)
     private String username;
 
-    // Always a BCrypt hash, never plaintext - see RegistrationService.
+    // Always a BCrypt hash, never plaintext: AuthController.register encodes it.
     private String password;
 
     public AppUser() {

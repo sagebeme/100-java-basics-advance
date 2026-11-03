@@ -55,9 +55,9 @@ class SecurityTest {
 
     @Test
     void loggingInWithARealAccountReachesTheDashboard() throws Exception {
-        mockMvc.perform(post("/register").with(csrf()).param("username", "kip").param("password", "hunter2"));
+        mockMvc.perform(post("/register").with(csrf()).param("username", "kip").param("password", "hunter2-hunter2"));
 
-        mockMvc.perform(formLogin().user("kip").password("hunter2"))
+        mockMvc.perform(formLogin().user("kip").password("hunter2-hunter2"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/dashboard"));
     }
@@ -69,5 +69,33 @@ class SecurityTest {
         mockMvc.perform(formLogin().user("zawadi").password("wrong-password"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/login?error"));
+    }
+
+    @Test
+    void aTakenUsernameIsRefusedAndTheOwnerCanStillLogIn() throws Exception {
+        mockMvc.perform(post("/register").with(csrf()).param("username", "wanjiru").param("password", "first-owner-pass"));
+
+        mockMvc.perform(post("/register").with(csrf()).param("username", " wanjiru ").param("password", "someone-else-pass"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("That username is taken.")));
+
+        mockMvc.perform(formLogin().user("wanjiru").password("first-owner-pass"))
+                .andExpect(redirectedUrl("/dashboard"));
+    }
+
+    @Test
+    void aShortPasswordIsRefusedAndNotSaved() throws Exception {
+        mockMvc.perform(post("/register").with(csrf()).param("username", "otieno").param("password", "1234567"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("at least 8 characters")))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("value=\"otieno\"")));
+
+        assertTrue(appUserRepository.findByUsername("otieno").isEmpty());
+    }
+
+    @Test
+    void registeringWithoutACsrfTokenIsRefused() throws Exception {
+        mockMvc.perform(post("/register").param("username", "mallory").param("password", "long-enough-pass"))
+                .andExpect(status().isForbidden());
     }
 }

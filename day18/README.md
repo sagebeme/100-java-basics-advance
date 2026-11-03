@@ -79,26 +79,10 @@ Understand JavaFX coordinates:
 
 ## 💻 Exercises
 
-### Exercise 1: Basic Shapes
-Create programs that draw:
-- Squares and rectangles
-- Circles and ovals
-- Lines and polygons
-- Different colors
+Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`. The tests check the maths and the rules, which need no JavaFX; run the demo to see the drawing.
 
-### Exercise 2: Patterns
-Create patterns:
-- Checkerboard
-- Spiral
-- Grid
-- Random shapes
-
-### Exercise 3: Interactive Drawing
-Create programs with:
-- Mouse click drawing
-- Drag to draw
-- Color selection
-- Shape selection
+- **[Exercise 1: A shape garden](exercise1/README.md)**: the corners of any regular polygon, a rectangle centred on a point, and whether a circle fits the canvas.
+- **[Exercise 2: Kitenge patterns](exercise2/README.md)**: a checkerboard, repeating stripes and a spiral, each as a rule that says what colour a square is.
 
 ## 🎮 Project: Hirst Painting Generator
 

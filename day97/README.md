@@ -86,4 +86,4 @@ Open <http://localhost:8080>. To receive real webhooks, the app needs a public H
 
 ## ➡️ Next
 
-Day 98 builds a sales dashboard: totals, filters and charts from a year of sales, with CSV and JSON exports.
+Day 98 builds a sales dashboard: totals, filters and charts from six months of sales, with CSV and JSON exports.

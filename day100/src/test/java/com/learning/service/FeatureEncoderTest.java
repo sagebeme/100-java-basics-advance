@@ -59,10 +59,10 @@ class FeatureEncoderTest {
     }
 
     @Test
-    void anUnseenCategoryFallsBackToAllZeroBitsLikeTheReferenceCategory() {
-        double[] knownReference = encoder.encode(5, "Bachelor", "Urban", "Technology");
-        double[] unseenCategory = encoder.encode(5, "Doctorate", "Urban", "Technology");
+    void anUnseenCategoryIsRejectedInsteadOfPassingForTheReferenceCategory() {
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
+                () -> encoder.encode(5, "Doctorate", "Urban", "Technology"));
 
-        assertArrayEquals(knownReference, unseenCategory);
+        assertTrue(e.getMessage().contains("Doctorate"));
     }
 }

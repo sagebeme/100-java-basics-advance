@@ -53,12 +53,25 @@ public class LinearRegressionModel {
         }
         System.arraycopy(b, 0, vector, 0, n);
 
+        double largest = 0;
+        for (double[] row : matrix) {
+            for (double v : row) {
+                largest = Math.max(largest, Math.abs(v));
+            }
+        }
+
         for (int pivot = 0; pivot < n; pivot++) {
             int maxRow = pivot;
             for (int row = pivot + 1; row < n; row++) {
                 if (Math.abs(matrix[row][pivot]) > Math.abs(matrix[maxRow][pivot])) {
                     maxRow = row;
                 }
+            }
+            if (Math.abs(matrix[maxRow][pivot]) <= 1e-9 * largest) {
+                // Two features carry the same information (one is a copy or a mix of others), so
+                // there is no single best set of weights; dividing by ~0 would return nonsense.
+                throw new IllegalArgumentException(
+                        "The features are collinear: one of them can be worked out from the others, so the model can't be fitted.");
             }
             double[] tempRow = matrix[pivot];
             matrix[pivot] = matrix[maxRow];

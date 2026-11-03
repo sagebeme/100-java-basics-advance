@@ -1,9 +1,10 @@
 package com.learning.controller;
 
 import com.learning.model.EarningsRequest;
-import com.learning.model.PredictionResult;
 import com.learning.service.EarningsPredictionService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,12 @@ public class PredictionRestController {
     }
 
     @PostMapping
-    public ResponseEntity<PredictionResult> predict(@Valid @RequestBody EarningsRequest request) {
+    public ResponseEntity<?> predict(@Valid @RequestBody EarningsRequest request) {
+        String problem = predictionService.problemWith(request);
+        if (problem != null) {
+            return ResponseEntity.unprocessableEntity()
+                    .body(ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, problem));
+        }
         return ResponseEntity.ok(predictionService.predict(request));
     }
 }

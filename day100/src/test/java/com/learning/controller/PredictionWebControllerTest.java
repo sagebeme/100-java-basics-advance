@@ -35,6 +35,18 @@ class PredictionWebControllerTest {
                         .param("location", "Urban")
                         .param("industry", "Finance"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Predicted annual earnings")));
+                .andExpect(content().string(containsString("Predicted monthly earnings")));
+    }
+
+    @Test
+    void theFormExplainsWhenExperienceIsBeyondTheData() throws Exception {
+        mockMvc.perform(post("/predict")
+                        .param("experience", "60")
+                        .param("education", "Bachelor")
+                        .param("location", "Urban")
+                        .param("industry", "Technology"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("can&#39;t predict 60 years")))
+                .andExpect(content().string(org.hamcrest.Matchers.not(containsString("Predicted monthly earnings"))));
     }
 }

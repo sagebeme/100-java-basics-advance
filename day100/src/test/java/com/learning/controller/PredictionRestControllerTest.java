@@ -33,7 +33,7 @@ class PredictionRestControllerTest {
                         .content(requestBody))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.predictedEarnings").isNumber())
-                .andExpect(jsonPath("$.confidence").isNumber())
+                .andExpect(jsonPath("$.modelR2").isNumber())
                 .andExpect(jsonPath("$.modelVersion").value("1.0"));
     }
 
@@ -52,5 +52,23 @@ class PredictionRestControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void anUnknownEducationIsRefusedNotGuessed() throws Exception {
+        mockMvc.perform(post("/api/predict")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"experience\":5,\"education\":\"Diploma\",\"location\":\"Urban\",\"industry\":\"Technology\"}"))
+                .andExpect(status().isUnprocessableContent())
+                .andExpect(jsonPath("$.detail").value("Unknown education 'Diploma'. Choose one of: Bachelor, HighSchool, Master, PhD."));
+    }
+
+    @Test
+    void experienceBeyondTheTrainingDataIsRefused() throws Exception {
+        mockMvc.perform(post("/api/predict")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"experience\":60,\"education\":\"Bachelor\",\"location\":\"Urban\",\"industry\":\"Technology\"}"))
+                .andExpect(status().isUnprocessableContent())
+                .andExpect(jsonPath("$.detail").value("This model learned from people with 0-25 years of experience, so it can't predict 60 years."));
     }
 }

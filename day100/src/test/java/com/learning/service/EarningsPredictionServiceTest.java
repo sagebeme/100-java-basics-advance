@@ -36,7 +36,7 @@ class EarningsPredictionServiceTest {
 
         assertTrue(result.predictedEarnings() > 0);
         assertEquals("1.0", result.modelVersion());
-        assertTrue(result.confidence() >= 0 && result.confidence() <= 1);
+        assertTrue(result.modelR2() >= 0 && result.modelR2() <= 1);
     }
 
     @Test

@@ -32,6 +32,11 @@ public class PredictionWebController {
         if (bindingResult.hasErrors()) {
             return "prediction";
         }
+        String problem = predictionService.problemWith(request);
+        if (problem != null) {
+            model.addAttribute("problem", problem);
+            return "prediction";
+        }
         model.addAttribute("result", predictionService.predict(request));
         return "prediction";
     }

@@ -27,7 +27,7 @@
     <form th:action="@{/predict}" th:object="${earningsRequest}" method="post">
         <div class="mb-3">
             <label for="experience" class="form-label">Years of experience</label>
-            <input type="number" step="1" class="form-control" id="experience" th:field="*{experience}">
+            <input type="number" step="1" min="0" max="25" class="form-control" id="experience" th:field="*{experience}">
         </div>
         <div class="mb-3">
             <label for="education" class="form-label">Education</label>
@@ -50,9 +50,11 @@
         <button type="submit" class="btn btn-primary w-100">Predict Earnings</button>
     </form>
 
+    <div class="alert alert-warning mt-4" id="prediction-problem" th:if="${problem != null}" th:text="${problem}">The model can't answer this.</div>
+
     <div class="alert alert-success mt-4" id="prediction-result" th:if="${result != null}">
-        <h2 class="h5">Predicted annual earnings: KES <span th:text="${#numbers.formatDecimal(result.predictedEarnings(), 1, 0)}">0</span></h2>
-        <p class="mb-0">Confidence: <span th:text="${#numbers.formatDecimal(result.confidence() * 100, 1, 1)}">0</span>% &middot; Model version <span th:text="${result.modelVersion()}">1.0</span></p>
+        <h2 class="h5">Predicted monthly earnings: KES <span th:text="${#numbers.formatDecimal(result.predictedEarnings(), 1, 'COMMA', 0, 'POINT')}">0</span></h2>
+        <p class="mb-0">A typical figure for people like this in the data, not a promise: on rows it never saw, the model was off by KES <span th:text="${#numbers.formatDecimal(metrics.mae(), 1, 'COMMA', 0, 'POINT')}">0</span> on average (R&sup2; <span th:text="${#numbers.formatDecimal(result.modelR2(), 1, 2)}">0</span>) &middot; Model version <span th:text="${result.modelVersion()}">1.0</span></p>
     </div>
 </main>
 </body>

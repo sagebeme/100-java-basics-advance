@@ -66,6 +66,11 @@ public class FeatureEncoder {
     }
 
     private void appendOneHot(List<Double> features, List<String> categories, String value) {
+        if (!categories.contains(value)) {
+            // Encoding an unknown value as all zeros would silently treat it as the reference
+            // category and return a confident, wrong prediction.
+            throw new IllegalArgumentException("Unknown value '" + value + "'. Choose one of: " + String.join(", ", categories));
+        }
         for (int i = 1; i < categories.size(); i++) {
             features.add(categories.get(i).equals(value) ? 1.0 : 0.0);
         }

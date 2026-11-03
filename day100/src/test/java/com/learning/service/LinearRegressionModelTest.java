@@ -30,4 +30,13 @@ class LinearRegressionModelTest {
         LinearRegressionModel model = new LinearRegressionModel();
         assertThrows(IllegalStateException.class, () -> model.predict(new double[]{1, 2, 3}));
     }
+
+    @Test
+    void featuresThatCopyEachOtherAreRejected() {
+        // The third column is twice the second, so the weights aren't unique.
+        double[][] x = {{1, 1, 2}, {1, 2, 4}, {1, 3, 6}, {1, 4, 8}};
+        double[] y = {3, 5, 7, 9};
+
+        assertThrows(IllegalArgumentException.class, () -> new LinearRegressionModel().train(x, y));
+    }
 }

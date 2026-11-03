@@ -60,23 +60,23 @@ What the course actually uses, and from when:
 - [Day 14](day14): Coffee Shop Menu Decoder (project: everything from Days 1–13)
 
 ### 🏋🏻‍♂️ Intermediate (Days 15-31)
-- [Day 15](day15): Local Development Setup & Coffee Machine Project
-- [Day 16](day16): Object-Oriented Programming (OOP) Basics
-- [Day 17](day17): Quiz Project & OOP Benefits
-- [Day 18](day18): JavaFX Graphics and GUIs
-- [Day 19](day19): Inheritance and Polymorphism
-- [Day 20](day20): Build Snake Game Part 1: Animation & Coordinates
-- [Day 21](day21): Build Snake Game Part 2: Inheritance & Sublists
-- [Day 22](day22): Build Pong: The Famous Arcade Game
-- [Day 23](day23): Turtle Crossing Capstone Project
-- [Day 24](day24): File I/O and Paths
-- [Day 25](day25): Working with CSV Data
-- [Day 26](day26): Streams and Lambda Expressions
-- [Day 27](day27): JavaFX GUI Programs
-- [Day 28](day28): JavaFX: Pomodoro Timer Application
-- [Day 29](day29): Building Password Manager GUI App with JavaFX
-- [Day 30](day30): Exceptions and JSON Data: Improving the Password Manager
-- [Day 31](day31): Capstone Project - Flash Card App
+- [Day 15](day15): Coffee Machine: Your First Program With State
+- [Day 16](day16): Classes and Objects: The Coffee Machine, Rebuilt
+- [Day 17](day17): Quiz Night: Objects That Work Together
+- [Day 18](day18): Dot Painting: Your First JavaFX Window
+- [Day 19](day19): Inheritance and Polymorphism: Rides, and a Turtle Race
+- [Day 20](day20): Snake, Part 1: A Game Loop on a Grid
+- [Day 21](day21): Snake, Part 2: Food, Growing and Game Over
+- [Day 22](day22): Pong: Two Players, One Keyboard
+- [Day 23](day23): Capstone: Turtle Crossing
+- [Day 24](day24): Mail Merge: Harambee Invitations From Two Files
+- [Day 25](day25): Working With CSV: Name All 47 Counties
+- [Day 26](day26): Streams and Lambdas: Spelling It Out at the Call Centre
+- [Day 27](day27): JavaFX Controls: Miles to Kilometres
+- [Day 28](day28): A Pomodoro Timer: Time in JavaFX
+- [Day 29](day29): A Password Manager: Forms, Lists and a File
+- [Day 30](day30): Exceptions and JSON: A Password Manager That Fails Politely
+- [Day 31](day31): Capstone Project: Kadi, a Swahili Flash Card App
 
 ### 💪 Intermediate+ (Days 32-58)
 - [Day 32](day32): Chama Reminders (dates, CSV records, email behind an interface)
@@ -101,34 +101,34 @@ What the course actually uses, and from when:
 - [Day 51](day51): Kasi Check (waiting out a live test, median verdicts, an evidence-based ticket)
 - [Day 52](day52): Picha Bot (checked actions, spam filtering, exponential backoff)
 - [Day 53](day53): Nyumba Data Entry (scrape, clean, type, and check your work)
-- [Day 54](day54): Introduction to Spring Boot
-- [Day 55](day55): Spring Boot REST APIs
-- [Day 56](day56): Spring Boot: Static Files and Templates
-- [Day 57](day57): Thymeleaf Templating
-- [Day 58](day58): Bootstrap Integration
+- [Day 54](day54): Hello, Spring Boot: Your First Web Server
+- [Day 55](day55): A REST API: Create, Read, Update, Delete
+- [Day 56](day56): Web Pages From Spring Boot: Static Files and Thymeleaf
+- [Day 57](day57): Thymeleaf in Depth: Mtaa News, the First Edition
+- [Day 58](day58): Bootstrap: Pages That Fit Every Phone
 
 ### 🚀 Advanced (Days 59-80)
-- [Day 59](day59): Upgraded Blog with Bootstrap
-- [Day 60](day60): HTML Forms with Spring Boot
-- [Day 61](day61): Building Advanced Forms
-- [Day 62](day62): Spring Boot, Forms, and CSV
-- [Day 63](day63): Databases with JPA and Hibernate
-- [Day 64](day64): My Top 10 Movies Website
-- [Day 65](day65): Web Design Best Practices
-- [Day 66](day66): Building RESTful APIs
-- [Day 67](day67): Blog Capstone Part 3 - RESTful Routing
-- [Day 68](day68): Authentication with Spring Security
-- [Day 69](day69): Blog Capstone Part 4 - Adding Users
-- [Day 70](day70): Deploying with Docker and Cloud
-- [Day 71](day71): Data Analysis with Java
-- [Day 72](day72): Data Visualization
-- [Day 73](day73): Aggregate Data Operations
-- [Day 74](day74): Time Series Analysis
-- [Day 75](day75): Charts and Data Visualization
-- [Day 76](day76): Collections and Data Structures
-- [Day 77](day77): Algorithms and Data Structures
-- [Day 78](day78): Advanced Algorithms
-- [Day 79](day79): Testing and Quality Assurance (unit, integration and end-to-end tests with Selenium)
+- [Day 59](day59): Mtaa News, the Upgrade: Detail Pages, Paging and Deleting
+- [Day 60](day60): Forms and Validation: The Sign-Up Desk
+- [Day 61](day61): Advanced Forms: Orders With Several Items, and File Uploads
+- [Day 62](day62): CSV In and Out: The Group's Contact List
+- [Day 63](day63): Databases With JPA: A Member Register That Remembers
+- [Day 64](day64): My Top 10 Films: A Ranked List in a Database
+- [Day 65](day65): Web Design Done Properly: The Films Site, Rebuilt to Last
+- [Day 66](day66): RESTful APIs Done Properly: PUT, PATCH and Honest Errors
+- [Day 67](day67): Blog Capstone Part 3: A REST API for Mtaa News
+- [Day 68](day68): Logging In: Spring Security, Sessions and Tokens
+- [Day 69](day69): Blog Capstone Part 4: Posts Belong to Their Authors
+- [Day 70](day70): Shipping It: Docker, Profiles and a Real Database
+- [Day 71](day71): Data Analysis: Is the Shop Doing Better?
+- [Day 72](day72): Data Visualisation: Charts as Images
+- [Day 73](day73): Grouping and Summarising: Totals per Category
+- [Day 74](day74): Time Series: Smoothing the Bumps and Finding the Trend
+- [Day 75](day75): Dashboard: One Dataset, Four Charts
+- [Day 76](day76): Build Your Own: Stack, Queue and Binary Search Tree
+- [Day 77](day77): Searching, Sorting and the Shortest Route
+- [Day 78](day78): Greedy Choices and Dynamic Programming
+- [Day 79](day79): Testing Properly: Mocks, Integration Tests and Coverage
 - [Day 80](day80): Capstone Project - Predict House Prices
 
 ### 👨‍💻 Professional (Days 81-100)

@@ -9,6 +9,9 @@ RUN mvn -q -DskipTests package
 
 FROM eclipse-temurin:21-jre
 WORKDIR /app
+# Run as an ordinary user, not root: if someone breaks into the app, they don't own the container.
+RUN useradd --system --uid 10001 app
 COPY --from=build /app/target/*.jar app.jar
+USER app
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]

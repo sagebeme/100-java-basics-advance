@@ -1,0 +1,4 @@
+# Keep the build context small: Docker builds the jar itself, from src/ and pom.xml.
+target/
+.idea/
+*.iml

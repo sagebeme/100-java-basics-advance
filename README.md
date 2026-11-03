@@ -281,7 +281,9 @@ tools/check-exercises.sh                       # all of them
 tools/check-exercises.sh day29/exercise2       # just one
 ```
 
-GitHub Actions runs the same script, and builds the course website, on every push and pull request (`.github/workflows/ci.yml`).
+**Test every day project at once.** Day 54 and Days 60–100 are Maven projects of their own. `tools/test-projects.sh` runs `mvn test` in each and lists any that fail; pass day folders to test just those (`tools/test-projects.sh day80 day96`). Day 90's real-speech test needs `espeak-ng` on Linux and Day 93 needs Chrome; tests whose tools aren't installed are skipped.
+
+GitHub Actions runs both scripts, builds Day 70's Docker image, and builds the course website, on every push and pull request (`.github/workflows/ci.yml`).
 
 ## 🚀 Getting Started
 

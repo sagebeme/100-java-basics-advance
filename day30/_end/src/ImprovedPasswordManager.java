@@ -3,10 +3,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import java.io.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.security.SecureRandom;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ImprovedPasswordManager extends Application {
     private TextField websiteField = new TextField();
@@ -17,6 +23,7 @@ public class ImprovedPasswordManager extends Application {
     private Label statusLabel = new Label();
     private List<PasswordEntry> entries = new ArrayList<>();
     private static final String FILE_NAME = "passwords.json";
+    private boolean fileIsDamaged = false;
     
     @Override
     public void start(Stage stage) {
@@ -76,64 +83,53 @@ public class ImprovedPasswordManager extends Application {
     }
     
     private void savePassword() {
-        try {
-            String website = websiteField.getText().trim();
-            String username = usernameField.getText().trim();
-            String password = passwordField.getText().trim();
-            
-            if (website.isEmpty() || username.isEmpty() || password.isEmpty()) {
-                statusLabel.setText("Error: All fields required!");
-                return;
-            }
-            
-            entries.add(new PasswordEntry(website, username, password));
-            updateList();
-            saveToFile();
+        String website = websiteField.getText().trim();
+        String username = usernameField.getText().trim();
+        String password = passwordField.getText().trim();
+
+        if (website.isEmpty() || username.isEmpty() || password.isEmpty()) {
+            statusLabel.setText("Error: All fields required!");
+            return;
+        }
+
+        entries.add(new PasswordEntry(website, username, password));
+        updateList();
+        if (saveToFile()) {
             clearFields();
             statusLabel.setText("Password saved successfully!");
-        } catch (Exception e) {
-            statusLabel.setText("Error saving: " + e.getMessage());
         }
     }
     
+    // Reads passwords.json: a JSON array of {"website", "username", "password"} objects.
+    // Each thing that can go wrong gets its own message, instead of one "something failed".
     private void loadPasswords() {
         try {
-            File file = new File(FILE_NAME);
-            if (!file.exists()) {
-                statusLabel.setText("No saved passwords found");
-                return;
-            }
-            
-            BufferedReader reader = new BufferedReader(new FileReader(file));
-            String line;
+            JSONArray saved = new JSONArray(Files.readString(Path.of(FILE_NAME)));
             entries.clear();
-            
-            while ((line = reader.readLine()) != null) {
-                if (line.trim().isEmpty()) continue;
-                String[] parts = line.split("\\|");
-                if (parts.length == 3) {
-                    entries.add(new PasswordEntry(parts[0], parts[1], parts[2]));
-                }
+            for (int i = 0; i < saved.length(); i++) {
+                JSONObject login = saved.getJSONObject(i);
+                entries.add(new PasswordEntry(login.getString("website"), login.getString("username"),
+                        login.getString("password")));
             }
-            reader.close();
             updateList();
             statusLabel.setText("Loaded " + entries.size() + " passwords");
-        } catch (FileNotFoundException e) {
-            statusLabel.setText("File not found");
+        } catch (NoSuchFileException e) {
+            statusLabel.setText("No saved passwords yet");
+        } catch (JSONException e) {
+            // Don't overwrite a damaged file: the user may be able to repair it by hand.
+            statusLabel.setText(FILE_NAME + " is damaged (" + e.getMessage() + "). Fix or move it, then restart.");
+            fileIsDamaged = true;
         } catch (IOException e) {
-            statusLabel.setText("Error reading file: " + e.getMessage());
-        } catch (Exception e) {
-            statusLabel.setText("Unexpected error: " + e.getMessage());
+            statusLabel.setText("Couldn't read " + FILE_NAME + ": " + e.getMessage());
         }
     }
     
     private void searchPasswords() {
-        String searchTerm = searchField.getText().toLowerCase();
+        String searchTerm = searchField.getText().trim();
         passwordList.getItems().clear();
         
         for (PasswordEntry entry : entries) {
-            if (entry.website.toLowerCase().contains(searchTerm) ||
-                entry.username.toLowerCase().contains(searchTerm)) {
+            if (ImprovedPasswordManagerLogic.matches(entry.website, entry.username, searchTerm)) {
                 passwordList.getItems().add(entry.website + " - " + entry.username);
             }
         }
@@ -141,15 +137,25 @@ public class ImprovedPasswordManager extends Application {
         statusLabel.setText("Found " + passwordList.getItems().size() + " matches");
     }
     
-    private void saveToFile() {
+    // True if the file was written. On failure the status label says why.
+    private boolean saveToFile() {
+        if (fileIsDamaged) {
+            statusLabel.setText("Not saved: " + FILE_NAME + " is damaged, and saving would replace it.");
+            return false;
+        }
+        JSONArray all = new JSONArray();
+        for (PasswordEntry entry : entries) {
+            all.put(new JSONObject()
+                    .put("website", entry.website)
+                    .put("username", entry.username)
+                    .put("password", entry.password));
+        }
         try {
-            PrintWriter writer = new PrintWriter(new FileWriter(FILE_NAME));
-            for (PasswordEntry entry : entries) {
-                writer.println(entry.website + "|" + entry.username + "|" + entry.password);
-            }
-            writer.close();
+            Files.writeString(Path.of(FILE_NAME), all.toString(2));
+            return true;
         } catch (IOException e) {
             statusLabel.setText("Error saving file: " + e.getMessage());
+            return false;
         }
     }
     

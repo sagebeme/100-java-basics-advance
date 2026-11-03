@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="|Harambee card for ${guest.name}|">Harambee card</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap">
+    <link rel="stylesheet" href="../static/css/kadi.css" th:href="@{/css/kadi.css}">
+</head>
+<body>
+    <h1 th:text="|Karibu, ${guest.name}!|">Karibu, Guest!</h1>
+    <p th:text="|You are invited to a harambee for ${cause}.|">You are invited to a harambee.</p>
+    <p th:text="|${#temporals.format(date, 'EEEE d MMMM yyyy')} at ${venue}|">Saturday 12 December 2026 at the hall</p>
+    <p th:text="|Send by M-Pesa: Paybill ${paybill}, account ${account}|">Send by M-Pesa</p>
+    <p th:if="${guest.pledgedShillings > 0}"
+       th:text="|Thank you for pledging KES ${#numbers.formatInteger(guest.pledgedShillings, 1, 'COMMA')}.|">Thank you for pledging.</p>
+    <p>
+        <a th:href="@{/card/{id}/pledge(id=${guest.id})}">Make a pledge</a>
+        <a th:href="@{/rsvp(guest=${guest.id},coming=yes)}">I'll be there</a>
+    </p>
+</body>
+</html>

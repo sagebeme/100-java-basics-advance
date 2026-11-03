@@ -113,26 +113,12 @@ public class UserController {
 
 ## 💻 Exercises
 
-### Exercise 1: Basic Templates
-Create templates with:
-- Variables
-- Text expressions
-- Attributes
-- Links
+## 💻 Exercises
 
-### Exercise 2: Conditionals
-Use:
-- th:if
-- th:unless
-- th:switch
-- Complex conditions
+Each exercise is a small Maven project with its own README. The starter compiles and its tests fail until you're done; `solution/` holds one answer for each file you change, at the same path. Run `mvn test` inside the exercise folder.
 
-### Exercise 3: Loops
-Implement:
-- th:each
-- Iteration status
-- Nested loops
-- List rendering
+- **[Exercise 1: Harambee cards](exercise1/README.md)**: variable and text expressions, dates and numbers, links built from ids, and why `th:text` escapes what people type.
+- **[Exercise 2: A Sacco member's page](exercise2/README.md)**: `th:switch`, `th:if`/`th:unless`, and `th:each` with its row counter and a class on some rows.
 
 ## 🎮 Project: Blog with Thymeleaf
 

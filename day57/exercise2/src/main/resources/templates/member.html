@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${member.name}">Member</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap">
+    <link rel="stylesheet" href="../static/css/kadi.css" th:href="@{/css/kadi.css}">
+    <style>.out { color: #b03a2e; }</style>
+</head>
+<body>
+    <h1 th:text="${member.name}">Member name</h1>
+
+    <!-- TODO: the role line (th:switch) -->
+    <!-- TODO: savings -->
+    <!-- TODO: the loan line: one of two (th:if / th:unless) -->
+
+    <h2>Statement</h2>
+    <!-- TODO: "No transactions yet." or a table with a row per entry (th:each, with the row number) -->
+</body>
+</html>

@@ -91,25 +91,10 @@ public void setBrand(String brand) { // Public setter
 
 ## 💻 Exercises
 
-### Exercise 1: Basic Class
-Create a Person class with:
-- Name, age, email attributes
-- Constructor
-- Getters and setters
-- Display method
+Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`.
 
-### Exercise 2: Bank Account
-Create a BankAccount class with:
-- Account number, balance
-- Deposit and withdraw methods
-- Balance validation
-- Transaction history
-
-### Exercise 3: Book Class
-Create a Book class with:
-- Title, author, pages
-- Reading progress tracking
-- Completion status
+- **[Exercise 1: A chama member card](exercise1/README.md)**: private fields, a constructor that refuses a bad phone number, getters, and a setter that guards the field.
+- **[Exercise 2: The sacco account](exercise2/README.md)**: deposits and withdrawals in whole shillings, a balance that can't go below zero, and a history nobody outside can change.
 
 ## 🎮 Project: Coffee Machine (OOP Version)
 

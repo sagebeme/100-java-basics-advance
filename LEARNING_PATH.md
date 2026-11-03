@@ -61,7 +61,7 @@ Most early and late days ship with real JUnit tests you can run against your own
 
 ## Setup you'll need, and when
 
-- **Days 1–31**: nothing beyond a JDK (11+, this repo is built/tested against 21) and `javac`/`java`.
+- **Days 1–31**: nothing beyond a JDK (17+, because the JUnit runner in `lib/` needs Java 17; this repo is built and tested against 21) and `javac`/`java`.
 - **Days 32–46**: the same, with the jars in `lib/` on the classpath: `-cp "lib/*"` (org.json for JSON, H2 for Day 38's database, jsoup for scraping). Days 33, 34 and 45 can call real free APIs, and fall back to saved data when you're offline.
 - **Days 47–53**: Maven and Google Chrome. Each project starts its own practice website on your computer, and Selenium downloads the matching ChromeDriver for you the first time. Browser tests skip themselves if Chrome isn't installed.
 - **JavaFX (Days 18–23, 27–31 and 34)**: JavaFX hasn't shipped with the JDK since Java 11, so you'll need to install it yourself — grab the [JavaFX SDK](https://gluonhq.com/products/javafx/) and run with `--module-path`/`--add-modules` pointed at it. If you'd rather learn the logic before wrestling with a GUI toolchain, Days 19–23 and 27–31 each have the real decision logic (collision detection, ball physics, timers, file formats) pulled out into a plain `*Logic.java` class next to the GUI file — no JavaFX needed to compile or test that part, and it's fully covered by JUnit tests you can run today. The later JavaFX days (83, 86, 89 and 94) are Maven projects that fetch JavaFX for you: `mvn javafx:run` just works.

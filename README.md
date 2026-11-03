@@ -30,7 +30,7 @@ Portfolio projects, enterprise patterns, microservices, and professional-level a
 
 What the course actually uses, and from when:
 
-- **Java**: JDK 21 (Days 1–46 also run on JDK 11+; see [Java versions](#-java-versions) below)
+- **Java**: JDK 21 (Days 1–46 also run on JDK 17+; see [Java versions](#-java-versions) below)
 - **IDEs**: IntelliJ IDEA, Eclipse or VS Code
 - **Build tool**: plain `javac`/`java` for Days 1–46 (with a few jars in `lib/`), then Maven: the Selenium projects on Days 47–53, and every project from Day 54
 - **Frameworks**: Spring Boot 4 (web, Thymeleaf, Spring Data JPA with Hibernate, validation, Spring Security) and JavaFX
@@ -199,7 +199,7 @@ To put it online, import the repo into Netlify (`netlify.toml` is already set up
    ```
 
 2. **Set up your development environment**
-   - Install JDK 11 or higher (JDK 21 is what this repo is built and tested against)
+   - Install JDK 17 or higher (JDK 21 is what this repo is built and tested against)
    - Install IntelliJ IDEA or your preferred IDE
    - Days 1–46 compile with plain `javac`/`java`, with the jars in `lib/` on the classpath (`-cp "lib/*"`). Maven is needed for the Selenium projects on Days 47–53 and for every project from Day 54 (see `LEARNING_PATH.md`'s "Setup you'll need, and when")
 
@@ -277,20 +277,20 @@ Then open `http://localhost:8080`. Stop it with Ctrl+C.
 ## 🚀 Getting Started
 
 ### Prerequisites
-- **Java JDK 21** (JDK 11+ is enough for Days 1–46; see [Java versions](#-java-versions) below)
+- **Java JDK 21** (JDK 17+ is enough for Days 1–46; see [Java versions](#-java-versions) below)
 - IDE (IntelliJ IDEA recommended)
 - Git
 - Maven 3.9+ (from Day 47)
 - Google Chrome (for the browser automation on Days 47–53)
 
 ### ☕ Java versions
-**Use JDK 21.** Every Maven project (Days 47–53, and Day 54 on) targets Java 21, and from Day 54 they use Spring Boot 4, so they won't build on an older JDK. Days 1–46 are plain Java and also run on JDK 11 or newer. Here's what matters when choosing a version:
+**Use JDK 21.** Every Maven project (Days 47–53, and Day 54 on) targets Java 21, and from Day 54 they use Spring Boot 4, so they won't build on an older JDK. Days 1–46 are plain Java and also run on JDK 17 or newer: the JUnit runner in `lib/` needs Java 17, so on JDK 11 the tests won't start (`UnsupportedClassVersionError`). Here's what matters when choosing a version:
 
 | Version | Notes |
 |--------|--------|
 | **JDK 8** | Still common in older projects. Some examples may work, but later days use features from Java 11+ (e.g. `var`, HTTP Client). |
-| **JDK 11 (LTS)** | First LTS with modules. Enough for Days 1–46 only. JavaFX is not included; use the [JavaFX SDK](https://gluonhq.com/products/javafx/) and `--module-path` / `--add-modules` when running GUI days (18–23, 27–31 and 34). |
-| **JDK 17 (LTS)** | Enough for Days 1–46 only: Days 47–100 target Java 21. Same JavaFX note as 11. |
+| **JDK 11 (LTS)** | First LTS with modules. Too old for this course: the JUnit runner in `lib/` needs Java 17. JavaFX is not included; use the [JavaFX SDK](https://gluonhq.com/products/javafx/) and `--module-path` / `--add-modules` when running GUI days (18–23, 27–31 and 34). |
+| **JDK 17 (LTS)** | Enough for Days 1–46 only: Days 47–100 target Java 21. JavaFX is not included here either: use the JavaFX SDK on the GUI days. |
 | **JDK 21 (LTS)** | **What this course is built and tested on.** Needed from Day 47. |
 
 - **LTS** = Long Term Support: Oracle (and others) provide updates for several years.

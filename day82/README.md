@@ -1,71 +1,91 @@
 # Day 82 - Portfolio Project: Personal Website
 
-## 📚 Learning Objectives
-- Build personal portfolio website
-- Showcase projects
-- Create professional design
-- Deploy website
-- Build online presence
+> A CV says "I know Spring Boot". A website you built with it shows it. Today you build your own: a home page, your projects, and a contact form that really works.
 
-## 🎯 Project Requirements
-Create Personal Website:
-1. Home/About page
-2. Projects portfolio
-3. Contact form
-4. Responsive design
-5. Professional styling
+## 📖 The story
 
-## 📝 Implementation
-Use Spring Boot + Thymeleaf + Bootstrap
+Wairimu has finished 80 days of Java and is applying for junior developer jobs in Nairobi. Every recruiter asks the same thing: "Do you have a portfolio?" She has projects (the house price predictor, the blog API, the Morse converter), but they're folders on her laptop.
 
-## 📌 Notes & reference (use these when stuck)
+Her site needs three pages:
 
-**When you're stuck:** Re-read **Project Requirements** and **Implementation** above; use main README for structure. **Quick reference:** `mvn spring-boot:run` or run from IDE; see Days 54–59 for Spring/Thymeleaf/Bootstrap.
+- **Home**: who she is and what she does, with links to everything else.
+- **Projects**: a card per project with a description, the technologies, and a link.
+- **Contact**: a form that checks its input, saves the message, and thanks the visitor, without sending the message twice if they refresh the page.
 
-## ✅ Checklist
-- [ ] Created website structure
-- [ ] Added portfolio section
-- [ ] Created contact form
-- [ ] Made responsive
-- [ ] Deployed website
-- [ ] Committed code to Git
+All of it has to look right on a phone, because that's where most recruiters will open it.
 
-## 📂 What's in this folder
+## 🎯 Learning Objectives
+- Structure a small Spring MVC site: controllers, services, models and templates
+- Share a navigation bar between pages with a Thymeleaf fragment
+- List data from a service in a template with `th:each`
+- Validate a form with Bean Validation, including length limits
+- Use Post/Redirect/Get with flash attributes
+- Make pages responsive with Bootstrap and a viewport meta tag
 
-A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+## 🧰 What you'll use
 
-| File | What it does |
-|---|---|
-| `Application.java` | Starts Spring Boot |
-| `controller/ContactController.java` | `GET` and `POST /contact`, with validation |
-| `controller/PageController.java` | The home page and `/projects` |
-| `model/ContactForm.java` | The contact form, with validation rules |
-| `model/ContactMessage.java` | A received message |
-| `model/Project.java` | One portfolio project |
-| `service/ContactService.java` | Stores messages |
-| `service/ProjectService.java` | The list of projects |
+**A fragment for the navbar.** Write it once in `templates/fragments/navbar.html` and include it on every page:
 
-Also in `src/main/resources/`: `templates/contact.html`, `templates/fragments/navbar.html`, `templates/index.html`, `templates/projects.html`.
-
-## 💻 How to Run
-
-Needs JDK 21 and Maven (see the main README). From the repository root:
-
-```bash
-cd day82
-mvn spring-boot:run
+```html
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
 ```
 
-Then open http://localhost:8080. Stop it with Ctrl+C. Or run `Application` from your IDE.
+**Projects as records**, served by a `ProjectService` (a list in code for now; a database later):
 
-## 🧪 How to Test
+```java
+public record Project(String title, String description, List<String> techStack, String link) {}
+```
+
+**Validation with limits.** `@NotBlank` and `@Email` aren't enough on a public form: without `@Size(max = ...)`, anyone can post a 10 MB "message" and fill your memory.
+
+**Post/Redirect/Get.** If the form's POST returns a page, refreshing that page asks the browser to POST again, and the message is sent twice. Instead, redirect to a GET, and carry the "thanks" across with a flash attribute, which lives for exactly one request:
+
+```java
+contactService.save(contactForm);
+redirectAttributes.addFlashAttribute("submitted", true);
+return "redirect:/contact";
+```
+
+## 🪜 Steps
+
+**Your brief** (the `day82/` folder is one finished version: build your own first, then compare).
+
+1. `PageController`: `/` and `/projects`. `ContactController`: `GET` and `POST /contact`.
+2. The shared navbar fragment, and Bootstrap for the layout.
+3. `ProjectService` with your real projects. Replace the `#` links with your GitHub repositories.
+4. `ContactForm` with validation messages people can understand, and `ContactService` to keep the messages.
+5. Tests: every page renders with the navbar and viewport tag, the projects appear, a valid message is saved and redirects, and missing, invalid or overlong fields are refused.
+6. Make it yours: your own words, your own colours, and a photo.
+7. Deploy it (Day 70's Dockerfile is a starting point) and put the link on your CV.
+
+## 🧪 Run it and test it
+
+Needs JDK 21 and Maven. From the repository root:
 
 ```bash
 cd day82
 mvn test
+mvn spring-boot:run
 ```
 
-Runs `ContactControllerTest` and `PageControllerTest`. A clean run ends with `BUILD SUCCESS`.
+Open <http://localhost:8080>, then check it at phone width in your browser's developer tools.
 
-## 🚀 Next Steps
-**Ready for Day 83?** You'll build a Tic Tac Toe Game!
+## 🆘 Stuck?
+
+- **The thanks message doesn't appear after the redirect**: use `addFlashAttribute`, not `addAttribute`. A plain attribute ends up in the URL, not the next page's model.
+- **The form is empty after a validation error**: on errors, return the view directly (no redirect), so the form object and its errors are still in the model.
+- **The navbar is missing on one page**: check the fragment name in `th:replace` matches `th:fragment` exactly.
+- **The site looks tiny on a phone**: the page needs `<meta name="viewport" content="width=device-width, initial-scale=1">`.
+
+## ✅ Checklist
+- [ ] Home, projects and contact pages with a shared navbar
+- [ ] My real projects, with working links
+- [ ] A validated contact form using Post/Redirect/Get
+- [ ] Looks right at phone width
+- [ ] The tests pass
+- [ ] Deployed, and the link is on my CV
+- [ ] Committed code to Git
+
+## ➡️ Next
+
+Day 83 is a game: Tic Tac Toe in a JavaFX window, with the rules in a class you can test.

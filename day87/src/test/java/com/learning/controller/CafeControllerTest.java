@@ -30,7 +30,10 @@ class CafeControllerTest {
                 .andExpect(content().string(containsString("leaflet")))
                 // The map library comes from a CDN, so the browser must check it wasn't tampered with.
                 .andExpect(content().string(containsString("leaflet.js\" integrity=\"sha256-")))
-                .andExpect(content().string(containsString("leaflet.css\" integrity=\"sha256-")));
+                .andExpect(content().string(containsString("leaflet.css\" integrity=\"sha256-")))
+                // Popups are built from text, never from an HTML string with cafe data in it.
+                .andExpect(content().string(containsString("name.textContent = cafe.name")))
+                .andExpect(content().string(not(containsString("${cafe.name}"))));
     }
 
     @Test

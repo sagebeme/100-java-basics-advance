@@ -80,9 +80,14 @@
     }).addTo(map);
 
     cafes.forEach(cafe => {
-        L.marker([cafe.latitude, cafe.longitude])
-            .addTo(map)
-            .bindPopup(`<strong>${cafe.name}</strong><br>${cafe.address}<br>Rating: ${cafe.rating}/5`);
+        // Build the popup from text nodes, not an HTML string, so a name like
+        // "<img onerror=...>" shows as text instead of running.
+        const popup = document.createElement('div');
+        const name = document.createElement('strong');
+        name.textContent = cafe.name;
+        popup.append(name, document.createElement('br'), cafe.address,
+                document.createElement('br'), `Rating: ${cafe.rating}/5`);
+        L.marker([cafe.latitude, cafe.longitude]).addTo(map).bindPopup(popup);
     });
 </script>
 </body>

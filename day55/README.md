@@ -1,296 +1,108 @@
-# Day 55 - Spring Boot REST APIs
+# Day 55 - A REST API: Create, Read, Update, Delete
 
-## 📚 Learning Objectives
-- Build RESTful APIs with Spring Boot
-- Create REST controllers
-- Handle HTTP methods
-- Return JSON responses
-- Implement API endpoints
+> Yesterday's server could only say hello. Today's keeps a list of things, lets an app add, change and remove them, and answers with the status code a client expects.
 
-## 🎯 Topics Covered
-- REST principles
-- @RestController annotation
-- HTTP methods (GET, POST, PUT, DELETE)
-- Request mapping
-- Path variables
-- Request parameters
-- Response entities
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Almost every app on your phone is a screen on top of an **API**: the M-Pesa app asks Safaricom's servers for your balance, a ride app asks for nearby drivers, a shop app asks for today's prices. The app and the server agree on a small set of requests:
 
-### Step 1: REST Controller
-Create REST controller:
+| Request | Means |
+|---|---|
+| `GET /api/todos` | give me all of them |
+| `GET /api/todos/3` | give me number 3 |
+| `POST /api/todos` | here's a new one, store it |
+| `PUT /api/todos/3` | replace number 3 with this |
+| `DELETE /api/todos/3` | remove number 3 |
 
-```java
-import org.springframework.web.bind.annotation.*;
-import java.util.*;
+That's **REST**: things ("resources") at addresses, and the HTTP method saying what to do with them. Create, read, update and delete, known as **CRUD**, cover most of what apps need.
 
-@RestController
-@RequestMapping("/api")
-public class UserController {
-    
-    private List<User> users = new ArrayList<>();
-    
-    @GetMapping("/users")
-    public List<User> getAllUsers() {
-        return users;
-    }
-    
-    @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        User user = users.stream()
-            .filter(u -> u.getId().equals(id))
-            .findFirst()
-            .orElse(null);
-        
-        if (user != null) {
-            return ResponseEntity.ok(user);
-        }
-        return ResponseEntity.notFound().build();
-    }
-    
-    @PostMapping("/users")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        user.setId((long) (users.size() + 1));
-        users.add(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
-    }
-    
-    @PutMapping("/users/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        // Update logic
-        return ResponseEntity.ok(user);
-    }
-    
-    @DeleteMapping("/users/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        users.removeIf(u -> u.getId().equals(id));
-        return ResponseEntity.noContent().build();
-    }
-}
-```
+The exercises build two real ones, for Mama Njeri's duka and for a chama. Then you build your own from scratch: a to-do list API, so Wanjiru's family can stop arguing about whose turn it is to fetch water.
 
-### Step 2: User Model
-Create data model:
+## 🎯 Learning Objectives
+- Map the five CRUD operations with `@GetMapping`, `@PostMapping`, `@PutMapping` and `@DeleteMapping`
+- Read JSON from the request with `@RequestBody`, and parts of the address with `@PathVariable` and `@RequestParam`
+- Answer with the right status code using `ResponseEntity`: 200, 201 with a `Location`, 204 and 404
+- Validate input with Bean Validation (`@NotBlank`, `@Positive`, `@Valid`)
+- Turn exceptions into clean error answers with `@RestControllerAdvice`
+- Test an API with MockMvc
 
-```java
-public class User {
-    private Long id;
-    private String name;
-    private String email;
-    
-    // Constructors, getters, setters
-    public User() {}
-    
-    public User(Long id, String name, String email) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-    }
-    
-    // Getters and setters
-}
-```
+## 🧰 What you'll use
 
-### Step 3: Request Parameters
-Handle query parameters:
+**A controller for one resource.** `@RequestMapping` sets the shared start of every address:
 
-```java
-@GetMapping("/users/search")
-public List<User> searchUsers(
-    @RequestParam(required = false) String name,
-    @RequestParam(required = false) String email
-) {
-    return users.stream()
-        .filter(u -> name == null || u.getName().contains(name))
-        .filter(u -> email == null || u.getEmail().contains(email))
-        .collect(Collectors.toList());
-}
-```
-
-### Step 4: Exception Handling
-Handle errors:
-
-```java
-@ControllerAdvice
-public class GlobalExceptionHandler {
-    
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleNotFound(ResourceNotFoundException ex) {
-        ErrorResponse error = new ErrorResponse(
-            HttpStatus.NOT_FOUND.value(),
-            ex.getMessage()
-        );
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-    }
-}
-```
-
-## 💻 Exercises
-
-## 💻 Exercises
-
-Each exercise is a small Maven project with its own README. The starter compiles and its tests fail until you're done; `solution/` holds one answer for each file you change, at the same path. Run `mvn test` inside the exercise folder.
-
-- **[Exercise 1: Mama Njeri's stock API](exercise1/README.md)**: the five CRUD endpoints with the status codes a client relies on: 201 with a `Location`, 204, and 404.
-- **[Exercise 2: A chama's members API that says what's wrong](exercise2/README.md)**: Bean Validation rules, a `@RestControllerAdvice` that turns exceptions into 400, 404 and 409 answers, and a `?name=` search.
-
-## 🎮 Project: Todo REST API
-
-### Requirements
-Create a Todo REST API:
-1. GET /api/todos - Get all todos
-2. GET /api/todos/{id} - Get todo by ID
-3. POST /api/todos - Create new todo
-4. PUT /api/todos/{id} - Update todo
-5. DELETE /api/todos/{id} - Delete todo
-6. GET /api/todos?completed=true - Filter todos
-
-### Example Endpoints
-```
-GET /api/todos
-Response: [{"id":1,"title":"Learn Java","completed":false}]
-
-POST /api/todos
-Body: {"title":"Build API","completed":false}
-Response: {"id":2,"title":"Build API","completed":false}
-
-PUT /api/todos/2
-Body: {"title":"Build API","completed":true}
-Response: {"id":2,"title":"Build API","completed":true}
-```
-
-### Starter Code
 ```java
 @RestController
 @RequestMapping("/api/todos")
 public class TodoController {
-    private List<Todo> todos = new ArrayList<>();
-    
-    @GetMapping
-    public List<Todo> getAllTodos() {
-        return todos;
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Todo> get(@PathVariable long id) {
+        Todo todo = todos.get(id);
+        return todo == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(todo);
     }
-    
-    // Add other endpoints
+
+    @PostMapping
+    public ResponseEntity<Todo> create(@Valid @RequestBody Todo todo) {
+        Todo saved = store(todo);
+        return ResponseEntity.created(URI.create("/api/todos/" + saved.getId())).body(saved);
+    }
 }
 ```
 
-## 📚 Resources
+**Status codes are part of the answer.** `201 Created` says "made, and the `Location` header says where". `204 No Content` says "done, nothing to show". `404` says "no such thing". `400` says "your request was wrong", and the body should say how. Answering `200` to everything makes every client read the body to find out what happened.
 
-### Official Documentation
-- [Spring Boot REST](https://spring.io/guides/gs/rest-service/)
-- [Spring Web MVC](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html)
-- [REST API Design](https://restfulapi.net/)
+**Validation.** Put rules on the fields (`@NotBlank String title`), put `@Valid` on the `@RequestBody`, and Spring refuses bad input before your method runs. A `@RestControllerAdvice` class decides what that refusal looks like.
 
-### Tutorials
-- [Spring Boot REST Tutorial](https://www.baeldung.com/spring-boot-rest-api)
-- [REST Controllers](https://www.geeksforgeeks.org/spring-boot-rest-controller/)
+**Storing things for now.** A `ConcurrentHashMap<Long, Todo>` and an `AtomicLong` for the next id. Many requests can arrive at once, which is why they're the thread-safe versions. Everything is lost when the server stops; a real database arrives on Day 63.
 
-### Video Resources
-- [Spring Boot REST API](https://www.youtube.com/results?search_query=spring+boot+rest+api+tutorial)
-- [REST API Java](https://www.youtube.com/results?search_query=rest+api+java+tutorial)
+## 🪜 Steps
 
-### Practice Platforms
-- [REST API Practice](https://restfulapi.net/)
+Each exercise is a small Maven project with its own README. The starter compiles and its tests fail until you're done; `solution/` holds one answer for each file you change, at the same path. Run `mvn test` inside the exercise folder.
 
-## 🔑 Key Concepts Summary
+1. **[Exercise 1: Mama Njeri's stock API](exercise1/README.md)** (`exercise1/`): the five CRUD endpoints with the status codes a client relies on: 201 with a `Location`, 204, and 404.
+2. **[Exercise 2: A chama's members API that says what's wrong](exercise2/README.md)** (`exercise2/`): Bean Validation rules, a `@RestControllerAdvice` that turns exceptions into 400, 404 and 409 answers, and a `?name=` search.
+3. **Project: Kazi, a to-do API** (your own new project). There's no starter: copy Day 54's `pom.xml` and `Application.java` into a new folder and build it.
+   1. A `Todo` with an `id`, a `title` (not blank), an `assignee` and `completed`.
+   2. `GET /api/todos`, `GET /api/todos/{id}`, `POST`, `PUT /api/todos/{id}` and `DELETE /api/todos/{id}`, with the status codes from Exercise 1.
+   3. `GET /api/todos?completed=false` and `?assignee=Wanjiru` filters, with `@RequestParam(required = false)`.
+   4. A `@RestControllerAdvice` that answers 400 with the field errors, as in Exercise 2.
+   5. MockMvc tests for each endpoint, including the 404s and a 400.
 
-| Concept | Description | Example |
-|---------|-------------|---------|
-| REST | Architectural style | Resource-based URLs |
-| @RestController | REST controller | `@RestController` |
-| HTTP Methods | GET, POST, PUT, DELETE | `@GetMapping`, `@PostMapping` |
-| Path Variable | URL parameter | `@PathVariable Long id` |
-| Request Body | JSON payload | `@RequestBody User user` |
+## 🧪 Run it and test it
 
-**HTTP methods and status codes, from `1xx` to `5xx`:** [the reference page](https://github.com/sagebeme/100-Days-of-TypeScript/blob/main/reference/http.md) (from the 100 Days of TypeScript course; HTTP works the same in every language).
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **REST:** Re-read **Step 1** — GET (read), POST (create), PUT (update), DELETE — see **Step 2**
-- **Controller:** Re-read **Step 2** — `@RestController`, `@GetMapping("/path")`, `@PostMapping` with `@RequestBody` — see **Step 2**
-- **JSON:** Spring Boot auto-serializes POJOs to JSON — see **Step 3**
-- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
-
-**Related days:** Day 54 (Spring Boot); Day 33 (HTTP). **Quick reference:** `mvn spring-boot:run`; test with curl or Postman
-
-## 📂 What's in this folder
-
-The project brief above is yours to build from scratch. The folder has worked solutions for the two exercises, each its own Maven project:
-
-**`exercise1/`**
-
-| File | What it does |
-|---|---|
-| `Application.java` | Starts Spring Boot |
-| `controller/ItemController.java` | CRUD for items at `/api/items`: list, get, create, update, delete |
-| `model/Item.java` | An item: id and name |
-
-**`exercise2/`**
-
-| File | What it does |
-|---|---|
-| `Application.java` | Starts Spring Boot |
-| `controller/UserController.java` | CRUD for users at `/api/users`, plus `GET /api/users/search` with optional filters |
-| `exception/ErrorResponse.java` | The JSON body sent back for an error |
-| `exception/GlobalExceptionHandler.java` | Turns not-found and validation errors into clean 404 and 400 responses |
-| `exception/ResourceNotFoundException.java` | Thrown when an id doesn't exist |
-| `model/User.java` | A user: id, name and email, with validation rules |
-
-## 💻 How to Run
-
-Needs JDK 21 and Maven (see the main README). From the repository root:
-
-**exercise1:**
-
-```bash
-cd day55/exercise1
-mvn spring-boot:run
-```
-
-Then open http://localhost:8080/api/items. Stop it with Ctrl+C. Or run `Application` from your IDE.
-
-**exercise2:**
-
-```bash
-cd day55/exercise2
-mvn spring-boot:run
-```
-
-Then open http://localhost:8080/api/users. Stop it with Ctrl+C. Or run `Application` from your IDE.
-
-## 🧪 How to Test
+Needs JDK 21 and Maven. For an exercise:
 
 ```bash
 cd day55/exercise1
 mvn test
+mvn spring-boot:run
 ```
 
-Runs `ItemControllerTest`. A clean run ends with `BUILD SUCCESS`.
+While it runs, try it from another terminal:
 
 ```bash
-cd day55/exercise2
-mvn test
+curl -i http://localhost:8080/api/items
+curl -i -X POST http://localhost:8080/api/items -H "Content-Type: application/json" -d '{"name":"Unga 2kg","shillings":210}'
 ```
 
-Runs `UserControllerTest`. A clean run ends with `BUILD SUCCESS`.
+`-i` shows the status line and headers, which is where the interesting part of today is.
+
+## 🆘 Stuck?
+
+- **`415 Unsupported Media Type`**: the request has no `Content-Type: application/json` header.
+- **`400` with no explanation**: validation failed and nothing turned it into a useful body. That's the job of the `@RestControllerAdvice` in Exercise 2.
+- **The POST works, but the new item has id 0**: you returned the item you were sent, not the one you stored with its new id.
+- **`@Valid` does nothing**: the project needs `spring-boot-starter-validation` in `pom.xml`.
+- **Two quick POSTs got the same id**: use `AtomicLong.incrementAndGet()`, not `count++`.
 
 ## ✅ Checklist
-- [ ] Understand REST principles
-- [ ] Can create REST controllers
-- [ ] Can handle HTTP methods
-- [ ] Can use path variables
-- [ ] Can handle errors
-- [ ] Completed Todo REST API
+- [ ] Wrote all five CRUD endpoints
+- [ ] 201 with a `Location`, 204 and 404 where they belong
+- [ ] Bad input gets a 400 that says what's wrong
+- [ ] Built the to-do API with filters
+- [ ] Finished both exercises, and the tests pass
 - [ ] Committed code to Git
 
-## 🚀 Next Steps
-After completing Day 55, you should be able to:
-- Build REST APIs
-- Handle HTTP methods
-- Return JSON responses
-- Create API endpoints
+## ➡️ Next
 
-**Ready for Day 56?** You'll learn about static files and templates!
+Day 56 serves web pages as well as JSON: static files, and Thymeleaf templates that share a header and footer.

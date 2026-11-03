@@ -1,287 +1,103 @@
-# Day 57 - Thymeleaf Templating
+# Day 57 - Thymeleaf in Depth: Mtaa News, the First Edition
 
-## 📚 Learning Objectives
-- Master Thymeleaf template engine
-- Work with Thymeleaf syntax
-- Create dynamic templates
-- Use Thymeleaf features
-- Build template-based applications
+> Yesterday's templates filled in a table. Today they decide things: show this if, hide that unless, number the rows, format the dates, and never let a reader's comment turn into code.
 
-## 🎯 Topics Covered
-- Thymeleaf syntax
-- Expression language
-- Conditionals and loops
-- Form handling
-- Layout fragments
-- Internationalization
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Kevo and Shiru want to start **Mtaa News**, a neighbourhood news site for Kayole: the new footbridge, the water rationing timetable, the Under-14 football final. Newspapers in Nairobi don't cover their estate; they will. They need:
 
-### Step 1: Basic Thymeleaf Template
-Create template with variables:
+- a front page listing every story, newest first, with its date and section;
+- a page for each story;
+- a form to write a new story, and to edit one;
+- the same header and footer everywhere.
+
+Every one of those needs Thymeleaf to do more than print a value: format a date as `3 Nov 2026`, show "No stories yet" when the list is empty, build `/posts/7` from a story's id, mark the current page in the menu, and keep a form filled in when it's sent back.
+
+## 🎯 Learning Objectives
+- Write Thymeleaf expressions: `${...}` for data, `*{...}` for a form's object, `@{...}` for links, `|...|` for text with values in it
+- Make decisions with `th:if`, `th:unless` and `th:switch`
+- Loop with `th:each`, and use its status (`count`, `first`, `last`, `odd`)
+- Format dates and numbers with `#temporals` and `#numbers`
+- Bind a form to an object with `th:object` and `th:field`, and handle it with `@ModelAttribute`
+- Understand why `th:text` escapes HTML, and when `th:utext` is dangerous
+
+## 🧰 What you'll use
+
+**Links built from data.** `@{/posts/{id}(id=${post.id})}` becomes `/posts/7`, with the app's context path added if it has one:
 
 ```html
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title th:text="${title}">Default Title</title>
-</head>
-<body>
-    <h1 th:text="${message}">Default Message</h1>
-    <p th:text="'Hello, ' + ${name}">Hello, User</p>
-</body>
-</html>
+<article th:each="post, row : ${posts}" th:classappend="${row.first} ? 'lead-story'">
+    <h2><a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}">Title</a></h2>
+    <small th:text="${#temporals.format(post.published, 'd MMM yyyy')}">3 Nov 2026</small>
+</article>
+<p th:if="${#lists.isEmpty(posts)}">No stories yet.</p>
 ```
 
-### Step 2: Conditionals and Loops
-Use conditionals and loops:
+**A form bound to an object.** `th:object` names the object; `th:field="*{title}"` fills in the input's `name`, `id` and current value:
 
 ```html
-<div th:if="${user != null}">
-    <p>Welcome, <span th:text="${user.name}">User</span>!</p>
-</div>
-
-<div th:unless="${user != null}">
-    <p>Please log in</p>
-</div>
-
-<ul>
-    <li th:each="item : ${items}" th:text="${item.name}">Item</li>
-</ul>
-
-<table>
-    <tr th:each="user : ${users}">
-        <td th:text="${user.id}">1</td>
-        <td th:text="${user.name}">John</td>
-        <td th:text="${user.email}">john@example.com</td>
-    </tr>
-</table>
-```
-
-### Step 3: Form Handling
-Create forms:
-
-```html
-<form th:action="@{/users}" th:object="${user}" method="post">
-    <input type="text" th:field="*{name}" placeholder="Name">
-    <input type="email" th:field="*{email}" placeholder="Email">
-    <button type="submit">Submit</button>
+<form th:action="@{/posts}" th:object="${post}" method="post">
+    <input th:field="*{title}">
+    <textarea th:field="*{body}"></textarea>
+    <button>Publish</button>
 </form>
 ```
 
-### Step 4: Layout Fragments
-Use fragments for reusable components:
-
-**fragments/header.html:**
-```html
-<div th:fragment="header">
-    <nav>
-        <a th:href="@{/}">Home</a>
-        <a th:href="@{/about}">About</a>
-    </nav>
-</div>
-```
-
-**index.html:**
-```html
-<div th:replace="fragments/header :: header"></div>
-```
-
-### Step 5: Controller Integration
-Pass data to templates:
-
 ```java
-@Controller
-public class UserController {
-    
-    @GetMapping("/users")
-    public String listUsers(Model model) {
-        List<User> users = userService.getAllUsers();
-        model.addAttribute("users", users);
-        model.addAttribute("title", "User List");
-        return "users";
-    }
-    
-    @GetMapping("/users/{id}")
-    public String getUser(@PathVariable Long id, Model model) {
-        User user = userService.getUserById(id);
-        model.addAttribute("user", user);
-        return "user-detail";
-    }
+@PostMapping("/posts")
+public String create(@ModelAttribute Post post) {
+    postService.save(post);
+    return "redirect:/posts";     // after a POST, send the browser to a GET page
 }
 ```
 
-## 💻 Exercises
+**Escaping is a feature.** If a reader names themselves `<script>alert('hi')</script>`, `th:text` prints those characters as text. `th:utext` would run it in every visitor's browser. Use `th:utext` only for HTML you wrote yourself.
 
-## 💻 Exercises
+**Redirect after POST.** Returning `redirect:/posts` means refreshing the page doesn't send the story a second time.
+
+## 🪜 Steps
 
 Each exercise is a small Maven project with its own README. The starter compiles and its tests fail until you're done; `solution/` holds one answer for each file you change, at the same path. Run `mvn test` inside the exercise folder.
 
-- **[Exercise 1: Harambee cards](exercise1/README.md)**: variable and text expressions, dates and numbers, links built from ids, and why `th:text` escapes what people type.
-- **[Exercise 2: A Sacco member's page](exercise2/README.md)**: `th:switch`, `th:if`/`th:unless`, and `th:each` with its row counter and a class on some rows.
+1. **[Exercise 1: Harambee cards](exercise1/README.md)** (`exercise1/`): variable and text expressions, dates and numbers, links built from ids, and why `th:text` escapes what people type.
+2. **[Exercise 2: A Sacco member's page](exercise2/README.md)** (`exercise2/`): `th:switch`, `th:if`/`th:unless`, and `th:each` with its row counter and a class on some rows.
+3. **Project: Mtaa News** (your own new project, with `spring-boot-starter-web` and `spring-boot-starter-thymeleaf`).
+   1. A `Post` (id, title, section, body, published date) and a `PostService` that keeps them in memory, newest first.
+   2. `GET /posts`: the list, with dates, sections and an empty message.
+   3. `GET /posts/{id}`: one story.
+   4. `GET /posts/new` and `POST /posts`: write a story; `GET /posts/{id}/edit` and `POST /posts/{id}`: change one.
+   5. A header and footer fragment on every page, and MockMvc tests for each address.
 
-## 🎮 Project: Blog with Thymeleaf
+Keep this project: Day 59 upgrades it.
 
-### Requirements
-Create a blog using Thymeleaf:
-1. List all blog posts
-2. Display post details
-3. Create new posts (form)
-4. Edit posts
-5. Use layout fragments
-6. Responsive design
+## 🧪 Run it and test it
 
-### Example Templates
-**templates/posts.html:**
-```html
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title th:text="${title}">Blog Posts</title>
-</head>
-<body>
-    <div th:replace="fragments/header :: header"></div>
-    
-    <div class="container">
-        <h1>Blog Posts</h1>
-        <div th:each="post : ${posts}">
-            <h2 th:text="${post.title}">Post Title</h2>
-            <p th:text="${post.content}">Post content...</p>
-            <a th:href="@{/posts/{id}(id=${post.id})}">Read more</a>
-        </div>
-    </div>
-    
-    <div th:replace="fragments/footer :: footer"></div>
-</body>
-</html>
-```
-
-### Starter Code
-```java
-@Controller
-public class BlogController {
-    
-    @GetMapping("/posts")
-    public String listPosts(Model model) {
-        List<Post> posts = postService.getAllPosts();
-        model.addAttribute("posts", posts);
-        return "posts";
-    }
-}
-```
-
-## 📚 Resources
-
-### Official Documentation
-- [Thymeleaf Documentation](https://www.thymeleaf.org/documentation.html)
-- [Thymeleaf Tutorial](https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html)
-- [Spring Boot Thymeleaf](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-spring-mvc-template-engines)
-
-### Tutorials
-- [Thymeleaf Guide - Baeldung](https://www.baeldung.com/thymeleaf-in-spring-mvc)
-- [Thymeleaf Basics](https://www.geeksforgeeks.org/spring-boot-thymeleaf/)
-
-### Video Resources
-- [Thymeleaf Tutorial](https://www.youtube.com/results?search_query=thymeleaf+tutorial)
-- [Spring Boot Thymeleaf](https://www.youtube.com/results?search_query=spring+boot+thymeleaf)
-
-### Practice Platforms
-- [Thymeleaf Examples](https://github.com/thymeleaf/thymeleafexamples)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Template Engine | Render dynamic HTML | Thymeleaf |
-| Expression | Access data | `${variable}` |
-| Conditionals | If/else logic | `th:if="${condition}"` |
-| Loops | Iterate collections | `th:each="item : ${items}"` |
-| Fragments | Reusable components | `th:fragment`, `th:replace` |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **Thymeleaf:** Re-read **Step 1** — templates in `templates/`; `th:text="${var}"`, `th:each` — see **Step 2**
-- **Controller:** Re-read **Step 2** — add model in controller; return view name — see **Step 2**
-- **Forms:** Re-read **Step 3** — `th:object`, `th:field`, `th:action` — see **Step 3**
-- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
-
-**Related days:** Day 54 (Spring Boot); Day 56 (static/templates); Day 59 (Bootstrap). **Quick reference:** `mvn spring-boot:run`; open http://localhost:8080
-
-## 📂 What's in this folder
-
-The project brief above is yours to build from scratch. The folder has worked solutions for the two exercises, each its own Maven project:
-
-**`exercise1/`**
-
-| File | What it does |
-|---|---|
-| `Application.java` | Starts Spring Boot |
-| `GreetingController.java` | `GET /greeting?name=…` renders a Thymeleaf greeting |
-
-Also in `src/main/resources/`: `templates/greeting.html`.
-
-**`exercise2/`**
-
-| File | What it does |
-|---|---|
-| `AccountController.java` | `GET /account` renders an account page with conditionals and loops in Thymeleaf |
-| `Application.java` | Starts Spring Boot |
-
-Also in `src/main/resources/`: `templates/account.html`.
-
-## 💻 How to Run
-
-Needs JDK 21 and Maven (see the main README). From the repository root:
-
-**exercise1:**
-
-```bash
-cd day57/exercise1
-mvn spring-boot:run
-```
-
-Then open http://localhost:8080/greeting?name=Amina. Stop it with Ctrl+C. Or run `Application` from your IDE.
-
-**exercise2:**
-
-```bash
-cd day57/exercise2
-mvn spring-boot:run
-```
-
-Then open http://localhost:8080/account. Stop it with Ctrl+C. Or run `Application` from your IDE.
-
-## 🧪 How to Test
+Needs JDK 21 and Maven. For an exercise:
 
 ```bash
 cd day57/exercise1
 mvn test
+mvn spring-boot:run
 ```
 
-Runs `GreetingControllerTest`. A clean run ends with `BUILD SUCCESS`.
+Then open http://localhost:8080/card/1. Stop it with Ctrl+C.
 
-```bash
-cd day57/exercise2
-mvn test
-```
+## 🆘 Stuck?
 
-Runs `AccountControllerTest`. A clean run ends with `BUILD SUCCESS`.
+- **`Neither BindingResult nor plain target object for bean name 'post'`**: the form page needs an object to bind to. Add `model.addAttribute("post", new Post())` in the `GET /posts/new` method.
+- **The date prints as `2026-11-03T09:15`**: format it with `#temporals.format(...)`.
+- **A link comes out as `/posts/{id}`**: the value goes in brackets after the path: `@{/posts/{id}(id=${post.id})}`.
+- **Refreshing after "Publish" posts the story twice**: return `redirect:/posts` from the POST method, not the template name.
+- **Every field arrives empty**: the `name` attributes don't match the object's fields. `th:field` sets them for you.
 
 ## ✅ Checklist
-- [ ] Understand Thymeleaf syntax
-- [ ] Can use expressions
-- [ ] Can use conditionals
-- [ ] Can use loops
-- [ ] Can create forms
-- [ ] Completed Blog with Thymeleaf
+- [ ] Used `th:if`, `th:unless`, `th:switch` and `th:each` with its status
+- [ ] Formatted dates and numbers in a template
+- [ ] Built links from ids with `@{...}`
+- [ ] A form that creates and edits stories, with redirect after POST
+- [ ] Finished both exercises, and the tests pass
 - [ ] Committed code to Git
 
-## 🚀 Next Steps
-After completing Day 57, you should be able to:
-- Create dynamic templates
-- Use Thymeleaf features
-- Build template-based apps
-- Work with forms
+## ➡️ Next
 
-**Ready for Day 58?** You'll integrate Bootstrap with your Spring Boot app!
+Day 58 makes pages look good on any screen with Bootstrap: grids, cards, navbars and forms.

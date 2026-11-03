@@ -1,325 +1,97 @@
-# Day 58 - Bootstrap Integration
+# Day 58 - Bootstrap: Pages That Fit Every Phone
 
-## 📚 Learning Objectives
-- Integrate Bootstrap with Spring Boot
-- Use Bootstrap components
-- Create responsive layouts
-- Style Thymeleaf templates
-- Build modern web interfaces
+> Most of your users will see your site on a phone, many on a small, older one. Bootstrap gives you a grid, a navbar and form styles that fold down to fit, without writing that CSS yourself.
 
-## 🎯 Topics Covered
-- Bootstrap setup
-- Bootstrap components
-- Responsive design
-- Bootstrap utilities
-- Custom styling
-- Bootstrap JavaScript
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+The Mavuno farmers' co-operative in Meru has a website that one of the members' sons built in 2014. On a laptop it's fine. On the phones the farmers actually use, the menu runs off the edge, the price table needs sideways scrolling, and the sign-up form's buttons are too small to press. The chairman wants it fixed before the harvest.
 
-### Step 1: Add Bootstrap to Project
-Include Bootstrap via CDN:
+**Bootstrap** is a CSS and JavaScript toolkit used on a huge share of the web. You add its stylesheet, give your HTML its class names, and get:
+
+- a 12-column **grid** that rearranges itself at different screen widths: three cards side by side on a laptop, one under the other on a phone;
+- a **navbar** that folds into a ☰ button on small screens;
+- **cards**, **badges**, **alerts**, **tables** and **forms** that look consistent and are large enough to tap.
+
+Today you build a dashboard for the co-op's office: today's deliveries, prices and a members table, all readable on a phone.
+
+## 🎯 Learning Objectives
+- Add Bootstrap from a CDN, with an `integrity` hash so a changed file is refused
+- Lay out a page with `container`, `row` and `col-*`, and make it respond with breakpoints (`col-12 col-md-4`)
+- Use the navbar, cards, badges, alerts and tables
+- Style forms, and show which field is wrong with `is-invalid` and `invalid-feedback`
+- Combine Bootstrap with Thymeleaf loops and conditions
+- Check a page at phone width, not just on your laptop
+
+## 🧰 What you'll use
+
+**Bootstrap from a CDN, safely.** The `integrity` attribute is a hash of the exact file. If the CDN ever served something else, the browser would refuse to run it:
 
 ```html
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${title}">My App</title>
-    
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Custom CSS -->
-    <link th:href="@{/css/custom.css}" rel="stylesheet">
-</head>
-<body>
-    <!-- Content -->
-    
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 ```
 
-### Step 2: Use Bootstrap Components
-Create navigation and cards:
+**The grid.** A row is 12 columns wide. `col-12 col-md-4` means "all 12 columns on a phone, 4 of them from medium screens up", so three cards sit side by side on a laptop and stack on a phone:
 
 ```html
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container">
-        <a class="navbar-brand" th:href="@{/}">My App</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/about}">About</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${card.title}">Card Title</h5>
-                    <p class="card-text" th:text="${card.text}">Card text</p>
-                    <a th:href="@{/details}" class="btn btn-primary">View Details</a>
-                </div>
+<div class="row g-3">
+    <div class="col-12 col-md-4" th:each="crop : ${crops}">
+        <div class="card h-100">
+            <div class="card-body">
+                <h2 class="h5 card-title" th:text="${crop.name}">Coffee</h2>
+                <span class="badge text-bg-success" th:if="${crop.priceUp}">Price up</span>
             </div>
         </div>
     </div>
 </div>
 ```
 
-### Step 3: Bootstrap Forms
-Create styled forms:
+**Forms that point at the problem.** Add `is-invalid` to a broken field and put the message in a `div.invalid-feedback` right after it. Keep what the user typed (`th:value` or `th:field`), so they fix one field instead of retyping all of them.
 
-```html
-<form th:action="@{/users}" th:object="${user}" method="post" class="row g-3">
-    <div class="col-md-6">
-        <label for="name" class="form-label">Name</label>
-        <input type="text" class="form-control" id="name" th:field="*{name}" required>
-    </div>
-    <div class="col-md-6">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" id="email" th:field="*{email}" required>
-    </div>
-    <div class="col-12">
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
-</form>
-```
+**The viewport tag.** Without `<meta name="viewport" content="width=device-width, initial-scale=1">`, phones pretend to be a 980-pixel-wide screen and shrink everything. Every page needs it.
 
-### Step 4: Responsive Grid
-Use Bootstrap grid system:
-
-```html
-<div class="container">
-    <div class="row">
-        <div class="col-12 col-md-6 col-lg-4">
-            <div class="card">
-                <div class="card-body">Content 1</div>
-            </div>
-        </div>
-        <div class="col-12 col-md-6 col-lg-4">
-            <div class="card">
-                <div class="card-body">Content 2</div>
-            </div>
-        </div>
-        <div class="col-12 col-md-6 col-lg-4">
-            <div class="card">
-                <div class="card-body">Content 3</div>
-            </div>
-        </div>
-    </div>
-</div>
-```
-
-### Step 5: Bootstrap Utilities
-Use utility classes:
-
-```html
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h1 class="text-primary">Dashboard</h1>
-    <button class="btn btn-success">Add New</button>
-</div>
-
-<div class="alert alert-info" role="alert">
-    <strong>Info!</strong> This is an informational message.
-</div>
-
-<div class="badge bg-primary">New</div>
-<div class="badge bg-success">Active</div>
-```
-
-## 💻 Exercises
-
-## 💻 Exercises
+## 🪜 Steps
 
 Each exercise is a small Maven project with its own README. The starter compiles and its tests fail until you're done; `solution/` holds one answer for each file you change, at the same path. Run `mvn test` inside the exercise folder.
 
-- **[Exercise 1: The co-op's home page, with Bootstrap](exercise1/README.md)**: Bootstrap from a CDN with integrity hashes, a navbar that folds into a button on phones, and a three-card grid.
-- **[Exercise 2: Prices and a sign-up form, in Bootstrap](exercise2/README.md)**: responsive cards and badges from a list, and a form that marks each broken field and keeps what was typed.
+1. **[Exercise 1: The co-op's home page, with Bootstrap](exercise1/README.md)** (`exercise1/`): Bootstrap from a CDN with integrity hashes, a navbar that folds into a button on phones, and a three-card grid.
+2. **[Exercise 2: Prices and a sign-up form, in Bootstrap](exercise2/README.md)** (`exercise2/`): responsive cards and badges from a list, and a form that marks each broken field and keeps what was typed.
+3. **Project: The Co-op Office Dashboard** (your own new project, with web and Thymeleaf).
+   1. A navbar with the co-op's name and three links, folding on phones.
+   2. A row of summary cards: kilos delivered today, members, and the best price this week.
+   3. A table of today's deliveries (member, crop, kilos, amount in shillings), wrapped in `table-responsive` so it scrolls inside itself on a phone.
+   4. A form to record a delivery, with `is-invalid` errors that keep what was typed, and a success alert after saving.
+   5. MockMvc tests for the pages and the form's errors. Then open it at 375 pixels wide in your browser's device mode.
 
-## 🎮 Project: Bootstrap Dashboard
+## 🧪 Run it and test it
 
-### Requirements
-Create a dashboard with Bootstrap:
-1. Responsive navigation
-2. Dashboard cards
-3. Data tables
-4. Forms with validation
-5. Alerts and notifications
-6. Mobile-friendly design
-
-### Example Template
-```html
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Dashboard</a>
-        </div>
-    </nav>
-    
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-3">
-                <div class="card text-white bg-primary mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Users</h5>
-                        <p class="card-text" th:text="${userCount}">0</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card text-white bg-success mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Posts</h5>
-                        <p class="card-text" th:text="${postCount}">0</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
-```
-
-## 📚 Resources
-
-### Official Documentation
-- [Bootstrap Documentation](https://getbootstrap.com/docs/5.3/)
-- [Bootstrap Components](https://getbootstrap.com/docs/5.3/components/)
-- [Bootstrap Grid](https://getbootstrap.com/docs/5.3/layout/grid/)
-
-### Tutorials
-- [Bootstrap Tutorial - W3Schools](https://www.w3schools.com/bootstrap5/)
-- [Bootstrap with Spring Boot](https://www.baeldung.com/spring-boot-bootstrap)
-
-### Video Resources
-- [Bootstrap Tutorial](https://www.youtube.com/results?search_query=bootstrap+tutorial)
-- [Bootstrap Spring Boot](https://www.youtube.com/results?search_query=bootstrap+spring+boot)
-
-### Practice Platforms
-- [Bootstrap Examples](https://getbootstrap.com/docs/5.3/examples/)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Bootstrap | CSS framework | Responsive components |
-| Grid System | Layout system | `col-md-6`, `row` |
-| Components | UI elements | Cards, buttons, forms |
-| Utilities | Helper classes | `mt-4`, `text-center` |
-| Responsive | Mobile-friendly | Breakpoints, media queries |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **Bootstrap:** Re-read **Step 1** — add CDN or static CSS/JS; use `container`, `row`, `col-*` — see **Step 2**
-- **Components:** Re-read **Step 2** — cards, navbar, buttons, forms — see **Step 2**
-- **Thymeleaf:** Re-read **Step 3** — combine with Day 57; `th:text`, `th:each` in Bootstrap markup — see **Step 3**
-- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
-
-**Related days:** Day 57 (Thymeleaf); Day 59 (Bootstrap blog). **Quick reference:** `mvn spring-boot:run`; open http://localhost:8080
-
-## 📂 What's in this folder
-
-The project brief above is yours to build from scratch. The folder has worked solutions for the two exercises, each its own Maven project:
-
-**`exercise1/`**
-
-| File | What it does |
-|---|---|
-| `Application.java` | Starts Spring Boot |
-| `HomeController.java` | `GET /` renders a Bootstrap layout |
-
-Also in `src/main/resources/`: `static/css/custom.css`, `templates/layout.html`.
-
-**`exercise2/`**
-
-| File | What it does |
-|---|---|
-| `Application.java` | Starts Spring Boot |
-| `Card.java` | The data for one card |
-| `PageController.java` | `GET /` (a grid of Bootstrap cards) and `GET /signup` (a Bootstrap form) |
-
-Also in `src/main/resources/`: `templates/index.html`, `templates/signup.html`.
-
-## 💻 How to Run
-
-Needs JDK 21 and Maven (see the main README). From the repository root:
-
-**exercise1:**
-
-```bash
-cd day58/exercise1
-mvn spring-boot:run
-```
-
-Then open http://localhost:8080. Stop it with Ctrl+C. Or run `Application` from your IDE.
-
-**exercise2:**
-
-```bash
-cd day58/exercise2
-mvn spring-boot:run
-```
-
-Then open http://localhost:8080. Stop it with Ctrl+C. Or run `Application` from your IDE.
-
-## 🧪 How to Test
+Needs JDK 21 and Maven. For an exercise:
 
 ```bash
 cd day58/exercise1
 mvn test
+mvn spring-boot:run
 ```
 
-Runs `HomeControllerTest`. A clean run ends with `BUILD SUCCESS`.
+Open http://localhost:8080 and narrow the browser window: the menu folds into a button and the cards stack.
 
-```bash
-cd day58/exercise2
-mvn test
-```
+## 🆘 Stuck?
 
-Runs `PageControllerTest`. A clean run ends with `BUILD SUCCESS`.
+- **The ☰ button does nothing**: Bootstrap's JavaScript isn't loaded. Add `bootstrap.bundle.min.js` before `</body>` (the bundle includes Popper, which dropdowns need).
+- **The browser refuses to load Bootstrap**: the `integrity` hash doesn't match the version in the URL. Copy both from the same place.
+- **Everything is tiny on a phone**: the viewport `<meta>` tag is missing.
+- **Columns don't stack on a phone**: you used `col-4`, which is 4 columns at every size. Use `col-12 col-md-4`.
+- **The error message never shows**: `invalid-feedback` is only visible right after an element with `is-invalid`.
 
 ## ✅ Checklist
-- [ ] Can add Bootstrap to project
-- [ ] Can use Bootstrap components
-- [ ] Can create responsive layouts
-- [ ] Can style forms
-- [ ] Can use utilities
-- [ ] Completed Bootstrap Dashboard
+- [ ] Loaded Bootstrap from a CDN with integrity hashes
+- [ ] A grid that rearranges itself between phone and laptop
+- [ ] A navbar that folds into a button on phones
+- [ ] A form that marks broken fields and keeps what was typed
+- [ ] Built the co-op dashboard and checked it at phone width
+- [ ] Finished both exercises, and the tests pass
 - [ ] Committed code to Git
 
-## 🚀 Next Steps
-After completing Day 58, you should be able to:
-- Integrate Bootstrap
-- Create modern UIs
-- Build responsive designs
-- Style web applications
+## ➡️ Next
 
-**Congratulations!** You've completed the Intermediate+ section!
-
-**Ready for Day 59?** You'll upgrade your blog with Bootstrap!
+Day 59 upgrades Mtaa News from Day 57 with Bootstrap: story pages, paging, and deleting safely.

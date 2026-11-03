@@ -1,211 +1,98 @@
-# Day 59 - Upgraded Blog with Bootstrap
+# Day 59 - Mtaa News, the Upgrade: Detail Pages, Paging and Deleting
 
-## 📚 Learning Objectives
-- Upgrade existing blog with Bootstrap
-- Improve UI/UX with Bootstrap components
-- Create responsive blog design
-- Enhance user experience
-- Apply Bootstrap best practices
+> Mtaa News from Day 57 works, and now it has readers. Today it gets a proper look, a page per story with a real 404, pages of ten instead of one endless list, and a delete button that can't be clicked by accident.
 
-## 🎯 Topics Covered
-- Bootstrap integration
-- Blog layout design
-- Responsive components
-- Navigation improvements
-- Card layouts
-- Form styling
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Mtaa News has fifty stories now, and Kevo and Shiru are hearing complaints:
 
-### Step 1: Upgrade Layout
-Add Bootstrap to blog templates:
+- "The front page takes forever on my phone." Fifty stories on one page is too many. Show a few at a time, with **Previous**, **1 2 3** and **Next**.
+- "I shared a link to a story and it said 'Whitelabel Error Page'." A story that doesn't exist (deleted, or a typo in the link) should get a proper **404** page, not a crash.
+- "The front page is just text." It needs excerpts, the first part of each story, cut at a whole word with "…".
+- "I deleted a story by mistake." Deleting needs a confirmation, must be a `POST` (never a link that a search engine could follow), and should say what happened afterwards.
 
-```html
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${title}">Blog</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" th:href="@{/}">My Blog</a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" th:href="@{/posts}">Posts</a>
-                <a class="nav-link" th:href="@{/posts/new}">New Post</a>
-            </div>
-        </div>
-    </nav>
-    
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-8">
-                <div th:each="post : ${posts}">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h2 class="card-title" th:text="${post.title}">Title</h2>
-                            <p class="card-text" th:text="${post.content}">Content</p>
-                            <a th:href="@{/posts/{id}(id=${post.id})}" class="btn btn-primary">Read More</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5>Sidebar</h5>
-                        <p>Additional content</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+This is the first day of the **Advanced** stage. The code is still a web app, but now you think about what happens when things go wrong, and about the people and programs that use it in ways you didn't plan.
+
+## 🎯 Learning Objectives
+- Look things up with `Optional`, and answer a missing one with `ResponseStatusException` and a 404
+- Page through a list: page numbers from 1, a page size, the total number of pages, and redirects for pages out of range
+- Build Bootstrap pagination with `disabled`, `active` and `aria-current`
+- Change data only with `POST`, and redirect afterwards with a flash message (`RedirectAttributes`)
+- Write small, careful helpers (an excerpt that never cuts a word) and test their edge cases
+- Test a controller with a stand-in service using `@MockitoBean`
+
+## 🧰 What you'll use
+
+**A real 404.** `Optional` makes "maybe there's no such story" part of the method's type, and `orElseThrow` turns it into the right answer:
+
+```java
+@GetMapping("/posts/{id}")
+public String post(@PathVariable long id, Model model) {
+    Post post = postService.find(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No story " + id));
+    model.addAttribute("post", post);
+    return "post";
+}
 ```
 
-### Step 2: Style Forms
-Improve post creation form:
+**Paging.** With 7 stories and 3 per page, there are `(7 + 3 - 1) / 3 = 3` pages; page 2 is stories 4 to 6. Ask for page 9 and the controller redirects to the last page, rather than showing an empty one.
 
-```html
-<form th:action="@{/posts}" th:object="${post}" method="post" class="mt-4">
-    <div class="mb-3">
-        <label for="title" class="form-label">Title</label>
-        <input type="text" class="form-control" id="title" th:field="*{title}" required>
-    </div>
-    <div class="mb-3">
-        <label for="content" class="form-label">Content</label>
-        <textarea class="form-control" id="content" th:field="*{content}" rows="10" required></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Create Post</button>
-</form>
+**Delete with POST, then redirect.** A `GET` must never change anything: link previews, browser pre-loading and search engines all follow links. So the delete button is a small form:
+
+```java
+@PostMapping("/posts/{id}/delete")
+public String delete(@PathVariable long id, RedirectAttributes redirect) {
+    boolean deleted = postService.delete(id);
+    redirect.addFlashAttribute("message", deleted ? "Story deleted." : "That story was already gone.");
+    return "redirect:/posts";
+}
 ```
 
-## 💻 Exercises
+A **flash attribute** survives exactly one redirect, so the message shows once and is gone if the page is refreshed.
 
-## 💻 Exercises
+**A stand-in for a test.** `@MockitoBean PostService postService` replaces the real service in a controller test, so you can make it return "no such story" or "already gone" whenever you need.
+
+## 🪜 Steps
 
 Each exercise is a small Maven project with its own README. The starter compiles and its tests fail until you're done; `solution/` holds one answer for each file you change, at the same path. Run `mvn test` inside the exercise folder.
 
-- **[Exercise 1: Mtaa News, one story per page](exercise1/README.md)**: a detail page per story with a real 404, an `Optional` lookup, and excerpts that never break a word.
-- **[Exercise 2: The editor's desk: pages and deleting](exercise2/README.md)**: Bootstrap pagination with out-of-range redirects, and deleting by `POST` with a flash message, tested with a Mockito stand-in.
+1. **[Exercise 1: Mtaa News, one story per page](exercise1/README.md)** (`exercise1/`): a detail page per story with a real 404, an `Optional` lookup, and excerpts that never break a word.
+2. **[Exercise 2: The editor's desk: pages and deleting](exercise2/README.md)** (`exercise2/`): Bootstrap pagination with out-of-range redirects, and deleting by `POST` with a flash message, tested with a Mockito stand-in.
+3. **Project: Mtaa News, upgraded** (your Day 57 project).
+   1. Bootstrap from Day 58: a navbar, cards for the stories, and a readable story page at phone width.
+   2. `/posts/{id}` with a 404 for missing stories, and a friendly `templates/error/404.html`.
+   3. Excerpts on the front page, and paging with 5 stories a page.
+   4. Delete by `POST`, with a confirmation dialog and a flash message.
+   5. Tests: the 404, a page out of range, and both delete messages.
 
-## 🎮 Project: Bootstrap Blog Upgrade
+## 🧪 Run it and test it
 
-### Requirements
-Upgrade existing blog:
-1. Add Bootstrap styling
-2. Create responsive layout
-3. Improve navigation
-4. Style forms
-5. Add components
-6. Enhance UX
-
-## 📚 Resources
-
-### Official Documentation
-- [Bootstrap Documentation](https://getbootstrap.com/docs/5.3/)
-- [Bootstrap Examples](https://getbootstrap.com/docs/5.3/examples/)
-
-### Tutorials
-- [Bootstrap Blog Template](https://getbootstrap.com/docs/5.3/examples/blog/)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description |
-|---------|-------------|
-| Bootstrap Upgrade | Enhance existing app |
-| Responsive Design | Mobile-friendly |
-| Component Library | Pre-built UI elements |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **Bootstrap CDN:** Re-read **Step 1** — add CSS/JS links in layout; use Thymeleaf for dynamic content — see **Step 2**
-- **Layout:** Use `container`, `row`, `col-*`; navbar, cards, forms — see **Step 2**
-- **Forms:** Use `form-control`, `form-label`, `btn btn-primary` — see **Step 2**
-- **Main day README** → **Step 1 & 2** for markup; **Key Concepts** for components
-
-**Related days:** Day 54 (Spring Boot); Day 57 (Thymeleaf); Day 58 (Bootstrap intro). **Quick reference:** Run blog with `mvn spring-boot:run`; open browser to localhost
-
-## 📂 What's in this folder
-
-The project brief above is yours to build from scratch. The folder has worked solutions for the two exercises, each its own Maven project:
-
-**`exercise1/`**
-
-| File | What it does |
-|---|---|
-| `Application.java` | Starts Spring Boot |
-| `BlogController.java` | `GET /posts` lists posts with Bootstrap styling (exercise 2 adds paging and `POST /posts/{id}/delete`) |
-| `Post.java` | A blog post |
-| `PostService.java` | Holds the posts (exercise 2 adds paging and deleting) |
-
-Also in `src/main/resources/`: `templates/posts.html`.
-
-**`exercise2/`**
-
-| File | What it does |
-|---|---|
-| `Application.java` | Starts Spring Boot |
-| `BlogController.java` | `GET /posts` lists posts with Bootstrap styling (exercise 2 adds paging and `POST /posts/{id}/delete`) |
-| `Post.java` | A blog post |
-| `PostService.java` | Holds the posts (exercise 2 adds paging and deleting) |
-
-Also in `src/main/resources/`: `templates/posts.html`.
-
-## 💻 How to Run
-
-Needs JDK 21 and Maven (see the main README). From the repository root:
-
-**exercise1:**
-
-```bash
-cd day59/exercise1
-mvn spring-boot:run
-```
-
-Then open http://localhost:8080/posts. Stop it with Ctrl+C. Or run `Application` from your IDE.
-
-**exercise2:**
-
-```bash
-cd day59/exercise2
-mvn spring-boot:run
-```
-
-Then open http://localhost:8080/posts. Stop it with Ctrl+C. Or run `Application` from your IDE.
-
-## 🧪 How to Test
-
-```bash
-cd day59/exercise1
-mvn test
-```
-
-Runs `BlogControllerTest`. A clean run ends with `BUILD SUCCESS`.
+Needs JDK 21 and Maven. For an exercise:
 
 ```bash
 cd day59/exercise2
 mvn test
+mvn spring-boot:run
 ```
 
-Runs `BlogControllerTest` and `PostServiceTest`. A clean run ends with `BUILD SUCCESS`.
+Then open http://localhost:8080/posts?page=2, and try page 9. Stop it with Ctrl+C.
+
+## 🆘 Stuck?
+
+- **A missing story gives a 500, not a 404**: `Optional.get()` threw `NoSuchElementException`. Use `orElseThrow` with a `ResponseStatusException`.
+- **The flash message never appears**: you returned the template name instead of `redirect:/posts`. Flash attributes only exist after a redirect.
+- **Page 0 or page -1 crashes**: redirect anything below 1 to page 1 before asking the service.
+- **"Previous" on page 1 still links somewhere**: give its `li` the `disabled` class with `th:classappend="${currentPage == 1} ? 'disabled'"`.
+- **The excerpt cuts "Kayole" into "Kay…"**: look for the last space before the limit with `lastIndexOf(' ', max - 1)`, and cut there.
 
 ## ✅ Checklist
-- [ ] Upgraded blog with Bootstrap
-- [ ] Created responsive layout
-- [ ] Improved navigation
-- [ ] Styled forms
-- [ ] Enhanced UX
+- [ ] A missing story answers 404 with a friendly page
+- [ ] Pages of stories, with redirects for pages out of range
+- [ ] Excerpts that never cut a word
+- [ ] Deleting is a `POST`, confirmed first, with a flash message after
+- [ ] Finished both exercises, and the tests pass
 - [ ] Committed code to Git
 
-## 🚀 Next Steps
-After completing Day 59, you should have a modern, responsive blog!
+## ➡️ Next
 
-**Ready for Day 60?** You'll learn HTML forms with Spring Boot!
+Day 60 is about forms in depth: binding, validation messages, and a registration form that keeps what people typed.

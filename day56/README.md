@@ -1,268 +1,104 @@
-# Day 56 - Spring Boot: Static Files and Templates
+# Day 56 - Web Pages From Spring Boot: Static Files and Thymeleaf
 
-## 📚 Learning Objectives
-- Serve static files in Spring Boot
-- Work with templates
-- Understand resource handling
-- Configure static resources
-- Build web applications
+> An API is for apps. People want pages. Today Spring Boot serves both kinds: files that never change, and templates it fills in for every visitor.
 
-## 🎯 Topics Covered
-- Static resource configuration
-- Template engines
-- Resource handlers
-- File serving
-- CSS and JavaScript
-- Images and assets
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Zawadi runs a hair salon in Kitengela, and her customers keep asking on WhatsApp: "What time do you open? How much are box braids?" She wants a small website: a home page, a price list and a contact page, all with the same header and footer, that she can show on her phone.
 
-### Step 1: Static Resources Structure
-Organize static files:
+There are two kinds of page in it:
 
-```
-src/main/resources/
-├── static/
-│   ├── css/
-│   │   └── style.css
-│   ├── js/
-│   │   └── app.js
-│   ├── images/
-│   │   └── logo.png
-│   └── favicon.ico
-└── templates/
-    └── index.html
-```
+- **Static files** never change: the logo, the stylesheet, a script, the "about us" page. Spring Boot serves anything in `src/main/resources/static/` exactly as it is: `static/css/site.css` is at `/css/site.css`.
+- **Templates** are filled in for each request. The price list comes from a Java `List`, so when Zawadi changes a price in one place, the page follows. Spring Boot uses **Thymeleaf** for this: ordinary HTML files in `src/main/resources/templates/`, with `th:` attributes saying where the data goes.
 
-### Step 2: Serve Static Files
-Access static resources:
+And because every page shares the header and footer, they're written once, as **fragments**, and included everywhere.
+
+## 🎯 Learning Objectives
+- Serve static files from `src/main/resources/static/`, and know how their addresses are made
+- Map extra folders and cache rules with a `WebMvcConfigurer`
+- Return a Thymeleaf template from a `@Controller`, and pass it data through a `Model`
+- Fill a template with `th:text` and `th:each`
+- Share a header and footer between pages with `th:fragment` and `th:replace`, including a parameter for the current page
+- Know the difference between `@Controller` (returns a page name) and `@RestController` (returns data)
+
+## 🧰 What you'll use
+
+**A page controller** returns the template's name, not data:
 
 ```java
 @Controller
-public class HomeController {
-    
-    @GetMapping("/")
-    public String home() {
-        return "index"; // Returns templates/index.html
+public class PageController {
+    @GetMapping("/prices")
+    public String prices(Model model) {
+        model.addAttribute("services", services);   // available in the template as ${services}
+        return "prices";                             // templates/prices.html
     }
 }
 ```
 
-**templates/index.html:**
+**A template** is HTML that still opens in a browser on its own. The text inside is a placeholder that Thymeleaf replaces:
+
 ```html
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" href="/css/style.css">
-    <script src="/js/app.js"></script>
-</head>
-<body>
-    <img src="/images/logo.png" alt="Logo">
-    <h1>Welcome</h1>
-</body>
-</html>
+<tr th:each="s : ${services}">
+    <td th:text="${s.name}">Box braids</td>
+    <td th:text="|KES ${#numbers.formatInteger(s.shillings, 1, 'COMMA')}|">KES 3,500</td>
+</tr>
 ```
 
-### Step 3: Custom Resource Handler
-Configure custom paths:
+**Fragments.** Write the header once in `templates/fragments/header.html`:
 
-```java
-@Configuration
-public class WebConfig implements WebMvcConfigurer {
-    
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/assets/**")
-            .addResourceLocations("classpath:/static/assets/");
-        
-        registry.addResourceHandler("/files/**")
-            .addResourceLocations("file:/path/to/files/");
-    }
-}
+```html
+<header th:fragment="header(active)">
+    <a th:href="@{/}" th:attr="aria-current=${active == 'home'} ? 'page'">Home</a>
+    ...
+</header>
 ```
 
-### Step 4: Template Configuration
-Configure template engine:
+and include it on every page with `<div th:replace="~{fragments/header :: header('prices')}"></div>`.
 
-**application.properties:**
-```properties
-# Thymeleaf configuration
-spring.thymeleaf.prefix=classpath:/templates/
-spring.thymeleaf.suffix=.html
-spring.thymeleaf.cache=false
+**Static files with rules.** A `WebMvcConfigurer` can serve another folder at another address, and tell browsers how long to keep the files (`CacheControl.maxAge(1, TimeUnit.DAYS)`), so a phone on slow data doesn't download the logo on every visit.
 
-# Static resources
-spring.web.resources.static-locations=classpath:/static/
-```
-
-## 💻 Exercises
-
-## 💻 Exercises
+## 🪜 Steps
 
 Each exercise is a small Maven project with its own README. The starter compiles and its tests fail until you're done; `solution/` holds one answer for each file you change, at the same path. Run `mvn test` inside the exercise folder.
 
-- **[Exercise 1: A juice kiosk's page, from static files](exercise1/README.md)**: a phone-friendly `static/index.html` with its CSS, script and logo, plus a custom resource handler with a cache header.
-- **[Exercise 2: One header for every page](exercise2/README.md)**: Thymeleaf fragments with a parameter that marks the current page, and a tours table with formatted prices.
+1. **[Exercise 1: A juice kiosk's page, from static files](exercise1/README.md)** (`exercise1/`): a phone-friendly `static/index.html` with its CSS, script and logo, plus a custom resource handler with a cache header.
+2. **[Exercise 2: One header for every page](exercise2/README.md)** (`exercise2/`): Thymeleaf fragments with a parameter that marks the current page, and a tours table with formatted prices.
+3. **Project: Zawadi's Salon** (your own new project, starting from Day 54's `pom.xml` plus `spring-boot-starter-thymeleaf`).
+   1. `static/`: a stylesheet, a logo and an `about.html`.
+   2. `templates/fragments/`: a header with a parameter for the current page, and a footer with the opening hours.
+   3. `templates/index.html`, `prices.html` and `contact.html`, each using both fragments.
+   4. A `PageController` with a `Service` list (name, minutes, price in whole shillings) for the price table.
+   5. Tests with MockMvc: each page answers 200, and the price page shows a price with its comma.
 
-## 🎮 Project: Static Website with Spring Boot
+## 🧪 Run it and test it
 
-### Requirements
-Create a website with static files:
-1. HTML templates
-2. CSS styling
-3. JavaScript functionality
-4. Images and assets
-5. Proper file organization
-6. Resource serving
-
-### Example Structure
-```
-src/main/resources/
-├── static/
-│   ├── css/
-│   │   ├── bootstrap.min.css
-│   │   └── custom.css
-│   ├── js/
-│   │   ├── jquery.min.js
-│   │   └── main.js
-│   └── images/
-│       └── banner.jpg
-└── templates/
-    ├── layout.html
-    ├── index.html
-    └── about.html
-```
-
-### Starter Code
-```java
-@Controller
-public class WebController {
-    
-    @GetMapping("/")
-    public String index(Model model) {
-        model.addAttribute("title", "Home");
-        return "index";
-    }
-    
-    @GetMapping("/about")
-    public String about(Model model) {
-        model.addAttribute("title", "About");
-        return "about";
-    }
-}
-```
-
-## 📚 Resources
-
-### Official Documentation
-- [Spring Boot Static Content](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-spring-mvc-static-content)
-- [Resource Handling](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#mvc-config-static-resources)
-
-### Tutorials
-- [Spring Boot Static Resources](https://www.baeldung.com/spring-mvc-static-resources)
-- [Template Engines](https://www.baeldung.com/spring-template-engines)
-
-### Video Resources
-- [Spring Boot Static Files](https://www.youtube.com/results?search_query=spring+boot+static+files)
-- [Spring Boot Templates](https://www.youtube.com/results?search_query=spring+boot+templates)
-
-### Practice Platforms
-- [Spring Boot Guides](https://spring.io/guides)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Static Resources | Files served as-is | CSS, JS, images |
-| Templates | Dynamic HTML | Thymeleaf, JSP |
-| Resource Handler | Configure paths | `addResourceHandlers()` |
-| Classpath | Resource location | `classpath:/static/` |
-| Template Engine | Render templates | Thymeleaf, Mustache |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **Static:** Re-read **Step 1** — put files in `src/main/resources/static/`; served at `/` — see **Step 2**
-- **Templates:** Re-read **Step 2** — put in `templates/`; Thymeleaf renders — see **Step 2**
-- **Paths:** Re-read **Step 3** — `classpath:/static/`, `classpath:/templates/` — see **Step 3**
-- **Main day README** → **Step-by-Step Instructions** and **Key Concepts**
-
-**Related days:** Day 54 (Spring Boot); Day 57 (Thymeleaf). **Quick reference:** `mvn spring-boot:run`; open http://localhost:8080
-
-## 📂 What's in this folder
-
-The project brief above is yours to build from scratch. The folder has worked solutions for the two exercises, each its own Maven project:
-
-**`exercise1/`**
-
-| File | What it does |
-|---|---|
-| `Application.java` | Starts Spring Boot |
-| `WebConfig.java` | Serves files from `custom-assets/` as well as the usual `static/` folder |
-
-Also in `src/main/resources/`: `custom-assets/extra.css`, `static/css/style.css`, `static/images/logo.svg`, `static/js/app.js`.
-
-**`exercise2/`**
-
-| File | What it does |
-|---|---|
-| `Application.java` | Starts Spring Boot |
-| `WebController.java` | `GET /` and `GET /about`, rendered from Thymeleaf templates with a shared header and footer |
-
-Also in `src/main/resources/`: `templates/about.html`, `templates/fragments/footer.html`, `templates/fragments/header.html`, `templates/index.html`.
-
-## 💻 How to Run
-
-Needs JDK 21 and Maven (see the main README). From the repository root:
-
-**exercise1:**
-
-```bash
-cd day56/exercise1
-mvn spring-boot:run
-```
-
-Then open http://localhost:8080/css/style.css and http://localhost:8080/assets/extra.css. Stop it with Ctrl+C. Or run `Application` from your IDE.
-
-**exercise2:**
-
-```bash
-cd day56/exercise2
-mvn spring-boot:run
-```
-
-Then open http://localhost:8080. Stop it with Ctrl+C. Or run `Application` from your IDE.
-
-## 🧪 How to Test
-
-```bash
-cd day56/exercise1
-mvn test
-```
-
-Runs `StaticResourceTest`. A clean run ends with `BUILD SUCCESS`.
+Needs JDK 21 and Maven. For an exercise:
 
 ```bash
 cd day56/exercise2
 mvn test
+mvn spring-boot:run
 ```
 
-Runs `WebControllerTest`. A clean run ends with `BUILD SUCCESS`.
+Then open http://localhost:8080/tours. Stop it with Ctrl+C.
+
+## 🆘 Stuck?
+
+- **The page shows `prices` as text**: the class is a `@RestController`. Pages need `@Controller`.
+- **`TemplateInputException: Error resolving template`**: the name you returned doesn't match a file in `templates/`. Leave off `.html`.
+- **The CSS 404s**: the address doesn't include `static`. `static/css/site.css` is at `/css/site.css`.
+- **Changes to a template don't show**: Thymeleaf caches templates. Restart, or set `spring.thymeleaf.cache=false` while you work.
+- **The fragment's parameter is always empty**: check the call passes it: `header('prices')`, with quotes.
 
 ## ✅ Checklist
-- [ ] Understand static resources
-- [ ] Can organize files
-- [ ] Can serve static files
-- [ ] Can use templates
-- [ ] Can configure resources
-- [ ] Completed Static Website
+- [ ] Served static files, and know their addresses
+- [ ] Returned a Thymeleaf page from a `@Controller` with data from a `Model`
+- [ ] Shared a header and footer between pages, with the current page marked
+- [ ] Built Zawadi's salon site
+- [ ] Finished both exercises, and the tests pass
 - [ ] Committed code to Git
 
-## 🚀 Next Steps
-After completing Day 56, you should be able to:
-- Serve static files
-- Work with templates
-- Organize resources
-- Build web applications
+## ➡️ Next
 
-**Ready for Day 57?** You'll learn Thymeleaf templating!
+Day 57 goes deeper into Thymeleaf: conditions, loops with counters, dates, links built from ids, and why it escapes what people type.

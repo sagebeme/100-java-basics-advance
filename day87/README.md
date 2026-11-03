@@ -88,4 +88,4 @@ Open <http://localhost:8080> and try a search.
 
 ## ➡️ Next
 
-Day 88 builds a to-do list REST API: create, update, complete and delete tasks, with proper errors.
+Day 88 builds a to-do list web app: add, complete, filter and delete tasks, all with plain HTML forms.

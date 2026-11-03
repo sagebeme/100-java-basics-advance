@@ -1,110 +1,101 @@
-# Day 65 - Web Design Best Practices
+# Day 65 - Web Design Done Properly: The Films Site, Rebuilt to Last
 
-## 📚 Learning Objectives
-- Understand web design principles
-- Apply UX best practices
-- Create accessible websites
-- Optimize performance
-- Build user-friendly interfaces
+> Yesterday's films site works. Today it gets the things users notice without knowing why: it reads well on a phone, a screen reader can describe it, every field has a label, and it shows up fast.
 
-## 🎯 Topics Covered
-- UX/UI principles
-- Accessibility
-- Performance optimization
-- Responsive design
-- Color theory
-- Typography
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Njeri's friend Otieno is blind and uses a screen reader. When he opened the Day 64 site, his phone read out "list, ten items" with no idea what list, and the form's fields as "edit text, edit text, edit text, edit text". He couldn't tell the title box from the year box. On a cheap phone on slow data, the page sat blank while Bootstrap's script downloaded.
 
-### Step 1: Accessibility
-Make sites accessible:
+Today you rebuild the same site, with the same Java code underneath, so that it works for everyone:
 
-```html
-<!-- Use semantic HTML -->
-<nav aria-label="Main navigation">
-    <ul>
-        <li><a href="/">Home</a></li>
-    </ul>
-</nav>
+- **semantic HTML**: `<header>` and `<main>` instead of anonymous `<div>`s, and an `<ol>` because the order of the films means something;
+- an **accessible name** for the list: `aria-label="Top ten ranked movies"`;
+- a `<label for="...">` joined to **every** form field;
+- a **viewport** tag and a Bootstrap grid, so the form stacks neatly on a phone;
+- the script loaded with **`defer`**, so the page appears before the script has finished downloading.
 
-<!-- Add alt text -->
-<img src="logo.png" alt="Company Logo">
+`MovieControllerTest` checks each one of these in the page the server actually sends.
 
-<!-- Use ARIA labels -->
-<button aria-label="Close dialog">×</button>
-```
+## 🎯 Learning Objectives
+- Use semantic elements (`header`, `main`, `nav`, `ol`) so the page's structure is real, not just visual
+- Give every form control a `<label>` joined with `for` and `id`
+- Add accessible names with `aria-label` only where visible text isn't enough
+- Make a layout respond to screen width with the viewport tag and a grid
+- Load scripts without blocking the page, using `defer`
+- Test the HTML your server sends, not just your Java
 
-### Step 2: Performance
-Optimize performance:
+## 🧰 What you'll use
+
+**Structure that means something:**
 
 ```html
-<!-- Lazy load images -->
-<img src="image.jpg" loading="lazy" alt="Description">
-
-<!-- Minify CSS/JS -->
-<link rel="stylesheet" href="styles.min.css">
+<header class="container mt-4">
+    <h1>My Top 10 Movies</h1>
+</header>
+<main class="container">
+    <ol class="list-group" aria-label="Top ten ranked movies">
+        <li class="list-group-item" th:each="movie : ${movies}">...</li>
+    </ol>
+</main>
 ```
 
-## 🎮 Project: Apply Best Practices
+A screen reader user can jump straight to `main`, and hears "Top ten ranked movies, list, 10 items".
 
-### Requirements
-Improve the Day 64 movies site:
-1. Add accessibility
-2. Optimize performance
-3. Improve UX
-4. Enhance design
-5. Test responsiveness
+**Labels joined to fields.** Clicking the label focuses the field, and a screen reader reads it out. A `placeholder` is not a label: it disappears as soon as you type.
 
-## 📌 Notes & reference (use these when stuck)
+```html
+<label for="year" class="form-label">Year</label>
+<input type="number" id="year" th:field="*{year}" class="form-control" required>
+```
 
-**When you're stuck:**
-- Re-read **Step 1** (accessibility: semantic HTML, aria-label, alt text); **Step 2** (performance: lazy loading, minify)
-- **Related days:** Day 64 (movies site); Day 66 (REST APIs). **Quick reference:** Apply to existing Thymeleaf/Spring pages
+**`defer`.** A normal `<script>` stops the page while it downloads and runs. `defer` downloads it alongside and runs it after the page is ready, which matters most on slow connections.
 
-## ✅ Checklist
-- [ ] Understand best practices
-- [ ] Can create accessible sites
-- [ ] Can optimize performance
-- [ ] Can improve UX
-- [ ] Applied best practices
-- [ ] Committed code to Git
+**Testing the page.** MockMvc returns the real HTML, so a test can check `containsString("<main")` or that each field's `id` has a matching `for`.
 
-## 📂 What's in this folder
+## 🪜 Steps
 
-A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+**Project: Top 10 Films, rebuilt** (the `day65/` folder is a finished version: build your own first, then compare). The Java is the same as Day 64; the work is in `templates/movies.html`.
 
-| File | What it does |
-|---|---|
-| `Application.java` | Starts Spring Boot |
-| `controller/MovieController.java` | `GET /movies` and `POST /movies`, unchanged from Day 64 |
-| `model/Movie.java` | Unchanged from Day 64 |
-| `repository/MovieRepository.java` | Unchanged from Day 64 |
-| `service/MovieService.java` | Unchanged from Day 64 |
+1. Swap the outer `div`s for `header` and `main`.
+2. Label the list, and keep it an `ol`.
+3. Give every form field an `id` and a `<label for>`, and lay the form out with Bootstrap's grid (`col-md-4`, `col-md-2`).
+4. Add the viewport tag, `lang="en"` and `charset`.
+5. Load Bootstrap's script with `defer`.
+6. Write the tests in `MovieControllerTest` that prove each of these.
+7. Try it with a screen reader: NVDA on Windows, VoiceOver on a Mac or iPhone, or TalkBack on Android.
 
-Also in `src/main/resources/`: `templates/movies.html`.
+## 🧪 Run it and test it
 
-This is Day 64's movies site with web-design fixes applied: semantic `<header>` and `<main>`, `aria-label`s on the ranked list and the form, a `<label for>` on every input, a responsive viewport tag, and Bootstrap's script loaded with `defer`. The tests check each of those in the real page.
-
-## 💻 How to Run
-
-Needs JDK 21 and Maven (see the main README). From the repository root:
+Needs JDK 21 and Maven. From the repository root:
 
 ```bash
 cd day65
 mvn spring-boot:run
 ```
 
-Then open http://localhost:8080/movies. Stop it with Ctrl+C. Or run `Application` from your IDE.
-
-## 🧪 How to Test
+Open http://localhost:8080/movies, then try it at phone width in your browser's device mode. Run Lighthouse (in Chrome's DevTools) for an accessibility score. Stop the server with Ctrl+C.
 
 ```bash
 cd day65
 mvn test
 ```
 
-Runs `MovieControllerTest` and `MovieServiceTest`. A clean run ends with `BUILD SUCCESS`.
+## 🆘 Stuck?
 
-## 🚀 Next Steps
-**Ready for Day 66?** You'll build RESTful APIs!
+- **Clicking a label doesn't focus its field**: the `for` doesn't match the field's `id`. `th:field` sets the `id` to the field's name, so `for="year"` matches `th:field="*{year}"`.
+- **Bootstrap's dropdowns stop working after adding `defer`**: an inline script that uses Bootstrap ran first. Put your own code in a file loaded with `defer` too, after Bootstrap.
+- **Lighthouse says "low contrast"**: light grey text on white is the usual cause. Body text needs a contrast ratio of at least 4.5:1.
+- **Everything is labelled with `aria-label`**: visible text is better. Use `aria-label` only where there's no visible text to point to.
+
+## ✅ Checklist
+- [ ] The page uses `header`, `main` and a labelled `ol`
+- [ ] Every form field has a joined `<label>`
+- [ ] The layout works at phone width
+- [ ] Scripts load with `defer`
+- [ ] Tried the page with a screen reader or Lighthouse
+- [ ] The tests pass
+- [ ] Committed code to Git
+
+## ➡️ Next
+
+Day 66 builds a REST API for a café directory, with search, filters and a key for the requests that change data.

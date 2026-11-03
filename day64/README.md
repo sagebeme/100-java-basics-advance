@@ -1,123 +1,96 @@
-# Day 64 - My Top 10 Movies Website
+# Day 64 - My Top 10 Films: A Ranked List in a Database
 
-## 📚 Learning Objectives
-- Build complete web application
-- Integrate database
-- Create movie listing
-- Implement ranking system
-- Build full-stack application
+> A top 10 list sounds simple until you move number 7 up to number 2. Then numbers 2 to 6 all have to move down one, and none of them can end up sharing a place.
 
-## 🎯 Topics Covered
-- Full-stack development
-- Database integration
-- List management
-- Ranking system
-- CRUD operations
-- User interface
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Every Friday, Njeri and her friends argue about films at the Westgate cinema café. To settle it, each of them is keeping a ranked top 10 on a little website: title, director, year, a rating out of 10, and a rank. The site lists the films in order and has a form to add a new one, which goes in at the bottom.
 
-### Step 1: Movie Entity
-Create Movie entity:
+The interesting part is **re-ranking**. When Njeri decides *Supa Modo* deserves 2nd place, not 7th:
 
-```java
-@Entity
-public class Movie {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
-    private String title;
-    private String director;
-    private Integer year;
-    private Integer rating;
-    private Integer rank;
-}
-```
+- *Supa Modo* becomes 2;
+- the films that were 2, 3, 4, 5 and 6 each move down one place;
+- 1, 8, 9 and 10 don't move at all.
 
-### Step 2: Movie Repository
-Create repository:
+Get it wrong and two films end up at number 3 and none at number 6. `MovieService.setRank` does it in one careful pass, and its tests check moving up, moving down, moving to the same place, and refusing a rank that isn't in the list.
+
+## 🎯 Learning Objectives
+- Order query results with a method name: `findAllByOrderByRankAsc`
+- Keep a business rule (ranks with no gaps and no ties) in a `@Service`, not the controller
+- Update several rows together with `saveAll`, inside a transaction
+- Show database data in a Thymeleaf page, and add to it from a form
+- Test a service against a real (in-memory) database, rolled back after each test with `@Transactional`
+
+## 🧰 What you'll use
+
+**Sorting in the method name:**
 
 ```java
 public interface MovieRepository extends JpaRepository<Movie, Long> {
     List<Movie> findAllByOrderByRankAsc();
-    Optional<Movie> findByRank(Integer rank);
 }
 ```
 
-### Step 3: Controller
-Create controller:
+**Moving a film up** from `oldRank` to `newRank` shifts everything from `newRank` to `oldRank - 1` down by one:
 
 ```java
-@Controller
-public class MovieController {
-    @Autowired
-    private MovieService movieService;
-    
-    @GetMapping("/movies")
-    public String listMovies(Model model) {
-        model.addAttribute("movies", movieService.getTop10Movies());
-        return "movies";
+for (Movie m : all) {
+    if (!m.getId().equals(movieId) && m.getRank() >= newRank && m.getRank() < oldRank) {
+        m.setRank(m.getRank() + 1);
     }
 }
+movie.setRank(newRank);
+movieRepository.saveAll(all);
 ```
 
-## 🎮 Project: Top 10 Movies Website
+Moving *down* is the mirror image. Draw five boxes on paper and move one; the two loops will make sense.
 
-### Requirements
-Create website with:
-1. Movie database
-2. Top 10 ranking
-3. Add/edit movies
-4. Update rankings
-5. Beautiful UI
+**Rolled-back tests.** `@SpringBootTest` with `@Transactional` runs each test inside a transaction and undoes it at the end, so every test starts with an empty database even though they share one.
 
-## 📌 Notes & reference (use these when stuck)
+**`rank` is a column name.** It's a reserved word in some databases. The entity uses `@Column(name = "movie_rank")` to stay out of trouble.
 
-**When you're stuck:** Re-read **Step-by-Step Instructions** above; use main README for structure. **Quick reference:** `mvn spring-boot:run` or run from IDE.
+## 🪜 Steps
 
-## ✅ Checklist
-- [ ] Created movie entity
-- [ ] Built repository
-- [ ] Created controller
-- [ ] Built UI
-- [ ] Implemented ranking
-- [ ] Completed Top 10 Movies
-- [ ] Committed code to Git
+**Project: Top 10 Films** (the `day64/` folder is a finished version: build your own first, then compare).
 
-## 📂 What's in this folder
+1. `Movie`: id, title, director, year, rating and rank.
+2. `MovieRepository.findAllByOrderByRankAsc()`.
+3. `MovieService`: `getTop10Movies()` (at most ten), `addMovie` (at the bottom) and `setRank` (with the shifting, and an error for a rank outside 1 to the number of films).
+4. `MovieController`: `GET /movies` (the list and an empty form) and `POST /movies` (add, then redirect).
+5. `templates/movies.html` in a cinema style (`cinema.css`).
+6. Add a small "Move to rank" form for each film that calls `setRank`, and show a message if the rank is refused.
 
-A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+## 🧪 Run it and test it
 
-| File | What it does |
-|---|---|
-| `Application.java` | Starts Spring Boot |
-| `controller/MovieController.java` | `GET /movies` shows the top 10, `POST /movies` adds one |
-| `model/Movie.java` | A JPA entity: title, director, year, rating and rank |
-| `repository/MovieRepository.java` | Spring Data repository for movies |
-| `service/MovieService.java` | Keeps the ranking: adds at the bottom, moves a movie to a new rank |
-
-Also in `src/main/resources/`: `templates/movies.html`.
-
-## 💻 How to Run
-
-Needs JDK 21 and Maven (see the main README). From the repository root:
+Needs JDK 21 and Maven. From the repository root:
 
 ```bash
 cd day64
 mvn spring-boot:run
 ```
 
-Then open http://localhost:8080/movies. Stop it with Ctrl+C. Or run `Application` from your IDE.
-
-## 🧪 How to Test
+Open http://localhost:8080/movies and add a few films. The database is in memory, so they're gone when you stop the server with Ctrl+C.
 
 ```bash
 cd day64
 mvn test
 ```
 
-Runs `MovieServiceTest`. A clean run ends with `BUILD SUCCESS`.
+## 🆘 Stuck?
 
-## 🚀 Next Steps
-**Ready for Day 65?** You'll learn web design best practices!
+- **Two films share a rank after a move**: the shifting range is off by one. Moving up shifts `newRank` to `oldRank - 1`; moving down shifts `oldRank + 1` to `newRank`.
+- **The moved film shifts itself too**: skip it in the loop (`!m.getId().equals(movieId)`).
+- **`Syntax error in SQL statement` mentioning RANK**: rename the column with `@Column(name = "movie_rank")`.
+- **Tests pass alone but fail together**: they're sharing data. Add `@Transactional` to the test class so each one is rolled back.
+
+## ✅ Checklist
+- [ ] Films are listed in rank order from the database
+- [ ] A new film goes in at the bottom
+- [ ] Moving a film up or down shifts exactly the films in between
+- [ ] A rank outside the list is refused
+- [ ] The tests pass
+- [ ] Committed code to Git
+
+## ➡️ Next
+
+Day 65 takes this same site and makes it well built: semantic HTML, labels for every field, a layout that works on phones, and scripts that don't block the page.

@@ -27,8 +27,29 @@ public class WatermarkTool {
         return image;
     }
 
+    /**
+     * The image format to write for a file name: "png" or "jpg". Writing PNG bytes into a file
+     * called photo.jpg makes a file that some apps refuse to open, so the name decides.
+     */
+    public static String formatFor(File file) {
+        String name = file.getName().toLowerCase(java.util.Locale.ROOT);
+        if (name.endsWith(".png")) return "png";
+        if (name.endsWith(".jpg") || name.endsWith(".jpeg")) return "jpg";
+        throw new IllegalArgumentException("Save as a .png or .jpg file, not " + file.getName());
+    }
+
     public void saveImage(BufferedImage image, File output, String formatName) throws IOException {
-        boolean written = ImageIO.write(image, formatName, output);
+        BufferedImage toWrite = image;
+        if (formatName.equalsIgnoreCase("jpg") || formatName.equalsIgnoreCase("jpeg")) {
+            // JPEG has no transparency, and Java's JPEG writer refuses images that have it.
+            toWrite = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+            Graphics2D g = toWrite.createGraphics();
+            g.setColor(Color.WHITE);
+            g.fillRect(0, 0, image.getWidth(), image.getHeight());
+            g.drawImage(image, 0, 0, null);
+            g.dispose();
+        }
+        boolean written = ImageIO.write(toWrite, formatName, output);
         if (!written) {
             throw new IOException("No writer found for format: " + formatName);
         }
@@ -38,6 +59,7 @@ public class WatermarkTool {
      * Returns a new image with the text drawn onto it; the source image is left untouched.
      */
     public BufferedImage addTextWatermark(BufferedImage source, String text, WatermarkPosition position, float opacity) {
+        checkOpacity(opacity);
         BufferedImage result = copyOf(source);
         Graphics2D g = result.createGraphics();
         try {
@@ -67,6 +89,7 @@ public class WatermarkTool {
      * Returns a new image with the watermark image overlaid; the source image is left untouched.
      */
     public BufferedImage addImageWatermark(BufferedImage source, BufferedImage watermark, WatermarkPosition position, float opacity) {
+        checkOpacity(opacity);
         BufferedImage result = copyOf(source);
         Graphics2D g = result.createGraphics();
         try {
@@ -123,6 +146,12 @@ public class WatermarkTool {
             default -> throw new IllegalArgumentException("Unknown position: " + position);
         }
         return new Point(x, y);
+    }
+
+    private static void checkOpacity(float opacity) {
+        if (!(opacity >= 0f && opacity <= 1f)) { // also catches NaN
+            throw new IllegalArgumentException("Opacity must be between 0 and 1, was " + opacity);
+        }
     }
 
     private BufferedImage copyOf(BufferedImage source) {

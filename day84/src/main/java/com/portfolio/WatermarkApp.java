@@ -19,13 +19,24 @@ public class WatermarkApp {
         File input = new File(args[0]);
         File output = new File(args[1]);
         String text = args[2];
-        WatermarkPosition position = args.length > 3 ? WatermarkPosition.valueOf(args[3]) : WatermarkPosition.BOTTOM_RIGHT;
-        float opacity = args.length > 4 ? Float.parseFloat(args[4]) : 0.6f;
+        try {
+            WatermarkPosition position = args.length > 3
+                    ? WatermarkPosition.valueOf(args[3].toUpperCase(java.util.Locale.ROOT))
+                    : WatermarkPosition.BOTTOM_RIGHT;
+            float opacity = args.length > 4 ? Float.parseFloat(args[4]) : 0.6f;
+            String format = WatermarkTool.formatFor(output);
 
-        WatermarkTool tool = new WatermarkTool();
-        BufferedImage source = tool.loadImage(input);
-        BufferedImage watermarked = tool.addTextWatermark(source, text, position, opacity);
-        tool.saveImage(watermarked, output, "png");
+            WatermarkTool tool = new WatermarkTool();
+            BufferedImage source = tool.loadImage(input);
+            BufferedImage watermarked = tool.addTextWatermark(source, text, position, opacity);
+            tool.saveImage(watermarked, output, format);
+        } catch (IllegalArgumentException e) {
+            // A bad position, opacity or file type: say what's wrong instead of a stack trace.
+            System.err.println(e.getMessage());
+            System.err.println("Positions: " + java.util.Arrays.toString(WatermarkPosition.values())
+                    + ", opacity from 0 to 1, output ending in .png or .jpg");
+            System.exit(1);
+        }
 
         System.out.println("Watermarked image saved to " + output.getAbsolutePath());
     }

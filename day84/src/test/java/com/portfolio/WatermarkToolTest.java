@@ -147,4 +147,34 @@ class WatermarkToolTest {
             assertTrue(hasNonWhitePixel, "Expected " + output + " to contain watermark pixels");
         }
     }
+
+    @Test
+    void savingAsJpgWritesARealJpegThatLoadsBack(@TempDir Path tempDir) throws IOException {
+        BufferedImage watermarked = tool.addTextWatermark(whiteCanvas(200, 100), "Kiboko", WatermarkPosition.CENTER, 0.6f);
+        File output = tempDir.resolve("photo.jpg").toFile();
+
+        tool.saveImage(watermarked, output, WatermarkTool.formatFor(output));
+
+        byte[] start = java.nio.file.Files.readAllBytes(output.toPath());
+        assertEquals((byte) 0xFF, start[0], "a JPEG starts with FF D8");
+        assertEquals((byte) 0xD8, start[1]);
+        BufferedImage reloaded = ImageIO.read(output);
+        assertEquals(200, reloaded.getWidth());
+        assertEquals(100, reloaded.getHeight());
+    }
+
+    @Test
+    void theOutputNameDecidesTheFormat() {
+        assertEquals("png", WatermarkTool.formatFor(new File("out.PNG")));
+        assertEquals("jpg", WatermarkTool.formatFor(new File("out.jpeg")));
+        assertThrows(IllegalArgumentException.class, () -> WatermarkTool.formatFor(new File("out.gif")));
+    }
+
+    @Test
+    void anOpacityOutsideZeroToOneIsRefused() {
+        assertThrows(IllegalArgumentException.class,
+                () -> tool.addTextWatermark(whiteCanvas(50, 50), "x", WatermarkPosition.CENTER, 1.5f));
+        assertThrows(IllegalArgumentException.class,
+                () -> tool.addTextWatermark(whiteCanvas(50, 50), "x", WatermarkPosition.CENTER, Float.NaN));
+    }
 }

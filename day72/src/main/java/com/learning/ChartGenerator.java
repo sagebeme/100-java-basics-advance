@@ -9,6 +9,7 @@ import org.jfree.data.general.DefaultPieDataset;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class ChartGenerator {
@@ -50,10 +51,15 @@ public class ChartGenerator {
     }
 
     public static void main(String[] args) throws IOException {
-        Map<String, Double> sales = Map.of(
-                "Jan", 1000.0, "Feb", 1200.0, "Mar", 900.0,
-                "Apr", 1500.0, "May", 1800.0, "Jun", 2000.0
-        );
+        // A LinkedHashMap keeps the months in the order they were added. Map.of has no order,
+        // so the bars would come out shuffled.
+        Map<String, Double> sales = new LinkedHashMap<>();
+        sales.put("Jan", 1000.0);
+        sales.put("Feb", 1200.0);
+        sales.put("Mar", 900.0);
+        sales.put("Apr", 1500.0);
+        sales.put("May", 1800.0);
+        sales.put("Jun", 2000.0);
 
         ChartGenerator generator = new ChartGenerator();
         JFreeChart barChart = generator.createBarChart("Monthly Sales", sales);

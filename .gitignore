@@ -50,3 +50,6 @@ output_*.txt
 # Saved passwords from the Day 29-30 password managers: never commit them
 passwords.txt
 passwords.json
+
+# Charts the Day 72 and 75 demos draw
+sales-chart.png

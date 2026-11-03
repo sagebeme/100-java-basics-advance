@@ -26,7 +26,7 @@ jobs:
           path: .cache/javafx
           key: javafx-21.0.7
       - name: Check every exercise
-        run: tools/check-exercises.sh
+        run: bash tools/check-exercises.sh
 
   site:
     name: Course website builds

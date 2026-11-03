@@ -17,7 +17,12 @@ public class HousePriceModel {
 
     private static final int FEATURE_COUNT = 5; // bias + squareFeet + bedrooms + bathrooms + ageYears
 
+    /** How far outside the training data, as a share of each feature's range, still counts as "inside". */
+    static final double RANGE_MARGIN = 0.10;
+
     private double[] weights;
+    private double[] lowest;
+    private double[] highest;
 
     public void trainModel(List<HouseData> trainingData) {
         if (trainingData.isEmpty()) {
@@ -50,6 +55,48 @@ public class HousePriceModel {
         }
 
         this.weights = solve(xtx, xty);
+
+        // Remember the range of every feature the model has seen. A straight line fitted to
+        // houses of 1-40 years says nothing true about a 400-year-old one.
+        lowest = new double[FEATURE_COUNT];
+        highest = new double[FEATURE_COUNT];
+        for (int i = 0; i < FEATURE_COUNT; i++) {
+            lowest[i] = Double.POSITIVE_INFINITY;
+            highest[i] = Double.NEGATIVE_INFINITY;
+            for (double[] row : x) {
+                lowest[i] = Math.min(lowest[i], row[i]);
+                highest[i] = Math.max(highest[i], row[i]);
+            }
+        }
+    }
+
+    /**
+     * True if every feature lies within the range the model was trained on, give or take
+     * {@link #RANGE_MARGIN} of that range. Outside it the model is guessing, and a straight
+     * line can even predict a negative price.
+     */
+    public boolean isWithinTrainingRange(HouseFeatures features) {
+        if (weights == null) {
+            throw new IllegalStateException("Model must be trained before it can predict");
+        }
+        double[] row = toRow(features);
+        for (int i = 1; i < FEATURE_COUNT; i++) { // index 0 is the constant bias term
+            double margin = (highest[i] - lowest[i]) * RANGE_MARGIN;
+            if (row[i] < lowest[i] - margin || row[i] > highest[i] + margin) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /** A sentence describing the houses the model learned from, for error messages. */
+    public String describeTrainingRange() {
+        if (weights == null) {
+            throw new IllegalStateException("Model must be trained before it can predict");
+        }
+        return String.format("This model learned from houses of %,.0f-%,.0f sq ft, %.0f-%.0f bedrooms, "
+                        + "%.0f-%.0f bathrooms and %.0f-%.0f years old, so it can't price this one.",
+                lowest[1], highest[1], lowest[2], highest[2], lowest[3], highest[3], lowest[4], highest[4]);
     }
 
     public double predictPrice(HouseFeatures features) {
@@ -80,6 +127,12 @@ public class HousePriceModel {
             matrix[i] = a[i].clone();
         }
         System.arraycopy(b, 0, vector, 0, n);
+        double largest = 0;
+        for (double[] row : a) {
+            for (double value : row) {
+                largest = Math.max(largest, Math.abs(value));
+            }
+        }
 
         for (int pivot = 0; pivot < n; pivot++) {
             int maxRow = pivot;
@@ -94,6 +147,13 @@ public class HousePriceModel {
             double tempVal = vector[pivot];
             vector[pivot] = vector[maxRow];
             vector[maxRow] = tempVal;
+
+            if (Math.abs(matrix[pivot][pivot]) < 1e-9 * largest) {
+                // No unique answer: one feature is a mix of the others (every house is 10 years
+                // old, or bathrooms always equal bedrooms), so their effects can't be told apart.
+                throw new IllegalArgumentException(
+                        "The training data can't separate the features' effects: some features move together");
+            }
 
             for (int row = pivot + 1; row < n; row++) {
                 double factor = matrix[row][pivot] / matrix[pivot][pivot];

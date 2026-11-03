@@ -4,6 +4,8 @@ import com.learning.ml.HousePriceModel;
 import com.learning.model.HouseFeatures;
 import com.learning.model.Prediction;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +23,12 @@ public class PredictionController {
     }
 
     @PostMapping("/house-price")
-    public ResponseEntity<Prediction> predictPrice(@Valid @RequestBody HouseFeatures features) {
+    public ResponseEntity<?> predictPrice(@Valid @RequestBody HouseFeatures features) {
+        if (!housePriceModel.isWithinTrainingRange(features)) {
+            ProblemDetail problem = ProblemDetail.forStatusAndDetail(
+                    HttpStatus.UNPROCESSABLE_ENTITY, housePriceModel.describeTrainingRange());
+            return ResponseEntity.unprocessableEntity().body(problem);
+        }
         double price = housePriceModel.predictPrice(features);
         return ResponseEntity.ok(new Prediction(price));
     }

@@ -47,4 +47,16 @@ class WebControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(org.hamcrest.Matchers.not(org.hamcrest.Matchers.containsString("Predicted price"))));
     }
+
+    @Test
+    void aHouseOutsideTheTrainingDataGetsAnExplanationNotAPrice() throws Exception {
+        mockMvc.perform(post("/predict")
+                        .param("squareFeet", "1800")
+                        .param("bedrooms", "3")
+                        .param("bathrooms", "2")
+                        .param("ageYears", "400"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("learned from houses of 900-3,000 sq ft")))
+                .andExpect(content().string(org.hamcrest.Matchers.not(org.hamcrest.Matchers.containsString("Predicted price"))));
+    }
 }

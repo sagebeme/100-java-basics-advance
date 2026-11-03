@@ -32,6 +32,8 @@
         <button type="submit">Predict price</button>
     </form>
 
+    <p id="out-of-range" class="error" role="alert" th:if="${outOfRange != null}" th:text="${outOfRange}"></p>
+
     <p id="prediction-result" th:if="${predictedPrice != null}">
         Predicted price: KES <span th:text="${#numbers.formatDecimal(predictedPrice, 1, 'COMMA', 0, 'POINT')}"></span>
     </p>

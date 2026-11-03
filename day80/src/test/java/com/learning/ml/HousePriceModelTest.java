@@ -47,13 +47,13 @@ class HousePriceModelTest {
 
     @Test
     void largerHousesPredictHigherPricesThanSmallerOnesAllElseEqual() {
-        // ageYears must vary across rows - if every row shared the same age, that column would be
-        // a constant multiple of the bias column, making the normal-equations matrix singular.
+        // Every feature must vary on its own: if every row shared the same age, or bathrooms were
+        // always bedrooms - 1, the model couldn't tell those effects apart, and training refuses.
         List<HouseData> trainingData = List.of(
                 new HouseData(new HouseFeatures(1000, 2, 1, 12), 200000),
-                new HouseData(new HouseFeatures(1500, 3, 2, 9), 280000),
+                new HouseData(new HouseFeatures(1500, 3, 1, 9), 270000),
                 new HouseData(new HouseFeatures(2000, 3, 2, 15), 350000),
-                new HouseData(new HouseFeatures(2500, 4, 3, 6), 420000),
+                new HouseData(new HouseFeatures(2500, 4, 2, 6), 410000),
                 new HouseData(new HouseFeatures(3000, 4, 3, 20), 490000),
                 new HouseData(new HouseFeatures(1800, 3, 2, 4), 320000)
         );
@@ -65,5 +65,32 @@ class HousePriceModelTest {
         double larger = model.predictPrice(new HouseFeatures(2800, 3, 2, 10));
 
         assertTrue(larger > smaller);
+    }
+
+    @Test
+    void knowsWhichHousesAreInsideTheRangeItLearnedFrom() {
+        HousePriceModel model = new HousePriceModel();
+        List<HouseData> data = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            // 1,000-1,900 sq ft, 1-3 bedrooms, 1-2 bathrooms, 0-27 years old, in a mixed order
+            data.add(new HouseData(new HouseFeatures(1000 + 100 * i, 1 + i % 3, 1 + i % 2, (7 * i) % 30), 50_000 + 100 * i));
+        }
+        model.trainModel(data);
+
+        assertTrue(model.isWithinTrainingRange(new HouseFeatures(1500, 2, 1, 10)));
+        assertTrue(model.isWithinTrainingRange(new HouseFeatures(1950, 3, 2, 29)), "a little past the edge is allowed");
+        assertFalse(model.isWithinTrainingRange(new HouseFeatures(1500, 2, 1, 400)));
+        assertFalse(model.isWithinTrainingRange(new HouseFeatures(9000, 2, 1, 10)));
+        assertFalse(model.isWithinTrainingRange(new HouseFeatures(1500, 9, 1, 10)));
+    }
+
+    @Test
+    void refusesTrainingDataWhereTwoFeaturesAlwaysMoveTogether() {
+        // Every house is 10 years old, so the model can't tell age's effect from the constant term.
+        List<HouseData> data = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            data.add(new HouseData(new HouseFeatures(1000 + 100 * i, 1 + i % 3, 1 + i % 2, 10), 50_000 + 100 * i));
+        }
+        assertThrows(IllegalArgumentException.class, () -> new HousePriceModel().trainModel(data));
     }
 }

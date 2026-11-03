@@ -69,4 +69,16 @@ class PredictionControllerTest {
                         .content(invalidJson))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    void refusesAHouseFarOutsideTheTrainingDataInsteadOfGuessing() throws Exception {
+        // A straight line fitted to houses of 1-40 years predicts a negative price at 400 years.
+        String ancientHouse = "{\"squareFeet\":1800,\"bedrooms\":3,\"bathrooms\":2,\"ageYears\":400}";
+
+        mockMvc.perform(post("/api/predict/house-price")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ancientHouse))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.detail", org.hamcrest.Matchers.containsString("1-40 years old")));
+    }
 }

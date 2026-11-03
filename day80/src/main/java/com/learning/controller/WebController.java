@@ -30,6 +30,10 @@ public class WebController {
         if (bindingResult.hasErrors()) {
             return "predict-form";
         }
+        if (!housePriceModel.isWithinTrainingRange(houseFeaturesForm.toFeatures())) {
+            model.addAttribute("outOfRange", housePriceModel.describeTrainingRange());
+            return "predict-form";
+        }
         double price = housePriceModel.predictPrice(houseFeaturesForm.toFeatures());
         model.addAttribute("predictedPrice", price);
         return "predict-form";

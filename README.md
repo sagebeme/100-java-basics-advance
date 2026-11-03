@@ -222,7 +222,7 @@ To put it online, import the repo into Netlify (`netlify.toml` is already set up
 5. **Required data files (by day)**
    Some days need data files to run; they are included where applicable:
    - **Day 24** (Mail Merge): `template.txt`, `names.txt` — in `day24/_start/src/` and `day24/_end/src/`. Run from that folder.
-   - **Day 25** (U.S. States Game): `50_states.csv` — in `day25/_start/src/` and `day25/_end/src/`. Run from that folder (e.g. `javac StatesGame.java && java StatesGame`).
+   - **Day 25** (Kenya counties game): `counties.csv` — in `day25/_start/src/` and `day25/_end/src/`. Run from that folder (e.g. `javac CountiesGame.java && java CountiesGame`).
 
 6. **Track your progress**
    - Update the progress badge in README

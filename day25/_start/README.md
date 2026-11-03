@@ -6,7 +6,8 @@ This folder contains the **starting code** for Day 25 exercises and projects. Th
 
 ## 📁 Files Included
 
-- `StatesGame.java` - Starter code for the main project
+- `CountiesGame.java` - Starter code for the main project
+- `counties.csv` - The 47 counties
 
 ## 🎯 Learning Curve & Notes
 
@@ -35,7 +36,7 @@ When you start Day 25, you're likely:
    - Using CSV data in game
    - Tracking guesses
    - Validation logic
-   - **Tip**: Store states in ArrayList, check against it
+   - **Tip**: Store the counties in an ArrayList, and check guesses against it
 
 ### What to Focus On
 

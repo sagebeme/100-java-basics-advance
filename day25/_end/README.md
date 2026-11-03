@@ -6,7 +6,9 @@ This folder contains the **completed solutions** for Day 25 exercises and projec
 
 ## 📁 Files Included
 
-- `StatesGame.java` - Complete U.S. States guessing game
+- `CountiesGame.java` - The finished Kenya counties guessing game
+- `CountiesGameTest.java` - Its tests
+- `counties.csv` - Kenya's 47 counties, in the order of the Constitution's First Schedule
 
 ## 🎯 Learning Curve & Notes
 

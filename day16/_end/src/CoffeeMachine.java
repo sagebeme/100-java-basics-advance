@@ -16,7 +16,8 @@ public class CoffeeMachine {
         System.out.println("Type 'report' to see resources or 'off' to turn off the machine.");
     }
     
-    public void processPayment(double cost) {
+    // True if the coins covered the price. The machine keeps the price and hands back the change.
+    public boolean processPayment(double cost) {
         System.out.println("Please insert coins.");
         System.out.print("How many quarters? ");
         int quarters = scanner.nextInt();
@@ -26,6 +27,7 @@ public class CoffeeMachine {
         int nickels = scanner.nextInt();
         System.out.print("How many pennies? ");
         int pennies = scanner.nextInt();
+        scanner.nextLine(); // nextInt leaves the Enter behind: use it up, or the menu reads it as an empty choice
         
         double total = quarters * 0.25 + dimes * 0.10 + nickels * 0.05 + pennies * 0.01;
         
@@ -35,15 +37,15 @@ public class CoffeeMachine {
             if (change > 0) {
                 System.out.println("Here is $" + String.format("%.2f", change) + " in change.");
             }
-        } else {
-            System.out.println("Sorry, that's not enough money. Money refunded.");
+            return true;
         }
+        System.out.println("Sorry, that's not enough money. Money refunded.");
+        return false;
     }
     
     public void makeCoffee(Coffee coffee) {
         if (resources.checkResources(coffee.getWater(), coffee.getMilk(), coffee.getCoffee())) {
-            processPayment(coffee.getCost());
-            if (money >= coffee.getCost()) {
+            if (processPayment(coffee.getCost())) {
                 resources.useResources(coffee.getWater(), coffee.getMilk(), coffee.getCoffee());
                 System.out.println("Here is your " + coffee.getName() + ". Enjoy!");
             }

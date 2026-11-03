@@ -5,6 +5,8 @@ public class CoffeeMachine {
     private static int milk = 200;
     private static int coffee = 100;
     private static double money = 0;
+    // One Scanner for the whole program: two Scanners reading System.in steal each other's lines.
+    private static final Scanner scanner = new Scanner(System.in);
     
     public static void printReport() {
         System.out.println("Water: " + water + "ml");
@@ -32,7 +34,6 @@ public class CoffeeMachine {
     public static void makeCoffee(String drink, int waterNeeded, int milkNeeded, int coffeeNeeded, double cost) {
         if (checkResources(waterNeeded, milkNeeded, coffeeNeeded)) {
             System.out.println("Please insert coins.");
-            Scanner scanner = new Scanner(System.in);
             System.out.print("How many quarters? ");
             int quarters = scanner.nextInt();
             System.out.print("How many dimes? ");
@@ -41,6 +42,7 @@ public class CoffeeMachine {
             int nickels = scanner.nextInt();
             System.out.print("How many pennies? ");
             int pennies = scanner.nextInt();
+            scanner.nextLine(); // nextInt leaves the Enter behind: use it up, or the menu reads it as an empty choice
             
             double total = quarters * 0.25 + dimes * 0.10 + nickels * 0.05 + pennies * 0.01;
             
@@ -61,8 +63,6 @@ public class CoffeeMachine {
     }
     
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        
         while (true) {
             System.out.println("\nWhat would you like? (espresso/latte/cappuccino):");
             System.out.println("Type 'report' to see resources or 'off' to turn off the machine.");

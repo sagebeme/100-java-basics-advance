@@ -1,272 +1,86 @@
-# Day 23 - Turtle Crossing Capstone Project
+# Day 23 - Capstone: Turtle Crossing
 
-## 📚 Learning Objectives
-- Build a complete side-scrolling game
-- Implement moving obstacles
-- Create player movement
-- Handle game progression
-- Add difficulty scaling
+> The GUI capstone. Get a turtle across seven lanes of traffic. Every time it makes it, there's one more car on the road.
 
-## 🎯 Topics Covered
-- Side-scrolling mechanics
-- Obstacle generation
-- Player controls
-- Collision detection
-- Level progression
-- Game state management
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Anyone who has crossed Thika Road on foot knows the feeling. Today's game is that feeling, starring a turtle:
 
-### Step 1: Game Design
-Plan your game:
-- Player (turtle) at bottom
-- Cars moving across screen
-- Player moves up to cross
-- Avoid cars
-- Increase difficulty
+- the turtle starts at the bottom of a 600 × 800 window and moves one step at a time with the arrow keys;
+- cars in matatu colours drive across seven lanes, each at its own speed, and wrap around when they leave the screen;
+- reach the top and you go up a level: the turtle goes back to the start, and the road gets one more car;
+- touch a car and it's back to level 1.
 
-### Step 2: Player Class
-Create player with movement:
+There's nothing new in Java today. This is the day you put Days 18 to 22 together on your own: a canvas, a game loop, keys, a list of moving things, collisions and levels.
+
+The rules live in `TurtleCrossingLogic`: `wrapCarX`, `collides` and `hasReachedTop`.
+
+## 🎯 Learning Objectives
+- Plan and build a complete game from a short brief
+- Keep many moving objects in a list and update them every frame
+- Detect collisions between two rectangles
+- Add levels that make the game harder
+- Reset the game cleanly after a crash
+
+## 🧰 Java you'll use
+
+**Two rectangles overlap** when each one starts before the other ends, on both axes:
 
 ```java
-public class Player {
-    private int x, y;
-    private int speed;
-    
-    public void moveUp() {
-        y -= speed;
-    }
-    
-    public void moveDown() {
-        y += speed;
-    }
-    
-    public boolean reachedTop() {
-        return y <= 0;
-    }
-}
+boolean collides = playerX < carX + CAR_WIDTH && playerX + PLAYER_SIZE > carX
+                && playerY < carY + CAR_HEIGHT && playerY + PLAYER_SIZE > carY;
 ```
 
-### Step 3: Obstacle Management
-Create and manage cars:
+Draw it on paper with two boxes if it doesn't click: it's the most useful four lines in game programming.
 
-```java
-public class CarManager {
-    private ArrayList<Car> cars;
-    private Random random;
-    
-    public void generateCar() {
-        if (random.nextInt(100) < 5) { // 5% chance per frame
-            cars.add(new Car(random.nextInt(WIDTH), random.nextInt(HEIGHT)));
-        }
-    }
-    
-    public void moveCars() {
-        for (Car car : cars) {
-            car.move();
-            if (car.isOffScreen()) {
-                cars.remove(car);
-            }
-        }
-    }
-}
+**A car as an array.** Each car is a `double[]` of `{x, lane y, speed}`. That works for a small game; on Day 16 you saw why a `Car` class would be clearer, and Exercise 2 uses one.
+
+**Levels.** `spawnCars()` makes `5 + level` cars, sharing the seven lanes (`y = 100` to `700`), each with a random starting `x` and a speed between 1 and 4 pixels a frame.
+
+## 🪜 Steps
+
+1. **[Exercise 1: Kuku crossing](exercise1/README.md)** (`exercise1/`): a player that steps in four directions without leaving the road, and moves up a level each time it crosses.
+2. **[Exercise 2: Traffic on Thika Road](exercise2/README.md)** (`exercise2/`): cars that spawn at random, move every tick and leave the road, with the `Random` passed in so tests can load the dice.
+3. **Project: Turtle Crossing** (`_start/src/TurtleCrossing.java`).
+   1. `TurtleCrossingLogic`: `wrapCarX`, `collides` and `hasReachedTop`, with their tests.
+   2. The arrow keys, keeping the turtle on the screen.
+   3. `spawnCars()` and `update()`: move and wrap the cars, check for a crash, check for the top.
+   4. `draw(gc)`: verges and tarmac, the cars, the turtle, and a `Level N` badge.
+
+## 🧪 Run it and test it
+
+The logic and its test need no JavaFX. From the repo root:
+
+```bash
+javac -cp "lib/*" -d day23/_end/src day23/_end/src/TurtleCrossingLogic.java day23/_end/src/TurtleCrossingLogicTest.java
+java -cp "day23/_end/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
 ```
 
-### Step 4: Collision Detection
-Check player-car collisions:
+To play, with `FX` pointing at your JavaFX SDK's `lib` folder (see Day 18):
 
-```java
-private boolean checkCollision(Player player, ArrayList<Car> cars) {
-    for (Car car : cars) {
-        if (player.getBounds().intersects(car.getBounds())) {
-            return true;
-        }
-    }
-    return false;
-}
+```bash
+cd day23/_end/src
+javac --module-path $FX --add-modules javafx.controls *.java
+java --module-path $FX --add-modules javafx.controls TurtleCrossing
 ```
 
-## 💻 Exercises
+Use `_start/src` for your own version, and `day23/exercise1/src` or `day23/exercise2/src` for the exercises. On Windows, use `;` instead of `:` in `-cp`.
 
-Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`.
+## 🆘 Stuck?
 
-- **[Exercise 1: Kuku crossing](exercise1/README.md)**: a player that steps in four directions without leaving the road, and moves up a level each time it crosses.
-- **[Exercise 2: Traffic on Thika Road](exercise2/README.md)**: cars that spawn at random, move every tick and leave the road, with the `Random` passed in so tests can load the dice.
-
-## 🎮 Project: Turtle Crossing Game
-
-### Requirements
-Create a turtle crossing game:
-1. Player turtle at bottom
-2. Cars moving horizontally
-3. Player moves up to cross
-4. Avoid cars
-5. Level up when reaching top
-6. Increase difficulty each level
-7. Game over on collision
-
-### Example Output
-```
-Level: 3
-Score: 250
-
-[Game window with turtle and moving cars]
-[Turtle moves up when arrow key pressed]
-[Cars move left/right]
-[Level increases when turtle reaches top]
-```
-
-### Starter Code Structure
-```java
-public class TurtleCrossing extends Application {
-    private Player player;
-    private CarManager carManager;
-    private int level = 1;
-    private int score = 0;
-    
-    // Game setup and loop
-}
-```
-
-## 📚 Resources
-
-### Official Documentation
-- [JavaFX Animation](https://openjfx.io/javadoc/11/javafx.controls/javafx/animation/package-summary.html)
-
-### Tutorials
-- [Game Development Patterns](https://gameprogrammingpatterns.com/)
-- [Side-Scrolling Games](https://www.gamedeveloper.com/design/side-scrolling-game-design)
-
-### Video Resources
-- [Turtle Crossing Game Tutorial](https://www.youtube.com/results?search_query=turtle+crossing+game+java)
-- [Java Game Development](https://www.youtube.com/results?search_query=java+game+development)
-
-### Practice Platforms
-- [Game Projects](https://github.com/karan/Projects#games)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Side-Scrolling | Horizontal movement | Cars moving across |
-| Obstacle Generation | Create enemies | Random car spawning |
-| Level Progression | Increase difficulty | More cars, faster speed |
-| Collision Detection | Check intersections | Player vs cars |
-| Game State | Current game situation | Level, score, lives |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **Player movement:** Re-read **Step 1** — move up/down (or jump); keep within road/safe zone — see **Step 2**
-- **Obstacles:** Spawn cars at random lanes; move left (or right); remove when off-screen — see **Step 2**
-- **Collision:** Check player bounds vs each car bounds (rectangle overlap) — see **Step 3**
-- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for level and collision logic
-
-**Related days:** Day 20 (animation); Day 22 (collision). **JavaFX:** See How to Run / Troubleshooting for module path.
-
-**Quick reference:** Rectangle overlap: `x1 < x2+w2 && x2 < x1+w1 && y1 < y2+h2 && y2 < y1+h1`
+- **Crashes happen when the turtle is clearly clear of a car**: the sizes in your collision check don't match what you draw. Use the same constants in both.
+- **Higher levels don't feel harder**: check where new cars go. If their `y` keeps growing with the car count, they end up below the window.
+- **`ConcurrentModificationException`**: the game loop and `spawnCars()` changed the list at the same time. Do all changes to `cars` inside `update()`.
+- **Where do I start?** The logic class and its tests, then a turtle you can move, then one car, then many.
 
 ## ✅ Checklist
-- [ ] Can create side-scrolling games
-- [ ] Can manage obstacles
-- [ ] Can implement collisions
-- [ ] Can handle level progression
-- [ ] Completed Turtle Crossing
+- [ ] The turtle moves with the arrow keys and stays on screen
+- [ ] Cars move at different speeds and wrap around
+- [ ] Touching a car resets the game
+- [ ] Reaching the top adds a level and a car
+- [ ] Finished both exercises, and the tests pass
 - [ ] Committed code to Git
 
-## 📂 Code Examples
+## ➡️ Next
 
-This day includes starter and completed code examples:
-- **`_start/`** - Starting code with TODO comments and learning notes
-- **`_end/`** - Completed solutions with detailed explanations
-
-Check these folders to see the progression from start to finish and learn from the learning curve notes!
-
-## 💻 How to Run Java Files
-
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to the project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day23\_end\src"
-   ```
-
-3. **Compile the Java file**
-   ```cmd
-   javac TurtleCrossing.java
-   ```
-
-4. **Run the compiled program**
-   ```cmd
-   java TurtleCrossing
-   ```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to the project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day23/_end/src
-   ```
-
-3. **Compile the Java file**
-   ```bash
-   javac TurtleCrossing.java
-   ```
-
-4. **Run the compiled program**
-   ```bash
-   java TurtleCrossing
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA:**
-1. Open the project folder in IntelliJ IDEA
-2. Right-click on the Java file
-3. Select "Run 'TurtleCrossing.main()'"
-
-**VS Code:**
-1. Install "Extension Pack for Java"
-2. Open the Java file
-3. Click "Run" button above `main` method or press `F5`
-
-**Eclipse:**
-1. Import project into Eclipse
-2. Right-click on the Java file
-3. Select "Run As" → "Java Application"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
-- **JavaFX apps**: If using Java 11+, add VM options: `--module-path /path/to/javafx-sdk/lib --add-modules javafx.controls,javafx.fxml`
-
-## 🚀 Next Steps
-After completing Day 23, you should be able to:
-- Build complex games
-- Manage multiple game objects
-- Implement game progression
-- Create engaging gameplay
-
-**Ready for Day 24?** You'll learn about file I/O and paths!
-
-
-
-
-
-
-
+Day 24 leaves the window behind and works with files: reading a letter template and writing one personalised letter per guest.

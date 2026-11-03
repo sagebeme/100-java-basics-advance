@@ -1,286 +1,88 @@
-# Day 22 - Build Pong: The Famous Arcade Game
+# Day 22 - Pong: Two Players, One Keyboard
 
-## 📚 Learning Objectives
-- Build a complete Pong game
-- Implement paddle movement
-- Create ball physics
-- Handle collisions
-- Add scoring system
+> Pong was one of the first arcade games ever made, and it's still the best way to learn how a ball bounces in code. Today you build it for two players sharing one keyboard.
 
-## 🎯 Topics Covered
-- Game physics
-- Paddle mechanics
-- Ball movement and bouncing
-- Collision detection
-- Score tracking
-- Two-player gameplay
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+The cyber café in Githurai has one PC that nobody uses for printing anymore. Kamau, who runs it, wants a game two kids can play at once on that one keyboard. Pong is perfect:
 
-### Step 1: Create Game Components
-Design your classes:
+- the left player moves with **W** and **S**, the right player with **↑** and **↓**;
+- a ball flies across a dark court, bouncing off the top and bottom walls;
+- hit it with your paddle and it goes back the other way;
+- miss it and your opponent scores, and the ball restarts from the middle, heading towards the player who just scored.
 
-```java
-public class Paddle {
-    private int x, y;
-    private int width, height;
-    private int speed;
-    
-    public void moveUp() {
-        y -= speed;
-    }
-    
-    public void moveDown() {
-        y += speed;
-    }
-}
+The game runs at about 60 frames a second: every 16ms the ball moves, the game checks what it hit, and the court is redrawn.
 
-public class Ball {
-    private int x, y;
-    private int velocityX, velocityY;
-    private int radius;
-    
-    public void move() {
-        x += velocityX;
-        y += velocityY;
-    }
-    
-    public void bounceX() {
-        velocityX = -velocityX;
-    }
-    
-    public void bounceY() {
-        velocityY = -velocityY;
-    }
-}
-```
+The "what did it hit?" questions are in `PongGameLogic`, where the tests check them: `hitsLeftPaddle`, `hitsRightPaddle`, `hitsTopOrBottomWall`, `leftPlayerScores` and `rightPlayerScores`.
 
-### Step 2: Paddle Movement
-Handle keyboard input for paddles:
+## 🎯 Learning Objectives
+- Move a ball with a velocity: a speed in `x` and a speed in `y`
+- Bounce by flipping the sign of one speed
+- Check whether a moving point overlaps a rectangle
+- Handle two players' keys in one key handler, and keep paddles inside the court
+- Keep score and reset the ball after a point
+
+## 🧰 Java you'll use
+
+**Velocity.** Each frame, the ball moves by its speed. A bounce just reverses one direction:
 
 ```java
-scene.setOnKeyPressed(e -> {
-    if (e.getCode() == KeyCode.W) {
-        leftPaddle.moveUp();
-    } else if (e.getCode() == KeyCode.S) {
-        leftPaddle.moveDown();
-    } else if (e.getCode() == KeyCode.UP) {
-        rightPaddle.moveUp();
-    } else if (e.getCode() == KeyCode.DOWN) {
-        rightPaddle.moveDown();
-    }
-});
+ballX += ballSpeedX;
+ballY += ballSpeedY;
+if (ballY <= 0 || ballY >= HEIGHT) ballSpeedY = -ballSpeedY;   // top or bottom wall
 ```
 
-### Step 3: Ball Physics
-Implement ball movement and bouncing:
+**Hitting a paddle** means the ball has reached the paddle's `x`, *and* its `y` is between the paddle's top and bottom:
 
 ```java
-private void updateBall() {
-    ball.move();
-    
-    // Top and bottom walls
-    if (ball.getY() <= 0 || ball.getY() >= HEIGHT) {
-        ball.bounceY();
-    }
-    
-    // Paddle collisions
-    if (checkPaddleCollision(ball, leftPaddle) || 
-        checkPaddleCollision(ball, rightPaddle)) {
-        ball.bounceX();
-    }
-    
-    // Score points
-    if (ball.getX() < 0) {
-        rightScore++;
-        resetBall();
-    } else if (ball.getX() > WIDTH) {
-        leftScore++;
-        resetBall();
-    }
-}
+boolean hitsLeft = ballX <= 20 && ballY >= paddle1Y && ballY <= paddle1Y + PADDLE_HEIGHT;
 ```
 
-## 💻 Exercises
+**Two players, one handler.** `setOnKeyPressed` gets every key; a `switch` on `e.getCode()` decides whose paddle moves. Before moving, check the paddle stays inside the court: `if (paddle1Y > 0) paddle1Y -= 20;`.
 
-Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`.
+## 🪜 Steps
 
-- **[Exercise 1: The paddle](exercise1/README.md)**: moving up and down without leaving the court, and knowing whether, and where, the ball hit it.
-- **[Exercise 2: The ball, the paddles and the score](exercise2/README.md)**: one frame of Pong: walls, paddles that send the ball back faster, and a point when a paddle misses.
+1. **[Exercise 1: The paddle](exercise1/README.md)** (`exercise1/`): moving up and down without leaving the court, and knowing whether, and where, the ball hit it.
+2. **[Exercise 2: The ball, the paddles and the score](exercise2/README.md)** (`exercise2/`): one frame of Pong: walls, paddles that send the ball back faster, and a point when a paddle misses.
+3. **Project: Pong** (`_start/src/PongGame.java`).
+   1. `PongGameLogic`: the five yes-or-no questions, with their tests.
+   2. The key handler for W, S, ↑ and ↓.
+   3. `update()`: move the ball, bounce off paddles and walls, and score when it leaves the court.
+   4. `draw(gc)`: the court, the paddles, the ball and both scores.
 
-## 🎮 Project: Pong Game
+## 🧪 Run it and test it
 
-### Requirements
-Create a complete Pong game:
-1. Two paddles (left and right)
-2. Ball that moves and bounces
-3. Keyboard controls (W/S for left, Up/Down for right)
-4. Score tracking
-5. Ball resets after scoring
-6. Game over at target score
+The logic and its test need no JavaFX. From the repo root:
 
-### Example Output
-```
-Left Score: 3    Right Score: 5
-
-[Game window with paddles and ball]
-[Ball bounces off walls and paddles]
-[Score updates when ball passes paddle]
+```bash
+javac -cp "lib/*" -d day22/_end/src day22/_end/src/PongGameLogic.java day22/_end/src/PongGameLogicTest.java
+java -cp "day22/_end/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
 ```
 
-### Starter Code
-```java
-public class PongGame extends Application {
-    private Paddle leftPaddle;
-    private Paddle rightPaddle;
-    private Ball ball;
-    private int leftScore = 0;
-    private int rightScore = 0;
-    
-    // Game setup and loop
-}
+To play, with `FX` pointing at your JavaFX SDK's `lib` folder (see Day 18):
+
+```bash
+cd day22/_end/src
+javac --module-path $FX --add-modules javafx.controls *.java
+java --module-path $FX --add-modules javafx.controls PongGame
 ```
 
-## 📚 Resources
+Use `_start/src` for your own version, and `day22/exercise1/src` or `day22/exercise2/src` for the exercises. On Windows, use `;` instead of `:` in `-cp`.
 
-### Official Documentation
-- [JavaFX Application - Oracle Docs](https://docs.oracle.com/javase/8/javafx/api/javafx/application/Application.html)
+## 🆘 Stuck?
 
-### Tutorials
-- [Pong Game Tutorial](https://www.geeksforgeeks.org/create-pong-game-using-java/)
-- [Game Physics Basics](https://www.gamedeveloper.com/programming/game-physics)
-
-### Video Resources
-- [Pong Game Java Tutorial](https://www.youtube.com/results?search_query=pong+game+java+tutorial)
-- [Java Game Physics](https://www.youtube.com/results?search_query=java+game+physics)
-
-### Practice Platforms
-- [Game Development Projects](https://github.com/karan/Projects#games)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Physics | Movement and collisions | Velocity, bouncing |
-| Paddle | Player-controlled object | Moves up/down |
-| Ball | Moving game object | Bounces off surfaces |
-| Collision | Object interaction | Ball hits paddle |
-| Score | Points tracking | Increment on goal |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **Paddles:** Re-read **Step 1 & 2** — move up/down with key (W/S, Up/Down); clamp y to screen bounds — see **Step 2**
-- **Ball:** Update x,y each frame; bounce: negate velocity on paddle/wall hit — see **Step 3**
-- **Collision:** Ball vs paddle: check ball x,y against paddle rectangle — see **Step 3**
-- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for physics and scoring
-
-**Related days:** Day 20 (keyboard, animation); Day 21 (collision). **JavaFX:** Compile/run needs JavaFX SDK (see Troubleshooting).
-
-**Quick reference:** Bounce: `velocityX = -velocityX` · Clamp paddle: `y = Math.max(0, Math.min(HEIGHT - paddleH, y))`
+- **The ball goes straight through a paddle**: check the `y` range as well as the `x`. And remember the paddle is drawn from its top edge, so it covers `paddleY` to `paddleY + PADDLE_HEIGHT`.
+- **The ball gets stuck shaking inside a paddle**: it's still inside on the next frame, so it flips back. Only bounce if it's moving *towards* the paddle (`ballSpeedX < 0` for the left one). Exercise 2 does this.
+- **Only one player can move at a time**: that's how key repeat works with `setOnKeyPressed`. For smooth two-player movement, remember which keys are held down in a `Set<KeyCode>` and move the paddles in `update()`.
+- **A paddle slides off the screen**: check the limits before moving it.
 
 ## ✅ Checklist
-- [ ] Can create game components
-- [ ] Can implement physics
-- [ ] Can handle collisions
-- [ ] Can track scores
-- [ ] Completed Pong game
+- [ ] Both paddles move, and stay inside the court
+- [ ] The ball bounces off the walls and the paddles
+- [ ] A miss scores a point for the other player and resets the ball
+- [ ] Finished both exercises, and the tests pass
 - [ ] Committed code to Git
 
-## 📂 Code Examples
+## ➡️ Next
 
-This day includes starter and completed code examples:
-- **`_start/`** - Starting code with TODO comments and learning notes
-- **`_end/`** - Completed solutions with detailed explanations
-
-Check these folders to see the progression from start to finish and learn from the learning curve notes!
-
-## 💻 How to Run Java Files
-
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to the project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day22\_end\src"
-   ```
-
-3. **Compile the Java file** (this project uses JavaFX — see note below)
-   ```cmd
-   javac PongGame.java
-   ```
-   *If you get "package javafx does not exist"*, JavaFX is not on the classpath. Use an IDE (recommended) or add JavaFX SDK and compile with: `javac --module-path "C:\path\to\javafx-sdk\lib" --add-modules javafx.controls,javafx.fxml PongGame.java`
-
-4. **Run the compiled program**
-   ```cmd
-   java PongGame
-   ```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to the project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day22/_end/src
-   ```
-
-3. **Compile the Java file**
-   ```bash
-   javac PongGame.java
-   ```
-
-4. **Run the compiled program**
-   ```bash
-   java PongGame
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA:**
-1. Open the project folder in IntelliJ IDEA
-2. Right-click on the Java file
-3. Select "Run 'PongGame.main()'"
-
-**VS Code:**
-1. Install "Extension Pack for Java"
-2. Open the Java file
-3. Click "Run" button above `main` method or press `F5`
-
-**Eclipse:**
-1. Import project into Eclipse
-2. Right-click on the Java file
-3. Select "Run As" → "Java Application"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
-- **"package javafx does not exist"** - This project uses JavaFX. On Java 11+, JavaFX is not included in the JDK. Either run from an IDE (IntelliJ/VS Code/Eclipse with JavaFX support) or [download JavaFX SDK](https://gluonhq.com/products/javafx/) and use `--module-path` and `--add-modules javafx.controls,javafx.fxml` for both `javac` and `java`
-
-## 🚀 Next Steps
-After completing Day 22, you should be able to:
-- Build physics-based games
-- Handle multiple game objects
-- Implement scoring systems
-- Create two-player games
-
-**Ready for Day 23?** You'll build the Turtle Crossing capstone project!
-
-
-
-
-
-
-
+Day 23 is the GUI capstone: get a turtle across a busy road while the traffic speeds up level by level.

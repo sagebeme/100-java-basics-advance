@@ -1,298 +1,100 @@
-# Day 21 - Build Snake Game Part 2: Inheritance & Sublists
+# Day 21 - Snake, Part 2: Food, Growing and Game Over
 
-## 📚 Learning Objectives
-- Complete Snake game using inheritance
-- Work with lists for snake body
-- Implement food generation
-- Add score tracking
-- Handle game over conditions
+> Yesterday the snake could only wander. Today it eats, grows, scores, and dies when it hits a wall or bites its own tail, just like the one on the Nokia.
 
-## 🎯 Topics Covered
-- List manipulation
-- Snake body segments
-- Food spawning
-- Collision detection
-- Score system
-- Game over logic
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Baraka's snake from Day 20 moves and wraps around the screen. His little sister played it for ten seconds and said "but what's the point?" Today the game gets a point:
 
-### Step 1: Snake Body with Lists
-Use ArrayList for snake segments:
+- a mango appears on a random square;
+- eating it adds one to the score, and the snake grows by one square;
+- the walls are now solid: hitting one ends the game;
+- so does running into your own body;
+- the snake can't turn straight back on itself.
+
+```
+Game Over! Score: 12
+```
+
+Every rule in that list is a small question with a yes-or-no answer, so they live in `SnakeGameLogic`, where the tests can ask them: `nextHead`, `hitsWall`, `hitsSelf` and `eatsFood`.
+
+## 🎯 Learning Objectives
+- Grow a list by simply not removing the tail
+- Check collisions against a list of positions
+- Place food on a random grid square with `Random.nextInt`
+- Keep game state (`score`, `gameOver`) and stop updating when the game ends
+- Block a move that would reverse the snake into itself
+- Pull rules out of a GUI class into small, testable methods
+
+## 🧰 Java you'll use
+
+**Growing is not shrinking.** Every step adds a new head. Normally you then remove the tail; on a step where the snake eats, you don't, and it's one square longer:
 
 ```java
-import java.util.ArrayList;
-
-public class Snake {
-    private ArrayList<Segment> body;
-    private String direction;
-    
-    public Snake() {
-        body = new ArrayList<>();
-        body.add(new Segment(0, 0)); // Head
-        direction = "RIGHT";
-    }
-    
-    public void move() {
-        // Add new head based on direction
-        Segment head = body.get(0);
-        Segment newHead = new Segment(head.getX() + dx, head.getY() + dy);
-        body.add(0, newHead);
-        
-        // Remove tail (unless eating food)
-        if (!eatingFood) {
-            body.remove(body.size() - 1);
-        }
-    }
+snake.add(0, newHead);
+if (eatsFood(newHead[0], newHead[1], food)) {
+    score++;
+    spawnFood();
+} else {
+    snake.remove(snake.size() - 1);
 }
 ```
 
-### Step 2: Food Generation
-Generate food at random positions:
+**Food on the grid.** Pick a square, then turn it into pixels, so the food always lines up with the snake:
 
 ```java
-private void generateFood() {
-    Random random = new Random();
-    int foodX = random.nextInt(WIDTH / GRID_SIZE) * GRID_SIZE;
-    int foodY = random.nextInt(HEIGHT / GRID_SIZE) * GRID_SIZE;
-    
-    // Make sure food doesn't spawn on snake
-    while (isOnSnake(foodX, foodY)) {
-        foodX = random.nextInt(WIDTH / GRID_SIZE) * GRID_SIZE;
-        foodY = random.nextInt(HEIGHT / GRID_SIZE) * GRID_SIZE;
-    }
-}
+food = new int[]{ random.nextInt(WIDTH / CELL_SIZE) * CELL_SIZE,
+                  random.nextInt(HEIGHT / CELL_SIZE) * CELL_SIZE };
 ```
 
-### Step 3: Collision Detection
-Check for collisions:
+**No U-turns.** Only accept "up" or "down" while the snake is moving sideways (`directionY == 0`), and the other way round.
 
-```java
-private boolean checkCollision() {
-    Segment head = snake.getHead();
-    
-    // Wall collision
-    if (head.getX() < 0 || head.getX() >= WIDTH ||
-        head.getY() < 0 || head.getY() >= HEIGHT) {
-        return true;
-    }
-    
-    // Self collision
-    for (int i = 1; i < snake.getBody().size(); i++) {
-        if (head.equals(snake.getBody().get(i))) {
-            return true;
-        }
-    }
-    
-    return false;
-}
+**Sublists.** `snake.subList(1, snake.size())` is the body without the head. It's a *view* of the same list, not a copy, so changing one changes the other. Exercise 1 shows why that matters.
+
+## 🪜 Steps
+
+1. **[Exercise 1: The snake's body is a list](exercise1/README.md)** (`exercise1/`): moving, growing and getting bitten as list operations, with `subList` as a view rather than a copy.
+2. **[Exercise 2: What did the snake hit?](exercise2/README.md)** (`exercise2/`): wall, self, food or clear for the next square, including the tail that moves out of the way.
+3. **Project: Complete Snake** (`_start/src/CompleteSnakeGame.java`).
+   1. `SnakeGameLogic`: `nextHead`, `hitsWall`, `hitsSelf` and `eatsFood`, with their tests.
+   2. `spawnFood()`, and draw the food.
+   3. In `update()`: check the wall, then the body, then add the head and either eat or drop the tail.
+   4. When the game is over, stop updating and draw `Game Over! Score: N`.
+
+## 🧪 Run it and test it
+
+The logic and its test need no JavaFX. From the repo root:
+
+```bash
+javac -cp "lib/*" -d day21/_end/src day21/_end/src/SnakeGameLogic.java day21/_end/src/SnakeGameLogicTest.java
+java -cp "day21/_end/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
 ```
 
-### Step 4: Score System
-Track and display score:
+To play, with `FX` pointing at your JavaFX SDK's `lib` folder (see Day 18):
 
-```java
-private int score = 0;
-
-private void eatFood() {
-    score += 10;
-    snake.grow();
-    generateFood();
-}
+```bash
+cd day21/_end/src
+javac --module-path $FX --add-modules javafx.controls *.java
+java --module-path $FX --add-modules javafx.controls CompleteSnakeGame
 ```
 
-## 💻 Exercises
+Use `_start/src` for your own version, and `day21/exercise1/src` or `day21/exercise2/src` for the exercises. On Windows, use `;` instead of `:` in `-cp`.
 
-Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`.
+## 🆘 Stuck?
 
-- **[Exercise 1: The snake's body is a list](exercise1/README.md)**: moving, growing and getting bitten as list operations, with `subList` as a view rather than a copy.
-- **[Exercise 2: What did the snake hit?](exercise2/README.md)**: wall, self, food or clear for the next square, including the tail that moves out of the way.
-
-## 🎮 Project: Complete Snake Game
-
-### Requirements
-Complete the Snake game:
-1. Snake with multiple segments
-2. Food that spawns randomly
-3. Snake grows when eating food
-4. Collision detection (walls, self)
-5. Score tracking
-6. Game over screen
-7. Restart functionality
-
-### Example Output
-```
-Score: 50
-
-[Game window with snake moving, food displayed]
-[Snake grows when eating food]
-[Game over when hitting wall or self]
-```
-
-### Starter Code Structure
-```java
-public class Snake {
-    private ArrayList<Segment> body;
-    private String direction;
-    
-    public void move() { }
-    public void grow() { }
-    public boolean checkSelfCollision() { }
-}
-
-public class Segment {
-    private int x, y;
-    // Constructor, getters, equals
-}
-
-public class Food {
-    private int x, y;
-    public void generateNew() { }
-}
-```
-
-## 📚 Resources
-
-### Official Documentation
-- [ArrayList - Java API](https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html)
-- [List Interface - Oracle Docs](https://docs.oracle.com/javase/tutorial/collections/interfaces/list.html)
-
-### Tutorials
-- [Java Lists - W3Schools](https://www.w3schools.com/java/java_arraylist.asp)
-- [Game Collision Detection](https://www.geeksforgeeks.org/collision-detection-in-games/)
-
-### Video Resources
-- [Complete Snake Game Tutorial](https://www.youtube.com/results?search_query=complete+snake+game+java)
-- [Java Game Development](https://www.youtube.com/results?search_query=java+game+development)
-
-### Practice Platforms
-- [Game Development Projects](https://github.com/karan/Projects#games)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Sublists | Get part of a list | `list.subList(0, 5)` |
-| Snake Body | List of segments | `ArrayList<Segment>` |
-| Food Spawning | Random generation | `random.nextInt()` |
-| Collision | Object intersection | Check coordinates |
-| Score | Game points | Increment on food eaten |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **Snake body:** Re-read **Step 1** — use `ArrayList<Segment>`; add new head, remove tail (unless eating) — see **Step 2**
-- **Food:** Random position; ensure not on snake — see **Step 2**
-- **Collision:** Wall: check x/y bounds; self: head equals any body segment — see **Step 3**
-- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for full game logic
-
-**Related days:** Day 20 (animation loop); Day 19 (inheritance for segments); Day 4 (ArrayList). **JavaFX:** See Troubleshooting.
-
-**Quick reference:** `list.add(0, newHead); list.remove(list.size()-1)` · Collision: compare coordinates · `subList(from, to)` for part of a list
+- **The game ends the moment it starts**: you check the new head against the body *after* adding it, so it always finds itself. Check first, then add.
+- **The snake never grows**: on the step it eats, don't remove the tail.
+- **Food appears half off the grid**: pick a random square and multiply by `CELL_SIZE`; don't pick a random pixel.
+- **Pressing two keys very fast still reverses the snake**: both presses land before the next step, so each looks legal on its own. A fix is to remember the direction the snake last *moved* and check against that.
 
 ## ✅ Checklist
-- [ ] Can work with lists effectively
-- [ ] Can implement snake body
-- [ ] Can generate food
-- [ ] Can detect collisions
-- [ ] Can track score
-- [ ] Completed Snake Game
+- [ ] Food appears on a random square, and eating it grows the snake
+- [ ] The score goes up by one for each mango
+- [ ] Hitting a wall or the body ends the game
+- [ ] The snake can't turn straight back on itself
+- [ ] Finished both exercises, and the tests pass
 - [ ] Committed code to Git
 
-## 📂 Code Examples
+## ➡️ Next
 
-This day includes starter and completed code examples:
-- **`_start/`** - Starting code with TODO comments and learning notes
-- **`_end/`** - Completed solutions with detailed explanations
-
-Check these folders to see the progression from start to finish and learn from the learning curve notes!
-
-## 💻 How to Run Java Files
-
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to the project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day21\_end\src"
-   ```
-
-3. **Compile the Java file**
-   ```cmd
-   javac CompleteSnakeGame.java
-   ```
-
-4. **Run the compiled program**
-   ```cmd
-   java CompleteSnakeGame
-   ```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to the project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day21/_end/src
-   ```
-
-3. **Compile the Java file**
-   ```bash
-   javac CompleteSnakeGame.java
-   ```
-
-4. **Run the compiled program**
-   ```bash
-   java CompleteSnakeGame
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA:**
-1. Open the project folder in IntelliJ IDEA
-2. Right-click on the Java file
-3. Select "Run 'ClassName.main()'"
-
-**VS Code:**
-1. Install "Extension Pack for Java"
-2. Open the Java file
-3. Click "Run" button above `main` method or press `F5`
-
-**Eclipse:**
-1. Import project into Eclipse
-2. Right-click on the Java file
-3. Select "Run As" → "Java Application"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
-- **"package does not exist"** - Remove package declaration if running from command line, or use proper package structure
-
-
-## 🚀 Next Steps
-After completing Day 21, you should be able to:
-- Build complete games
-- Work with dynamic lists
-- Implement game mechanics
-- Handle game state
-
-**Ready for Day 22?** You'll build the classic Pong game!
-
-
-
-
-
-
-
+Day 22 builds Pong: two players, two paddles, one ball and a score each.

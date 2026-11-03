@@ -4,9 +4,9 @@ import org.springframework.stereotype.Component;
 
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,21 +24,34 @@ public class RevenueForecaster {
         }
     }
 
+    /**
+     * Fits revenue against the month's position in the calendar (months since the first month),
+     * not its position in the map, so a month with no sales at all leaves a gap instead of
+     * pulling the later months one step back.
+     */
     public TrendLine fitTrend(Map<String, Double> monthlyTotals) {
-        List<Double> values = new ArrayList<>(monthlyTotals.values());
-        int n = values.size();
+        int n = monthlyTotals.size();
         if (n < 2) {
             throw new IllegalArgumentException("Need at least 2 months of data to fit a trend");
         }
+        YearMonth first = firstMonth(monthlyTotals);
+        double[] xs = new double[n];
+        double[] ys = new double[n];
+        int i = 0;
+        for (Map.Entry<String, Double> entry : monthlyTotals.entrySet()) {
+            xs[i] = monthsBetween(first, YearMonth.parse(entry.getKey(), MONTH_KEY));
+            ys[i] = entry.getValue();
+            i++;
+        }
 
-        double xMean = (n - 1) / 2.0;
-        double yMean = values.stream().mapToDouble(Double::doubleValue).average().orElse(0);
+        double xMean = Arrays.stream(xs).average().orElse(0);
+        double yMean = Arrays.stream(ys).average().orElse(0);
 
         double numerator = 0;
         double denominator = 0;
-        for (int i = 0; i < n; i++) {
-            numerator += (i - xMean) * (values.get(i) - yMean);
-            denominator += (i - xMean) * (i - xMean);
+        for (int k = 0; k < n; k++) {
+            numerator += (xs[k] - xMean) * (ys[k] - yMean);
+            denominator += (xs[k] - xMean) * (xs[k] - xMean);
         }
         double slope = denominator == 0 ? 0 : numerator / denominator;
         double intercept = yMean - slope * xMean;
@@ -51,16 +64,25 @@ public class RevenueForecaster {
      */
     public Map<String, Double> forecast(Map<String, Double> monthlyTotals, int monthsAhead) {
         TrendLine trend = fitTrend(monthlyTotals);
-        int n = monthlyTotals.size();
-        String lastMonthKey = monthlyTotals.keySet().stream().reduce((first, second) -> second).orElseThrow();
-        YearMonth lastMonth = YearMonth.parse(lastMonthKey, MONTH_KEY);
+        YearMonth first = firstMonth(monthlyTotals);
+        YearMonth lastMonth = monthlyTotals.keySet().stream()
+                .map(key -> YearMonth.parse(key, MONTH_KEY)).max(YearMonth::compareTo).orElseThrow();
 
         Map<String, Double> forecast = new LinkedHashMap<>();
         for (int i = 1; i <= monthsAhead; i++) {
             YearMonth futureMonth = lastMonth.plusMonths(i);
-            double predicted = trend.predict(n - 1 + i);
+            double predicted = trend.predict(monthsBetween(first, futureMonth));
             forecast.put(futureMonth.format(MONTH_KEY), Math.max(0, predicted));
         }
         return forecast;
+    }
+
+    private static YearMonth firstMonth(Map<String, Double> monthlyTotals) {
+        return monthlyTotals.keySet().stream()
+                .map(key -> YearMonth.parse(key, MONTH_KEY)).min(YearMonth::compareTo).orElseThrow();
+    }
+
+    private static int monthsBetween(YearMonth from, YearMonth to) {
+        return (int) ChronoUnit.MONTHS.between(from, to);
     }
 }

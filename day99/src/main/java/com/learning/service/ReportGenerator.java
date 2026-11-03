@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @Component
@@ -43,7 +44,7 @@ public class ReportGenerator {
                 float y = 720;
                 y = writeLine(stream, titleFont, 18, 50, y, "Advanced Analytics Report");
                 y -= 10;
-                y = writeLine(stream, bodyFont, 12, 50, y, "Total revenue: KES %,.0f across %d records".formatted(total, records.size()));
+                y = writeLine(stream, bodyFont, 12, 50, y, String.format(Locale.ENGLISH, "Total revenue: KES %,.0f across %d records", total, records.size()));
                 y -= 15;
 
                 y = writeLine(stream, titleFont, 14, 50, y, "Key Insights");
@@ -54,7 +55,7 @@ public class ReportGenerator {
 
                 y = writeLine(stream, titleFont, 14, 50, y, "3-Month Forecast");
                 for (Map.Entry<String, Double> entry : forecast.entrySet()) {
-                    y = writeLine(stream, bodyFont, 11, 60, y, "%s: KES %,.0f (projected)".formatted(entry.getKey(), entry.getValue()));
+                    y = writeLine(stream, bodyFont, 11, 60, y, String.format(Locale.ENGLISH, "%s: KES %,.0f (projected)", entry.getKey(), entry.getValue()));
                 }
             }
 

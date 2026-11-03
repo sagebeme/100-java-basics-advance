@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -47,6 +48,21 @@ class ReportGeneratorTest {
             assertTrue(text.contains("Total revenue"));
             assertTrue(text.contains("Top category: Electronics"));
             assertTrue(text.contains("3-Month Forecast"));
+        }
+    }
+
+    @Test
+    void theReportWorksOnAComputerSetToFrench() throws IOException {
+        // French groups thousands with a narrow no-break space, which the PDF's Helvetica can't draw.
+        Locale before = Locale.getDefault();
+        Locale.setDefault(Locale.FRANCE);
+        try {
+            byte[] pdf = reportGenerator.generatePdfReport(sampleRecords());
+            try (PDDocument document = Loader.loadPDF(pdf)) {
+                assertTrue(new PDFTextStripper().getText(document).contains("Total revenue: KES 3,000"));
+            }
+        } finally {
+            Locale.setDefault(before);
         }
     }
 }

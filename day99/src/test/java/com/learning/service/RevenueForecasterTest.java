@@ -72,4 +72,18 @@ class RevenueForecasterTest {
 
         assertEquals(List.of("2026-01", "2026-02"), List.copyOf(forecast.keySet()));
     }
+
+    @Test
+    void aMonthWithNoSalesDoesNotShiftTheTrend() {
+        // y = 100 + 100x by calendar month, but March is missing from the data.
+        Map<String, Double> totals = new LinkedHashMap<>();
+        totals.put("2026-01", 100.0);
+        totals.put("2026-02", 200.0);
+        totals.put("2026-04", 400.0);
+
+        Map<String, Double> forecast = forecaster.forecast(totals, 1);
+
+        assertEquals(List.of("2026-05"), List.copyOf(forecast.keySet()));
+        assertEquals(500.0, forecast.get("2026-05"), 1e-6);
+    }
 }

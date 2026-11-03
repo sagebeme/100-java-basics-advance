@@ -21,6 +21,7 @@ public class SpaceInvadersGame {
     private static final double ENEMY_TOP_MARGIN = 40;
     private static final double ENEMY_DESCEND_STEP = 20;
     private static final double BASE_ENEMY_SPEED = 40; // pixels/second
+    static final double MAX_STEP_SECONDS = 1.0 / 120;
 
     private final double boardWidth;
     private final double boardHeight;
@@ -71,9 +72,17 @@ public class SpaceInvadersGame {
     }
 
     public void update(double dtSeconds) {
-        if (gameOver) {
-            return;
+        // A slow frame can make dt large, and one big jump would carry a bullet straight past
+        // an enemy without ever overlapping it. Take small steps instead.
+        double remaining = dtSeconds;
+        while (remaining > 0 && !gameOver) {
+            double step = Math.min(remaining, MAX_STEP_SECONDS);
+            step(step);
+            remaining -= step;
         }
+    }
+
+    private void step(double dtSeconds) {
         shootCooldownRemaining = Math.max(0, shootCooldownRemaining - dtSeconds);
 
         for (Bullet bullet : playerBullets) {

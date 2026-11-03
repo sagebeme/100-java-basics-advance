@@ -135,4 +135,25 @@ class SpaceInvadersGameTest {
 
         assertEquals(originalTop + 20, rightmost.getTop(), 0.01); // descended by ENEMY_DESCEND_STEP
     }
+
+    @Test
+    void aSlowFrameDoesNotLetABulletSkipOverAnEnemy() {
+        SpaceInvadersGame game = new SpaceInvadersGame(WIDTH, HEIGHT);
+        Enemy first = game.getEnemies().get(0);
+        // The lowest enemy in the first column is the one a bullet from below reaches first.
+        Enemy target = game.getEnemies().stream()
+                .filter(e -> e.getLeft() == first.getLeft())
+                .max(java.util.Comparator.comparingDouble(Enemy::getBottom))
+                .orElseThrow();
+        double centerX = (target.getLeft() + target.getRight()) / 2;
+
+        game.shoot();
+        game.getPlayerBullets().get(0).setPosition(centerX, target.getBottom() + 60);
+
+        // 0.4 s at 300 px/s is 120 px: in one jump the bullet would land 60 px above the enemy.
+        game.update(0.4);
+
+        assertFalse(target.isAlive(), "the bullet should have hit the enemy on its way up");
+        assertEquals(SpaceInvadersGame.POINTS_PER_ENEMY, game.getScore());
+    }
 }

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Orders · Kerugoya Hardware</title>
+    <style>
+        body { font-family: system-ui, sans-serif; max-width: 40rem; margin: 2rem auto; padding: 0 1rem; color: #2b2a26; background: #f7f4ee; }
+        fieldset { border: 1px solid #c9c2b4; margin-bottom: 1rem; }
+        label { display: block; margin-top: .5rem; }
+        input { padding: .4rem; font: inherit; }
+        .row { display: flex; gap: .5rem; }
+        .row input[type=number] { width: 5rem; }
+        .message { background: #dcefd9; padding: .5rem; }
+        .error { background: #f6d6d3; padding: .5rem; }
+        button { padding: .5rem 1.2rem; font: inherit; }
+    </style>
+</head>
+<body>
+<h1>New order</h1>
+<p th:if="${message}" class="message" role="status" th:text="${message}">Order saved.</p>
+<p th:if="${error}" class="error" role="alert" th:text="${error}">Add at least one item.</p>
+
+<form th:action="@{/orders}" th:object="${order}" method="post">
+    <fieldset>
+        <legend>Customer</legend>
+        <!-- *{customer.name} binds to order.getCustomer().getName(): the field is called "customer.name" -->
+        <label for="name">Name</label>
+        <input id="name" th:field="*{customer.name}" required>
+        <label for="email">Email</label>
+        <input id="email" type="email" th:field="*{customer.email}">
+    </fieldset>
+
+    <fieldset>
+        <legend>Items</legend>
+        <!-- items[0].product, items[1].product, ...: Spring fills the list in that order -->
+        <div class="row" th:each="item, row : *{items}">
+            <input th:field="*{items[__${row.index}__].product}" placeholder="Product" aria-label="Product">
+            <input type="number" min="1" th:field="*{items[__${row.index}__].quantity}" aria-label="Quantity">
+        </div>
+    </fieldset>
+
+    <button type="submit">Save order</button>
+</form>
+
+<h2>Orders so far</h2>
+<p th:if="${#lists.isEmpty(orders)}">None yet.</p>
+<ul>
+    <li th:each="o : ${orders}">
+        <strong th:text="${o.customer.name}">Amina</strong>:
+        <span th:each="item, row : ${o.items}" th:text="|${item.quantity} × ${item.product}${row.last ? '' : ', '}|">2 × Nails</span>
+    </li>
+</ul>
+<p><a th:href="@{/upload}">Send a receipt or photo</a></p>
+</body>
+</html>

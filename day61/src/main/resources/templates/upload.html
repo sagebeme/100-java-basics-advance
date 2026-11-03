@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Upload · Kerugoya Hardware</title>
+    <style>
+        body { font-family: system-ui, sans-serif; max-width: 40rem; margin: 2rem auto; padding: 0 1rem; color: #2b2a26; background: #f7f4ee; }
+        .message { background: #dcefd9; padding: .5rem; }
+        .error { background: #f6d6d3; padding: .5rem; }
+        button { padding: .5rem 1.2rem; font: inherit; }
+    </style>
+</head>
+<body>
+<h1>Send a receipt or photo</h1>
+<p th:if="${message}" class="message" role="status" th:text="${message}">Saved receipt.jpg.</p>
+<p th:if="${error}" class="error" role="alert" th:text="${error}">Choose a file first.</p>
+
+<!-- A file can only be sent with method="post" and this enctype -->
+<form th:action="@{/upload}" method="post" enctype="multipart/form-data">
+    <label for="file">File</label>
+    <input id="file" type="file" name="file">
+    <button type="submit">Upload</button>
+</form>
+<p><a th:href="@{/orders}">Back to orders</a></p>
+</body>
+</html>

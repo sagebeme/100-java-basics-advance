@@ -33,7 +33,7 @@
     </form>
 
     <p id="prediction-result" th:if="${predictedPrice != null}">
-        Predicted price: <span th:text="${#numbers.formatDecimal(predictedPrice, 1, 2)}"></span>
+        Predicted price: KES <span th:text="${#numbers.formatDecimal(predictedPrice, 1, 'COMMA', 0, 'POINT')}"></span>
     </p>
 </main>
 </body>

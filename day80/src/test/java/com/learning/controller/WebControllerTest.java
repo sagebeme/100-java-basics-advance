@@ -33,7 +33,8 @@ class WebControllerTest {
                         .param("bathrooms", "2")
                         .param("ageYears", "10"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("Predicted price")));
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Predicted price: KES")))
+                .andExpect(content().string(org.hamcrest.Matchers.matchesPattern("(?s).*KES <span>\\d{1,3}(,\\d{3})+</span>.*")));
     }
 
     @Test

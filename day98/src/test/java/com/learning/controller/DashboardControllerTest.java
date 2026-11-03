@@ -29,6 +29,13 @@ class DashboardControllerTest {
     }
 
     @Test
+    void theTotalIsShownWithThousandsSeparators() throws Exception {
+        // The 48 sales in sales-data.csv add up to KES 1,103,738.
+        mockMvc.perform(get("/"))
+                .andExpect(content().string(containsString("KES <span>1,103,738</span>")));
+    }
+
+    @Test
     void filteringByCategoryChangesTheRecordCount() throws Exception {
         String allResponse = mockMvc.perform(get("/"))
                 .andReturn().getResponse().getContentAsString();

@@ -46,7 +46,7 @@
             <div class="card">
                 <div class="card-body">
                     <h2 class="h6 text-muted">Total Revenue</h2>
-                    <p class="display-6 mb-0" id="total-revenue">KES <span th:text="${#numbers.formatDecimal(totalRevenue, 1, 0)}">0</span></p>
+                    <p class="display-6 mb-0" id="total-revenue">KES <span th:text="${#numbers.formatDecimal(totalRevenue, 1, 'COMMA', 0, 'POINT')}">0</span></p>
                 </div>
             </div>
         </div>

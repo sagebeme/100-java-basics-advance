@@ -1,38 +1,40 @@
 import java.util.List;
 
 public class QuizBrain {
-    private List<Question> questions;
-    private int currentIndex = 0;
-    private int score = 0;
-    private Question lastQuestion;
+
+    // TODO: private fields: the questions, how many have been asked, how many answered, the score
 
     public QuizBrain(List<Question> questions) {
-        this.questions = questions;
+        // TODO: refuse an empty list; keep a copy
     }
 
-    public boolean stillHasQuestions() {
-        return currentIndex < questions.size();
+    public boolean hasMore() {
+        // TODO
+        return false;
     }
 
-    /**
-     * Advances to the next question and returns it. Call submitAnswer with the learner's
-     * response to score it against this question.
-     */
-    public Question nextQuestion() {
-        lastQuestion = questions.get(currentIndex);
-        currentIndex++;
-        return lastQuestion;
+    public Question next() {
+        // TODO: none left? throw IllegalStateException
+        return null;
     }
 
-    public boolean submitAnswer(String answer) {
-        boolean correct = lastQuestion.checkAnswer(answer);
-        if (correct) {
-            score++;
-        }
-        return correct;
+    public boolean answer(String reply) {
+        // TODO: nothing asked, or already answered? throw IllegalStateException.
+        // Otherwise mark it, count it, and say whether it was right.
+        return false;
     }
 
-    public int getScore() {
-        return score;
+    public int score() {
+        // TODO
+        return -1;
+    }
+
+    public String scoreLine() {
+        // TODO: "2/3 (67%)", or "0/0" before any answer
+        return "";
+    }
+
+    public static void main(String[] args) {
+        // TODO: three questions, replies t, false, t. Print the score line after each.
     }
 }

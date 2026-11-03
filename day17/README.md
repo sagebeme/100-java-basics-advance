@@ -94,26 +94,10 @@ public class QuizApp {
 
 ## 💻 Exercises
 
-### Exercise 1: Question Class
-Create a Question class with:
-- Question text
-- Answer
-- Check answer method
-- Display method
+Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`.
 
-### Exercise 2: Quiz Manager
-Create a QuizBrain class with:
-- Question list management
-- Score tracking
-- Current question tracking
-- Next question method
-
-### Exercise 3: Data Management
-Create systems for:
-- Loading questions from file
-- Different question types
-- Question categories
-- Difficulty levels
+- **[Exercise 1: One question, many ways to answer](exercise1/README.md)**: a `Question` that refuses an impossible answer and accepts `true`, ` TRUE ` and `t` alike.
+- **[Exercise 2: A quiz brain you can test](exercise2/README.md)**: the quiz rules pulled out of the `Scanner` loop, so a test can play the quiz: questions in order, one answer each, and a score line.
 
 ## 🎮 Project: Quiz Application
 

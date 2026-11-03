@@ -128,4 +128,31 @@ class ShoppingFlowTest {
         assertEquals(ordersBefore, orderRepository.count(), "no order should be recorded");
         assertEquals(stock, productRepository.findById(product.getId()).orElseThrow().getStock());
     }
+
+    @Test
+    void anotherVisitorCanNeitherOpenNorSeeYourOrder() throws Exception {
+        Long productId = productRepository.findAll().get(2).getId();
+        MvcResult addResult = mockMvc.perform(post("/cart/add/" + productId).param("quantity", "1")).andReturn();
+        org.springframework.mock.web.MockHttpSession buyer =
+                (org.springframework.mock.web.MockHttpSession) addResult.getRequest().getSession();
+        String orderUrl = mockMvc.perform(post("/checkout")
+                        .session(buyer)
+                        .param("email", "private.buyer@example.com")
+                        .param("cardNumber", "4242424242424242")
+                        .param("expiryMonth", "12")
+                        .param("expiryYear", "2030")
+                        .param("cvv", "123"))
+                .andReturn().getResponse().getRedirectedUrl();
+
+        // The buyer sees it...
+        mockMvc.perform(get(orderUrl).session(buyer)).andExpect(status().isOk());
+        mockMvc.perform(get("/orders").session(buyer))
+                .andExpect(content().string(containsString("private.buyer@example.com")));
+
+        // ...a stranger with a fresh session doesn't.
+        org.springframework.mock.web.MockHttpSession stranger = new org.springframework.mock.web.MockHttpSession();
+        mockMvc.perform(get(orderUrl).session(stranger)).andExpect(status().isNotFound());
+        mockMvc.perform(get("/orders").session(stranger))
+                .andExpect(content().string(not(containsString("private.buyer@example.com"))));
+    }
 }

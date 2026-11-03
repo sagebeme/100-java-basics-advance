@@ -54,6 +54,7 @@ public class CheckoutController {
             return "checkout";
         }
 
+        CartSessionSupport.getMyOrderIds(session).add(order.getId());
         return "redirect:/orders/" + order.getId();
     }
 }

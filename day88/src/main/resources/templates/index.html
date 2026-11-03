@@ -13,9 +13,10 @@
     <h1 class="mb-4">Todo List</h1>
 
     <form th:action="@{/todos}" method="post" class="d-flex gap-2 mb-4">
-        <input type="text" name="title" class="form-control" placeholder="What needs doing?" required>
+        <input type="text" name="title" class="form-control" placeholder="What needs doing?" aria-label="New todo" required maxlength="200">
         <button type="submit" class="btn btn-primary">Add</button>
     </form>
+    <p id="error" class="alert alert-danger" role="alert" th:if="${error}" th:text="${error}"></p>
 
     <div class="btn-group mb-3" role="group">
         <a class="btn btn-outline-secondary" th:classappend="${filter.name() == 'ALL'} ? 'active'" th:href="@{/(filter='ALL')}">All</a>

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class TodoController {
@@ -26,8 +27,13 @@ public class TodoController {
     }
 
     @PostMapping("/todos")
-    public String add(@RequestParam String title) {
-        todoService.addTodo(title);
+    public String add(@RequestParam String title, RedirectAttributes redirectAttributes) {
+        try {
+            todoService.addTodo(title);
+        } catch (IllegalArgumentException e) {
+            // A blank or overlong title: tell the person, instead of a 500 error page.
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
         return "redirect:/";
     }
 

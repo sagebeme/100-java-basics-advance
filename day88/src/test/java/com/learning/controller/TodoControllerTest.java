@@ -83,4 +83,26 @@ class TodoControllerTest {
         mockMvc.perform(post("/todos/999999/toggle").param("filter", "ALL"))
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    void aBlankTitleIsRefusedWithAMessageNotAnErrorPage() throws Exception {
+        long before = todoRepository.count();
+
+        mockMvc.perform(post("/todos").param("title", "   "))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(flash().attribute("error", "Todo title must not be blank"));
+
+        assertEquals(before, todoRepository.count());
+    }
+
+    @Test
+    void anOverlongTitleIsRefusedWithAMessage() throws Exception {
+        long before = todoRepository.count();
+
+        mockMvc.perform(post("/todos").param("title", "x".repeat(201)))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(flash().attributeExists("error"));
+
+        assertEquals(before, todoRepository.count());
+    }
 }

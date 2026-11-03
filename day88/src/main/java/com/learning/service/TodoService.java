@@ -16,9 +16,14 @@ public class TodoService {
         this.todoRepository = todoRepository;
     }
 
+    public static final int MAX_TITLE_LENGTH = 200;
+
     public Todo addTodo(String title) {
         if (title == null || title.isBlank()) {
             throw new IllegalArgumentException("Todo title must not be blank");
+        }
+        if (title.trim().length() > MAX_TITLE_LENGTH) {
+            throw new IllegalArgumentException("Keep a todo under " + MAX_TITLE_LENGTH + " characters");
         }
         return todoRepository.save(new Todo(title.trim()));
     }

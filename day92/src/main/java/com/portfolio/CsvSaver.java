@@ -20,7 +20,12 @@ public class CsvSaver {
     }
 
     private String escape(String value) {
-        if (value.contains(",") || value.contains("\"") || value.contains("\n")) {
+        // A scraped title is text from someone else's page. If it starts like a formula
+        // (=, +, -, @), a spreadsheet would run it when the CSV is opened, so make it text.
+        if (!value.isEmpty() && "=+-@\t\r".indexOf(value.charAt(0)) >= 0) {
+            value = "'" + value;
+        }
+        if (value.contains(",") || value.contains("\"") || value.contains("\n") || value.contains("\r")) {
             return "\"" + value.replace("\"", "\"\"") + "\"";
         }
         return value;

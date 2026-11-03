@@ -51,4 +51,16 @@ class CsvSaverTest {
         assertEquals(1, lines.size());
         assertEquals("title,link", lines.get(0));
     }
+
+    @Test
+    void aTitleThatLooksLikeASpreadsheetFormulaIsSavedAsText(@TempDir Path tempDir) throws IOException {
+        File output = tempDir.resolve("out.csv").toFile();
+        new CsvSaver().save(List.of(
+                new ScrapedItem("=HYPERLINK(\"http://evil.example\",\"Click\")", "https://example.com/a"),
+                new ScrapedItem("-5 degrees in Nyahururu?", "https://example.com/b")), output);
+
+        List<String> lines = Files.readAllLines(output.toPath());
+        assertEquals("\"'=HYPERLINK(\"\"http://evil.example\"\",\"\"Click\"\")\",https://example.com/a", lines.get(1));
+        assertEquals("'-5 degrees in Nyahururu?,https://example.com/b", lines.get(2));
+    }
 }

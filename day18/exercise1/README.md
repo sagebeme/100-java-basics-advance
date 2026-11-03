@@ -27,6 +27,6 @@ java -cp "day18/exercise1/src:lib/*" org.junit.platform.console.ConsoleLauncher 
 
 To see the drawing, run `ShapesDemo` with the JavaFX SDK (see LEARNING_PATH.md).
 
-## 📌 Refer to (when stuck)
+## 📌 Stuck?
 - Corner `i` of an `n`-sided polygon is at angle `-π/2 + i × 2π/n`: `x = cx + r·cos(angle)`, `y = cy + r·sin(angle)`. Screen `y` grows downwards, which is why "up" is `-π/2`.
 - **Day 18 README**: drawing on a `Canvas` with `GraphicsContext`.

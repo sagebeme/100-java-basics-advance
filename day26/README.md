@@ -1,293 +1,95 @@
-# Day 26 - Streams and Lambda Expressions
+# Day 26 - Streams and Lambdas: Spelling It Out at the Call Centre
 
-## 📚 Learning Objectives
-- Understand Java Streams API
-- Learn lambda expressions
-- Master functional programming concepts
-- Work with method references
-- Practice stream operations
+> "Is that M for Mike or N for November?" Call-centre agents spell names with the NATO alphabet so nothing gets lost on a bad line. Today's program does it in one stream.
 
-## 🎯 Topics Covered
-- Lambda expressions syntax
-- Stream API
-- Intermediate operations (map, filter, sorted)
-- Terminal operations (collect, forEach, reduce)
-- Method references
-- Functional interfaces
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Faith works the night shift at a customer care centre in Nairobi. All night, callers spell out account names and M-Pesa codes over crackly lines, and **B**, **D**, **P** and **T** all sound the same. So agents use the NATO phonetic alphabet: Alpha, Bravo, Charlie… Faith wants a small helper on her screen: type a word, see how to say it.
 
-### Step 1: Lambda Expressions
-Anonymous functions:
-
-```java
-// Old way (anonymous class)
-List<String> names = Arrays.asList("Alice", "Bob", "Charlie");
-Collections.sort(names, new Comparator<String>() {
-    @Override
-    public int compare(String a, String b) {
-        return a.compareTo(b);
-    }
-});
-
-// Lambda way
-Collections.sort(names, (a, b) -> a.compareTo(b));
 ```
-
-### Step 2: Stream API Basics
-Work with collections:
-
-```java
-import java.util.stream.Stream;
-import java.util.Arrays;
-import java.util.List;
-
-List<String> names = Arrays.asList("Alice", "Bob", "Charlie");
-
-// Create stream
-Stream<String> stream = names.stream();
-
-// Filter
-names.stream()
-    .filter(name -> name.startsWith("A"))
-    .forEach(System.out::println);
-
-// Map (transform)
-names.stream()
-    .map(String::toUpperCase)
-    .forEach(System.out::println);
-```
-
-### Step 3: Common Stream Operations
-Useful stream methods:
-
-```java
-// Filter
-list.stream().filter(x -> x > 10)
-
-// Map
-list.stream().map(x -> x * 2)
-
-// Sorted
-list.stream().sorted()
-
-// Collect
-list.stream().collect(Collectors.toList())
-
-// Reduce
-list.stream().reduce(0, (a, b) -> a + b)
-```
-
-### Step 4: Method References
-Shorthand for lambdas:
-
-```java
-// Instead of: x -> x.toUpperCase()
-String::toUpperCase
-
-// Instead of: x -> System.out.println(x)
-System.out::println
-
-// Instead of: () -> new ArrayList<>()
-ArrayList::new
-```
-
-## 💻 Exercises
-
-Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`.
-
-- **[Exercise 1: Sorting the Sacco's fleet with lambdas](exercise1/README.md)**: comparators, predicates and functions as small lambdas that can be sorted with, combined with `and` and `negate`, and passed around.
-- **[Exercise 2: Mama Oliech's till, in streams](exercise2/README.md)**: totals, distinct sorted lists, counts per hour, the largest payment and joined codes, each as one stream with no loop.
-
-## 🎮 Project: NATO Phonetic Alphabet
-
-### Requirements
-Create a program that:
-1. Reads words from user
-2. Converts each letter to NATO phonetic alphabet
-3. Uses streams and lambdas
-4. Displays phonetic spelling
-
-### Example Output
-```
-Enter a word: Hello
+Enter a word: Faith
+F for Foxtrot
+A for Alpha
+I for India
+T for Tango
 H for Hotel
-E for Echo
-L for Lima
-L for Lima
-O for Oscar
 ```
 
-### Starter Code
+The whole conversion is one **stream**: take the characters, keep only letters, turn each one into a line, join the lines. No loop, no counter, no list to fill.
+
+## 🎯 Learning Objectives
+- Write lambdas: small functions you can store and pass around (`c -> c + " for " + ...`)
+- Use method references such as `Character::isLetter`
+- Build a stream pipeline: a source, then `filter`, `map` and other steps, then a collector
+- Collect results with `Collectors.joining`, `toList()`, `groupingBy` and `counting`
+- Sort with `Comparator.comparing`, and combine conditions with `Predicate.and` and `negate`
+
+## 🧰 Java you'll use
+
+**A lambda** is a function without a name. These two do the same thing:
+
 ```java
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.stream.Collectors;
-
-public class NATOPhonetic {
-    private static final Map<Character, String> natoAlphabet = new HashMap<>();
-    
-    static {
-        natoAlphabet.put('A', "Alpha");
-        natoAlphabet.put('B', "Bravo");
-        // Add all letters
-    }
-    
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter a word: ");
-        String word = scanner.nextLine().toUpperCase();
-        
-        // Use streams to convert
-        word.chars()
-            .mapToObj(c -> (char) c)
-            .map(c -> c + " for " + natoAlphabet.get(c))
-            .forEach(System.out::println);
-    }
-}
+Predicate<Character> isLetter = c -> Character.isLetter(c);
+Predicate<Character> same = Character::isLetter;          // a method reference
 ```
 
-## 📚 Resources
+**A stream** reads like a sentence. Today's pipeline:
 
-### Official Documentation
-- [Lambda Expressions - Oracle Docs](https://docs.oracle.com/javase/tutorial/java/javaOO/lambdaexpressions.html)
-- [Stream API - Oracle Docs](https://docs.oracle.com/javase/8/docs/api/java/util/stream/package-summary.html)
-- [Method References - Oracle Docs](https://docs.oracle.com/javase/tutorial/java/javaOO/methodreferences.html)
+```java
+String spelled = word.toUpperCase().chars()      // the characters, as numbers
+        .mapToObj(c -> (char) c)                 // ... as Characters
+        .filter(Character::isLetter)             // keep the letters
+        .map(c -> c + " for " + nato.get(c))     // "F for Foxtrot"
+        .collect(Collectors.joining("\n"));      // one line each
+```
 
-### Tutorials
-- [Java Lambda Expressions - W3Schools](https://www.w3schools.com/java/java_lambda.asp)
-- [Java Streams - Baeldung](https://www.baeldung.com/java-8-streams-introduction)
-- [Lambda Expressions - GeeksforGeeks](https://www.geeksforgeeks.org/lambda-expressions-java-8/)
+Nothing happens until the last step, the **collector**, asks for the result.
 
-### Video Resources
-- [Java Lambda Tutorial](https://www.youtube.com/results?search_query=java+lambda+expressions+tutorial)
-- [Java Streams Tutorial](https://www.youtube.com/results?search_query=java+streams+tutorial)
+**A map from letters to words.** `Map<Character, String>` filled once in a `static` block: `'A' → "Alpha"`, and so on to `'Z' → "Zulu"`.
 
-### Practice Platforms
-- [Stream Exercises](https://www.w3resource.com/java-exercises/stream/)
+**Comparators** are lambdas too: `Comparator.comparing(Matatu::getSeats).reversed().thenComparing(Matatu::getPlate)` sorts by seats, most first, then by plate. Exercise 1 is full of them.
 
-## 🔑 Key Concepts Summary
+## 🪜 Steps
 
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Lambda | Anonymous function | `(x, y) -> x + y` |
-| Stream | Sequence of elements | `list.stream()` |
-| Filter | Select elements | `.filter(x -> x > 10)` |
-| Map | Transform elements | `.map(x -> x * 2)` |
-| Method Reference | Shorthand lambda | `String::toUpperCase` |
+1. **[Exercise 1: Sorting the Sacco's fleet with lambdas](exercise1/README.md)** (`exercise1/`): comparators, predicates and functions as small lambdas that can be sorted with, combined with `and` and `negate`, and passed around.
+2. **[Exercise 2: Mama Oliech's till, in streams](exercise2/README.md)** (`exercise2/`): totals, distinct sorted lists, counts per hour, the largest payment and joined codes, each as one stream with no loop.
+3. **Project: The NATO Speller** (`_start/src/NATOPhonetic.java`).
+   1. Fill the map with all 26 letters.
+   2. `toNato(word)`: one stream, as above. Capitals don't matter, and anything that isn't a letter (spaces, digits, dashes) is skipped.
+   3. `main`: ask for a word and print the result.
 
-## 📌 Notes & reference (use these when stuck)
+## 🧪 Run it and test it
 
-**When you're stuck:**
-- **Lambda:** Re-read **Step 1** — `(param) -> expression` or `(a, b) -> a + b` — see **Step 2**
-- **Stream:** Re-read **Step 2** — `list.stream()` then `.filter()`, `.map()`, `.collect()` — one terminal op per stream
-- **Method reference:** Use `ClassName::methodName` or `object::methodName` when lambda just calls one method
-- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for NATO Phonetic with streams
+```bash
+cd day26/_end/src
+javac NATOPhonetic.java
+java NATOPhonetic
+```
 
-**Related days:** Day 4 (ArrayList to stream); Day 25 (CSV processing with streams). **Quick reference:** Terminal ops: `collect()`, `forEach()`, `reduce()` · Intermediate: `filter()`, `map()`, `sorted()`
+To test your own version, copy `_end/src/NATOPhoneticTest.java` into `_start/src`, then from the repo root:
+
+```bash
+javac -cp "lib/*" -d day26/_start/src day26/_start/src/*.java
+java -cp "day26/_start/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
+```
+
+For an exercise, use `day26/exercise1/src` or `day26/exercise2/src` in both commands. On Windows, use `;` instead of `:` in `-cp`.
+
+## 🆘 Stuck?
+
+- **`incompatible types` on the `map` line**: `chars()` gives an `IntStream` of numbers, not characters. Turn them into characters with `.mapToObj(c -> (char) c)` first.
+- **Lower-case letters give `null`**: the map's keys are capitals. Call `toUpperCase()` first.
+- **`É for null`**: `Character.isLetter` is true for letters outside A–Z too. Filter with `nato.containsKey(c)` if you'd rather skip them.
+- **Nothing prints**: a stream with no collector at the end never runs. Finish with `collect`, `toList()`, `count()` or `forEach`.
+- **`local variables referenced from a lambda must be final`**: a lambda can read a local variable, but not change it. Let the stream build the result instead of adding to an outside counter.
 
 ## ✅ Checklist
-- [ ] Understand lambda syntax
-- [ ] Can use streams
-- [ ] Know common stream operations
-- [ ] Can use method references
-- [ ] Understand functional programming
-- [ ] Completed NATO Phonetic project
+- [ ] Wrote lambdas and method references
+- [ ] Built a stream with `filter`, `map` and a collector
+- [ ] The speller ignores capitals and skips anything that isn't a letter
+- [ ] Finished both exercises, and the tests pass
 - [ ] Committed code to Git
 
-## 📂 Code Examples
+## ➡️ Next
 
-This day includes starter and completed code examples:
-- **`_start/`** - Starting code with TODO comments and learning notes
-- **`_end/`** - Completed solutions with detailed explanations
-
-Check these folders to see the progression from start to finish and learn from the learning curve notes!
-
-## 💻 How to Run Java Files
-
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to the project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day26\_end\src"
-   ```
-
-3. **Compile the Java file**
-   ```cmd
-   javac NATOPhonetic.java
-   ```
-
-4. **Run the compiled program**
-   ```cmd
-   java NATOPhonetic
-   ```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to the project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day26/_end/src
-   ```
-
-3. **Compile the Java file**
-   ```bash
-   javac NATOPhonetic.java
-   ```
-
-4. **Run the compiled program**
-   ```bash
-   java NATOPhonetic
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA:**
-1. Open the project folder in IntelliJ IDEA
-2. Right-click on the Java file
-3. Select "Run 'NATOPhonetic.main()'"
-
-**VS Code:**
-1. Install "Extension Pack for Java"
-2. Open the Java file
-3. Click "Run" button above `main` method or press `F5`
-
-**Eclipse:**
-1. Import project into Eclipse
-2. Right-click on the Java file
-3. Select "Run As" → "Java Application"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
-
-## 🚀 Next Steps
-After completing Day 26, you should be able to:
-- Write lambda expressions
-- Use streams effectively
-- Apply functional programming
-- Process collections efficiently
-
-**Ready for Day 27?** You'll learn about JavaFX GUI programming!
-
-
-
-
-
-
-
+Day 27 is back to JavaFX, this time with buttons, text fields and labels: a unit converter.

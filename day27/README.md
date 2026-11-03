@@ -1,312 +1,110 @@
-# Day 27 - JavaFX GUI Programs
+# Day 27 - JavaFX Controls: Miles to Kilometres
 
-## 📚 Learning Objectives
-- Build GUI applications with JavaFX
-- Work with FXML and Scene Builder
-- Understand layouts and controls
-- Handle events in GUI
-- Create user-friendly interfaces
+> Mutua's car came secondhand from the UK, and its speedometer and trip meter are in miles. Today you build him a small window that converts them, with a text field, a button and a label.
 
-## 🎯 Topics Covered
-- JavaFX application structure
-- FXML files
-- Scene Builder
-- Layouts (VBox, HBox, GridPane)
-- Controls (Button, Label, TextField)
-- Event handling
-- CSS styling
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Lots of cars on Kenyan roads were first registered in the UK or Japan. Mutua's came from the UK, so the dashboard counts in **miles**, while every road sign from Mombasa to Malaba is in **kilometres**. "Nakuru 62 km" means nothing to his trip meter.
 
-### Step 1: Basic JavaFX Application
-Create simple GUI:
+He wants a tiny window he can keep open:
+
+```
+┌ Mile to Kilometer Converter ┐
+│ Miles:                      │
+│ [ 38.5            ]         │
+│ [ Convert ]                 │
+│ Kilometers: 61.95           │
+└─────────────────────────────┘
+```
+
+Type a number, press **Convert**, read the answer. Type something that isn't a number and it says `Invalid input!` instead of crashing. It's styled like a green highway sign, from a stylesheet, `barabara.css` ("barabara" is Swahili for highway).
+
+On Days 18 to 23 you drew everything yourself on a canvas. Today JavaFX gives you ready-made **controls**: `Label`, `TextField` and `Button`, laid out by a `VBox`.
+
+## 🎯 Learning Objectives
+- Build a JavaFX window from controls: `Label`, `TextField`, `Button`
+- Lay them out with `VBox` (and know `HBox` and `GridPane`)
+- React to a click with an event handler: `button.setOnAction(e -> ...)`
+- Read and check what the user typed, and show friendly errors
+- Style a window with a CSS stylesheet
+- Keep the maths in a plain class you can test without a window
+
+## 🧰 Java you'll use
+
+**Controls and a layout:**
 
 ```java
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
+Label inputLabel = new Label("Miles:");
+TextField inputField = new TextField();
+Button convertButton = new Button("Convert");
+Label outputLabel = new Label("Kilometers: 0.0");
 
-public class GUIApp extends Application {
-    @Override
-    public void start(Stage stage) {
-        Label label = new Label("Hello, JavaFX!");
-        Button button = new Button("Click Me");
-        
-        button.setOnAction(e -> label.setText("Button clicked!"));
-        
-        VBox root = new VBox(10);
-        root.getChildren().addAll(label, button);
-        
-        Scene scene = new Scene(root, 300, 200);
-        stage.setScene(scene);
-        stage.setTitle("My GUI App");
-        stage.show();
-    }
-    
-    public static void main(String[] args) {
-        launch(args);
-    }
-}
+VBox root = new VBox(10);                    // 10 pixels between children
+root.getChildren().addAll(inputLabel, inputField, convertButton, outputLabel);
+stage.setScene(new Scene(root, 300, 200));
 ```
 
-### Step 2: Using FXML
-Separate UI from logic:
-
-**sample.fxml:**
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<VBox xmlns="http://javafx.com/javafx">
-    <Label text="Hello, JavaFX!" />
-    <Button text="Click Me" onAction="#handleButtonClick" />
-</VBox>
-```
-
-**Controller.java:**
-```java
-public class Controller {
-    @FXML
-    private Label label;
-    
-    @FXML
-    private void handleButtonClick() {
-        label.setText("Button clicked!");
-    }
-}
-```
-
-### Step 3: Common Controls
-Use various controls:
+**An event handler** is a lambda that runs when something happens:
 
 ```java
-TextField textField = new TextField();
-Button button = new Button("Submit");
-Label label = new Label();
-CheckBox checkBox = new CheckBox("Option");
-RadioButton radioButton = new RadioButton("Choice");
-```
-
-### Step 4: Layouts
-Organize UI elements:
-
-```java
-// VBox - vertical layout
-VBox vbox = new VBox(10); // 10px spacing
-
-// HBox - horizontal layout
-HBox hbox = new HBox(10);
-
-// GridPane - grid layout
-GridPane grid = new GridPane();
-grid.add(label, 0, 0);
-grid.add(button, 1, 0);
-```
-
-## 💻 Exercises
-
-Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`. The window in each is already written; you write the rules it calls, which the tests check without JavaFX.
-
-- **[Exercise 1: A currency converter window](exercise1/README.md)**: a text field, a button and an event handler, with the money maths and the friendly error messages kept testable.
-- **[Exercise 2: A sign-up form that says everything at once](exercise2/README.md)**: checking every field and showing each problem next to its field, and phone numbers typed four different ways.
-
-## 🎮 Project: Mile to Kilometer Converter
-
-### Requirements
-Create a unit converter GUI:
-1. Input field for miles
-2. Convert button
-3. Display kilometers
-4. Real-time conversion (optional)
-5. Clear button
-6. Nice styling
-
-### Example Output
-```
-[GUI Window]
-Miles to Kilometers Converter
-
-Enter miles: [____]
-[Convert Button]
-
-Result: 0.0 km
-```
-
-### Starter Code
-```java
-import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-
-public class Converter extends Application {
-    @Override
-    public void start(Stage stage) {
-        // Create UI components
-        // Set up layout
-        // Add event handlers
-        // Show window
+convertButton.setOnAction(e -> {
+    try {
+        double miles = Double.parseDouble(inputField.getText());
+        outputLabel.setText("Kilometers: " + String.format("%.2f", UnitConverterLogic.milesToKilometers(miles)));
+    } catch (NumberFormatException ex) {
+        outputLabel.setText("Invalid input!");
     }
-    
-    private double milesToKm(double miles) {
-        return miles * 1.60934;
-    }
-    
-    public static void main(String[] args) {
-        launch(args);
-    }
-}
+});
 ```
 
-## 📚 Resources
+**CSS for JavaFX** looks like web CSS, with `-fx-` in front: `.button { -fx-background-color: #ffd23f; }`. Load it with `scene.getStylesheets().add(...)`. Give a control an id (`outputLabel.setId("result")`) to style just that one with `#result`.
 
-### Official Documentation
-- [JavaFX Getting Started - Oracle Docs](https://docs.oracle.com/javase/8/javafx/get-started-tutorial/jfx-overview.htm)
-- [JavaFX Controls - JavaFX Docs](https://openjfx.io/javadoc/11/javafx.controls/javafx/scene/control/package-summary.html)
-- [FXML Introduction - Oracle Docs](https://docs.oracle.com/javase/8/javafx/api/javafx/fxml/doc-files/introduction_to_fxml.html)
+**One mile is 1.609 km**, in `UnitConverterLogic.milesToKilometers`.
 
-### Tutorials
-- [JavaFX Tutorial - Code.makery](https://code.makery.ch/library/javafx-tutorial/)
-- [JavaFX GUI - Jenkov](https://jenkov.com/tutorials/javafx/index.html)
-- [JavaFX Basics - GeeksforGeeks](https://www.geeksforgeeks.org/javafx/)
+## 🪜 Steps
 
-### Video Resources
-- [JavaFX Tutorial](https://www.youtube.com/results?search_query=javafx+tutorial)
-- [JavaFX GUI Development](https://www.youtube.com/results?search_query=javafx+gui+development)
+1. **[Exercise 1: A currency converter window](exercise1/README.md)** (`exercise1/`): a text field, a button and an event handler, with the money maths and the friendly error messages kept testable.
+2. **[Exercise 2: A sign-up form that says everything at once](exercise2/README.md)** (`exercise2/`): checking every field and showing each problem next to its field, and phone numbers typed four different ways.
+3. **Project: Miles to Kilometres** (`_start/src/UnitConverter.java`).
+   1. `UnitConverterLogic.milesToKilometers`, with its test.
+   2. The four controls in a `VBox`.
+   3. The button's event handler, including `Invalid input!`.
+   4. Copy `barabara.css` from `_end/src` (or write your own) and load it.
 
-### Practice Platforms
-- [JavaFX Projects](https://github.com/topics/javafx)
+## 🧪 Run it and test it
 
-## 🔑 Key Concepts Summary
+The logic and its test need no JavaFX. From the repo root:
 
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Application | JavaFX app entry | `extends Application` |
-| Scene | Container for UI | `new Scene(root)` |
-| Stage | Window | `stage.setScene(scene)` |
-| Control | UI component | `Button`, `Label`, `TextField` |
-| Layout | Container | `VBox`, `HBox`, `GridPane` |
-| Event Handler | Respond to actions | `button.setOnAction()` |
+```bash
+javac -cp "lib/*" -d day27/_end/src day27/_end/src/UnitConverterLogic.java day27/_end/src/UnitConverterLogicTest.java
+java -cp "day27/_end/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
+```
 
-## 📌 Notes & reference (use these when stuck)
+To open the window, with `FX` pointing at your JavaFX SDK's `lib` folder (see Day 18):
 
-**When you're stuck:**
-- **JavaFX structure:** Re-read **Step 1** — class extends `Application`, override `start(Stage)` — see **Step 2**
-- **Controls:** Re-read **Step 2** — `Button`, `Label`, `TextField`; add to `VBox`/`HBox` — see **Step 3**
-- **Events:** `button.setOnAction(e -> { ... });` — get text: `textField.getText()` — see **Step 3**
-- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for Converter logic
+```bash
+cd day27/_end/src
+javac --module-path $FX --add-modules javafx.controls *.java
+java --module-path $FX --add-modules javafx.controls UnitConverter
+```
 
-**Related days:** Day 18 (canvas); Day 28 (Pomodoro GUI). **JavaFX:** See How to Run / Troubleshooting for module path.
+Use `_start/src` for your own version, and `day27/exercise1/src` or `day27/exercise2/src` for the exercises. On Windows, use `;` instead of `:` in `-cp`.
 
-**Quick reference:** `new VBox(10, node1, node2)` · `scene = new Scene(root, w, h)` · `stage.show()` at end
+## 🆘 Stuck?
+
+- **Nothing happens when you click**: the handler was never attached. Check `convertButton.setOnAction(...)`.
+- **It crashes on `abc`**: `Double.parseDouble` throws `NumberFormatException`. Catch it and show a message.
+- **The stylesheet isn't used**: `getResource("/barabara.css")` looks on the classpath. Run `java` from the folder that holds the CSS, or put the CSS next to your `.class` files.
+- **`38,5` is invalid**: Java's `parseDouble` wants a dot. You could `replace(',', '.')` first, for people whose phones type commas.
 
 ## ✅ Checklist
-- [ ] Understand JavaFX structure
-- [ ] Can create GUI applications
-- [ ] Know common controls
-- [ ] Can use layouts
-- [ ] Can handle events
-- [ ] Completed Converter project
+- [ ] Built a window from a `Label`, a `TextField` and a `Button`
+- [ ] Clicking **Convert** shows kilometres to two decimal places
+- [ ] Bad input shows a message instead of crashing
+- [ ] Styled the window with CSS
+- [ ] Finished both exercises, and the tests pass
 - [ ] Committed code to Git
 
-## 📂 Code Examples
+## ➡️ Next
 
-This day includes starter and completed code examples:
-- **`_start/`** - Starting code with TODO comments and learning notes
-- **`_end/`** - Completed solutions with detailed explanations
-
-Check these folders to see the progression from start to finish and learn from the learning curve notes!
-
-## 💻 How to Run Java Files
-
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to the project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day27\_end\src"
-   ```
-
-3. **Compile the Java file**
-   ```cmd
-   javac Converter.java
-   ```
-
-4. **Run the compiled program**
-   ```cmd
-   java Converter
-   ```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to the project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day27/_end/src
-   ```
-
-3. **Compile the Java file**
-   ```bash
-   javac Converter.java
-   ```
-
-4. **Run the compiled program**
-   ```bash
-   java Converter
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA:**
-1. Open the project folder in IntelliJ IDEA
-2. Right-click on the Java file
-3. Select "Run 'Converter.main()'"
-
-**VS Code:**
-1. Install "Extension Pack for Java"
-2. Open the Java file
-3. Click "Run" button above `main` method or press `F5`
-
-**Eclipse:**
-1. Import project into Eclipse
-2. Right-click on the Java file
-3. Select "Run As" → "Java Application"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
-- **JavaFX apps**: If using Java 11+, add VM options: `--module-path /path/to/javafx-sdk/lib --add-modules javafx.controls,javafx.fxml`
-
-## 🚀 Next Steps
-After completing Day 27, you should be able to:
-- Build GUI applications
-- Use JavaFX controls
-- Handle user events
-- Create user-friendly interfaces
-
-**Ready for Day 28?** You'll build a Pomodoro Timer application!
-
-
-
-
-
-
-
+Day 28 builds a Pomodoro timer: a countdown that ticks every second with a JavaFX `Timeline`.

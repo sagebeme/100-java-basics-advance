@@ -24,7 +24,7 @@ java -cp "day27/exercise1/src:lib/*" org.junit.platform.console.ConsoleLauncher 
 
 Run `ConverterApp` with the JavaFX SDK (see LEARNING_PATH.md).
 
-## 📌 Refer to (when stuck)
+## 📌 Stuck?
 - `button.setOnAction(e -> label.setText(...))` is the event handler.
 - `button.setDefaultButton(true)` makes Enter press it.
 - Divide money with `BigDecimal.divide(rate, 2, RoundingMode.HALF_UP)` (Day 36).

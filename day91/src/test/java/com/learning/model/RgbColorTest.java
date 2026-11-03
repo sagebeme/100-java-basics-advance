@@ -27,6 +27,13 @@ class RgbColorTest {
     }
 
     @Test
+    void fromHexRejectsCharactersThatArentHexDigits() {
+        assertThrows(IllegalArgumentException.class, () -> RgbColor.fromHex("#GGGGGG"));
+        assertThrows(IllegalArgumentException.class, () -> RgbColor.fromHex("-1-1-1")); // parseInt would read these
+        assertThrows(IllegalArgumentException.class, () -> RgbColor.fromHex("+1+1+1"));
+    }
+
+    @Test
     void clampsOutOfRangeValuesToValidByteRange() {
         assertEquals(new RgbColor(0, 255, 0), new RgbColor(-10, 300, 0));
     }

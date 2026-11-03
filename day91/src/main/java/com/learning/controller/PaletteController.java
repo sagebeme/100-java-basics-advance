@@ -18,6 +18,8 @@ import java.util.List;
 @Controller
 public class PaletteController {
 
+    private static final String DEFAULT_COLOR = "#3B6EA5";
+
     private final PaletteGenerator paletteGenerator;
     private final PaletteExporter paletteExporter;
 
@@ -28,11 +30,18 @@ public class PaletteController {
 
     @GetMapping("/")
     public String show(
-            @RequestParam(defaultValue = "#3B6EA5") String baseColor,
+            @RequestParam(defaultValue = DEFAULT_COLOR) String baseColor,
             @RequestParam(defaultValue = "COMPLEMENTARY") PaletteScheme scheme,
             Model model) {
 
-        RgbColor base = RgbColor.fromHex(baseColor);
+        RgbColor base;
+        try {
+            base = RgbColor.fromHex(baseColor);
+        } catch (IllegalArgumentException e) {
+            // A hand-typed URL with a bad colour: explain, and show the default palette.
+            model.addAttribute("error", e.getMessage());
+            base = RgbColor.fromHex(DEFAULT_COLOR);
+        }
         List<RgbColor> palette = paletteGenerator.generate(base, scheme);
 
         model.addAttribute("baseColor", base.toHex());
@@ -49,7 +58,12 @@ public class PaletteController {
             @RequestParam PaletteScheme scheme,
             @RequestParam(defaultValue = "json") String format) {
 
-        RgbColor base = RgbColor.fromHex(baseColor);
+        RgbColor base;
+        try {
+            base = RgbColor.fromHex(baseColor);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().contentType(MediaType.TEXT_PLAIN).body(e.getMessage());
+        }
         List<RgbColor> palette = paletteGenerator.generate(base, scheme);
 
         String body;

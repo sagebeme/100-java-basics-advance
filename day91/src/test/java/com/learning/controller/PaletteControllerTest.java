@@ -50,4 +50,19 @@ class PaletteControllerTest {
                 .andExpect(header().string("Content-Disposition", containsString("palette.json")))
                 .andExpect(content().string(containsString("#FF0000")));
     }
+
+    @Test
+    void aBadColourOnThePageShowsAMessageAndTheDefaultPalette() throws Exception {
+        mockMvc.perform(get("/").param("baseColor", "#nothex"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Expected a 6-digit hex color")))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("#3B6EA5")));
+    }
+
+    @Test
+    void exportingABadColourIsABadRequest() throws Exception {
+        mockMvc.perform(get("/export").param("baseColor", "-1-1-1").param("scheme", "TRIADIC"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Expected a 6-digit hex color")));
+    }
 }

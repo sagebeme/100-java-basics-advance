@@ -1,29 +1,29 @@
-# Exercise 2
+# Day 19 - Exercise 2: The same number plate, typed three ways
 
-## Objective
-Method Overriding
-Override methods in subclasses:
-- Override toString()
-- Override equals()
-- Override superclass methods
+The estate gate keeps a list of residents' cars. The guard types plates however he likes: `KDA 123A`, `kda123a`, ` KDA  123A `. They're all the same car, but to Java they're three different strings, and the list fills up with duplicates. Write `src/Plate.java`, which overrides the three methods every class inherits from `Object`:
 
-## Requirements
-Method Overriding
-Override methods in subclasses:
-- Override toString()
-- Override equals()
-- Override superclass methods
+| Method | What it does |
+|---|---|
+| `new Plate(text)` | Tidies the text: capitals, no spaces at the ends, one space after the three letters. Kenyan plates are 3 letters, 3 digits, 1 letter (`KDA 123A`). Anything else throws `IllegalArgumentException`. |
+| `toString()` | The tidy form: `"KDA 123A"`. |
+| `equals(other)` | `true` for another `Plate` with the same tidy form. `false` for `null`, for a `String`, for anything that isn't a `Plate`. |
+| `hashCode()` | Equal plates must give equal hash codes. |
 
-## Instructions
-1. Read the requirements above
-2. Create the necessary Java files
-3. Implement the solution
-4. Test your code
+Why `hashCode` too? A `HashSet` first sorts objects into buckets by their hash code, and only then calls `equals` inside one bucket. Two equal plates with different hash codes land in different buckets, never get compared, and both stay in the set.
 
-## Starter Code
-Check the src/ directory for starter code files.
+## Files
 
-## Tips
-- Follow Java best practices
-- Test your code thoroughly
-- Refer to the main day README for more context
+- `src/Plate.java`: your code goes here.
+- `src/PlateTest.java`: the tests.
+- `solution/Plate.java`: one answer.
+
+```bash
+javac -cp "lib/*" -d day19/exercise2/src day19/exercise2/src/*.java
+java -cp "day19/exercise2/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
+```
+
+## 📌 Stuck?
+
+- Tidy first, then check: remove every space (`text.replace(" ", "")`), upper-case it, and check the 7 characters with `matches("[A-Z]{3}\\d{3}[A-Z]")`. Then put the space back: `squashed.substring(0, 3) + " " + squashed.substring(3)`.
+- `equals` starts with `if (!(other instanceof Plate)) return false;`, then casts, `Plate that = (Plate) other;`, and compares the tidy strings.
+- `hashCode` can return the tidy string's own `hashCode()`: equal strings always have equal hash codes.

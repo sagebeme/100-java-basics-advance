@@ -90,23 +90,10 @@ public class Dog extends Animal {
 
 ## 💻 Exercises
 
-### Exercise 1: Basic Inheritance
-Create class hierarchies:
-- Animal -> Dog, Cat, Bird
-- Vehicle -> Car, Motorcycle, Truck
-- Shape -> Circle, Rectangle, Triangle
+Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`.
 
-### Exercise 2: Method Overriding
-Override methods in subclasses:
-- Override toString()
-- Override equals()
-- Override superclass methods
-
-### Exercise 3: Polymorphism
-Practice polymorphism:
-- Use superclass references
-- Call overridden methods
-- Use instanceof operator
+- **[Exercise 1: Matatu, boda or tuk-tuk?](exercise1/README.md)**: an abstract `Ride` with three subclasses that each work out their own fare, and a method that finds the cheapest without knowing which kinds it's been given.
+- **[Exercise 2: The same number plate, typed three ways](exercise2/README.md)**: overriding `toString`, `equals` and `hashCode` so a `HashSet` keeps each car once.
 
 ## 🎮 Project: Turtle Race Game
 

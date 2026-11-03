@@ -1,187 +1,110 @@
-# Day 15 - Local Development Setup & Coffee Machine Project
+# Day 15 - Coffee Machine: Your First Program With State
 
-## Learning Objectives
-- Set up a proper Java development environment
-- Understand project structure
-- Learn about classes and objects
-- Build a complete console application
-- Practice OOP concepts
+> Njeri's office bought a second-hand coffee machine from an American firm that was moving out. It still counts US coins. Today you write the program inside it.
 
-## Topics Covered
-- IDE setup (IntelliJ IDEA)
-- Project structure
-- Classes and objects
-- Methods and encapsulation
-- Console I/O
+## 📖 The story
 
-## Project: Coffee Machine
+On Day 14 Njeri learned to read a coffee menu. Now she's the one the office asks when the new machine misbehaves. It holds water, milk and coffee, makes three drinks, and takes quarters, dimes, nickels and pennies, because that's what it was built for:
 
-Build a coffee machine program that:
-- Displays available coffee options
-- Accepts user input for coffee selection
-- Checks if resources are sufficient
-- Processes payment
-- Makes coffee and updates resources
-- Provides reports on resources and money
-
-### Requirements
-- Three coffee types: Espresso, Latte, Cappuccino
-- Resource management: water, milk, coffee, money
-- Menu display
-- Resource checking
-- Payment processing
-- Report generation
-
-### Coffee Recipes
-- **Espresso**: 50ml water, 18g coffee, $1.50
-- **Latte**: 200ml water, 150ml milk, 24g coffee, $2.50
-- **Cappuccino**: 250ml water, 100ml milk, 24g coffee, $3.00
-
-### Features
-- `buy` - Order a coffee
-- `fill` - Add resources
-- `take` - Take money from machine
-- `remaining` - Show current resources
-- `exit` - Turn off machine
-
-## Code Structure
-```
-day15/
-├── README.md
-├── src/
-│   └── main/
-│       └── java/
-│           └── com/
-│               └── learning/
-│                   ├── CoffeeMachine.java
-│                   └── Main.java
-└── pom.xml
-```
-
-## Key Concepts
-- **Classes**: Blueprint for objects
-- **Objects**: Instances of classes
-- **Methods**: Functions within classes
-- **Encapsulation**: Data hiding and access control
-- **State Management**: Tracking object state
-
-## Example Interaction
 ```
 What would you like? (espresso/latte/cappuccino):
-> latte
+Type 'report' to see resources or 'off' to turn off the machine.
+latte
 Please insert coins.
-How many quarters?: 10
-How many dimes?: 10
-How many nickels?: 10
-How many pennies?: 10
-Here is $4.10 in change.
-Here is your latte ☕. Enjoy!
+How many quarters? 10
+How many dimes? 10
+How many nickels? 10
+How many pennies? 10
+Here is your latte. Enjoy!
+Here is $1.60 in change.
+report
+Water: 100ml
+Milk: 50ml
+Coffee: 76g
+Money: $2.50
 ```
 
-## 📌 Notes & reference (use these when stuck)
+This is the first program in the course that **remembers** things between choices: every drink uses up water, milk and coffee, and the machine keeps the money. Ask for a second latte now and it says `Sorry, there is not enough water.`
 
-**When you're stuck:**
-- **Resources:** Re-read **Step 1** — track water, milk, coffee, money; decrease when drink made
-- **Payment:** Sum coins (quarters×0.25, dimes×0.10, etc.); compare to drink cost; return change — see **Step 2**
-- **"Insufficient resources"** → Check water/milk/coffee before making drink
-- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for state and menu logic
+It's also the start of the Intermediate stage, so it's the day to set up a proper editor (an IDE) instead of a plain text editor.
 
-**Related days:** Day 6 (methods for each action); Day 3 (conditions for sufficient resources); Day 10 (return change).
+## 🎯 Learning Objectives
+- Set up an IDE (IntelliJ IDEA, VS Code or Eclipse) and run a program from it
+- Keep a program's **state** in variables that live as long as the program
+- Split a program into small methods, each with one job
+- Check that there's enough of everything before changing anything
+- Handle money as decimals carefully, and format it with `String.format`
 
-**Quick reference:** Use constants for drink recipes · Round money: `Math.round(x * 100) / 100.0` · Validate input (positive numbers)
+## 🧰 Java you'll use
 
-## 📂 Code Examples
+**State that outlives a method.** Variables declared inside `main` disappear when `main` ends, and other methods can't see them. Fields at the top of the class are shared by every method:
 
-This day includes starter and completed code examples:
-- **`_start/`** - Starting code with TODO comments and learning notes
-- **`_end/`** - Completed solutions with detailed explanations
+```java
+public class CoffeeMachine {
+    private static int water = 300;   // ml
+    private static int milk = 200;    // ml
+    private static int coffee = 100;  // g
+    private static double money = 0;
+}
+```
 
-Check these folders to see the progression from start to finish and learn from the learning curve notes!
+They're `static` today because there's only one machine. On Day 16 you'll see what changes when there could be many.
 
-## 💻 How to Run Java Files
+**Check first, then change.** `checkResources` only answers a question; it changes nothing. Only after it says yes, and the coins are enough, do you subtract the water, milk and coffee.
 
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
+**The recipes:**
 
-### Running Java Files
+| Drink | Water | Milk | Coffee | Price |
+|---|---|---|---|---|
+| Espresso | 50ml | 0 | 18g | $1.50 |
+| Latte | 200ml | 150ml | 24g | $2.50 |
+| Cappuccino | 250ml | 100ml | 24g | $3.00 |
 
-#### **Windows**
+**Coins:** a quarter is $0.25, a dime $0.10, a nickel $0.05 and a penny $0.01. `String.format("%.2f", change)` prints `1.60`, not `1.5999999999999996`.
 
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
+## 🪜 Steps
 
-2. **Navigate to the project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day15\_end\src"
-   ```
+**Project: Coffee Machine** (`_start/src/CoffeeMachine.java`). The starter is an empty `main`: today you design the program yourself.
 
-3. **Compile the Java file**
-   ```cmd
-   javac CoffeeMachine.java
-   ```
+1. Add the four fields for water, milk, coffee and money, starting at 300ml, 200ml, 100g and $0.
+2. `printReport()`: print each resource, and the money with two decimal places.
+3. `checkResources(water, milk, coffee)`: return `false`, with a message naming what's missing, if any one runs short. The tests call it by this name.
+4. `makeCoffee(drink, water, milk, coffee, cost)`: check resources, ask for coins, then either make the drink and give change, or refund.
+5. `main`: loop until `off`, handling `report` and the three drinks, and saying `Invalid choice!` for anything else.
 
-4. **Run the compiled program**
-   ```cmd
-   java CoffeeMachine
-   ```
+## 🧪 Run it and test it
 
-#### **Mac / Linux**
+```bash
+cd day15/_end/src
+javac CoffeeMachine.java
+java CoffeeMachine
+```
 
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
+For your own version, use `_start/src`. To run the tests against it, copy `_end/src/CoffeeMachineTest.java` next to your file, then from the repo root:
 
-2. **Navigate to the project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day15/_end/src
-   ```
+```bash
+javac -cp "lib/*" -d day15/_start/src day15/_start/src/*.java
+java -cp "day15/_start/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
+```
 
-3. **Compile the Java file**
-   ```bash
-   javac CoffeeMachine.java
-   ```
+On Windows, use `;` instead of `:` in `-cp`.
 
-4. **Run the compiled program**
-   ```bash
-   java CoffeeMachine
-   ```
+## 🆘 Stuck?
 
-### Using an IDE (Recommended)
+- **Resources never go down**: you're changing a local variable with the same name as the field. Inside `makeCoffee`, name the parameters differently (`waterNeeded`) or subtract from the field.
+- **The machine took the money but gave no coffee**: check resources *before* asking for coins.
+- **Change prints as `1.5999999999999996`**: format it with `String.format("%.2f", change)`.
+- **`Could not find or load main class`**: run `java CoffeeMachine` from the folder that holds `CoffeeMachine.class`.
 
-**IntelliJ IDEA:**
-1. Open the project folder in IntelliJ IDEA
-2. Right-click on the Java file
-3. Select "Run 'ClassName.main()'"
+## ✅ Checklist
+- [ ] Set up an IDE and ran a program from it
+- [ ] The machine remembers resources and money between drinks
+- [ ] Refuses a drink, saying what's missing, when a resource runs short
+- [ ] Gives change, and refunds when the coins aren't enough
+- [ ] `report` and `off` work
+- [ ] The tests pass
+- [ ] Committed code to Git
 
-**VS Code:**
-1. Install "Extension Pack for Java"
-2. Open the Java file
-3. Click "Run" button above `main` method or press `F5`
+## ➡️ Next
 
-**Eclipse:**
-1. Import project into Eclipse
-2. Right-click on the Java file
-3. Select "Run As" → "Java Application"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
-- **"package does not exist"** - Remove package declaration if running from command line, or use proper package structure
-
-## Next Steps
-After completing Day 15, you should understand:
-- Basic OOP concepts
-- Class design
-- Method implementation
-- State management
-- User interaction patterns
-
-
-
-
-
-
-
+Day 16 rebuilds the same machine with objects: a `Coffee` class for each drink, and a `ResourceManager` that guards the tanks.

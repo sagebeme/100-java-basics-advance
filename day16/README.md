@@ -1,288 +1,107 @@
-# Day 16 - Object-Oriented Programming (OOP) Basics
+# Day 16 - Classes and Objects: The Coffee Machine, Rebuilt
 
-## 📚 Learning Objectives
-- Understand OOP principles
-- Learn about classes and objects
-- Master constructors
-- Understand instance variables and methods
-- Practice encapsulation
+> Yesterday's machine was one long class full of loose variables. Today each thing gets its own class: a drink, a set of tanks, and the machine that ties them together.
 
-## 🎯 Topics Covered
-- Classes and objects
-- Constructors
-- Instance variables
-- Instance methods
-- Encapsulation
-- Access modifiers
-- Getters and setters
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Njeri's office now has *two* coffee machines, one on each floor. With yesterday's code that's a problem: the water, milk and coffee were `static` fields, so there could only ever be one set of tanks. Today you rebuild the machine out of **objects**:
 
-### Step 1: Understanding Classes
-Classes are blueprints for objects:
+- a `Coffee` knows its own recipe and price;
+- a `ResourceManager` owns the tanks, and is the only code allowed to change them;
+- a `CoffeeMachine` holds a `ResourceManager` and the money, and talks to the customer.
 
-```java
-public class Car {
-    // Instance variables (attributes)
-    private String brand;
-    private String model;
-    private int year;
-    
-    // Constructor
-    public Car(String brand, String model, int year) {
-        this.brand = brand;
-        this.model = model;
-        this.year = year;
-    }
-    
-    // Instance methods (behaviors)
-    public void start() {
-        System.out.println("Car is starting...");
-    }
-    
-    public String getBrand() {
-        return brand;
-    }
-}
+From the outside it behaves exactly like Day 15:
+
+```
+What would you like? (espresso/latte/cappuccino):
+espresso
+Please insert coins.
+How many quarters? 10
+How many dimes? 0
+How many nickels? 0
+How many pennies? 0
+Here is $1.00 in change.
+Here is your espresso. Enjoy!
 ```
 
-### Step 2: Creating Objects
-Instantiate objects from classes:
+On the inside, `new CoffeeMachine()` twice gives you two machines with their own tanks.
+
+## 🎯 Learning Objectives
+- Write a class with private fields, a constructor and methods
+- Create objects with `new`, and understand that each object has its own fields
+- Use `this` to tell a field from a parameter with the same name
+- Protect data with encapsulation: private fields, and public methods that keep them valid
+- Split one big program into classes that each have one job
+
+## 🧰 Java you'll use
+
+**A class is a blueprint; an object is one thing built from it.**
 
 ```java
-Car myCar = new Car("Toyota", "Camry", 2023);
-myCar.start();
-System.out.println(myCar.getBrand());
-```
-
-### Step 3: Constructors
-Initialize object state:
-
-```java
-// Default constructor
-public Car() {
-    this.brand = "Unknown";
-    this.model = "Unknown";
-    this.year = 2023;
-}
-
-// Parameterized constructor
-public Car(String brand, String model, int year) {
-    this.brand = brand;
-    this.model = model;
-    this.year = year;
-}
-```
-
-### Step 4: Encapsulation
-Protect data with access modifiers:
-
-```java
-private String brand; // Only accessible within class
-
-public String getBrand() { // Public getter
-    return brand;
-}
-
-public void setBrand(String brand) { // Public setter
-    this.brand = brand;
-}
-```
-
-## 💻 Exercises
-
-Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`.
-
-- **[Exercise 1: A chama member card](exercise1/README.md)**: private fields, a constructor that refuses a bad phone number, getters, and a setter that guards the field.
-- **[Exercise 2: The sacco account](exercise2/README.md)**: deposits and withdrawals in whole shillings, a balance that can't go below zero, and a history nobody outside can change.
-
-## 🎮 Project: Coffee Machine (OOP Version)
-
-### Requirements
-Refactor the Coffee Machine project using OOP:
-1. Create CoffeeMachine class
-2. Create Coffee class for different types
-3. Create ResourceManager class
-4. Use encapsulation properly
-5. Organize code into multiple classes
-
-### Starter Code Structure
-```java
-// CoffeeMachine.java
-public class CoffeeMachine {
-    private ResourceManager resources;
-    private double money;
-    
-    public CoffeeMachine() {
-        // Initialize resources
-    }
-    
-    public void makeCoffee(Coffee coffee) {
-        // Make coffee logic
-    }
-}
-
-// Coffee.java
 public class Coffee {
     private String name;
-    private Map<String, Integer> ingredients;
+    private int water;
     private double cost;
+
+    public Coffee(String name, int water, double cost) {   // the constructor
+        this.name = name;      // this.name is the field, name is the parameter
+        this.water = water;
+        this.cost = cost;
+    }
+
+    public String getName() { return name; }               // a getter
 }
 
-// ResourceManager.java
-public class ResourceManager {
-    private int water;
-    private int milk;
-    private int coffee;
-}
+Coffee latte = new Coffee("latte", 200, 2.50);
 ```
 
-## 📚 Resources
+**Encapsulation.** `private` means only code inside the class can touch a field. The rest of the program asks the object to do things (`resources.useResources(50, 0, 18)`) instead of reaching in and changing numbers itself. That's how a class makes sure its data never goes wrong: there's only one door in, and it checks who comes through.
 
-### Official Documentation
-- [Java Classes - Oracle Docs](https://docs.oracle.com/javase/tutorial/java/concepts/class.html)
-- [Objects - Oracle Docs](https://docs.oracle.com/javase/tutorial/java/concepts/object.html)
-- [Constructors - Oracle Docs](https://docs.oracle.com/javase/tutorial/java/javaOO/constructors.html)
+**Objects holding objects.** `CoffeeMachine` has a `ResourceManager` field. The machine doesn't know how the tanks work; it just asks them.
 
-### Tutorials
-- [Java OOP - W3Schools](https://www.w3schools.com/java/java_oop.asp)
-- [Java Classes and Objects - Programiz](https://www.programiz.com/java-programming/class-objects)
-- [OOP Concepts - GeeksforGeeks](https://www.geeksforgeeks.org/object-oriented-programming-oops-concept-in-java/)
+## 🪜 Steps
 
-### Video Resources
-- [Java OOP Tutorial](https://www.youtube.com/results?search_query=java+oop+tutorial)
-- [Classes and Objects Explained](https://www.youtube.com/results?search_query=java+classes+and+objects)
+1. **[Exercise 1: A chama member card](exercise1/README.md)** (`exercise1/`): private fields, a constructor that refuses a bad phone number, getters, and a setter that guards its field.
+2. **[Exercise 2: The sacco account](exercise2/README.md)** (`exercise2/`): deposits and withdrawals in whole shillings, a balance that can't go below zero, and a history nobody outside can change.
+3. **Project: Coffee Machine, OOP version** (`_start/src/`).
+   1. `Coffee`: name, water, milk, coffee and cost, set once in the constructor, with a getter for each.
+   2. `ResourceManager`: the three tanks. `checkResources(water, milk, coffee)` says whether there's enough and names what's missing; `useResources` takes from the tanks; `addResources` tops them up; `displayReport` prints them.
+   3. `CoffeeMachine`: a `ResourceManager` starting at 300ml, 200ml and 100g, the money, and the menu loop. `processPayment(cost)` returns `true` only if the coins covered the price, and `makeCoffee` uses that answer.
 
-### Practice Platforms
-- [OOP Exercises](https://www.w3resource.com/java-exercises/class/)
+## 🧪 Run it and test it
 
-## 🔑 Key Concepts Summary
+Every class must be compiled together:
 
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Class | Blueprint for objects | `public class Car { }` |
-| Object | Instance of class | `Car myCar = new Car();` |
-| Constructor | Initializes object | `public Car() { }` |
-| Instance Variable | Belongs to object | `private String brand;` |
-| Encapsulation | Data hiding | Private fields, public methods |
+```bash
+cd day16/_end/src
+javac *.java
+java CoffeeMachine
+```
 
-## 📌 Notes & reference (use these when stuck)
+To test your own version, copy `_end/src/CoffeeTest.java` and `_end/src/ResourceManagerTest.java` into `_start/src`, then from the repo root:
 
-**When you're stuck:**
-- **Class vs object:** Re-read **Step 1** — class = blueprint; object = `new ClassName()` — see **Step 2**
-- **Constructor:** Same name as class, no return type; use for initialization — see **Step 3**
-- **Encapsulation:** Use `private` for fields; provide `public` getters/setters — see **Step 4**
-- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for OOP design
+```bash
+javac -cp "lib/*" -d day16/_start/src day16/_start/src/*.java
+java -cp "day16/_start/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
+```
 
-**Related days:** Day 12 (scope, access); Day 17 (multiple classes); Day 19 (inheritance).
+For an exercise, use `day16/exercise1/src` or `day16/exercise2/src` in both commands. On Windows, use `;` instead of `:` in `-cp`.
 
-**Quick reference:** `this.field` for instance variable · Constructor: `public ClassName(params) { }` · Compile multiple: `javac *.java`
+## 🆘 Stuck?
+
+- **`cannot find symbol: class Coffee`**: you compiled one file on its own. Use `javac *.java`.
+- **A field is always 0 or `null`**: in the constructor you wrote `water = water;`, which sets the parameter to itself. Write `this.water = water;`.
+- **The machine makes coffee after a refund**: decide from what `processPayment` returns, not from the total money in the machine. After a few sales, the total is always more than one drink's price.
+- **Two machines share their tanks**: a field is still `static`. Remove `static` so each object gets its own.
 
 ## ✅ Checklist
-- [ ] Understand classes and objects
-- [ ] Can create constructors
-- [ ] Understand instance variables
-- [ ] Know access modifiers
-- [ ] Can implement encapsulation
-- [ ] Completed OOP Coffee Machine
+- [ ] Wrote classes with private fields, constructors and getters
+- [ ] Created objects with `new`, and saw each one keep its own fields
+- [ ] Used `this` in a constructor
+- [ ] Only `ResourceManager` changes the tanks
+- [ ] Finished both exercises, and the tests pass
 - [ ] Committed code to Git
 
-## 📂 Code Examples
+## ➡️ Next
 
-This day includes starter and completed code examples:
-- **`_start/`** - Starting code with TODO comments and learning notes
-- **`_end/`** - Completed solutions with detailed explanations
-
-Check these folders to see the progression from start to finish and learn from the learning curve notes!
-
-## 💻 How to Run Java Files
-
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to the project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day16\_end\src"
-   ```
-
-3. **Compile the Java files**
-   ```cmd
-   javac *.java
-   ```
-   *Note: This day has multiple classes (CoffeeMachine, Coffee, ResourceManager). Compile all files together.*
-
-4. **Run the compiled program**
-   ```cmd
-   java CoffeeMachine
-   ```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to the project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day16/_end/src
-   ```
-
-3. **Compile the Java files**
-   ```bash
-   javac *.java
-   ```
-   *Note: This day has multiple classes (CoffeeMachine, Coffee, ResourceManager). Compile all files together.*
-
-4. **Run the compiled program**
-   ```bash
-   java CoffeeMachine
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA:**
-1. Open the project folder in IntelliJ IDEA
-2. Right-click on the Java file
-3. Select "Run 'ClassName.main()'"
-
-**VS Code:**
-1. Install "Extension Pack for Java"
-2. Open the Java file
-3. Click "Run" button above `main` method or press `F5`
-
-**Eclipse:**
-1. Import project into Eclipse
-2. Right-click on the Java file
-3. Select "Run As" → "Java Application"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
-- **"package does not exist"** - Remove package declaration if running from command line, or use proper package structure
-
-
-## 🚀 Next Steps
-After completing Day 16, you should understand:
-- OOP fundamentals
-- Class design
-- Object creation
-- Encapsulation principles
-
-**Ready for Day 17?** You'll build a Quiz project using OOP!
-
-
-
-
-
-
-
+Day 17 builds a quiz out of objects: a `Question` class, and a `QuizBrain` that asks them one by one.

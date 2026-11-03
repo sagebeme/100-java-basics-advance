@@ -82,4 +82,4 @@ mvn -q compile exec:java
 
 ## ➡️ Next
 
-Day 93 automates a game: a bot that plays by reading the screen and pressing keys.
+Day 93 automates a game: a bot that drives a real browser, clicks the buttons and reads the results.

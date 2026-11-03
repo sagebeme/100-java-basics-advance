@@ -2,17 +2,21 @@ package com.learning.model;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public class ContactForm {
 
     @NotBlank(message = "Please enter your name")
+    @Size(max = 100, message = "Please keep your name under 100 characters")
     private String name;
 
     @NotBlank(message = "Please enter your email")
     @Email(message = "Please enter a valid email address")
+    @Size(max = 254, message = "That email address is too long")
     private String email;
 
     @NotBlank(message = "Please enter a message")
+    @Size(max = 2000, message = "Please keep your message under 2,000 characters")
     private String message;
 
     public String getName() {

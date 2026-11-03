@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ContactController {
@@ -28,13 +29,15 @@ public class ContactController {
     }
 
     @PostMapping("/contact")
-    public String submit(@Valid @ModelAttribute ContactForm contactForm, BindingResult bindingResult, Model model) {
+    public String submit(@Valid @ModelAttribute ContactForm contactForm, BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return "contact";
         }
         contactService.save(contactForm);
-        model.addAttribute("contactForm", new ContactForm());
-        model.addAttribute("submitted", true);
-        return "contact";
+        // Post/Redirect/Get: the browser ends up on a plain GET, so refreshing the page
+        // doesn't send the same message again.
+        redirectAttributes.addFlashAttribute("submitted", true);
+        return "redirect:/contact";
     }
 }

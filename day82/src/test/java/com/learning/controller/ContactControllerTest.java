@@ -41,7 +41,12 @@ class ContactControllerTest {
                         .param("name", "Kip Amani")
                         .param("email", "kip@example.com")
                         .param("message", "Loved the house price predictor demo!"))
-                .andExpect(status().isOk())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/contact"))
+                .andExpect(flash().attribute("submitted", true));
+
+        // The page the browser lands on after the redirect shows the thanks.
+        mockMvc.perform(get("/contact").flashAttr("submitted", true))
                 .andExpect(content().string(containsString("Thanks for reaching out")));
 
         assertEquals(before + 1, contactService.listMessages().size());
@@ -73,6 +78,20 @@ class ContactControllerTest {
                         .param("message", "Hello"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Please enter a valid email address")));
+
+        assertEquals(before, contactService.listMessages().size());
+    }
+
+    @Test
+    void anOverlongMessageIsRefusedAndNotSaved() throws Exception {
+        int before = contactService.listMessages().size();
+
+        mockMvc.perform(post("/contact")
+                        .param("name", "Spam Bot")
+                        .param("email", "bot@example.com")
+                        .param("message", "x".repeat(2001)))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("under 2,000 characters")));
 
         assertEquals(before, contactService.listMessages().size());
     }

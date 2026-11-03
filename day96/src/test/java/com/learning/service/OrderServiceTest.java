@@ -8,9 +8,12 @@ import com.learning.payment.PaymentGateway;
 import com.learning.payment.PaymentRequest;
 import com.learning.payment.PaymentResult;
 import com.learning.repository.OrderRepository;
+import com.learning.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import java.util.Optional;
+
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -26,14 +29,21 @@ class OrderServiceTest {
     @Mock
     private OrderRepository orderRepository;
 
+    @Mock
+    private ProductRepository productRepository;
+
+    private Product widget;
+
     private OrderService orderService;
     private Cart cart;
 
     @BeforeEach
     void setUp() {
-        orderService = new OrderService(paymentGateway, orderRepository);
+        orderService = new OrderService(paymentGateway, orderRepository, productRepository);
+        widget = new Product(1L, "Widget", "desc", 500, 10);
         cart = new Cart();
-        cart.addItem(new Product(1L, "Widget", "desc", 500, 10), 2);
+        cart.addItem(widget, 2);
+        lenient().when(productRepository.findById(1L)).thenReturn(Optional.of(widget));
 
         // lenient: the empty-cart test throws before ever reaching save(), which would otherwise
         // make Mockito's strict stubbing check flag this as an unnecessary stub for that one test.
@@ -51,6 +61,7 @@ class OrderServiceTest {
         assertEquals(1000, order.getTotalCents());
         assertEquals(1, order.getLineItems().size());
         assertTrue(cart.isEmpty());
+        assertEquals(8, widget.getStock(), "the 2 sold come off the stock");
     }
 
     @Test
@@ -62,6 +73,19 @@ class OrderServiceTest {
         assertEquals(OrderStatus.DECLINED, order.getStatus());
         assertNull(order.getTransactionId());
         assertFalse(cart.isEmpty()); // declined checkout should not clear the cart
+        assertEquals(10, widget.getStock(), "nothing was sold, so the stock is unchanged");
+    }
+
+    @Test
+    void buyingMoreThanIsInStockIsRefusedBeforeAnyoneIsCharged() {
+        widget.setStock(1);
+
+        IllegalStateException e = assertThrows(IllegalStateException.class, () ->
+                orderService.checkout(cart, "buyer@example.com", new PaymentRequest(1000, "4242424242424242", 12, 2030, "123")));
+
+        assertTrue(e.getMessage().contains("Only 1 Widget left"), e.getMessage());
+        verify(paymentGateway, never()).charge(any());
+        verify(orderRepository, never()).save(any());
     }
 
     @Test

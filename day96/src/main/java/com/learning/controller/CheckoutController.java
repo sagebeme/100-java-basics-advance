@@ -44,7 +44,15 @@ public class CheckoutController {
 
         PaymentRequest paymentRequest = new PaymentRequest(cart.getTotalCents(), checkoutForm.getCardNumber(),
                 checkoutForm.getExpiryMonth(), checkoutForm.getExpiryYear(), checkoutForm.getCvv());
-        CustomerOrder order = orderService.checkout(cart, checkoutForm.getEmail(), paymentRequest);
+        CustomerOrder order;
+        try {
+            order = orderService.checkout(cart, checkoutForm.getEmail(), paymentRequest);
+        } catch (IllegalStateException e) {
+            // An empty cart, or not enough stock: explain on the checkout page; nothing was charged.
+            model.addAttribute("cart", cart);
+            model.addAttribute("checkoutError", e.getMessage());
+            return "checkout";
+        }
 
         return "redirect:/orders/" + order.getId();
     }

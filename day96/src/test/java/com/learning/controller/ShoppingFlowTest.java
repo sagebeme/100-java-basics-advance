@@ -31,6 +31,9 @@ class ShoppingFlowTest {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private com.learning.repository.OrderRepository orderRepository;
+
     @Test
     void catalogListsSeededProducts() throws Exception {
         mockMvc.perform(get("/"))
@@ -99,5 +102,30 @@ class ShoppingFlowTest {
 
         mockMvc.perform(get("/cart").session(session))
                 .andExpect(content().string(not(containsString("Your cart is empty"))));
+    }
+
+    @Test
+    void orderingMoreThanIsInStockShowsAMessageAndChargesNothing() throws Exception {
+        com.learning.model.Product product = productRepository.findAll().get(1);
+        int stock = product.getStock();
+        long ordersBefore = orderRepository.count();
+
+        MvcResult addResult = mockMvc.perform(post("/cart/add/" + product.getId()).param("quantity", String.valueOf(stock + 1)))
+                .andReturn();
+        org.springframework.mock.web.MockHttpSession session =
+                (org.springframework.mock.web.MockHttpSession) addResult.getRequest().getSession();
+
+        mockMvc.perform(post("/checkout")
+                        .session(session)
+                        .param("email", "buyer@example.com")
+                        .param("cardNumber", "4242424242424242")
+                        .param("expiryMonth", "12")
+                        .param("expiryYear", "2030")
+                        .param("cvv", "123"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Only " + stock + " " + product.getName() + " left")));
+
+        assertEquals(ordersBefore, orderRepository.count(), "no order should be recorded");
+        assertEquals(stock, productRepository.findById(product.getId()).orElseThrow().getStock());
     }
 }

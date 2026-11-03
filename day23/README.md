@@ -88,26 +88,10 @@ private boolean checkCollision(Player player, ArrayList<Car> cars) {
 
 ## 💻 Exercises
 
-### Exercise 1: Player Movement
-Create player with:
-- Smooth movement
-- Boundary checking
-- Multiple directions
-- Speed control
+Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`.
 
-### Exercise 2: Obstacle System
-Create obstacle system with:
-- Random generation
-- Movement patterns
-- Removal when off-screen
-- Multiple types
-
-### Exercise 3: Game Progression
-Implement:
-- Level system
-- Difficulty increase
-- Score tracking
-- Win condition
+- **[Exercise 1: Kuku crossing](exercise1/README.md)**: a player that steps in four directions without leaving the road, and moves up a level each time it crosses.
+- **[Exercise 2: Traffic on Thika Road](exercise2/README.md)**: cars that spawn at random, move every tick and leave the road, with the `Random` passed in so tests can load the dice.
 
 ## 🎮 Project: Turtle Crossing Game
 

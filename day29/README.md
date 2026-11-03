@@ -1,324 +1,97 @@
-# Day 29 - Building Password Manager GUI App with JavaFX
+# Day 29 - A Password Manager: Forms, Lists and a File
 
-## 📚 Learning Objectives
-- Build a complete password manager
-- Work with file I/O for data persistence
-- Implement password generation
-- Create secure storage
-- Build user-friendly GUI
+> Kamau's cyber café has a dozen logins (the router, the printer, the M-Pesa till, three email accounts) and they're all on a sticky note. Today you replace the sticky note.
 
-## 🎯 Topics Covered
-- Password generation
-- File I/O for passwords
-- GUI form design
-- Data encryption basics
-- Search functionality
-- Copy to clipboard
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Every cyber café has a sticky note like Kamau's, stuck to the side of the counter monitor, with `admin` and `kamau123` on it for half the systems in the shop. Today's JavaFX window keeps them instead:
 
-### Step 1: Password Generation
-Generate secure passwords:
+- three fields: **Website**, **Username**, **Password**;
+- **Generate** fills in a strong 16-character password;
+- **Save** adds the login to a list on screen and to the file `passwords.txt`;
+- the next time the program starts, it reads the file back, so nothing is lost.
+
+Each login is one line in the file, with the three parts separated by `|`:
+
+```
+router.local|admin|q7#Rk2!vLm9&Xc4T
+mpesa-till|kamau|J8f%Tq2@wNz5!bHc
+```
+
+The format lives in `PasswordManagerLogic`: `formatEntry` writes a line, `parseEntry` reads one back (or returns `null` for a broken line), and `generatePassword(length, random)` makes the passwords. The tests check all three.
+
+**A warning that matters.** This file stores passwords as plain text, and anyone who opens it can read them. That's fine for learning file I/O, and it's what Day 30 starts to improve, but real password managers encrypt the whole file with a master password. Never commit it: `.gitignore` already keeps `passwords.txt` out of Git.
+
+## 🎯 Learning Objectives
+- Build a form from `Label`s, `TextField`s and `Button`s, and show saved items in a `ListView`
+- Save data to a text file in a simple format, and load it back at start-up
+- Design a line format with a separator, and parse it safely
+- Generate passwords with `SecureRandom`, and know why `Random` isn't good enough
+- Keep a small class inside another (`PasswordEntry`) to hold one record
+
+## 🧰 Java you'll use
+
+**Writing every entry:**
 
 ```java
-import java.util.Random;
-
-public class PasswordGenerator {
-    private static final String LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    private static final String NUMBERS = "0123456789";
-    private static final String SYMBOLS = "!@#$%^&*()_+-=[]{}|;:,.<>?";
-    
-    public static String generatePassword(int length, boolean includeNumbers, boolean includeSymbols) {
-        String chars = LETTERS;
-        if (includeNumbers) chars += NUMBERS;
-        if (includeSymbols) chars += SYMBOLS;
-        
-        Random random = new Random();
-        StringBuilder password = new StringBuilder();
-        
-        for (int i = 0; i < length; i++) {
-            password.append(chars.charAt(random.nextInt(chars.length())));
-        }
-        
-        return password.toString();
+try (PrintWriter writer = new PrintWriter(new FileWriter("passwords.txt"))) {
+    for (PasswordEntry entry : entries) {
+        writer.println(PasswordManagerLogic.formatEntry(entry.website, entry.username, entry.password));
     }
 }
 ```
 
-### Step 2: Data Storage
-Store passwords in file:
+**Reading them back.** `|` means "or" in a regular expression, so `split` needs it escaped: `line.split("\\|")`. Check you got exactly three parts before using them.
 
-```java
-import java.io.FileWriter;
-import java.io.IOException;
+**`Random` vs `SecureRandom`.** `new Random()` is fine for dice in a game, but its next numbers can be worked out from the ones it has already given. `new SecureRandom()` can't be predicted. It's also a `Random`, so `generatePassword(16, new SecureRandom())` works, and a test can pass `new Random(7)` to get the same password every time.
 
-public void savePassword(String website, String email, String password) {
-    try {
-        FileWriter writer = new FileWriter("passwords.txt", true);
-        writer.write(website + " | " + email + " | " + password + "\n");
-        writer.close();
-    } catch (IOException e) {
-        System.out.println("Error saving password!");
-    }
-}
+**A `ListView`** shows a list of strings: `passwordList.getItems().setAll(...)`.
+
+## 🪜 Steps
+
+1. **[Exercise 1: Passwords for the cyber café staff](exercise1/README.md)** (`exercise1/`): a generator that always includes every chosen kind of character, shuffled, plus a strength checker.
+2. **[Exercise 2: The café's password vault, in a file](exercise2/README.md)** (`exercise2/`): save, load, search, replace and remove logins in a text file, and skip broken lines without losing count.
+3. **Project: The Café Password Manager** (`_start/src/PasswordManager.java`).
+   1. `PasswordManagerLogic`: `generatePassword`, `formatEntry` and `parseEntry`, with their tests.
+   2. The form, the buttons and the `ListView`.
+   3. **Generate**: a 16-character password from `SecureRandom`.
+   4. **Save**: refuse empty fields, add the entry, update the list, write the file, clear the form.
+   5. At start-up, load `passwords.txt` if it exists.
+
+## 🧪 Run it and test it
+
+The logic and its test need no JavaFX. From the repo root:
+
+```bash
+javac -cp "lib/*" -d day29/_end/src day29/_end/src/PasswordManagerLogic.java day29/_end/src/PasswordManagerLogicTest.java
+java -cp "day29/_end/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
 ```
 
-### Step 3: GUI Design
-Create password manager interface:
+To open the window, with `FX` pointing at your JavaFX SDK's `lib` folder (see Day 18):
 
-```java
-// Form fields
-TextField websiteField = new TextField();
-TextField emailField = new TextField();
-TextField passwordField = new TextField();
-Button generateButton = new Button("Generate Password");
-Button addButton = new Button("Add");
-Button searchButton = new Button("Search");
-
-// Layout
-VBox form = new VBox(10);
-form.getChildren().addAll(
-    new Label("Website:"), websiteField,
-    new Label("Email/Username:"), emailField,
-    new Label("Password:"), passwordField,
-    generateButton, addButton, searchButton
-);
+```bash
+cd day29/_end/src
+javac --module-path $FX --add-modules javafx.controls *.java
+java --module-path $FX --add-modules javafx.controls PasswordManager
 ```
 
-### Step 4: Search Functionality
-Search saved passwords:
+Use `_start/src` for your own version, and `day29/exercise1/src` or `day29/exercise2/src` for the exercises. On Windows, use `;` instead of `:` in `-cp`.
 
-```java
-public String searchPassword(String website) {
-    try {
-        File file = new File("passwords.txt");
-        Scanner scanner = new Scanner(file);
-        
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            if (line.startsWith(website + " |")) {
-                return line.split(" \\| ")[2];
-            }
-        }
-        scanner.close();
-    } catch (FileNotFoundException e) {
-        return "No passwords found!";
-    }
-    return "Website not found!";
-}
-```
+## 🆘 Stuck?
 
-## 💻 Exercises
-
-## 💻 Exercises
-
-Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`.
-
-- **[Exercise 1: Passwords for the cyber café staff](exercise1/README.md)**: a generator that always includes every chosen kind of character, shuffled, plus a strength checker.
-- **[Exercise 2: The café's password vault, in a file](exercise2/README.md)**: save, load, search, replace and remove logins in a text file, and skip broken lines without losing count.
-
-## 🎮 Project: Password Manager
-
-### Requirements
-Create a password manager application:
-1. GUI with form fields (website, email, password)
-2. Generate password button
-3. Add password button
-4. Search functionality
-5. Save to file
-6. Load from file
-7. Copy password to clipboard
-
-### Example Output
-```
-🔒 Password Manager
-
-Website: [_____________]
-Email/Username: [_____________]
-Password: [_____________] [👁️]
-
-[Generate Password] [Add] [Search]
-
-Saved Passwords:
-- google.com | user@gmail.com | ********
-- github.com | username | ********
-```
-
-### Starter Code
-```java
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-
-public class PasswordManager extends Application {
-    @Override
-    public void start(Stage stage) {
-        // Create form
-        // Add event handlers
-        // Set up file operations
-    }
-    
-    private void generatePassword() {
-        // Generate and set password
-    }
-    
-    private void savePassword() {
-        // Save to file
-    }
-    
-    private void searchPassword() {
-        // Search and display
-    }
-    
-    public static void main(String[] args) {
-        launch(args);
-    }
-}
-```
-
-## 📚 Resources
-
-### Official Documentation
-- [JavaFX Controls - JavaFX Docs](https://openjfx.io/javadoc/11/javafx.controls/)
-- [File I/O - Oracle Docs](https://docs.oracle.com/javase/tutorial/essential/io/)
-
-### Tutorials
-- [Password Manager Tutorial](https://www.geeksforgeeks.org/password-manager-using-java/)
-- [JavaFX Forms](https://code.makery.ch/library/javafx-tutorial/part2/)
-
-### Video Resources
-- [Password Manager Tutorial](https://www.youtube.com/results?search_query=java+password+manager+tutorial)
-- [JavaFX Form Application](https://www.youtube.com/results?search_query=javafx+form+tutorial)
-
-### Practice Platforms
-- [Security Projects](https://github.com/karan/Projects#security)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Password Generation | Create random passwords | Random character selection |
-| File Storage | Persist data | Save to text file |
-| GUI Forms | User input interface | TextField, Button |
-| Search | Find data | File scanning |
-| Clipboard | Copy to system | `Clipboard.setContent()` |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **Password generation:** Re-read **Step 1** — random chars from alphabet; use `Random` and `StringBuilder` — see **Step 2**
-- **File storage:** Re-read **Step 2** — save/load with FileWriter/Scanner or BufferedReader — see **Step 2**
-- **GUI:** Re-read **Step 3** — TextField, Button, ListView; `button.setOnAction()` to add/search — see **Step 3**
-- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for full flow
-
-**Related days:** Day 24 (file I/O); Day 27 (JavaFX); Day 30 (JSON for storage). **JavaFX:** See Troubleshooting.
-
-**Quick reference:** Clipboard: `Clipboard.getSystemClipboard().setContent(ClipboardContent with string)` · Search: iterate entries, match key
+- **Every line splits into single characters**: you wrote `split("|")`. Escape it: `split("\\|")`.
+- **Yesterday's logins are gone**: you load the file before the window is built, or not at all. Call `loadPasswords()` in `start`, then fill the list.
+- **The file only ever holds the last login**: `new FileWriter(name)` replaces the file. Either write every entry each time (as the project does) or append with `new FileWriter(name, true)`.
+- **A password with `|` in it breaks the file**: leave `|` out of the characters you generate from, and refuse it in typed input. Exercise 2 does this.
 
 ## ✅ Checklist
-- [ ] Can generate passwords
-- [ ] Can save to files
-- [ ] Can search passwords
-- [ ] Can create GUI forms
-- [ ] Can handle user input
-- [ ] Completed Password Manager
+- [ ] Generate makes a 16-character password with `SecureRandom`
+- [ ] Save refuses empty fields, and adds the login to the list and the file
+- [ ] Logins come back when the program restarts
+- [ ] `passwords.txt` is not in Git
+- [ ] Finished both exercises, and the tests pass
 - [ ] Committed code to Git
 
-## 📂 Code Examples
+## ➡️ Next
 
-This day includes starter and completed code examples:
-- **`_start/`** - Starting code with TODO comments and learning notes
-- **`_end/`** - Completed solutions with detailed explanations
-
-Check these folders to see the progression from start to finish and learn from the learning curve notes!
-
-## 💻 How to Run Java Files
-
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to the project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day29\_end\src"
-   ```
-
-3. **Compile the Java file**
-   ```cmd
-   javac PasswordManager.java
-   ```
-
-4. **Run the compiled program**
-   ```cmd
-   java PasswordManager
-   ```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to the project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day29/_end/src
-   ```
-
-3. **Compile the Java file**
-   ```bash
-   javac PasswordManager.java
-   ```
-
-4. **Run the compiled program**
-   ```bash
-   java PasswordManager
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA:**
-1. Open the project folder in IntelliJ IDEA
-2. Right-click on the Java file
-3. Select "Run 'PasswordManager.main()'"
-
-**VS Code:**
-1. Install "Extension Pack for Java"
-2. Open the Java file
-3. Click "Run" button above `main` method or press `F5`
-
-**Eclipse:**
-1. Import project into Eclipse
-2. Right-click on the Java file
-3. Select "Run As" → "Java Application"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
-- **JavaFX apps**: If using Java 11+, add VM options: `--module-path /path/to/javafx-sdk/lib --add-modules javafx.controls,javafx.fxml`
-
-## 🚀 Next Steps
-After completing Day 29, you should be able to:
-- Build data management apps
-- Work with file I/O
-- Create secure applications
-- Build practical tools
-
-**Ready for Day 30?** You'll improve the Password Manager with exceptions and JSON!
-
-
-
-
-
-
-
+Day 30 improves the password manager with exceptions, a search box, and JSON instead of `|`.

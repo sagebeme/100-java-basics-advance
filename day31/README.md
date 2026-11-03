@@ -1,178 +1,101 @@
-# Day 31 - Capstone Project: Flash Card App
+# Day 31 - Capstone Project: Kadi, a Swahili Flash Card App
 
-## Learning Objectives
-- Build a complete GUI application with JavaFX
-- Implement file I/O for data persistence
-- Use JSON for data storage
-- Create a user-friendly interface
-- Practice OOP design patterns
+> The Intermediate capstone. A JavaFX flash card app that saves your cards, remembers which ones you know, and spends your practice time on the ones you don't.
 
-## Topics Covered
-- JavaFX Scene Builder
-- File I/O operations
-- JSON parsing (Jackson library)
-- Event handling
-- MVC pattern
+## 📖 The story
 
-## Project: Flash Card Application
+Hannah has just moved to Nairobi from Hamburg for work. Her colleagues are patient, but she wants to say more than "jambo" by Christmas. Her Kenyan flatmate wrote fifteen words on index cards and pinned them to a cork board, and now Hannah wants them on her laptop: *kadi* is Swahili for card.
 
-Build a flashcard application that helps users learn new words or concepts.
+The app:
 
-### Requirements
-- Display flashcards with questions
-- Show answers on click
-- Mark cards as known/unknown
-- Save progress to JSON file
-- Load existing flashcards
-- Add new flashcards
-- Remove flashcards
+- shows one card at a time: `Question: Asante sana`;
+- **Show Answer** flips it: `Answer: Thank you very much`;
+- **I Know This** and **I Don't Know** mark the card;
+- **Next Card** moves on, *skipping the cards you already know*, until you know them all;
+- **Add Card** puts a new card in the deck;
+- **Save Cards** writes the deck to `flashcards.txt`, and the app loads it again next time (or press **Load Cards**).
 
-### Features
-- **Study Mode**: Flip cards to see answers
-- **Progress Tracking**: Track which cards you know
-- **Data Persistence**: Save flashcards to JSON
-- **Custom Cards**: Add your own flashcards
+A starter deck of fifteen Swahili words is in `flashcards.txt`, one card per line:
 
-## Code Structure
 ```
-day31/
-├── README.md
-├── src/
-│   └── main/
-│       ├── java/
-│       │   └── com/
-│       │       └── learning/
-│       │           ├── Main.java
-│       │           ├── FlashCard.java
-│       │           ├── FlashCardController.java
-│       │           └── FlashCardService.java
-│       └── resources/
-│           └── flashcard-view.fxml
-└── pom.xml
+Asante sana|Thank you very much|false
+Hakuna matata|No worries|false
 ```
 
-## Key Concepts
-- **JavaFX**: GUI framework
-- **FXML**: XML-based UI definition
-- **JSON**: Data serialization format
-- **File I/O**: Reading and writing files
-- **MVC Pattern**: Model-View-Controller architecture
+This day brings together most of Days 15 to 30: classes, a list of objects, JavaFX controls and CSS, events, reading and writing files, and logic you can test on its own (`FlashCardAppLogic`).
 
-## Example Data Structure
-```json
-{
-  "flashcards": [
-    {
-      "question": "What is Java?",
-      "answer": "A programming language",
-      "known": false
-    }
-  ]
+## 🎯 Learning Objectives
+- Plan and build a complete GUI application on your own
+- Keep the app's data (cards, the current card, what's known) in objects and fields
+- Save to and load from a file in a format you designed
+- Choose what to show next from the data, not just in a fixed order
+- Pull the rules out into a class with tests
+
+## 🧰 Java you'll use
+
+Nothing new. A few reminders:
+
+**A card** is a small class: `question`, `answer`, and `boolean known`.
+
+**Choosing the next card.** `FlashCardAppLogic.nextToStudy(currentIndex, known)` looks at the cards after the current one, going round to the start, and returns the first one not yet known, or `-1` when every card is known:
+
+```java
+for (int step = 1; step <= known.length; step++) {
+    int i = (currentIndex + step) % known.length;
+    if (!known[i]) return i;
 }
+return -1;
 ```
 
-## 📌 Notes & reference (use these when stuck)
+The `%` makes it wrap around, and the last step lands back on the current card, so if it's the only one left you keep practising it.
 
-**When you're stuck:**
-- **MVC:** Re-read **Code Structure** — Model (data), View (FXML/UI), Controller (logic) — see **Code Structure**
-- **JavaFX + FXML:** Load FXML with `FXMLLoader`; controller in FXML or set in loader — see **Key Concepts**
-- **JSON:** Load/save flashcards: Gson or Jackson; structure as in **Example Data Structure** above
-- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for full app flow
+**The file format** is one card per line: question, answer and whether it's known, separated by `|`. `formatCard` and `parseCard` turn a card into a line and back.
 
-**Related days:** Day 27 (JavaFX); Day 30 (JSON, Gson); Day 24 (file I/O). **Quick reference:** Multi-file: compile all or use IDE/Maven · JavaFX: see How to Run
+## 🪜 Steps
 
-## 📂 Code Examples
+**Project: Kadi** (`_start/src/FlashCardApp.java`). There are no exercises today: this is the exercise.
 
-This day includes starter and completed code examples:
-- **`_start/`** - Starting code with TODO comments and learning notes
-- **`_end/`** - Completed solutions with detailed explanations
+1. `FlashCardAppLogic`: `formatCard`, `parseCard`, `nextIndex` and `nextToStudy`. Copy the tests from `_end/src/FlashCardAppLogicTest.java` and make them pass first.
+2. The window: the card, the buttons, two fields to add a card, and a status line. `kadi.css` makes it look like an index card on a cork board.
+3. Loading at start-up, **Load Cards** and **Save Cards**.
+4. **Show Answer**, **I Know This**, **I Don't Know** and **Next Card**.
+5. Add a few cards of your own. Swahili, Sheng, French, chemistry symbols: your deck, your choice.
 
-Check these folders to see the progression from start to finish and learn from the learning curve notes!
+## 🧪 Run it and test it
 
-## 💻 How to Run Java Files
+The logic and its tests need no JavaFX. From the repo root:
 
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
+```bash
+javac -cp "lib/*" -d day31/_end/src day31/_end/src/FlashCardAppLogic.java day31/_end/src/FlashCardAppLogicTest.java
+java -cp "day31/_end/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
+```
 
-### Running Java Files
+To open the app, with `FX` pointing at your JavaFX SDK's `lib` folder (see Day 18):
 
-#### **Windows**
+```bash
+cd day31/_end/src
+javac --module-path $FX --add-modules javafx.controls *.java
+java --module-path $FX --add-modules javafx.controls FlashCardApp
+```
 
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
+Use `_start/src` for your own version. On Windows, use `;` instead of `:` in `-cp`. Saving writes your progress into `flashcards.txt`, so Git will show it as changed: commit it if you want your deck in your history.
 
-2. **Navigate to the project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day31\_end\src"
-   ```
+## 🆘 Stuck?
 
-3. **Compile** (if multiple files: `javac *.java`; if Maven: use IDE or `mvn compile exec:java`)
-   ```cmd
-   javac FlashCardApp.java
-   ```
+- **Next Card shows the same card forever**: it's the only card you don't know yet. That's on purpose.
+- **Known cards keep coming back**: Next Card still uses `nextIndex`, which goes through every card. Use `nextToStudy`.
+- **The deck is empty when the app starts**: run it from the folder that holds `flashcards.txt`.
+- **`IndexOutOfBoundsException` with no cards**: check `cards.isEmpty()` at the top of every button's handler.
+- **Where do I start?** The logic class and its tests. Then a window that shows one hard-coded card. Then the file.
 
-4. **Run the compiled program**
-   ```cmd
-   java FlashCardApp
-   ```
+## ✅ Checklist
+- [ ] Cards load from the file when the app starts
+- [ ] Show Answer flips the card, and flips it back
+- [ ] Next Card skips the cards you know, and says so when you know them all
+- [ ] New cards can be added and saved
+- [ ] The logic tests pass
+- [ ] Committed code to Git
 
-#### **Mac / Linux**
+## ➡️ Next
 
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to the project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day31/_end/src
-   ```
-
-3. **Compile** (if multiple files: `javac *.java`)
-   ```bash
-   javac FlashCardApp.java
-   ```
-
-4. **Run the compiled program**
-   ```bash
-   java FlashCardApp
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA:**
-1. Open the project folder in IntelliJ IDEA
-2. Right-click on the Java file
-3. Select "Run 'FlashCardApp.main()'"
-
-**VS Code:**
-1. Install "Extension Pack for Java"
-2. Open the Java file
-3. Click "Run" button above `main` method or press `F5`
-
-**Eclipse:**
-1. Import project into Eclipse
-2. Right-click on the Java file
-3. Select "Run As" → "Java Application"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
-- **JavaFX / FXML**: If using Java 11+, add VM options for JavaFX; multi-class projects are easier to run from an IDE
-
-## 🚀 Next Steps
-After completing Day 31, you should be able to:
-- Build GUI applications
-- Work with file I/O
-- Use JSON for data storage
-- Implement MVC pattern
-- Create user-friendly interfaces
-
-
-
-
-
-
-
+That's the Intermediate stage done. Day 32 starts Intermediate+, where your programs talk to the outside world, beginning with sending email.

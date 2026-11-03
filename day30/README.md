@@ -1,337 +1,115 @@
-# Day 30 - Exceptions and JSON Data: Improving the Password Manager
+# Day 30 - Exceptions and JSON: A Password Manager That Fails Politely
 
-## 📚 Learning Objectives
-- Master exception handling
-- Work with JSON data
-- Improve error handling
-- Use JSON libraries
-- Create robust applications
+> Yesterday's password manager worked until something went wrong. Today it gets a search box, saves real JSON, and says exactly what went wrong instead of crashing or keeping quiet.
 
-## 🎯 Topics Covered
-- Advanced exception handling
-- JSON format
-- JSON parsing and generation
-- Error recovery
-- Input validation
-- Data serialization
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Kamau has used the café's password manager from Day 29 for a week, and he has three complaints:
 
-### Step 1: Advanced Exception Handling
-Handle multiple exception types:
+1. He has thirty logins now and can't find anything. He wants to type `mpesa` and see only the matching ones.
+2. His nephew opened `passwords.txt` in Notepad, "tidied it up", and the program silently lost half the logins.
+3. When something fails, he'd like to be told *what*.
 
-```java
-try {
-    // Code that might throw exceptions
-    File file = new File("data.json");
-    Scanner scanner = new Scanner(file);
-    // Process file
-    scanner.close();
-} catch (FileNotFoundException e) {
-    System.out.println("File not found: " + e.getMessage());
-    // Create default file
-} catch (IOException e) {
-    System.out.println("IO Error: " + e.getMessage());
-} catch (Exception e) {
-    System.out.println("Unexpected error: " + e.getMessage());
-    e.printStackTrace();
-} finally {
-    // Cleanup code
-}
-```
+Today's version fixes all three:
 
-### Step 2: JSON with Gson Library
-Add Gson dependency and use it:
+- a **Search** box that matches the website or the username, ignoring capitals (`ImprovedPasswordManagerLogic.matches`, with tests);
+- logins saved as **JSON** in `passwords.json`, a format every language can read;
+- a status line that says what happened: `Loaded 12 passwords`, `No saved passwords yet`, `passwords.json is damaged (...). Fix or move it, then restart.`
 
-**pom.xml:**
-```xml
-<dependency>
-    <groupId>com.google.code.gson</groupId>
-    <artifactId>gson</artifactId>
-    <version>2.10.1</version>
-</dependency>
-```
-
-**Using Gson:**
-```java
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import java.lang.reflect.Type;
-import java.util.List;
-
-// Convert object to JSON
-Gson gson = new Gson();
-String json = gson.toJson(passwordData);
-
-// Parse JSON to object
-PasswordData data = gson.fromJson(json, PasswordData.class);
-
-// Parse JSON array
-Type listType = new TypeToken<List<PasswordData>>(){}.getType();
-List<PasswordData> passwords = gson.fromJson(json, listType);
-```
-
-### Step 3: Data Model
-Create class for password data:
-
-```java
-public class PasswordData {
-    private String website;
-    private String email;
-    private String password;
-    
-    // Constructors, getters, setters
-    public PasswordData(String website, String email, String password) {
-        this.website = website;
-        this.email = email;
-        this.password = password;
-    }
-    
-    // Getters and setters
-}
-```
-
-### Step 4: JSON File Operations
-Read and write JSON:
-
-```java
-public void saveToJson(List<PasswordData> passwords) {
-    try {
-        Gson gson = new Gson();
-        String json = gson.toJson(passwords);
-        
-        FileWriter writer = new FileWriter("passwords.json");
-        writer.write(json);
-        writer.close();
-    } catch (IOException e) {
-        System.out.println("Error saving JSON: " + e.getMessage());
-    }
-}
-
-public List<PasswordData> loadFromJson() {
-    try {
-        Gson gson = new Gson();
-        FileReader reader = new FileReader("passwords.json");
-        
-        Type listType = new TypeToken<List<PasswordData>>(){}.getType();
-        List<PasswordData> passwords = gson.fromJson(reader, listType);
-        reader.close();
-        
-        return passwords != null ? passwords : new ArrayList<>();
-    } catch (FileNotFoundException e) {
-        return new ArrayList<>(); // Return empty list if file doesn't exist
-    } catch (IOException e) {
-        System.out.println("Error loading JSON: " + e.getMessage());
-        return new ArrayList<>();
-    }
-}
-```
-
-## 💻 Exercises
-
-## 💻 Exercises
-
-Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`.
-
-- **[Exercise 1: The M-Pesa agent's float](exercise1/README.md)**: a checked exception of your own, `IllegalArgumentException` and `NumberFormatException`, each caught on purpose, with a `finally` that counts every customer.
-- **[Exercise 2: Reading and writing JSON by hand](exercise2/README.md)**: write flat JSON with proper escapes and read it back one character at a time, with errors that say where the text went wrong.
-
-## 🎮 Project: Improved Password Manager
-
-### Requirements
-Enhance password manager with:
-1. JSON file storage (instead of text)
-2. Better exception handling
-3. Input validation
-4. Error recovery
-5. Data structure improvements
-6. Search and filter features
-
-### Example JSON Structure
 ```json
 [
   {
-    "website": "google.com",
-    "email": "user@gmail.com",
-    "password": "securePassword123"
-  },
-  {
-    "website": "github.com",
-    "email": "username",
-    "password": "anotherPassword"
+    "website": "mpesa-till",
+    "username": "kamau",
+    "password": "J8f%Tq2@wNz5!bHc"
   }
 ]
 ```
 
-### Starter Code
-```java
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import java.util.ArrayList;
-import java.util.List;
+And when the file is damaged, the program refuses to save over it, so a bad edit can be repaired instead of wiped out.
 
-public class ImprovedPasswordManager {
-    private List<PasswordData> passwords;
-    private Gson gson;
-    
-    public ImprovedPasswordManager() {
-        gson = new Gson();
-        passwords = loadFromJson();
-    }
-    
-    public void addPassword(String website, String email, String password) {
-        // Validate input
-        // Add to list
-        // Save to JSON
-    }
-    
-    public List<PasswordData> search(String query) {
-        // Search and return results
-    }
+## 🎯 Learning Objectives
+- Throw, catch and handle exceptions on purpose, with `try`, `catch` and `finally`
+- Know checked exceptions (`IOException`) from unchecked ones (`IllegalArgumentException`)
+- Catch the most specific exception first, and give each its own message
+- Write your own exception class
+- Read and write JSON with the `org.json` library, and understand its structure: objects, arrays, strings and numbers
+
+## 🧰 Java you'll use
+
+**Specific catches, in order.** `NoSuchFileException` is a kind of `IOException`, so it must come first, or the general one would catch everything:
+
+```java
+try {
+    JSONArray saved = new JSONArray(Files.readString(Path.of("passwords.json")));
+    ...
+} catch (NoSuchFileException e) {
+    statusLabel.setText("No saved passwords yet");        // normal on the first run
+} catch (JSONException e) {
+    statusLabel.setText("passwords.json is damaged (" + e.getMessage() + ")");
+} catch (IOException e) {
+    statusLabel.setText("Couldn't read passwords.json: " + e.getMessage());
 }
 ```
 
-## 📚 Resources
+Avoid `catch (Exception e)`: it hides bugs you'd want to see, and you can't give a useful message for "anything at all".
 
-### Official Documentation
-- [Exceptions - Oracle Docs](https://docs.oracle.com/javase/tutorial/essential/exceptions/)
-- [Gson Library](https://github.com/google/gson)
-- [JSON Format](https://www.json.org/)
+**JSON with `org.json`.** Its jar is in `lib/`. `JSONObject` is `{ ... }`, and `JSONArray` is `[ ... ]`:
 
-### Tutorials
-- [Java Exception Handling - W3Schools](https://www.w3schools.com/java/java_try_catch.asp)
-- [Gson Tutorial - Baeldung](https://www.baeldung.com/gson-json)
-- [JSON in Java - GeeksforGeeks](https://www.geeksforgeeks.org/parse-json-java/)
+```java
+JSONArray all = new JSONArray();
+all.put(new JSONObject().put("website", "mpesa-till").put("username", "kamau").put("password", pw));
+Files.writeString(Path.of("passwords.json"), all.toString(2));   // 2 = indent, so people can read it
+```
 
-### Video Resources
-- [Java Exception Handling](https://www.youtube.com/results?search_query=java+exception+handling)
-- [Gson JSON Tutorial](https://www.youtube.com/results?search_query=gson+json+java)
+The library escapes quotes and backslashes for you. Exercise 2 shows what that takes, by writing a small JSON reader and writer by hand.
 
-### Practice Platforms
-- [Exception Handling Exercises](https://www.w3resource.com/java-exercises/exception-handling/)
+## 🪜 Steps
 
-## 🔑 Key Concepts Summary
+1. **[Exercise 1: The M-Pesa agent's float](exercise1/README.md)** (`exercise1/`): a checked exception of your own, `IllegalArgumentException` and `NumberFormatException`, each caught on purpose, with a `finally` that counts every customer.
+2. **[Exercise 2: Reading and writing JSON by hand](exercise2/README.md)** (`exercise2/`): write flat JSON with proper escapes and read it back one character at a time, with errors that say where the text went wrong.
+3. **Project: The Improved Password Manager** (`_start/src/ImprovedPasswordManager.java`).
+   1. `ImprovedPasswordManagerLogic.matches(website, username, term)`, with its test.
+   2. The search box and button.
+   3. `saveToFile()`: write every login as a JSON array. Return whether it worked.
+   4. `loadPasswords()`: read it back, with a different message for a missing file, a damaged file and any other read error. Don't save over a damaged file.
+   5. A status label for every message.
 
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Exception Handling | Handle errors | `try-catch-finally` |
-| JSON | Data format | `{"key": "value"}` |
-| Gson | JSON library | `Gson gson = new Gson()` |
-| Serialization | Object to JSON | `gson.toJson(object)` |
-| Deserialization | JSON to object | `gson.fromJson(json, Class)` |
+## 🧪 Run it and test it
 
-## 📌 Notes & reference (use these when stuck)
+The logic and its test need no JavaFX. From the repo root:
 
-**When you're stuck:**
-- **Try-catch:** Re-read **Step 1** — catch specific then general; use `finally` for cleanup — see **Step 2**
-- **Gson:** Add dependency; `Gson gson = new Gson();` — `toJson(obj)` and `fromJson(json, Class)` — see **Step 2**
-- **Lists:** For List use `Type type = TypeToken.getParameterized(List.class, Item.class).getType(); gson.fromJson(json, type);`
-- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for JSON + exceptions
+```bash
+javac -cp "lib/*" -d day30/_end/src day30/_end/src/ImprovedPasswordManagerLogic.java day30/_end/src/ImprovedPasswordManagerLogicTest.java
+java -cp "day30/_end/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
+```
 
-**Related days:** Day 13 (exceptions); Day 24 (file I/O); Day 31 (FlashCard JSON). **Quick reference:** Gson JAR on classpath or Maven · Validate input before parse
+To open the window, with `FX` pointing at your JavaFX SDK's `lib` folder (see Day 18). The JSON jar in `lib/` goes on the class path:
+
+```bash
+cd day30/_end/src
+javac --module-path $FX --add-modules javafx.controls -cp "../../../lib/*" *.java
+java --module-path $FX --add-modules javafx.controls -cp ".:../../../lib/*" ImprovedPasswordManager
+```
+
+Use `_start/src` for your own version, and `day30/exercise1/src` or `day30/exercise2/src` for the exercises. On Windows, use `;` instead of `:` in `-cp`. `passwords.json` is kept out of Git by `.gitignore`.
+
+## 🆘 Stuck?
+
+- **`exception NoSuchFileException has already been caught`**: a catch for `IOException` comes before it. Put the more specific catch first.
+- **`package org.json does not exist`**: `lib/*` isn't on the class path. Add `-cp` as above.
+- **`JSONObject["password"] not found`**: one login in the file is missing a field. That's a `JSONException`, so the damaged-file message covers it.
+- **Search shows nothing for `MPESA`**: compare in lower case, on both sides.
+- **"Saved!" appears even when saving failed**: let `saveToFile()` return `false` on failure, and only show success when it returns `true`.
 
 ## ✅ Checklist
-- [ ] Understand advanced exception handling
-- [ ] Can work with JSON
-- [ ] Can use Gson library
-- [ ] Can validate input
-- [ ] Can recover from errors
-- [ ] Completed Improved Password Manager
+- [ ] Search matches the website or username, ignoring capitals
+- [ ] Logins are saved as JSON and come back on restart
+- [ ] A missing file, a damaged file and other read errors each get their own message
+- [ ] A damaged file is never saved over
+- [ ] Finished both exercises, and the tests pass
 - [ ] Committed code to Git
 
-## 📂 Code Examples
+## ➡️ Next
 
-This day includes starter and completed code examples:
-- **`_start/`** - Starting code with TODO comments and learning notes
-- **`_end/`** - Completed solutions with detailed explanations
-
-Check these folders to see the progression from start to finish and learn from the learning curve notes!
-
-## 💻 How to Run Java Files
-
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to the project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day30\_end\src"
-   ```
-
-3. **Compile** (if using Gson/Maven: use `mvn compile exec:java` or run from IDE)
-   ```cmd
-   javac ImprovedPasswordManager.java
-   ```
-
-4. **Run the compiled program**
-   ```cmd
-   java ImprovedPasswordManager
-   ```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to the project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day30/_end/src
-   ```
-
-3. **Compile** (if using Gson: ensure gson.jar is in classpath)
-   ```bash
-   javac ImprovedPasswordManager.java
-   ```
-
-4. **Run the compiled program**
-   ```bash
-   java ImprovedPasswordManager
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA:**
-1. Open the project folder in IntelliJ IDEA
-2. Right-click on the Java file
-3. Select "Run 'ImprovedPasswordManager.main()'"
-
-**VS Code:**
-1. Install "Extension Pack for Java"
-2. Open the Java file
-3. Click "Run" button above `main` method or press `F5`
-
-**Eclipse:**
-1. Import project into Eclipse
-2. Right-click on the Java file
-3. Select "Run As" → "Java Application"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
-- **Gson/JSON**: If using external JARs, add them to classpath: `javac -cp .:gson.jar ImprovedPasswordManager.java`
-
-## 🚀 Next Steps
-After completing Day 30, you should be able to:
-- Handle exceptions properly
-- Work with JSON data
-- Build robust applications
-- Create data-driven apps
-
-**Ready for Day 31?** You'll build the Flash Card App capstone project!
-
-
-
-
-
-
-
+Day 31 is the Intermediate capstone: a Swahili flash card app that remembers which words you still need to learn.

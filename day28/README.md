@@ -1,300 +1,90 @@
-# Day 28 - JavaFX: Pomodoro Timer Application
+# Day 28 - A Pomodoro Timer: Time in JavaFX
 
-## 📚 Learning Objectives
-- Build a complete timer application
-- Work with JavaFX Timeline for timing
-- Implement countdown functionality
-- Add visual feedback
-- Create a practical productivity tool
+> Twenty-five minutes of work, then a break. It's called the Pomodoro technique, after a kitchen timer shaped like a tomato, so today's timer is a tomato too.
 
-## 🎯 Topics Covered
-- Timeline for timers
-- Countdown logic
-- UI updates
-- State management
-- Visual feedback
-- Application lifecycle
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Wairimu is revising for her KCSE exams in a house where the TV is always on. Her cousin at university swears by the **Pomodoro technique**: work for 25 minutes with your phone out of reach, then rest for 5, and after four rounds take a longer break. Wairimu needs a timer that doesn't live on her phone. You build one:
 
-### Step 1: Timer Logic
-Implement countdown:
+- a big `25:00` on a ripe red tomato (*nyanya* in Swahili, hence `nyanya.css`);
+- **Start** counts down one second at a time;
+- **Pause** stops it where it is; **Start** carries on from there;
+- **Reset** goes back to `25:00`;
+- at zero it stops and says `Time's up!`.
 
-```java
-private int timeLeft = 25 * 60; // 25 minutes in seconds
-private boolean isRunning = false;
+The one piece of pure logic, turning a number of seconds into `MM:SS`, sits in `PomodoroTimerLogic.formatTime`, with tests.
 
-private void updateTimer() {
-    if (isRunning && timeLeft > 0) {
-        timeLeft--;
-        updateDisplay();
-        
-        if (timeLeft == 0) {
-            timerComplete();
-        }
-    }
-}
-```
+## 🎯 Learning Objectives
+- Run code on a schedule with a JavaFX `Timeline` and `KeyFrame`
+- Keep the timer's state (`timeLeft`, `isRunning`) in fields
+- Start, pause and reset an animation from buttons
+- Format seconds as minutes and seconds with `/`, `%` and `String.format("%02d")`
+- Test timing logic without waiting in real time, by calling `tick()` yourself
 
-### Step 2: Timeline for Updates
-Use Timeline for regular updates:
+## 🧰 Java you'll use
+
+**A Timeline** runs a `KeyFrame` after a delay; with `INDEFINITE` it repeats forever, on the JavaFX thread, so it can change labels directly. No background thread needed this time:
 
 ```java
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.util.Duration;
-
-Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
-    updateTimer();
-}));
+timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateTimer()));
 timeline.setCycleCount(Timeline.INDEFINITE);
-timeline.play();
+timeline.play();      // start or carry on
+timeline.pause();     // stop, remembering where it was
+timeline.stop();      // stop, and start from the beginning next time
 ```
 
-### Step 3: Format Time Display
-Format seconds to MM:SS:
+**Minutes and seconds:**
 
 ```java
-private String formatTime(int seconds) {
-    int minutes = seconds / 60;
-    int secs = seconds % 60;
-    return String.format("%02d:%02d", minutes, secs);
-}
+String.format("%02d:%02d", seconds / 60, seconds % 60)   // 1500 → "25:00", 65 → "01:05"
 ```
 
-### Step 4: Pomodoro Cycles
-Manage work/break cycles:
+**Testable time.** A test can't wait 25 minutes. So Exercise 1's countdown has a `tick()` method that means "one second has passed". The window calls it once a second; the test calls it 1500 times in a loop and checks the timer rang exactly once.
 
-```java
-private int workMinutes = 25;
-private int shortBreak = 5;
-private int longBreak = 15;
-private int sessionsCompleted = 0;
+## 🪜 Steps
 
-private void startWork() {
-    timeLeft = workMinutes * 60;
-    isRunning = true;
-}
+1. **[Exercise 1: The invigilator's countdown](exercise1/README.md)** (`exercise1/`): a countdown that pauses, resets and rings exactly once, driven by `tick()` calls so it can be tested without waiting.
+2. **[Exercise 2: A revision plan that knows when to rest](exercise2/README.md)** (`exercise2/`): the Pomodoro cycle of work, short breaks and a long break every few sessions, with an enum for the phase.
+3. **Project: The Tomato Timer** (`_start/src/PomodoroTimer.java`).
+   1. `PomodoroTimerLogic.formatTime`, with its test.
+   2. The time label and the three buttons.
+   3. The `Timeline`, and `startTimer`, `pauseTimer` and `resetTimer`.
+   4. `updateTimer`: take a second off, update the label, and stop with `Time's up!` at zero.
+   5. Style it with `nyanya.css`, or your own.
 
-private void startBreak() {
-    if (sessionsCompleted % 4 == 0) {
-        timeLeft = longBreak * 60;
-    } else {
-        timeLeft = shortBreak * 60;
-    }
-    isRunning = true;
-}
+## 🧪 Run it and test it
+
+The logic and its test need no JavaFX. From the repo root:
+
+```bash
+javac -cp "lib/*" -d day28/_end/src day28/_end/src/PomodoroTimerLogic.java day28/_end/src/PomodoroTimerLogicTest.java
+java -cp "day28/_end/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
 ```
 
-## 💻 Exercises
+To open the timer, with `FX` pointing at your JavaFX SDK's `lib` folder (see Day 18):
 
-## 💻 Exercises
-
-Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`.
-
-- **[Exercise 1: The invigilator's countdown](exercise1/README.md)**: a countdown that pauses, resets and rings exactly once, driven by `tick()` calls so it can be tested without waiting.
-- **[Exercise 2: A revision plan that knows when to rest](exercise2/README.md)**: the Pomodoro cycle of work, short breaks and a long break every few sessions, with an enum for the phase.
-
-## 🎮 Project: Pomodoro Timer
-
-### Requirements
-Create a Pomodoro timer application:
-1. 25-minute work timer
-2. 5-minute short break
-3. 15-minute long break (every 4 sessions)
-4. Start/pause/reset buttons
-5. Visual countdown display
-6. Session counter
-7. Alert when timer completes
-
-### Example Output
-```
-🍅 Pomodoro Timer
-
-Work Time: 25:00
-[Start] [Reset]
-
-Sessions Completed: 0
-
-[Progress bar showing time remaining]
+```bash
+cd day28/_end/src
+javac --module-path $FX --add-modules javafx.controls *.java
+java --module-path $FX --add-modules javafx.controls PomodoroTimer
 ```
 
-### Starter Code
-```java
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.animation.Timeline;
-import javafx.animation.KeyFrame;
-import javafx.util.Duration;
+Use `_start/src` for your own version, and `day28/exercise1/src` or `day28/exercise2/src` for the exercises. On Windows, use `;` instead of `:` in `-cp`.
 
-public class PomodoroTimer extends Application {
-    private int timeLeft = 25 * 60;
-    private boolean isRunning = false;
-    private Timeline timeline;
-    
-    @Override
-    public void start(Stage stage) {
-        // Create UI
-        // Set up timer
-        // Add event handlers
-    }
-    
-    private void updateTimer() {
-        // Countdown logic
-    }
-    
-    public static void main(String[] args) {
-        launch(args);
-    }
-}
-```
+## 🆘 Stuck?
 
-## 📚 Resources
-
-### Official Documentation
-- [JavaFX Timeline - JavaFX Docs](https://openjfx.io/javadoc/11/javafx.controls/javafx/animation/Timeline.html)
-- [Animation - Oracle Docs](https://docs.oracle.com/javase/8/javafx/api/javafx/animation/package-summary.html)
-
-### Tutorials
-- [JavaFX Timer Tutorial](https://code.makery.ch/library/javafx-tutorial/)
-- [Pomodoro Technique](https://en.wikipedia.org/wiki/Pomodoro_Technique)
-- [JavaFX Animation](https://jenkov.com/tutorials/javafx/animation.html)
-
-### Video Resources
-- [Pomodoro Timer Tutorial](https://www.youtube.com/results?search_query=javafx+pomodoro+timer)
-- [JavaFX Timer Application](https://www.youtube.com/results?search_query=javafx+timer+tutorial)
-
-### Practice Platforms
-- [JavaFX Projects](https://github.com/topics/javafx)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Timeline | Animation/timer | `new Timeline(KeyFrame)` |
-| Countdown | Decrement timer | `timeLeft--` |
-| State Management | Track timer state | `isRunning`, `timeLeft` |
-| Formatting | Display time | `String.format("%02d:%02d")` |
-| Cycle Management | Work/break cycles | Track sessions |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **Timeline:** Re-read **Step 1** — `Timeline` with `KeyFrame(Duration.seconds(1), e -> update())` — see **Step 2**
-- **Countdown:** Store `timeLeft`; in KeyFrame decrement and update label; stop when 0 — see **Step 2**
-- **Format:** `String.format("%02d:%02d", minutes, seconds)` for MM:SS — see **Step 3**
-- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for cycle logic
-
-**Related days:** Day 20 (Timeline for animation); Day 27 (JavaFX controls). **JavaFX:** See Troubleshooting.
-
-**Quick reference:** `timeline.setCycleCount(Animation.INDEFINITE)` for repeating · `timeline.play()` / `pause()` / `stop()`
+- **Pressing Start twice makes it count down twice as fast**: you made a new `Timeline` on every click. Make one in `start`, and only `play()` it in `startTimer`.
+- **It counts past zero into `-1:-59`**: stop the timeline when `timeLeft` reaches 0.
+- **`5:3` instead of `05:03`**: use `%02d`, which pads to two digits with a zero.
+- **The label doesn't change**: check `updateTimer` is the method in the `KeyFrame`, and that `isRunning` is `true`.
 
 ## ✅ Checklist
-- [ ] Understand Timeline
-- [ ] Can implement countdown
-- [ ] Can format time display
-- [ ] Can manage timer state
-- [ ] Can handle cycles
-- [ ] Completed Pomodoro Timer
+- [ ] The timer counts down once a second from `25:00`
+- [ ] Start, Pause and Reset all work, in any order
+- [ ] It stops at zero and says so
+- [ ] Finished both exercises, and the tests pass
 - [ ] Committed code to Git
 
-## 📂 Code Examples
+## ➡️ Next
 
-This day includes starter and completed code examples:
-- **`_start/`** - Starting code with TODO comments and learning notes
-- **`_end/`** - Completed solutions with detailed explanations
-
-Check these folders to see the progression from start to finish and learn from the learning curve notes!
-
-## 💻 How to Run Java Files
-
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to the project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day28\_end\src"
-   ```
-
-3. **Compile the Java file**
-   ```cmd
-   javac PomodoroTimer.java
-   ```
-
-4. **Run the compiled program**
-   ```cmd
-   java PomodoroTimer
-   ```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to the project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day28/_end/src
-   ```
-
-3. **Compile the Java file**
-   ```bash
-   javac PomodoroTimer.java
-   ```
-
-4. **Run the compiled program**
-   ```bash
-   java PomodoroTimer
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA:**
-1. Open the project folder in IntelliJ IDEA
-2. Right-click on the Java file
-3. Select "Run 'PomodoroTimer.main()'"
-
-**VS Code:**
-1. Install "Extension Pack for Java"
-2. Open the Java file
-3. Click "Run" button above `main` method or press `F5`
-
-**Eclipse:**
-1. Import project into Eclipse
-2. Right-click on the Java file
-3. Select "Run As" → "Java Application"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
-- **JavaFX apps**: If using Java 11+, add VM options: `--module-path /path/to/javafx-sdk/lib --add-modules javafx.controls,javafx.fxml`
-
-## 🚀 Next Steps
-After completing Day 28, you should be able to:
-- Build timer applications
-- Use Timeline for timing
-- Manage application state
-- Create productivity tools
-
-**Ready for Day 29?** You'll build a Password Manager GUI app!
-
-
-
-
-
-
-
+Day 29 builds a password manager: generate strong passwords and save them to a file.

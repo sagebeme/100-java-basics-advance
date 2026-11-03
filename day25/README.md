@@ -107,26 +107,10 @@ for (int i = 1; i < data.size(); i++) {
 
 ## 💻 Exercises
 
-### Exercise 1: CSV Reading
-Create programs that:
-- Read CSV files
-- Parse CSV data
-- Handle different delimiters
-- Skip header rows
+Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`.
 
-### Exercise 2: Data Processing
-Create programs that:
-- Filter data
-- Sort data
-- Calculate statistics
-- Transform data
-
-### Exercise 3: CSV Writing
-Create programs that:
-- Write data to CSV
-- Format CSV output
-- Append to CSV files
-- Create reports
+- **[Exercise 1: A CSV reader that survives commas in names](exercise1/README.md)**: why `split(",")` breaks on real CSV, and a reader that handles quoted fields, `""` and a choice of delimiter.
+- **[Exercise 2: The co-op's weekly milk report](exercise2/README.md)**: totals per farmer, a top list with ties broken by name, averages and shares, with plain loops and a `TreeMap`.
 
 ## 🎮 Project: U.S. States Game
 

@@ -170,9 +170,9 @@ By the end of this course, you will:
 Each day is set up so you can find help quickly:
 
 - **In each day's README** → Look for **📌 Notes & reference (use these when stuck)**. It points to which steps to re-read, common gotchas, related days, and quick syntax.
-- **Days 1–14** → Each day's README has a **🆘 Stuck?** section with the errors you're most likely to see, and each exercise README ends with **📌 Stuck?** hints. Every exercise keeps one answer in its `solution/` folder.
+- **Days 1–14** → Each day's README has a **🆘 Stuck?** section with the errors you're most likely to see.
+- **In each exercise** (`exercise1/`, `exercise2/`, Days 1–59) → The exercise README ends with **📌 Stuck?** hints, and the exercise keeps one answer in its `solution/` folder.
 - **In `_start/` and `_end/`** (Days 15–31) → Use **📌 Refer to (when stuck)** to jump back to the main day README or to the solution for hints.
-- **In each exercise** (`exercise1/`, `exercise2/`, Days 15 on) → Use **📌 Refer to (when stuck)** to see which day README section and which folder to check.
 
 Use these notes to solve problems without leaving the repo.
 
@@ -214,7 +214,7 @@ To put it online, import the repo into Netlify (`netlify.toml` is already set up
    - Each exercise folder contains:
      - `README.md` - Exercise requirements and instructions
      - `src/` - Starter code files with TODO comments
-     - `solution/` (Days 1–14) - One answer, to check against once you've tried it yourself
+     - `solution/` - One answer, to check against once you've tried it yourself. In the Maven exercises (Days 55–59) it holds only the files you change, at the same paths as in the project
    - Navigate to `dayXX/exercise1/` or `dayXX/exercise2/` to start practicing
    - Read the exercise README for specific requirements
    - Implement solutions in the provided starter code files
@@ -256,7 +256,7 @@ javac -cp lib\junit-platform-console-standalone-6.1.3.jar -d day08\_end\src day0
 java -jar lib\junit-platform-console-standalone-6.1.3.jar execute -cp day08\_end\src --scan-classpath
 ```
 
-Replace `day08\_end` with `dayNN\exercise1\src` or `dayNN\exercise2\src` to run an exercise's tests instead — the command is identical either way. On Days 1–14 an exercise's `src/` holds your starter code, so its tests fail until you've done the exercise; to check the bundled answer, compile `dayNN/exerciseN/solution/*.java` together with the test file from `src/`. A clean run ends with a line like `[  X tests successful ]` and `[  0 tests failed ]`. If you've written your own version of a day's code, drop your class next to the test and re-run the same two commands — the test doesn't care whether the code came from the day's own solution or from you, only that the method names and behavior match.
+Replace `day08\_end` with `dayNN\exercise1\src` or `dayNN\exercise2\src` to run an exercise's tests instead — the command is identical either way. An exercise's `src/` holds your starter code, so its tests fail until you've done the exercise; to check the bundled answer, compile `dayNN/exerciseN/solution/*.java` together with the test file (and any finished helper classes) from `src/`. A clean run ends with a line like `[  X tests successful ]` and `[  0 tests failed ]`. If you've written your own version of a day's code, drop your class next to the test and re-run the same two commands — the test doesn't care whether the code came from the day's own solution or from you, only that the method names and behavior match.
 
 **Days 47–53 and Day 54 onward are different: their projects are Maven projects, each with its own `pom.xml`.** On Days 47–53 that's the `_end/` and `_start/` project, which uses Selenium against a practice site that starts on your computer (their exercises are still plain `javac`). From Day 54 it's every day and exercise: Spring Boot through Day 59, then a mix of Spring Boot and plain Maven projects through Day 100. Install [Apache Maven](https://maven.apache.org/download.cgi) (any recent 3.9.x), then from that day or exercise's own folder:
 
@@ -272,7 +272,7 @@ mvn spring-boot:run
 
 Then open `http://localhost:8080`. Stop it with Ctrl+C.
 
-**Which days have tests today:** the main project's solution (`_end/`) on every day from 1 to 53 except 18; every exercise on Days 1–14 and 32–53, and most exercises from 15 to 31; and every day from 54 to 100, each with its own `mvn test` suite. On Days 47–53 and in Day 79's end-to-end tests (`day79/e2e`), the browser tests need Google Chrome, and skip themselves (rather than fail) if it isn't installed. See `LEARNING_PATH.md` for the few things that are intentionally untested and why.
+**Which days have tests today:** the main project's solution (`_end/`) on every day from 1 to 53 except 18; every exercise from Day 1 to Day 59 (Days 15, 31 and 54 have none), with a starter that fails its tests until it's done and a `solution/` that passes them; and every day from 54 to 100, each with its own `mvn test` suite. On Days 47–53 and in Day 79's end-to-end tests (`day79/e2e`), the browser tests need Google Chrome, and skip themselves (rather than fail) if it isn't installed. See `LEARNING_PATH.md` for the few things that are intentionally untested and why.
 
 ## 🚀 Getting Started
 

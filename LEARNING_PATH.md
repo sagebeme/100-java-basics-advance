@@ -34,10 +34,11 @@ Do this for every day, in order:
 │   ├── exercise1/
 │   │   ├── README.md          # What to build, and where to look when stuck
 │   │   ├── src/                # Starter code with TODOs, and the exercise's test
-│   │   └── solution/           # One answer (Days 1–14)
+│   │   └── solution/           # One answer
 │   ├── exercise2/
 │   │   ├── README.md
-│   │   └── src/
+│   │   ├── src/
+│   │   └── solution/
 │   ├── _start/
 │   │   ├── README.md
 │   │   └── src/                # The day's main project, as a starting point
@@ -49,13 +50,13 @@ Do this for every day, in order:
     └── README.md               # Portfolio project brief
 ```
 
-- **`exercise1/`, `exercise2/`** (Days 1–53): small, focused practice on the day's concept. Starter code has `// TODO` comments; the README says what's expected. On Days 1–14 and 32–53 the starter and its test sit in `src/` (the test fails until you've done the exercise), and one answer sits in `solution/`. On Day 13 the "starter" is buggy code to fix.
+- **`exercise1/`, `exercise2/`** (Days 1–59, except 15, 31 and 54): small, focused practice on the day's concept. Starter code has `// TODO` comments; the README says what's expected. The starter and its test sit in `src/` (the test fails until you've done the exercise), and one answer sits in `solution/`. On Days 55–59 each exercise is a small Maven project, and `solution/` holds just the files you change, at the same paths. On Day 13 the "starter" is buggy code to fix.
 - **`_start/`, `_end/`** (Days 1–53): the day's main project. `_start` is where you begin; use `_end` only to check your own work, not as a template to copy from. On Days 47–53 both are small Maven projects.
 - **From Day 54 on**, every day/exercise is its own Maven project (its own `pom.xml`) instead of loose `.java` files, because that's what those days are teaching (Spring Boot, JPA, etc.).
 
 ## Verifying your work
 
-Most early and late days ship with real JUnit tests you can run against your own solution, not just the bundled one — see the root README's **"How to Run Tests"** for the exact commands (plain JUnit for Days 1–46 and every exercise up to Day 53; `mvn test` for the projects on Days 47–53 and every day from 54 onward). If a day has a test, get it green before moving on — that's a stronger signal than "it compiles" or "it looks right."
+Most early and late days ship with real JUnit tests you can run against your own solution, not just the bundled one — see the root README's **"How to Run Tests"** for the exact commands (plain JUnit for Days 1–46 and every exercise up to Day 53; `mvn test` for the projects on Days 47–53, the exercises on Days 55–59, and every day from 54 onward). If a day has a test, get it green before moving on — that's a stronger signal than "it compiles" or "it looks right."
 
 **What the tests can't check:** windows and drawings. JavaFX days test their logic classes (the maths, the rules, the file formats), not what appears on screen, so run the window and look at it too. Likewise, Days 41–42 test the structure of your HTML and the tools your CSS uses, not whether it looks good: that part is your eye.
 

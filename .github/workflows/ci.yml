@@ -28,6 +28,14 @@ jobs:
       - name: Check every exercise
         run: bash tools/check-exercises.sh
 
+  sri:
+    name: Every CDN script and stylesheet has an integrity hash
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tools/check-sri.sh
+
   projects:
     name: Every day project's tests (Day 54, Days 60-100)
     runs-on: ubuntu-latest

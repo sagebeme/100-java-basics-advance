@@ -1,96 +1,90 @@
 # Day 81 - Portfolio Project: Text to Morse Code Converter
 
-## 📚 Learning Objectives
-- Build a complete application
-- Implement text conversion
-- Create user interface
-- Handle input/output
-- Build portfolio project
+> The portfolio days begin. From now on each day is a small, complete app you could show an employer. First, a converter between text and Morse code, which turns out to be a neat lesson in two-way maps and careful parsing.
 
-## 🎯 Project Requirements
-Create a Text to Morse Code Converter:
-1. Convert text to Morse code
-2. Convert Morse code to text
-3. GUI or web interface
-4. Copy to clipboard
-5. Audio playback (optional)
+## 📖 The story
 
-## 📝 Implementation
+Baraka's scout troop in Nyeri is working towards a signalling badge. They practise Morse with torches at night, but checking each other's messages by hand is slow and full of arguments about whether that was a dash. Baraka wants a little tool: type text and get Morse, paste Morse and get text, and have the result copied, ready to send in the troop's WhatsApp group.
 
-### Step 1: Morse Code Mapping
-Create mapping:
+```
+1) Text to Morse
+2) Morse to Text
+3) Exit
+Choose an option: 1
+Enter input: SOS Nairobi
+Result: ... --- ... / -. .- .. .-. --- -... ..
+(copied to clipboard)
+```
+
+In Morse, letters are separated by a space and words by ` / `, so the tool has to read that format back exactly.
+
+## 🎯 Learning Objectives
+- Build a two-way lookup from one table, so the two directions can never disagree
+- Split and join text precisely: letters, words, and the separators between them
+- Decide what happens with input that can't be converted, and test it
+- Prove a conversion works with a round-trip test
+- Copy to the system clipboard, and carry on without one on a server
+- Write a console menu that handles bad choices and the end of input
+
+## 🧰 What you'll use
+
+**One table, two maps.** Each `put` fills both directions at once:
 
 ```java
-public class MorseCodeConverter {
-    private static final Map<Character, String> TEXT_TO_MORSE = new HashMap<>();
-    
-    static {
-        TEXT_TO_MORSE.put('A', ".-");
-        TEXT_TO_MORSE.put('B', "-...");
-        // Add all mappings
-    }
-    
-    public String textToMorse(String text) {
-        return text.toUpperCase().chars()
-            .mapToObj(c -> TEXT_TO_MORSE.getOrDefault((char)c, ""))
-            .collect(Collectors.joining(" "));
-    }
+private static void put(char letter, String morse) {
+    TEXT_TO_MORSE.put(letter, morse);
+    MORSE_TO_TEXT.put(morse, letter);
 }
 ```
 
-## 🎮 Project Structure
-```
-day81/
-├── README.md
-├── src/
-│   └── main/
-│       └── java/
-│           └── com/
-│               └── portfolio/
-│                   ├── MorseConverter.java
-│                   └── ConverterApp.java
+**Splitting.** `text.trim().toUpperCase().split("\\s+")` gives the words, however many spaces there are between them. Back from Morse, `split(" / ")` gives the words and `split("\\s+")` the letters.
+
+**Round trips.** For any text made of known characters, `morseToText(textToMorse(text))` should give the same text back in capitals. One test can check dozens of inputs that way.
+
+**The clipboard** comes from AWT:
+
+```java
+Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(text), null);
 ```
 
-## 📌 Notes & reference (use these when stuck)
+On a machine with no display it throws `HeadlessException`, so the app catches it and simply skips the copy.
 
-**When you're stuck:** Re-read **Implementation** and **Project Requirements** above; use main README for structure. **Quick reference:** `mvn compile exec:java` runs the console app; a JavaFX window (Days 18–22) is an optional extra.
+## 🪜 Steps
 
-## ✅ Checklist
-- [ ] Implemented conversion
-- [ ] Created interface
-- [ ] Added features
-- [ ] Tested application
-- [ ] Completed project
-- [ ] Committed code to Git
+**Your brief** (the `day81/` folder is one finished version: build your own first, then compare).
 
-## 📂 What's in this folder
+1. `MorseConverter` with letters, digits and common punctuation.
+2. `textToMorse`: letters joined by a space, words by ` / `, case ignored, unknown characters dropped.
+3. `morseToText`: the reverse, skipping a token it doesn't recognise rather than crashing.
+4. Tests: one word, mixed case, several words, digits and punctuation, unknown characters, and a round trip over many inputs.
+5. `ConverterApp`: a menu that rejects bad choices before asking for input, copies results, and exits cleanly at the end of input.
+6. Make it yours: play the Morse as beeps (`javax.sound.sampled`), or build a JavaFX window with two text areas.
 
-A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
+## 🧪 Run it and test it
 
-| File | What it does |
-|---|---|
-| `ConverterApp.java` | A console app: type text or Morse, get the other back |
-| `MorseConverter.java` | Text to Morse and back, with ` / ` between words |
-
-## 💻 How to Run
-
-Needs JDK 21 and Maven (see the main README). From the repository root:
-
-```bash
-cd day81
-mvn compile exec:java
-```
-
-Or run the main class from your IDE.
-
-## 🧪 How to Test
+Needs JDK 21 and Maven. From the repository root:
 
 ```bash
 cd day81
 mvn test
+mvn -q compile exec:java
 ```
 
-Runs `MorseConverterTest`. A clean run ends with `BUILD SUCCESS`.
+## 🆘 Stuck?
 
-## 🚀 Next Steps
-**Ready for Day 82?** You'll build a Personal Website!
+- **Words run together when converting back**: the word separator is ` / ` with spaces round it. Split on that before splitting into letters.
+- **`null` appears in the Morse**: a character has no mapping. Filter out the nulls, or decide to show `?`, and test whichever you choose.
+- **`NoSuchElementException` after Ctrl+D**: check `scanner.hasNextLine()` before every `nextLine()`.
+- **Clipboard error on a server or in CI**: catch `HeadlessException`; there's no clipboard without a display.
+
+## ✅ Checklist
+- [ ] Text to Morse and back, from one table
+- [ ] Unknown characters and tokens handled on purpose
+- [ ] A round-trip test
+- [ ] A console app that copies results and handles bad input
+- [ ] Added one extra of my own (sound or a window)
+- [ ] Committed code to Git
+
+## ➡️ Next
+
+Day 82 builds your personal portfolio website with Spring Boot: projects, an about page and a contact form.

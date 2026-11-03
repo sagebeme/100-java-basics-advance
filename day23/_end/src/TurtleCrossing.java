@@ -59,7 +59,7 @@ public class TurtleCrossing extends Application {
         for (int i = 0; i < 5 + level; i++) {
             cars.add(new double[]{
                 random.nextDouble() * WIDTH,
-                (i + 1) * 100,
+                (i % 7 + 1) * 100,              // seven lanes, from y = 100 to 700: extra cars share them
                 random.nextDouble() * 3 + 1
             });
         }

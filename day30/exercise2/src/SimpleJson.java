@@ -1,43 +1,32 @@
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * A tiny hand-rolled JSON reader/writer for flat string-to-string objects, so this exercise
- * doesn't depend on a JSON library. Nested structures are out of scope for this version.
- */
+// Reads and writes flat JSON objects whose values are all strings: {"site":"kplc.co.ke","user":"cafe"}.
 public class SimpleJson {
 
-    public static String toJson(Map<String, String> data) {
-        StringBuilder json = new StringBuilder("{");
-        boolean first = true;
-        for (Map.Entry<String, String> entry : data.entrySet()) {
-            if (!first) json.append(",");
-            json.append("\"").append(entry.getKey()).append("\":\"").append(entry.getValue()).append("\"");
-            first = false;
-        }
-        return json.append("}").toString();
+    public static String write(Map<String, String> data) {
+        // TODO: {"key":"value","key":"value"} with no spaces, keys in the map's order
+        return "";
     }
 
-    public static Map<String, String> parseJson(String json) {
-        Map<String, String> result = new LinkedHashMap<>();
-        String trimmed = json.trim().replaceAll("^\\{|}$", "");
-        if (trimmed.isBlank()) return result;
-        for (String pair : trimmed.split(",")) {
-            String[] parts = pair.split(":", 2);
-            String key = parts[0].trim().replaceAll("^\"|\"$", "");
-            String value = parts[1].trim().replaceAll("^\"|\"$", "");
-            result.put(key, value);
-        }
-        return result;
+    // "Shop 4, "Eldoret"" → "\"Shop 4, \\\"Eldoret\\\"\"": wrap in quotes and escape " \ newline tab.
+    static String quote(String text) {
+        // TODO
+        return "";
+    }
+
+    public static Map<String, String> read(String json) {
+        // TODO: walk the text one character at a time; see the README for the plan.
+        //       Anything that isn't valid → throw new JsonException("Expected ':'", position)
+        return new LinkedHashMap<>();
     }
 
     public static void main(String[] args) {
-        Map<String, String> data = new LinkedHashMap<>();
-        data.put("name", "Amina");
-        data.put("city", "Nairobi");
-
-        String json = toJson(data);
+        Map<String, String> login = new LinkedHashMap<>();
+        login.put("site", "kplc.co.ke");
+        login.put("note", "Shop 4, \"Eldoret\" branch");
+        String json = write(login);
         System.out.println(json);
-        System.out.println(parseJson(json));
+        System.out.println(read(json));
     }
 }

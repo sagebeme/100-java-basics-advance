@@ -129,26 +129,12 @@ public List<PasswordData> loadFromJson() {
 
 ## 💻 Exercises
 
-### Exercise 1: Exception Handling
-Practice with:
-- Try-catch-finally blocks
-- Multiple catch blocks
-- Custom exceptions
-- Exception propagation
+## 💻 Exercises
 
-### Exercise 2: JSON Operations
-Work with:
-- Converting objects to JSON
-- Parsing JSON to objects
-- JSON arrays
-- Nested JSON structures
+Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`.
 
-### Exercise 3: Error Recovery
-Implement:
-- Graceful error handling
-- Default values
-- User-friendly error messages
-- Data validation
+- **[Exercise 1: The M-Pesa agent's float](exercise1/README.md)**: a checked exception of your own, `IllegalArgumentException` and `NumberFormatException`, each caught on purpose, with a `finally` that counts every customer.
+- **[Exercise 2: Reading and writing JSON by hand](exercise2/README.md)**: write flat JSON with proper escapes and read it back one character at a time, with errors that say where the text went wrong.
 
 ## 🎮 Project: Improved Password Manager
 

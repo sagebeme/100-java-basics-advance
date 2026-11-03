@@ -94,26 +94,10 @@ ArrayList::new
 
 ## 💻 Exercises
 
-### Exercise 1: Lambda Basics
-Create lambdas for:
-- Sorting collections
-- Filtering lists
-- Transforming data
-- Event handlers
+Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`.
 
-### Exercise 2: Stream Operations
-Practice with:
-- Filter operations
-- Map operations
-- Reduce operations
-- Collect operations
-
-### Exercise 3: Method References
-Use method references for:
-- Static methods
-- Instance methods
-- Constructors
-- Arbitrary object methods
+- **[Exercise 1: Sorting the Sacco's fleet with lambdas](exercise1/README.md)**: comparators, predicates and functions as small lambdas that can be sorted with, combined with `and` and `negate`, and passed around.
+- **[Exercise 2: Mama Oliech's till, in streams](exercise2/README.md)**: totals, distinct sorted lists, counts per hour, the largest payment and joined codes, each as one stream with no loop.
 
 ## 🎮 Project: NATO Phonetic Alphabet
 

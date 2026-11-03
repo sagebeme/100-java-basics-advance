@@ -28,6 +28,26 @@ jobs:
       - name: Check every exercise
         run: bash tools/check-exercises.sh
 
+  day70-image:
+    name: Day 70 Docker image runs as a normal user and answers /health
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build the image
+        run: docker build -t day70 day70
+      - name: Runs as uid 10001, not root
+        run: docker run --rm --entrypoint id day70 | tee /dev/stderr | grep -q 'uid=10001'
+      - name: Health check answers OK
+        run: |
+          docker run -d --name day70 -p 8080:8080 day70
+          for i in $(seq 1 60); do
+            if curl -sf localhost:8080/health | grep -q OK; then echo healthy; exit 0; fi
+            sleep 2
+          done
+          docker logs day70
+          exit 1
+
   site:
     name: Course website builds
     runs-on: ubuntu-latest

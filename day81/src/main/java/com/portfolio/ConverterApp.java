@@ -23,25 +23,26 @@ public class ConverterApp {
                 System.out.println("2) Morse to Text");
                 System.out.println("3) Exit");
                 System.out.print("Choose an option: ");
+                if (!scanner.hasNextLine()) {
+                    break; // input ended (Ctrl+D, or a piped file ran out)
+                }
                 String choice = scanner.nextLine().trim();
 
                 if (choice.equals("3")) {
                     break;
                 }
-
-                System.out.print("Enter input: ");
-                String input = scanner.nextLine();
-
-                String result = switch (choice) {
-                    case "1" -> converter.textToMorse(input);
-                    case "2" -> converter.morseToText(input);
-                    default -> null;
-                };
-
-                if (result == null) {
+                if (!choice.equals("1") && !choice.equals("2")) {
                     System.out.println("Unrecognized option.");
                     continue;
                 }
+
+                System.out.print("Enter input: ");
+                if (!scanner.hasNextLine()) {
+                    break;
+                }
+                String input = scanner.nextLine();
+
+                String result = choice.equals("1") ? converter.textToMorse(input) : converter.morseToText(input);
 
                 System.out.println("Result: " + result);
                 copyToClipboard(result);

@@ -1,297 +1,98 @@
-# Day 19 - Inheritance and Polymorphism
+# Day 19 - Inheritance and Polymorphism: Rides, and a Turtle Race
 
-## 📚 Learning Objectives
-- Understand inheritance
-- Learn about superclass and subclass
-- Master method overriding
-- Understand polymorphism
-- Practice with abstract classes
+> A matatu, a boda boda and a tuk-tuk are all rides, but each works out its fare its own way. Today you teach Java the same idea, then race four turtles across a JavaFX window.
 
-## 🎯 Topics Covered
-- Inheritance (extends keyword)
-- Superclass and subclass
-- Method overriding
-- super keyword
-- Polymorphism
-- Abstract classes
-- Method overloading vs overriding
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Kevin is building a fare app for Kisumu. Every ride has a pickup, a drop-off and a fare, but the fare rules differ: a matatu charges each passenger, a boda boda charges per kilometre, a tuk-tuk charges the whole group one price. He doesn't want a giant `if (type.equals("boda"))` in the middle of his app. He wants to say "give me the fare" to *any* ride and get the right answer. That's **inheritance** (one shared parent class) and **polymorphism** (each child answering the same question its own way). The two exercises are about exactly this.
 
-### Step 1: Inheritance Basics
-Create subclasses from superclasses:
+The project is lighter, and it moves: four turtles race from the left edge of a JavaFX window to a checkered finish line. Every 50 milliseconds each turtle shuffles forward a random 0–9 pixels, and the first across the line wins:
 
-```java
-// Superclass
-public class Animal {
-    protected String name;
-    
-    public Animal(String name) {
-        this.name = name;
-    }
-    
-    public void eat() {
-        System.out.println(name + " is eating");
-    }
-}
-
-// Subclass
-public class Dog extends Animal {
-    public Dog(String name) {
-        super(name); // Call superclass constructor
-    }
-    
-    public void bark() {
-        System.out.println(name + " is barking");
-    }
-}
+```
+Turtle 3 wins!
 ```
 
-### Step 2: Method Overriding
-Override superclass methods:
+The race logic, moving forward and checking the finish line, sits in a plain class, `TurtleRaceLogic`, so you can test it without a window.
+
+## 🎯 Learning Objectives
+- Share fields and methods between classes with `extends`
+- Override a method with `@Override`, and call the parent's version with `super`
+- Write an `abstract` class with an `abstract` method that every subclass must fill in
+- Use polymorphism: hold different objects in one `List<Ride>` and call the same method on each
+- Override `toString`, `equals` and `hashCode`, and know why `HashSet` needs the last two
+- Animate a JavaFX canvas by redrawing it on a timer
+
+## 🧰 Java you'll use
+
+**A parent and its children:**
 
 ```java
-public class Animal {
-    public void makeSound() {
-        System.out.println("Some sound");
-    }
+public abstract class Ride {
+    private final String name;
+    private final int seats;
+    protected Ride(String name, int seats) { this.name = name; this.seats = seats; }
+    public abstract int fare(int km, int passengers);   // every kind of ride must say how
 }
 
-public class Dog extends Animal {
+public class Boda extends Ride {
+    public Boda() { super("Boda", 1); }                 // run the parent's constructor first
     @Override
-    public void makeSound() {
-        System.out.println("Woof!");
-    }
+    public int fare(int km, int passengers) { return 50 + 30 * km; }
 }
 ```
 
-### Step 3: Polymorphism
-Use superclass reference for subclass objects:
+**Polymorphism.** The variable's type is `Ride`, but Java runs each child's own `fare`:
 
 ```java
-Animal myDog = new Dog("Buddy");
-Animal myCat = new Cat("Whiskers");
-
-myDog.makeSound(); // Calls Dog's makeSound
-myCat.makeSound(); // Calls Cat's makeSound
+List<Ride> options = List.of(new Matatu(), new Boda(), new TukTuk());
+for (Ride r : options) System.out.println(r.getName() + ": KES " + r.fare(6, 1));
 ```
 
-### Step 4: super Keyword
-Access superclass members:
+**Redrawing on a timer.** The race runs on a background thread that moves the turtles and sleeps 50ms. Only the JavaFX thread may draw, so the thread hands the drawing over with `Platform.runLater(() -> drawTrack(gc))`.
 
-```java
-public class Dog extends Animal {
-    public void display() {
-        super.eat(); // Call superclass method
-        this.bark(); // Call subclass method
-    }
-}
+## 🪜 Steps
+
+1. **[Exercise 1: Matatu, boda or tuk-tuk?](exercise1/README.md)** (`exercise1/`): an abstract `Ride` with three subclasses that each work out their own fare, and a method that finds the cheapest without knowing which kinds it's been given.
+2. **[Exercise 2: The same number plate, typed three ways](exercise2/README.md)** (`exercise2/`): overriding `toString`, `equals` and `hashCode` so a `HashSet` keeps each car once.
+3. **Project: Turtle Race** (`_start/src/TurtleRace.java`).
+   1. `TurtleRaceLogic`: `advance(x, step)` and `hasFinished(x)`, with the finish line at 750. Write this first, with its test.
+   2. `drawTrack`: striped grass, dashed lanes, a checkered finish line, and four numbered turtles at their `x` positions.
+   3. `animateRace`: move each turtle a random step, redraw, and stop when one crosses the line, printing who won.
+
+## 🧪 Run it and test it
+
+The logic and its test need no JavaFX. From the repo root:
+
+```bash
+javac -cp "lib/*" -d day19/_end/src day19/_end/src/TurtleRaceLogic.java day19/_end/src/TurtleRaceLogicTest.java
+java -cp "day19/_end/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
 ```
 
-## 💻 Exercises
+To watch the race, with `FX` pointing at your JavaFX SDK's `lib` folder (see Day 18):
 
-Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`.
-
-- **[Exercise 1: Matatu, boda or tuk-tuk?](exercise1/README.md)**: an abstract `Ride` with three subclasses that each work out their own fare, and a method that finds the cheapest without knowing which kinds it's been given.
-- **[Exercise 2: The same number plate, typed three ways](exercise2/README.md)**: overriding `toString`, `equals` and `hashCode` so a `HashSet` keeps each car once.
-
-## 🎮 Project: Turtle Race Game
-
-### Requirements
-Create a turtle race game using inheritance:
-1. Create Animal superclass
-2. Create Turtle subclass
-3. Create multiple turtle instances
-4. Race turtles to finish line
-5. Display winner
-6. Use polymorphism for turtle management
-
-### Example Output
-```
-Welcome to the Turtle Race!
-
-Turtle 1: [=====>        ]
-Turtle 2: [======>       ]
-Turtle 3: [====>         ]
-Turtle 4: [=======>      ]
-Turtle 5: [====>         ]
-
-Turtle 2 wins! 🏆
+```bash
+cd day19/_end/src
+javac --module-path $FX --add-modules javafx.controls TurtleRace.java TurtleRaceLogic.java
+java --module-path $FX --add-modules javafx.controls TurtleRace
 ```
 
-### Starter Code
-```java
-public class Animal {
-    protected String name;
-    protected int position;
-    
-    public Animal(String name) {
-        this.name = name;
-        this.position = 0;
-    }
-    
-    public void move() {
-        // Base movement logic
-    }
-}
+Use `_start/src` for your own version, and `day19/exercise1/src` or `day19/exercise2/src` for the exercises. On Windows, use `;` instead of `:` in `-cp`.
 
-public class Turtle extends Animal {
-    public Turtle(String name) {
-        super(name);
-    }
-    
-    @Override
-    public void move() {
-        // Turtle-specific movement
-        position += new Random().nextInt(3) + 1;
-    }
-}
-```
+## 🆘 Stuck?
 
-## 📚 Resources
-
-### Official Documentation
-- [Inheritance - Oracle Docs](https://docs.oracle.com/javase/tutorial/java/IandI/subclasses.html)
-- [Polymorphism - Oracle Docs](https://docs.oracle.com/javase/tutorial/java/IandI/polymorphism.html)
-- [Overriding Methods - Oracle Docs](https://docs.oracle.com/javase/tutorial/java/IandI/override.html)
-
-### Tutorials
-- [Java Inheritance - W3Schools](https://www.w3schools.com/java/java_inheritance.asp)
-- [Java Polymorphism - Programiz](https://www.programiz.com/java-programming/polymorphism)
-- [Inheritance in Java - GeeksforGeeks](https://www.geeksforgeeks.org/inheritance-in-java/)
-
-### Video Resources
-- [Java Inheritance Tutorial](https://www.youtube.com/results?search_query=java+inheritance+tutorial)
-- [Polymorphism Explained](https://www.youtube.com/results?search_query=java+polymorphism)
-
-### Practice Platforms
-- [OOP Exercises](https://www.w3resource.com/java-exercises/class/)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Inheritance | Subclass inherits from superclass | `class Dog extends Animal` |
-| Override | Replace superclass method | `@Override public void method()` |
-| super | Access superclass | `super.method()` |
-| Polymorphism | Same interface, different behavior | `Animal a = new Dog()` |
-| Abstract Class | Cannot instantiate | `abstract class Shape` |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **Inheritance:** Re-read **Step 1** — `class Child extends Parent { }` — child gets parent's fields/methods — see **Step 2**
-- **Override:** Use `@Override` and same signature as parent; use `super.method()` to call parent — see **Step 3**
-- **Polymorphism:** Variable of parent type can hold child: `Animal a = new Dog();` then `a.method()` calls overridden version
-- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for inheritance design
-
-**Related days:** Day 16 (classes); Day 17 (multiple classes); Day 21 (Snake with inheritance).
-
-**Quick reference:** Constructor: call `super(args)` first in child constructor · Override = same method name and params
+- **`Ride is abstract; cannot be instantiated`**: that's on purpose. Create a `Boda` or a `Matatu`, never a plain `Ride`.
+- **`constructor Ride in class Ride cannot be applied`**: a subclass constructor must call `super(...)` with the parent's arguments, as its first line.
+- **`HashSet` keeps both copies of the same plate**: you overrode `equals` but not `hashCode`. Override both, using the same fields.
+- **The window freezes during the race**: you're sleeping on the JavaFX thread. Run the loop on a `new Thread(...)` and draw through `Platform.runLater`.
 
 ## ✅ Checklist
-- [ ] Understand inheritance
-- [ ] Can create subclasses
-- [ ] Can override methods
-- [ ] Understand polymorphism
-- [ ] Can use super keyword
-- [ ] Completed Turtle Race
+- [ ] Wrote an abstract class and subclasses that override its method
+- [ ] Called the same method on a list of different kinds of object
+- [ ] Overrode `toString`, `equals` and `hashCode` together
+- [ ] The turtles race, and the winner is printed
+- [ ] Finished both exercises, and the tests pass
 - [ ] Committed code to Git
 
-## 📂 Code Examples
+## ➡️ Next
 
-This day includes starter and completed code examples:
-- **`_start/`** - Starting code with TODO comments and learning notes
-- **`_end/`** - Completed solutions with detailed explanations
-
-Check these folders to see the progression from start to finish and learn from the learning curve notes!
-
-## 💻 How to Run Java Files
-
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to the project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day19\_end\src"
-   ```
-
-3. **Compile the Java file**
-   ```cmd
-   javac TurtleRace.java
-   ```
-
-4. **Run the compiled program**
-   ```cmd
-   java TurtleRace
-   ```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to the project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day19/_end/src
-   ```
-
-3. **Compile the Java file**
-   ```bash
-   javac TurtleRace.java
-   ```
-
-4. **Run the compiled program**
-   ```bash
-   java TurtleRace
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA:**
-1. Open the project folder in IntelliJ IDEA
-2. Right-click on the Java file
-3. Select "Run 'ClassName.main()'"
-
-**VS Code:**
-1. Install "Extension Pack for Java"
-2. Open the Java file
-3. Click "Run" button above `main` method or press `F5`
-
-**Eclipse:**
-1. Import project into Eclipse
-2. Right-click on the Java file
-3. Select "Run As" → "Java Application"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
-- **"package does not exist"** - Remove package declaration if running from command line, or use proper package structure
-
-
-## 🚀 Next Steps
-After completing Day 19, you should understand:
-- Inheritance relationships
-- Method overriding
-- Polymorphism concepts
-- Code reuse through inheritance
-
-**Ready for Day 20?** You'll start building the Snake Game!
-
-
-
-
-
-
-
+Day 20 starts a two-day build of Snake: a grid, a game loop and the arrow keys.

@@ -1,285 +1,96 @@
-# Day 18 - JavaFX Graphics and GUIs
+# Day 18 - Dot Painting: Your First JavaFX Window
 
-## 📚 Learning Objectives
-- Introduction to JavaFX
-- Learn about graphics programming
-- Work with Canvas and shapes
-- Create visual applications
-- Understand coordinate systems
+> Some of the most expensive paintings ever sold are rows of coloured dots on a white canvas. Today you paint one with JavaFX, in a fraction of a second, and a new one every time you run it.
 
-## 🎯 Topics Covered
-- JavaFX basics
-- Canvas and GraphicsContext
-- Drawing shapes (lines, circles, rectangles)
-- Colors and styling
-- Event handling
-- Animation basics
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Achieng runs a small print shop on Moi Avenue. A café owner wants framed art for her walls: bright, cheerful, and "like those famous spot paintings by Damien Hirst, but not those exactly". Achieng could paint dots by hand for a week, or she could write a program that paints them:
 
-### Step 1: JavaFX Setup
-Set up JavaFX project:
+- an 800 × 800 canvas, primed off-white rather than screen white;
+- a grid of dots 20 pixels across, 50 pixels apart;
+- each dot a random colour from a palette of soft, chalky colours, the way real paint looks.
 
-```java
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
+Every run is a new painting. She prints the ones she likes.
 
-public class GraphicsApp extends Application {
-    @Override
-    public void start(Stage stage) {
-        Canvas canvas = new Canvas(800, 600);
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        
-        // Draw shapes here
-        
-        StackPane root = new StackPane(canvas);
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-    
-    public static void main(String[] args) {
-        launch(args);
-    }
-}
-```
+This is the first day with a **window** instead of a terminal. The window comes from **JavaFX**, Java's toolkit for graphical programs.
 
-### Step 2: Drawing Shapes
-Draw various shapes:
+## 🎯 Learning Objectives
+- Start a JavaFX program: extend `Application` and override `start(Stage)`
+- Draw on a `Canvas` with its `GraphicsContext`: `setFill`, `fillRect`, `fillOval`
+- Understand screen coordinates: `(0, 0)` is the top-left corner, and `y` grows downwards
+- Use nested loops to place things on a grid
+- Pick random items from a fixed palette
+
+## 🧰 Java you'll use
+
+**A JavaFX program** has the same shape every time:
 
 ```java
-GraphicsContext gc = canvas.getGraphicsContext2D();
-
-// Draw line
-gc.strokeLine(0, 0, 100, 100);
-
-// Draw rectangle
-gc.strokeRect(50, 50, 100, 80);
-gc.fillRect(200, 50, 100, 80);
-
-// Draw circle
-gc.strokeOval(100, 100, 50, 50);
-gc.fillOval(200, 100, 50, 50);
-
-// Set colors
-gc.setFill(Color.BLUE);
-gc.setStroke(Color.RED);
-```
-
-### Step 3: Coordinate System
-Understand JavaFX coordinates:
-- Origin (0,0) at top-left
-- X increases right
-- Y increases down
-- Canvas size determines bounds
-
-## 💻 Exercises
-
-Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`. The tests check the maths and the rules, which need no JavaFX; run the demo to see the drawing.
-
-- **[Exercise 1: A shape garden](exercise1/README.md)**: the corners of any regular polygon, a rectangle centred on a point, and whether a circle fits the canvas.
-- **[Exercise 2: Kitenge patterns](exercise2/README.md)**: a checkerboard, repeating stripes and a spiral, each as a rule that says what colour a square is.
-
-## 🎮 Project: Hirst Painting Generator
-
-### Requirements
-Create a program that generates a Hirst-style dot painting:
-1. Create canvas
-2. Generate random colors
-3. Draw dots in grid pattern
-4. Use random colors for each dot
-5. Create artistic pattern
-
-### Example Output
-A canvas with colorful dots arranged in a grid, similar to Damien Hirst's spot paintings.
-
-### Starter Code
-```java
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import java.util.Random;
-
 public class HirstPainting extends Application {
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) {          // JavaFX calls this when the window is ready
         Canvas canvas = new Canvas(800, 800);
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        
-        // Your code here
-        
-        StackPane root = new StackPane(canvas);
-        Scene scene = new Scene(root);
-        stage.setTitle("Hirst Painting");
-        stage.setScene(scene);
+        // ... draw with gc ...
+        stage.setScene(new Scene(new StackPane(canvas)));
+        stage.setTitle("Hirst Painting Generator");
         stage.show();
     }
-    
+
     public static void main(String[] args) {
-        launch(args);
+        launch(args);                           // starts JavaFX, which then calls start
     }
 }
 ```
 
-### Solution Hints
-- Define color palette
-- Create grid of positions
-- Draw circles at each position
-- Use random colors from palette
-- Adjust dot size and spacing
+**Drawing.** Set a colour, then fill a shape. `fillOval(x, y, w, h)` draws inside the box whose top-left corner is `(x, y)`, so to centre a dot on a point, take half its size off both:
 
-## 📚 Resources
+```java
+gc.setFill(Color.web("#d8584a"));
+gc.fillOval(x - DOT_SIZE / 2, y - DOT_SIZE / 2, DOT_SIZE, DOT_SIZE);
+```
 
-### Official Documentation
-- [JavaFX Overview - Oracle Docs](https://docs.oracle.com/javase/8/javafx/get-started-tutorial/jfx-overview.htm)
-- [Canvas API - JavaFX Docs](https://openjfx.io/javadoc/11/javafx.graphics/javafx/scene/canvas/Canvas.html)
-- [GraphicsContext - JavaFX Docs](https://openjfx.io/javadoc/11/javafx.graphics/javafx/scene/canvas/GraphicsContext.html)
+**A grid** is a loop inside a loop: one for the columns, one for the rows.
 
-### Tutorials
-- [JavaFX Tutorial - Code.makery](https://code.makery.ch/library/javafx-tutorial/)
-- [JavaFX Canvas - Jenkov](https://jenkov.com/tutorials/javafx/canvas.html)
-- [JavaFX Graphics - GeeksforGeeks](https://www.geeksforgeeks.org/javafx/)
+**JavaFX isn't part of the JDK** (it hasn't been since Java 11). Download the [JavaFX SDK](https://gluonhq.com/products/javafx/) and tell `javac` and `java` where it is, as shown below. The exercises' tests don't need it.
 
-### Video Resources
-- [JavaFX Tutorial](https://www.youtube.com/results?search_query=javafx+tutorial)
-- [JavaFX Canvas Drawing](https://www.youtube.com/results?search_query=javafx+canvas+drawing)
+## 🪜 Steps
 
-### Practice Platforms
-- [JavaFX Projects](https://github.com/topics/javafx)
+1. **[Exercise 1: A shape garden](exercise1/README.md)** (`exercise1/`): the corners of any regular polygon, a rectangle centred on a point, and whether a circle fits the canvas.
+2. **[Exercise 2: Kitenge patterns](exercise2/README.md)** (`exercise2/`): a checkerboard, repeating stripes and a spiral, each as a rule that says what colour a square is.
+3. **Project: Dot Painting** (`_start/src/HirstPainting.java`).
+   1. Fill the canvas with an off-white background first.
+   2. Make a palette: an array of about a dozen `Color.web(...)` colours. Soft colours look like paint; pure `Color.RED` looks like a screen.
+   3. Loop over `x` and `y` from 50 to 750 in steps of 50, and draw a dot at each point in a random palette colour.
 
-## 🔑 Key Concepts Summary
+## 🧪 Run it and test it
 
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Canvas | Drawing surface | `new Canvas(800, 600)` |
-| GraphicsContext | Drawing tool | `canvas.getGraphicsContext2D()` |
-| Coordinate System | X, Y positioning | Origin at top-left |
-| Stroke | Outline drawing | `gc.strokeRect()` |
-| Fill | Solid drawing | `gc.fillRect()` |
+Point `FX` at the `lib` folder of your JavaFX SDK, then:
 
-## 📌 Notes & reference (use these when stuck)
+```bash
+FX=~/javafx-sdk-21/lib
+cd day18/_end/src
+javac --module-path $FX --add-modules javafx.controls HirstPainting.java
+java --module-path $FX --add-modules javafx.controls HirstPainting
+```
 
-**When you're stuck:**
-- **JavaFX setup:** Re-read **Step 1** — class extends `Application`, override `start(Stage)` — see **How to Run** for module path
-- **Canvas:** `Canvas canvas = new Canvas(w, h);` then `GraphicsContext gc = canvas.getGraphicsContext2D();` — see **Step 2**
-- **Drawing:** `gc.fillRect(x, y, w, h);` `gc.strokeOval(x, y, w, h);` — origin top-left — see **Step 3**
-- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for drawing logic
+In an IDE, add the SDK's jars as a library and the same two options as VM options. The project has no tests: look at the window. The exercises do have tests, and they run without JavaFX (see each exercise's README).
 
-**Related days:** Day 20 (animation on canvas); Day 22 (game on canvas). **JavaFX:** Run from IDE or use `--module-path` (see Troubleshooting).
+## 🆘 Stuck?
 
-**Quick reference:** Colors: `Color.RED`, `Color.rgb(r,g,b)` · Clear: `gc.clearRect(0,0,w,h)` · Java 11+ needs JavaFX SDK
+- **`package javafx.application does not exist`**: JavaFX isn't on the module path. Check `--module-path` points at the SDK's `lib` folder, and that `--add-modules javafx.controls` is there for both `javac` and `java`.
+- **The dots are cut off at the edges**: the loop starts at 0. Start at `SPACING` and stop before `800 - SPACING`.
+- **Every dot is the same colour**: you picked the colour once, outside the loops. Pick it inside the inner loop.
+- **Dots aren't centred on the grid**: `fillOval` takes the top-left corner. Subtract half the dot size.
 
 ## ✅ Checklist
-- [ ] Understand JavaFX basics
-- [ ] Can create canvas
-- [ ] Can draw shapes
-- [ ] Can use colors
-- [ ] Understand coordinates
-- [ ] Completed Hirst Painting
+- [ ] Installed the JavaFX SDK and opened a window
+- [ ] Drew on a `Canvas` with `GraphicsContext`
+- [ ] Placed dots on an evenly spaced grid with nested loops
+- [ ] Each run paints a different painting
+- [ ] Finished both exercises, and the tests pass
 - [ ] Committed code to Git
 
-## 📂 Code Examples
+## ➡️ Next
 
-This day includes starter and completed code examples:
-- **`_start/`** - Starting code with TODO comments and learning notes
-- **`_end/`** - Completed solutions with detailed explanations
-
-Check these folders to see the progression from start to finish and learn from the learning curve notes!
-
-## 💻 How to Run Java Files
-
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to the project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day18\_end\src"
-   ```
-
-3. **Compile the Java file**
-   ```cmd
-   javac HirstPainting.java
-   ```
-
-4. **Run the compiled program**
-   ```cmd
-   java HirstPainting
-   ```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to the project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day18/_end/src
-   ```
-
-3. **Compile the Java file**
-   ```bash
-   javac HirstPainting.java
-   ```
-
-4. **Run the compiled program**
-   ```bash
-   java HirstPainting
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA:**
-1. Open the project folder in IntelliJ IDEA
-2. Right-click on the Java file
-3. Select "Run 'ClassName.main()'"
-
-**VS Code:**
-1. Install "Extension Pack for Java"
-2. Open the Java file
-3. Click "Run" button above `main` method or press `F5`
-
-**Eclipse:**
-1. Import project into Eclipse
-2. Right-click on the Java file
-3. Select "Run As" → "Java Application"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
-- **"package does not exist"** - Remove package declaration if running from command line, or use proper package structure
-
-
-## 🚀 Next Steps
-After completing Day 18, you should be able to:
-- Create graphical applications
-- Draw shapes and patterns
-- Work with colors
-- Build visual programs
-
-**Ready for Day 19?** You'll learn about inheritance and polymorphism!
-
-
-
-
-
-
-
+Day 19 makes things move: four turtles race across the screen, and you meet inheritance.

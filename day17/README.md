@@ -1,293 +1,100 @@
-# Day 17 - Quiz Project & OOP Benefits
+# Day 17 - Quiz Night: Objects That Work Together
 
-## 📚 Learning Objectives
-- Build a complete quiz application using OOP
-- Understand OOP benefits (reusability, maintainability)
-- Practice with multiple classes
-- Learn about data modeling
-- Create clean, organized code
+> Every Thursday the tech hub in Kilimani runs a quiz night. This week's round is true-or-false about Java, and you're writing the program that asks the questions.
 
-## 🎯 Topics Covered
-- Multiple class design
-- Class relationships
-- Data modeling
-- Code organization
-- OOP best practices
-- Project structure
+## 📖 The story
 
-## 📝 Step-by-Step Instructions
+Wanjiku hosts quiz night. Last week she read the questions from her phone and kept the score on a napkin, and two teams argued about it for twenty minutes. This week the quiz runs itself:
 
-### Step 1: Design Your Classes
-Plan your class structure:
+```
+Welcome to the Java Quiz!
+
+Q1. Java is a compiled language
+Your answer (True/False): true
+Correct!
+
+Q2. Java supports multiple inheritance
+Your answer (True/False): True
+Wrong!
+...
+=== Quiz Complete ===
+Your final score: 4/5
+```
+
+The program is three small classes, and each one only knows its own job:
+
+- a `Question` holds its text and its answer, and can check a guess;
+- a `QuizBrain` holds the list of questions, knows which one is next, and keeps the score;
+- `QuizApp` writes the questions and runs the loop.
+
+## 🎯 Learning Objectives
+- Design a program as several classes that each have one responsibility
+- Keep objects in a `List` and walk through them in order
+- Keep track of progress (the current question, the score) inside an object
+- Compare answers without caring about capitals, with `equalsIgnoreCase`
+- Separate the rules of a program from its input and output, so the rules can be tested
+
+## 🧰 Java you'll use
+
+**A list of objects.** Each element is a whole `Question`, with its own text and answer:
 
 ```java
-// Question.java - Represents a single question
-public class Question {
-    private String text;
-    private String answer;
-    
-    public Question(String text, String answer) {
-        this.text = text;
-        this.answer = answer;
-    }
-    
-    public boolean checkAnswer(String userAnswer) {
-        return answer.equalsIgnoreCase(userAnswer);
-    }
-}
-
-// QuizBrain.java - Manages quiz logic
-public class QuizBrain {
-    private List<Question> questions;
-    private int currentQuestion;
-    private int score;
-    
-    public QuizBrain(List<Question> questions) {
-        this.questions = questions;
-        this.currentQuestion = 0;
-        this.score = 0;
-    }
-    
-    public boolean stillHasQuestions() {
-        return currentQuestion < questions.size();
-    }
-    
-    public void nextQuestion() {
-        // Display question and get answer
-    }
-}
+List<Question> questions = new ArrayList<>();
+questions.add(new Question("Java uses garbage collection", "True"));
+Question first = questions.get(0);
 ```
 
-### Step 2: Create Data Model
-Organize question data:
+**An object that remembers where it is.** `QuizBrain` has `currentQuestion` and `score` fields. Every call to `nextQuestion()` moves `currentQuestion` on by one, so the loop in `main` stays tiny:
 
 ```java
-// QuestionData.java or use JSON/CSV
-public class QuestionData {
-    public static List<Question> getQuestions() {
-        List<Question> questions = new ArrayList<>();
-        questions.add(new Question("Java is a compiled language", "True"));
-        questions.add(new Question("Java supports multiple inheritance", "False"));
-        // Add more questions
-        return questions;
-    }
+while (quiz.stillHasQuestions()) {
+    quiz.nextQuestion();
 }
+quiz.showFinalScore();
 ```
 
-### Step 3: Build Main Application
-Tie everything together:
+**Asking the object, not reading its data.** `question.checkAnswer(guess)` is better than `question.getAnswer().equals(guess)`: the rule for what counts as right lives in one place, inside `Question`.
 
-```java
-public class QuizApp {
-    public static void main(String[] args) {
-        List<Question> questions = QuestionData.getQuestions();
-        QuizBrain quiz = new QuizBrain(questions);
-        
-        while (quiz.stillHasQuestions()) {
-            quiz.nextQuestion();
-        }
-        
-        quiz.showFinalScore();
-    }
-}
+## 🪜 Steps
+
+1. **[Exercise 1: One question, many ways to answer](exercise1/README.md)** (`exercise1/`): a `Question` that refuses an impossible answer and accepts `true`, ` TRUE ` and `t` alike.
+2. **[Exercise 2: A quiz brain you can test](exercise2/README.md)** (`exercise2/`): the quiz rules pulled out of the `Scanner` loop, so a test can play the quiz: questions in order, one answer each, and a score line.
+3. **Project: Quiz Night** (`_start/src/`).
+   1. `Question`: the text and the answer, `getText()`, and `checkAnswer(guess)` that ignores capitals.
+   2. `QuizBrain`: the list, `stillHasQuestions()`, `nextQuestion()` (print it, read an answer, say `Correct!` or `Wrong!`, update the score) and `showFinalScore()`.
+   3. `QuizApp.main`: five true-or-false questions, then the loop. Write your own questions if you like.
+
+## 🧪 Run it and test it
+
+```bash
+cd day17/_end/src
+javac *.java
+java QuizApp
 ```
 
-## 💻 Exercises
+To test your own `Question`, copy `_end/src/QuestionTest.java` into `_start/src`, then from the repo root:
 
-Each exercise has its own README, a starter in `src/` with tests that fail until you're done, and one answer in `solution/`.
-
-- **[Exercise 1: One question, many ways to answer](exercise1/README.md)**: a `Question` that refuses an impossible answer and accepts `true`, ` TRUE ` and `t` alike.
-- **[Exercise 2: A quiz brain you can test](exercise2/README.md)**: the quiz rules pulled out of the `Scanner` loop, so a test can play the quiz: questions in order, one answer each, and a score line.
-
-## 🎮 Project: Quiz Application
-
-### Requirements
-Create a complete quiz application:
-1. Create Question class
-2. Create QuizBrain class
-3. Load questions from data source
-4. Display questions one by one
-5. Get user answers
-6. Track score
-7. Display final results
-8. Support multiple question types
-
-### Example Output
-```
-Q.1: Java is a compiled language. (True/False): True
-You got it right!
-Your current score is: 1/1
-
-Q.2: Java supports multiple inheritance. (True/False): False
-You got it right!
-Your current score is: 2/2
-
-Q.3: What is the extension of Java files? .java
-You got it right!
-Your current score is: 3/3
-
-You've completed the quiz
-Your final score was: 3/3
+```bash
+javac -cp "lib/*" -d day17/_start/src day17/_start/src/*.java
+java -cp "day17/_start/src:lib/*" org.junit.platform.console.ConsoleLauncher execute --scan-classpath
 ```
 
-### Starter Code Structure
-```
-day17/
-├── README.md
-├── src/
-│   └── main/
-│       └── java/
-│           └── com/
-│               └── learning/
-│                   ├── Main.java
-│                   ├── Question.java
-│                   ├── QuizBrain.java
-│                   └── QuestionData.java
-```
+For an exercise, use `day17/exercise1/src` or `day17/exercise2/src` in both commands. On Windows, use `;` instead of `:` in `-cp`.
 
-## 📚 Resources
+## 🆘 Stuck?
 
-### Official Documentation
-- [Java Classes - Oracle Docs](https://docs.oracle.com/javase/tutorial/java/concepts/class.html)
-- [Collections - Oracle Docs](https://docs.oracle.com/javase/tutorial/collections/)
-
-### Tutorials
-- [Java OOP Projects](https://www.geeksforgeeks.org/java-projects/)
-- [Class Design Best Practices](https://www.baeldung.com/java-class-design)
-
-### Video Resources
-- [Java Quiz App Tutorial](https://www.youtube.com/results?search_query=java+quiz+application+tutorial)
-- [OOP Project Building](https://www.youtube.com/results?search_query=java+oop+project)
-
-### Practice Platforms
-- [OOP Design Exercises](https://www.w3resource.com/java-exercises/)
-
-## 🔑 Key Concepts Summary
-
-| Concept | Description | Example |
-|---------|-------------|---------|
-| Class Design | Planning class structure | Question, QuizBrain classes |
-| Data Modeling | Organizing data | Question data structure |
-| Code Organization | Structuring project | Separate classes for concerns |
-| Reusability | Using classes multiple times | Question class reused |
-| Maintainability | Easy to update | Changes isolated to classes |
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:**
-- **Multiple classes:** Re-read **Step 1** — one class per concept (Question, QuizBrain, QuizApp) — see **Step 2**
-- **Class communication:** Pass data via constructor or method params; return values from methods — see **Step 3**
-- **Compile order:** Compile all: `javac *.java` in the same directory (or use IDE)
-- **Starter vs solution:** See `_start/README.md` for common challenges; see `_end/README.md` for class design
-
-**Related days:** Day 16 (single class OOP); Day 19 (inheritance for shared behavior).
-
-**Quick reference:** QuizBrain holds List&lt;Question&gt; · `stillHasQuestions()` → `currentIndex < list.size()` · Test each class separately
+- **`IndexOutOfBoundsException` after the last question**: `stillHasQuestions()` should be `currentQuestion < questions.size()`, not `<=`.
+- **"true" is marked wrong**: compare with `equalsIgnoreCase`, not `==` or `equals`.
+- **Every question repeats Q1**: `nextQuestion()` must add one to `currentQuestion` at the end.
+- **Hard to test because of the `Scanner`**: that's the point of Exercise 2. Pass the answer in as a parameter, and keep the reading in `main`.
 
 ## ✅ Checklist
-- [ ] Understand OOP benefits
-- [ ] Can design multiple classes
-- [ ] Can model data with classes
-- [ ] Can organize code properly
-- [ ] Completed Quiz Application
+- [ ] `Question` checks answers without caring about capitals
+- [ ] `QuizBrain` asks every question once, in order, and keeps the score
+- [ ] The final score is shown as `score/total`
+- [ ] Finished both exercises, and the tests pass
 - [ ] Committed code to Git
 
-## 📂 Code Examples
+## ➡️ Next
 
-This day includes starter and completed code examples:
-- **`_start/`** - Starting code with TODO comments and learning notes
-- **`_end/`** - Completed solutions with detailed explanations
-
-Check these folders to see the progression from start to finish and learn from the learning curve notes!
-
-## 💻 How to Run Java Files
-
-### Prerequisites
-Make sure you have Java installed on your system:
-- **Check installation**: Open terminal/command prompt and run `java -version`
-- **If not installed**: Download JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://openjdk.org/)
-
-### Running Java Files
-
-#### **Windows**
-
-1. **Open Command Prompt or PowerShell**
-   - Press `Win + R`, type `cmd` or `powershell`, press Enter
-
-2. **Navigate to the project directory**
-   ```cmd
-   cd "path\to\100-java-basics-advance\day17\_end\src"
-   ```
-
-3. **Compile the Java files**
-   ```cmd
-   javac *.java
-   ```
-   *Note: This day has multiple classes (QuizApp, Question, QuizBrain). Compile all files together.*
-
-4. **Run the compiled program**
-   ```cmd
-   java QuizApp
-   ```
-
-#### **Mac / Linux**
-
-1. **Open Terminal**
-   - Mac: Press `Cmd + Space`, type "Terminal", press Enter
-   - Linux: Press `Ctrl + Alt + T` or search for "Terminal"
-
-2. **Navigate to the project directory**
-   ```bash
-   cd ~/projects/100-java-basics-advance/day17/_end/src
-   ```
-
-3. **Compile the Java files**
-   ```bash
-   javac *.java
-   ```
-   *Note: This day has multiple classes (QuizApp, Question, QuizBrain). Compile all files together.*
-
-4. **Run the compiled program**
-   ```bash
-   java QuizApp
-   ```
-
-### Using an IDE (Recommended)
-
-**IntelliJ IDEA:**
-1. Open the project folder in IntelliJ IDEA
-2. Right-click on the Java file
-3. Select "Run 'ClassName.main()'"
-
-**VS Code:**
-1. Install "Extension Pack for Java"
-2. Open the Java file
-3. Click "Run" button above `main` method or press `F5`
-
-**Eclipse:**
-1. Import project into Eclipse
-2. Right-click on the Java file
-3. Select "Run As" → "Java Application"
-
-### Troubleshooting
-
-- **"javac: command not found"** - Java is not installed or not in PATH
-- **"Error: Could not find or load main class"** - Make sure you're in the correct directory and class name matches filename
-- **"package does not exist"** - Remove package declaration if running from command line, or use proper package structure
-
-
-## 🚀 Next Steps
-After completing Day 17, you should understand:
-- OOP design principles
-- Class relationships
-- Code organization
-- Building multi-class applications
-
-**Ready for Day 18?** You'll learn about JavaFX and GUI programming!
-
-
-
-
-
-
-
+Day 18 opens a window for the first time: you'll paint a grid of coloured dots with JavaFX.

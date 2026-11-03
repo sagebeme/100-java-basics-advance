@@ -19,7 +19,7 @@
     <div class="card mb-4">
         <div class="card-body">
             <h2 class="h6 text-muted">Total Revenue</h2>
-            <p class="display-6" id="total-revenue">KES <span th:text="${#numbers.formatDecimal(totalRevenue, 1, 0)}">0</span></p>
+            <p class="display-6" id="total-revenue">KES <span th:text="${#numbers.formatDecimal(totalRevenue, 1, 'COMMA', 0, 'POINT')}">0</span></p>
         </div>
     </div>
 

@@ -19,6 +19,12 @@ class AnalyticsControllerTest {
     private MockMvc mockMvc;
 
     @Test
+    void theTotalIsShownWithThousandsSeparators() throws Exception {
+        mockMvc.perform(get("/"))
+                .andExpect(content().string(containsString("KES <span>1,103,738</span>")));
+    }
+
+    @Test
     void theDashboardRendersTheForecastChartAndInsights() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())

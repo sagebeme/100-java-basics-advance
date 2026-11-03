@@ -4,10 +4,10 @@ import com.learning.model.Post;
 import com.learning.repository.PostRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -31,7 +31,11 @@ public class PostRestController {
 
     @PostMapping
     public ResponseEntity<Post> createPost(@Valid @RequestBody Post post) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(postRepository.save(post));
+        // The client doesn't choose the id. Without this, {"id": 1, ...} would overwrite post 1
+        // instead of creating a new one ("over-posting").
+        post.setId(null);
+        Post saved = postRepository.save(post);
+        return ResponseEntity.created(URI.create("/api/posts/" + saved.getId())).body(saved);
     }
 
     @PutMapping("/{id}")

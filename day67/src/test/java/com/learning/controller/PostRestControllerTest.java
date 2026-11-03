@@ -77,4 +77,26 @@ class PostRestControllerTest {
         mockMvc.perform(delete("/api/posts/" + id)).andExpect(status().isNoContent());
         mockMvc.perform(get("/api/posts/" + id)).andExpect(status().isNotFound());
     }
+
+    @Test
+    void creatingAnswers201WithWhereThePostLives() throws Exception {
+        mockMvc.perform(post("/api/posts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"title\":\"Footbridge opens\",\"content\":\"At last\"}"))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("Location", org.hamcrest.Matchers.matchesPattern("/api/posts/\\d+")));
+    }
+
+    @Test
+    void anIdInThePostBodyCannotOverwriteAnotherPost() throws Exception {
+        Long id = createPost("Original", "Leave me alone");
+
+        mockMvc.perform(post("/api/posts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"id\":" + id + ",\"title\":\"Hijacked\",\"content\":\"Oops\"}"))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(org.hamcrest.Matchers.not(id.intValue())));
+
+        mockMvc.perform(get("/api/posts/" + id)).andExpect(jsonPath("$.title").value("Original"));
+    }
 }

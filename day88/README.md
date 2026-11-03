@@ -92,4 +92,4 @@ Open <http://localhost:8080>.
 
 ## ➡️ Next
 
-Day 89 is a writing app with a twist: stop typing for five seconds and everything you wrote disappears.
+Day 89 is a writing app with a twist: stop typing for eight seconds and everything you wrote disappears.

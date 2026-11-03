@@ -274,6 +274,15 @@ Then open `http://localhost:8080`. Stop it with Ctrl+C.
 
 **Which days have tests today:** the main project's solution (`_end/`) on every day from 1 to 53 except 18; every exercise from Day 1 to Day 59 (Days 15, 31 and 54 have none), with a starter that fails its tests until it's done and a `solution/` that passes them; and every day from 54 to 100, each with its own `mvn test` suite. On Days 47–53 and in Day 79's end-to-end tests (`day79/e2e`), the browser tests need Google Chrome, and skip themselves (rather than fail) if it isn't installed. See `LEARNING_PATH.md` for the few things that are intentionally untested and why.
 
+**Check every exercise at once.** `tools/check-exercises.sh` copies each exercise somewhere temporary and proves two things: its `solution/` passes the tests, and its untouched starter compiles but fails them (so the tests really check something). It needs a JDK, Maven, and `curl` for the JavaFX jars of Days 18 and 27, which it downloads once into `.cache/`. Pass exercise folders to check just those:
+
+```bash
+tools/check-exercises.sh                       # all of them
+tools/check-exercises.sh day29/exercise2       # just one
+```
+
+GitHub Actions runs the same script, and builds the course website, on every push and pull request (`.github/workflows/ci.yml`).
+
 ## 🚀 Getting Started
 
 ### Prerequisites

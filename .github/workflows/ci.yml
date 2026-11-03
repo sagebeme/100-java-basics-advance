@@ -64,6 +64,8 @@ jobs:
           cache-dependency-path: site/package-lock.json
       - run: npm ci
       - run: npm run typecheck
-      - run: npm run build
+      # next/font downloads the Google fonts at build time, and that download sometimes fails on
+      # the runner ("next/font/google queries have exactly one entry"); one retry gets past it.
+      - run: npm run build || (echo "Retrying after a font download failure"; rm -rf .next; npm run build)
         env:
           NEXT_TELEMETRY_DISABLED: "1"

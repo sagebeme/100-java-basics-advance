@@ -1,159 +1,118 @@
 # Day 100 - Portfolio Project: Machine Learning Integration
 
-## Learning Objectives
-- Integrate machine learning with Java
-- Build a regression model yourself, then know when to reach for a library (Weka, Deeplearning4j, TensorFlow Java)
-- Build a predictive model
-- Create a complete application
-- Deploy ML models
+> The last day puts everything together: data, a model you write yourself, honest testing, a web form, a JSON API, and the judgement to say "I don't know" when a question is outside what the model learned.
 
-## Topics Covered
-- Machine Learning basics
-- Model training and evaluation
-- Data preprocessing
-- Model deployment
-- Performance optimization
+## 📖 The story
 
-## Project: Earnings Prediction System
+Chebet runs the careers office at a college in Eldoret. Every term, students ask the same thing: "If I study this, what will I earn?" She has a spreadsheet of 150 people's monthly pay, with their years of experience, education, whether they work in a town, a suburb or the countryside, and their industry. She wants a tool where a student picks those four things and gets a figure, with a straight answer about how far to trust it.
 
-Build a system that predicts earnings based on multiple variables using machine learning.
-
-### Requirements
-- Load and preprocess data
-- Train a regression model
-- Evaluate model performance
-- Create predictions
-- Build a REST API for predictions
-- Create a web interface
-- Deploy the application
-
-### Features
-- **Data Loading**: Load CSV/JSON datasets
-- **Preprocessing**: Clean and normalize data
-- **Model Training**: Train regression model
-- **Prediction API**: REST endpoint for predictions
-- **Web Interface**: User-friendly prediction form
-- **Model Evaluation**: Display accuracy metrics
-
-## Code Structure
-```
-day100/
-├── README.md
-├── pom.xml
-└── src/
-    ├── main/
-    │   ├── java/com/learning/
-    │   │   ├── Application.java
-    │   │   ├── controller/
-    │   │   │   ├── PredictionRestController.java
-    │   │   │   └── PredictionWebController.java
-    │   │   ├── model/
-    │   │   │   ├── EarningsRecord.java
-    │   │   │   ├── EarningsRequest.java
-    │   │   │   ├── EvaluationMetrics.java
-    │   │   │   └── PredictionResult.java
-    │   │   └── service/
-    │   │       ├── EarningsDataLoader.java
-    │   │       ├── EarningsPredictionService.java
-    │   │       ├── FeatureEncoder.java
-    │   │       ├── LinearRegressionModel.java
-    │   │       └── ModelEvaluator.java
-    │   └── resources/
-    │       ├── earnings-data.csv
-    │       └── templates/prediction.html
-    └── test/java/com/learning/   (the tests)
-```
-
-## Key Concepts
-- **Machine Learning**: Algorithms that learn from data
-- **Regression**: Predicting continuous values
-- **Feature Engineering**: Creating meaningful features
-- **Model Evaluation**: Metrics like R², MSE, MAE
-- **Model Deployment**: Making models production-ready
-
-## Example Prediction Request
-```json
-{
-  "experience": 5,
-  "education": "Bachelor",
-  "location": "Urban",
-  "industry": "Technology"
-}
-```
-
-## Example Response
-```json
-{
-  "predictedEarnings": 75000,
-  "confidence": 0.85,
-  "modelVersion": "1.0"
-}
-```
-
-## 📌 Notes & reference (use these when stuck)
-
-**When you're stuck:** Re-read **Project**, **Code Structure**, and **Key Concepts** above; use main README for structure. **Quick reference:** `mvn spring-boot:run`; POST to prediction API with JSON body; see Day 80 for ML/API pattern.
-
-## 📂 What's in this folder
-
-A finished, working version of today's project, with tests. Build your own first, then compare, or read it when you're stuck.
-
-| File | What it does |
+| Field | Values in the data |
 |---|---|
-| `Application.java` | Starts Spring Boot |
-| `controller/PredictionRestController.java` | `POST /api/predict` with JSON |
-| `controller/PredictionWebController.java` | `GET /` shows the form, `POST /predict` shows the result |
-| `model/EarningsRecord.java` | One training row |
-| `model/EarningsRequest.java` | The inputs, for both the API and the form |
-| `model/EvaluationMetrics.java` | R², MSE, MAE and the train/test sizes |
-| `model/PredictionResult.java` | The predicted earnings, a confidence score and the model version |
-| `service/EarningsDataLoader.java` | Loads the 150 rows of `earnings-data.csv` |
-| `service/EarningsPredictionService.java` | Trains the model at start-up and makes predictions |
-| `service/FeatureEncoder.java` | One-hot encodes education, location and industry |
-| `service/LinearRegressionModel.java` | Multiple linear regression written from scratch, like Day 80's |
-| `service/ModelEvaluator.java` | A repeatable train/test split, and R², MSE and MAE on the test set |
+| experience | 0 to 25 years |
+| education | HighSchool, Bachelor, Master, PhD |
+| location | Rural, Suburban, Urban |
+| industry | Education, Finance, Healthcare, Retail, Technology |
+| earnings | KES 39,889 to 177,895 a month |
 
-Also in `src/main/resources/`: `earnings-data.csv`, `templates/prediction.html`.
+(The data is made up for practice, so the model fits it unusually well. Real pay data is much messier.)
 
-The model is written from scratch (no Weka, Deeplearning4j or TensorFlow), using the same linear regression as Day 80, plus one-hot encoding for the text fields. It's judged on a held-out test set.
+With the bundled data, 5 years, a Bachelor's, Urban, Technology gives about **KES 104,254** a month; 3 years, HighSchool, Rural, Retail about **KES 36,836**. On 30 people it never saw while training, the model was off by **KES 3,599** on average (R² 0.98).
 
-## 💻 How to Run
+## 🎯 Learning Objectives
+- Turn text categories into numbers with one-hot encoding, and avoid the dummy-variable trap
+- Train multiple linear regression from scratch (the normal equations, as on Day 80)
+- Judge a model on a held-out test set: R², MSE and MAE
+- Refuse questions the model can't answer: unknown categories and inputs beyond the data
+- Serve one model through both a web form and a JSON API, with validation
 
-Needs JDK 21 and Maven (see the main README). From the repository root:
+## 🧰 What you'll use
 
-```bash
-cd day100
-mvn spring-boot:run
+**One-hot encoding.** A model can only multiply numbers, so "Master" becomes columns of 0s and 1s, one per value. Leave one value out of each field (the *reference*, here the first alphabetically): its effect is folded into the bias. Keeping every column makes them add up to the bias column, the matrix can't be solved, and that's called the *dummy-variable trap*.
+
+```
+education = Master   →  [Bachelor=0 is the reference] HighSchool=0, Master=1, PhD=0
 ```
 
-Then open http://localhost:8080. Stop it with Ctrl+C. Or run `Application` from your IDE.
+**Unknown values.** If a request says `"education": "Diploma"`, every education column is 0, which is exactly how the reference category looks. The model would quietly answer for a Bachelor's. So the encoder refuses values it hasn't seen, and the API answers:
 
-## 🧪 How to Test
+```json
+{ "status": 422, "title": "Unprocessable Content",
+  "detail": "Unknown education 'Diploma'. Choose one of: Bachelor, HighSchool, Master, PhD." }
+```
+
+**Beyond the data.** A straight line keeps going forever: ask about 60 years of experience and it will answer. Nobody in the data has more than 25, so the app says so instead: "This model learned from people with 0-25 years of experience, so it can't predict 60 years."
+
+**Train, then test on data it hasn't seen.** A seeded shuffle splits the 150 rows 120/30. A model trained on the 120 is scored on the 30:
+
+- **MAE**: the average miss, in shillings. The easiest to explain.
+- **MSE**: the average squared miss, which punishes big misses more.
+- **R²**: how much of the variation the model explains, from 0 (no better than guessing the average) to 1.
+
+Then the model used for predictions is trained on all 150, since the testing is done. The page shows the test scores and calls the figure "a typical figure for people like this in the data, not a promise". R² is one number for the whole model, so the API calls it `modelR2`, not a per-prediction "confidence".
+
+**Collinear features.** If one column can be worked out from others, the normal equations have no single answer. The solver checks each pivot and throws a clear error instead of dividing by almost zero.
+
+## 🪜 Steps
+
+**Your brief** (the `day100/` folder is one finished version: build your own first, then compare).
+
+1. `EarningsRecord`, the loader and `earnings-data.csv`.
+2. `FeatureEncoder`: fit on the data, encode with a bias and reference categories, refuse unknown values.
+3. `LinearRegressionModel`: the normal equations with partial pivoting and a collinearity check.
+4. `ModelEvaluator`: the seeded split, and R², MSE and MAE.
+5. `EarningsPredictionService`: train at start-up, check each request, predict.
+6. `EarningsRequest` with validation, `POST /api/predict` (400 for a blank field, 422 for a question it can't answer), and the form at `/`.
+7. Tests: exact weights on noise-free data, collinear data, the encoder, the split, the metrics, sensible directions (more experience, more pay), and both controllers, including refusals.
+8. Make it yours: show a range (prediction ± the MAE) instead of one number, add a field and see whether the test score improves, or retrain from an uploaded CSV.
+
+## 🧪 Run it and test it
+
+Needs JDK 21 and Maven. From the repository root:
 
 ```bash
 cd day100
 mvn test
+mvn spring-boot:run
 ```
 
-Runs `EarningsPredictionServiceTest`, `FeatureEncoderTest`, `LinearRegressionModelTest`, `ModelEvaluatorTest`, `PredictionRestControllerTest` and `PredictionWebControllerTest`. A clean run ends with `BUILD SUCCESS`.
+Open <http://localhost:8080>, or call the API:
 
-## Congratulations! 🎉
+```bash
+curl -s -H 'Content-Type: application/json' \
+  -d '{"experience":5,"education":"Bachelor","location":"Urban","industry":"Technology"}' \
+  localhost:8080/api/predict
+```
 
-You've completed 100 days of Java! You should now:
-- Have a strong foundation in Java
-- Understand OOP principles
-- Be able to build web applications
-- Work with databases and APIs
-- Deploy applications
-- Integrate advanced features
+```json
+{"predictedEarnings":104254.14246402957,"modelR2":0.9821202104911996,"modelVersion":"1.0"}
+```
 
-## Next Steps
-- Continue building projects
-- Contribute to open source
-- Learn advanced frameworks
-- Specialize in areas of interest
-- Build your portfolio
+## 🆘 Stuck?
 
----
+- **Weights come out as `NaN` or huge numbers**: a column for every category (the dummy-variable trap) or a duplicated feature. Drop one category per field.
+- **The test score is perfect**: you scored the model on the rows it trained on. Split first, and fit the model on the training part only.
+- **The score changes every run**: the shuffle isn't seeded. Use `new Random(42)`.
+- **An unknown value gets a confident answer**: check it against the categories the encoder learned before encoding.
+- **The form loses its dropdowns after an error**: add the options to the model on every path, not only on `GET`.
 
-**Congratulations on completing 100 Days of Java! ☕**
+## ✅ Checklist
+- [ ] One-hot encoding with a reference category
+- [ ] Linear regression from scratch, with a collinearity check
+- [ ] Scores on a held-out test set
+- [ ] Unknown values and out-of-range input refused, not guessed
+- [ ] A form and a JSON API on one model
+- [ ] Added a range, a new field or retraining from an upload
+- [ ] Committed code to Git
+
+## 🎉 You made it
+
+A hundred days ago this course started with `System.out.println`. Since then you've written classes and collections, threads and streams, web apps with databases and logins, tests for all of it, Docker images, and a model you understand line by line.
+
+What next:
+
+- **Polish three projects** into your portfolio: a README with screenshots, tests that pass, and a link that works. Days 80, 96 and 98 make a good spread.
+- **Build something for someone you know**: a chama's contributions tracker, a shop's stock list, a school's fees records. Real users find real bugs.
+- **Read other people's code**: pick a small open-source Java project, fix a typo or a test, and open a pull request.
+- **Go deeper in one direction**: Spring Security and OAuth, PostgreSQL and query plans, Kubernetes, or Android with Kotlin.
+
+Hongera, and keep building.

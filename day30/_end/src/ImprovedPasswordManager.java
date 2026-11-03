@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.security.SecureRandom;
 
 public class ImprovedPasswordManager extends Application {
     private TextField websiteField = new TextField();
@@ -63,7 +63,8 @@ public class ImprovedPasswordManager extends Application {
     
     private void generatePassword() {
         String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
-        Random random = new Random();
+        // SecureRandom, not Random: Random's next numbers can be worked out from earlier ones.
+        SecureRandom random = new SecureRandom();
         StringBuilder password = new StringBuilder();
         
         for (int i = 0; i < 16; i++) {

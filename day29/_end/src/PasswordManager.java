@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.security.SecureRandom;
 
 public class PasswordManager extends Application {
     private TextField websiteField = new TextField();
@@ -55,15 +55,9 @@ public class PasswordManager extends Application {
     }
     
     private void generatePassword() {
-        String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
-        Random random = new Random();
-        StringBuilder password = new StringBuilder();
-        
-        for (int i = 0; i < 16; i++) {
-            password.append(chars.charAt(random.nextInt(chars.length())));
-        }
-        
-        passwordField.setText(password.toString());
+        // SecureRandom, not Random: Random's next numbers can be worked out from earlier ones,
+        // which is fine for a game and never for a password.
+        passwordField.setText(PasswordManagerLogic.generatePassword(16, new SecureRandom()));
     }
     
     private void savePassword() {

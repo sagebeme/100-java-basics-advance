@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.security.SecureRandom;
 import java.util.Random;
 
 public class PasswordGen {
@@ -32,7 +33,7 @@ public class PasswordGen {
     }
 
     public static void main(String[] args) {
-        Random random = new Random();
+        Random random = new SecureRandom(); // unpredictable, unlike new Random()
         for (int i = 0; i < 3; i++) {
             String password = generate(14, true, true, true, random);
             System.out.println(password + "  " + strength(password));

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title}">Mavuno Farmers' Co-op</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;800&family=Karla:wght@400;700&display=swap">
+    <link rel="stylesheet" href="../static/css/mavuno.css" th:href="@{/css/mavuno.css}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}" th:text="${title}">Mavuno Farmers' Co-op</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu"
+                    aria-controls="menu" aria-expanded="false" aria-label="Open the menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/prices">Prices</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/collection">Collection days</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/join">Join</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-4">
+        <h1 th:text="${title}">Mavuno Farmers' Co-op</h1>
+        <p class="lead">Six hundred farmers around Meru, selling together so the brokers can't set the price.</p>
+        <div class="row g-3">
+            <div class="col-12 col-md-4">
+                <div class="card h-100"><div class="card-body">
+                    <h2 class="h5 card-title">Fair prices</h2>
+                    <p class="card-text">This week's buying prices are posted every Monday.</p>
+                </div></div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="card h-100"><div class="card-body">
+                    <h2 class="h5 card-title">Collection</h2>
+                    <p class="card-text">The lorry comes to your village centre twice a week.</p>
+                </div></div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="card h-100"><div class="card-body">
+                    <h2 class="h5 card-title">Paid by M-Pesa</h2>
+                    <p class="card-text">Payment lands within 48 hours of delivery.</p>
+                </div></div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

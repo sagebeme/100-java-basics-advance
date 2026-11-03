@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!-- TODO: the viewport tag, then Bootstrap's CSS from the CDN (with integrity and crossorigin) -->
+    <title th:text="${title}">Mavuno Farmers' Co-op</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;800&family=Karla:wght@400;700&display=swap">
+    <link rel="stylesheet" href="../static/css/mavuno.css" th:href="@{/css/mavuno.css}">
+</head>
+<body>
+    <!-- TODO: a navbar that folds into a menu button on phones, with the three links -->
+
+    <main>
+        <h1 th:text="${title}">Mavuno Farmers' Co-op</h1>
+        <p>Six hundred farmers around Meru, selling together so the brokers can't set the price.</p>
+        <!-- TODO: three cards side by side on a laptop, one above the other on a phone:
+             Fair prices / Collection / Paid by M-Pesa -->
+    </main>
+
+    <!-- TODO: Bootstrap's JavaScript bundle from the CDN (with integrity and crossorigin) -->
+</body>
+</html>

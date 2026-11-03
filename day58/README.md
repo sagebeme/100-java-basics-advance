@@ -144,24 +144,12 @@ Use utility classes:
 
 ## 💻 Exercises
 
-### Exercise 1: Bootstrap Setup
-Set up Bootstrap:
-- Add Bootstrap CSS/JS
-- Create basic layout
-- Test responsiveness
+## 💻 Exercises
 
-### Exercise 2: Components
-Use Bootstrap components:
-- Navigation bars
-- Cards
-- Buttons
-- Forms
+Each exercise is a small Maven project with its own README. The starter compiles and its tests fail until you're done; `solution/` holds one answer for each file you change, at the same path. Run `mvn test` inside the exercise folder.
 
-### Exercise 3: Responsive Design
-Create responsive layouts:
-- Grid system
-- Breakpoints
-- Mobile-first design
+- **[Exercise 1: The co-op's home page, with Bootstrap](exercise1/README.md)**: Bootstrap from a CDN with integrity hashes, a navbar that folds into a button on phones, and a three-card grid.
+- **[Exercise 2: Prices and a sign-up form, in Bootstrap](exercise2/README.md)**: responsive cards and badges from a list, and a form that marks each broken field and keeps what was typed.
 
 ## 🎮 Project: Bootstrap Dashboard
 

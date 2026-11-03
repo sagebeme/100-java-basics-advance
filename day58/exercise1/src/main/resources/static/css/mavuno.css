@@ -18,7 +18,7 @@ h1 { font-size: clamp(2rem, 5vw, 3rem); line-height: 1.1; margin: 1.6rem 0 .8rem
 h2 { font-size: 1.5rem; }
 a { color: var(--accent); text-underline-offset: 3px; }
 p.lead, .text-muted { color: var(--muted) !important; }
-header, .navbar, nav:first-child { padding: 1rem; background: #3f7d20; color: white; border-bottom: 6px solid #f2c14e; }
+header, .navbar, nav:first-child { padding: 1rem; background: #3f7d20 !important; color: white; border-bottom: 6px solid #f2c14e; }
 header h1, .navbar-brand { margin: 0; }
 header nav a, .navbar a { color: inherit; }
 form { display: grid; gap: .5rem; }

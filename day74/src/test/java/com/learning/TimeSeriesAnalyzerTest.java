@@ -61,6 +61,12 @@ class TimeSeriesAnalyzerTest {
     }
 
     @Test
+    void aWindowOfZeroOrLessIsRefused() {
+        assertThrows(IllegalArgumentException.class, () -> analyzer.movingAverage(series(), 0));
+        assertThrows(IllegalArgumentException.class, () -> analyzer.movingAverage(series(), -2));
+    }
+
+    @Test
     void slopeIsPositiveForAnUpwardTrend() {
         assertEquals(7.0, analyzer.linearTrendSlope(series()), 0.001);
     }

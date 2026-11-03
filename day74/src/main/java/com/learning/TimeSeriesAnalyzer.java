@@ -27,6 +27,9 @@ public class TimeSeriesAnalyzer {
      * window yet, so they are left out rather than padded with a misleading partial average.
      */
     public List<Double> movingAverage(List<DataPoint> points, int windowSize) {
+        if (windowSize < 1) {
+            throw new IllegalArgumentException("windowSize must be at least 1, was " + windowSize);
+        }
         List<Double> result = new ArrayList<>();
         for (int i = windowSize - 1; i < points.size(); i++) {
             double sum = 0;

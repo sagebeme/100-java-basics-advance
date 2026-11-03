@@ -10,18 +10,19 @@ import java.util.concurrent.TimeUnit;
 /**
  * Converts text to a real .wav file using the Windows built-in SAPI speech engine (the same
  * engine behind Narrator), via PowerShell's System.Speech assembly. This needs no API key and no
- * internet connection, unlike cloud TTS services, but is Windows-only - there is no
- * actively-maintained, license-clean, offline TTS library that ships pure Java bytecode across
- * platforms, so this is the honest "external" option the day's own README points at.
+ * internet connection, unlike cloud TTS services, but is Windows-only: macOS and Linux use
+ * {@link CommandSpeechSynthesizer} instead. There is no actively maintained, offline speech
+ * library in pure Java, so each system's own engine is the honest option.
  *
  * The text is written to a temp file and read back by the PowerShell script rather than
  * interpolated into the command line, so arbitrary PDF-extracted content can never be interpreted
  * as script code.
  */
-public class WindowsSpeechSynthesizer {
+public class WindowsSpeechSynthesizer implements SpeechSynthesizer {
 
     private static final Duration PROCESS_TIMEOUT = Duration.ofSeconds(60);
 
+    @Override
     public void speakToFile(String text, File outputWavFile) throws IOException, InterruptedException {
         if (text == null || text.isBlank()) {
             throw new IllegalArgumentException("Cannot synthesize empty text");

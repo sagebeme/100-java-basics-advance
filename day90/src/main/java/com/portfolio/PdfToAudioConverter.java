@@ -6,9 +6,9 @@ import java.io.IOException;
 public class PdfToAudioConverter {
 
     private final PdfTextExtractor textExtractor;
-    private final WindowsSpeechSynthesizer speechSynthesizer;
+    private final SpeechSynthesizer speechSynthesizer;
 
-    public PdfToAudioConverter(PdfTextExtractor textExtractor, WindowsSpeechSynthesizer speechSynthesizer) {
+    public PdfToAudioConverter(PdfTextExtractor textExtractor, SpeechSynthesizer speechSynthesizer) {
         this.textExtractor = textExtractor;
         this.speechSynthesizer = speechSynthesizer;
     }

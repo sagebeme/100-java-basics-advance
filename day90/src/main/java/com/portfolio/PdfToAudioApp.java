@@ -17,7 +17,7 @@ public class PdfToAudioApp {
         File outputWavFile = new File(args[1]);
         boolean play = args.length > 2 && args[2].equals("--play");
 
-        PdfToAudioConverter converter = new PdfToAudioConverter(new PdfTextExtractor(), new WindowsSpeechSynthesizer());
+        PdfToAudioConverter converter = new PdfToAudioConverter(new PdfTextExtractor(), SpeechSynthesizer.forThisComputer());
         String text = converter.convert(pdfFile, outputWavFile);
 
         System.out.println("Extracted " + text.length() + " characters of text.");

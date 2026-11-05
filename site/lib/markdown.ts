@@ -1,7 +1,7 @@
 // A day's README as HTML, at build time: code already highlighted, links pointing somewhere useful.
 import { Marked, type Tokens } from "marked";
 import hljs from "highlight.js";
-import { githubUrl } from "./course";
+import { BASE_PATH, githubUrl } from "./course";
 
 const escape = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
 
@@ -23,7 +23,7 @@ export function resolveLink(href: string, folder: string): string {
   const url = new URL(href, `https://repo.invalid/${folder}/`);
   const repoPath = decodeURIComponent(url.pathname.slice(1)).replace(/\/$/, "");
   const day = /^day(\d{2,3})(?:\/README\.md)?$/.exec(repoPath);
-  if (day) return `/day/${Number(day[1])}/${url.hash}`;
+  if (day) return `${BASE_PATH}/day/${Number(day[1])}/${url.hash}`;
   return githubUrl(repoPath, /\.[a-z0-9]+$/i.test(repoPath)) + url.hash;
 }
 

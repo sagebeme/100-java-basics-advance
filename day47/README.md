@@ -42,11 +42,51 @@ Done! Confirmation code: TAM-102-2-WK
 | npm | Maven |
 |---|---|
 | `package.json` lists your dependencies | `pom.xml` |
-| `package-lock.json` pins exact versions | the `pom.xml` already names exact versions |
+| `package-lock.json` pins exact versions | no lockfile: you write exact versions, and Maven picks the rest by a fixed rule (below) |
 | `node_modules/`, one per project, gitignored | `~/.m2/repository`, one per computer, outside the repo |
 | `dist/` or `build/`, gitignored | `target/`, gitignored |
 
 Days 1–46 didn't need any of this, because their few jars are committed in `lib/`. That's fine for a handful of libraries; past that, a build tool keeps the versions in one file instead of the jars in the repo.
+
+### Reading a `pom.xml`
+
+Open `_start/pom.xml`. Every Maven project you'll meet at work has the same parts:
+
+| Part | What it means |
+|---|---|
+| `groupId`, `artifactId`, `version` | The project's **coordinates**: who made it (`com.learning`), what it is (`day47-tamasha-bot`), which version. Every library has coordinates too, often written as one string: `org.seleniumhq.selenium:selenium-java:4.50.0`. |
+| `<properties>` | Settings. `maven.compiler.release` 21 compiles for Java 21; `exec.mainClass` is what `mvn exec:java` runs. |
+| `<dependencies>` | The libraries your code uses, each by its coordinates. |
+| `<scope>` | **When** a dependency is needed. No scope means `compile`: needed to build and to run. `test`: only for the tests, never shipped (JUnit, here). `runtime`: not needed to compile, needed to run (a JDBC driver). `provided`: the server you deploy to already has it. |
+| `<build><plugins>` | The tools Maven runs: `maven-surefire-plugin` runs your tests, `exec-maven-plugin` runs your `main`. |
+
+**Versions.** Write one exact version, like `4.50.0`. Maven allows ranges (`[4.0,5.0)`) but almost nobody uses them, because the build would change by itself whenever a new release came out. A version ending `-SNAPSHOT` is a work in progress that can change under the same name: fine between your own modules, never for a library you depend on.
+
+**Transitive dependencies.** You listed two libraries. Run this in `_start/`:
+
+```bash
+mvn dependency:tree
+```
+
+It prints **45**: Selenium needs Guava, OpenTelemetry, its Chrome driver and more, and Maven fetched them all. Each of them is code you ship and didn't write. When two paths ask for different versions of the same library, Maven takes the one **nearest** to your project in the tree (and the first one declared if they tie), not the newest. To decide yourself, list that library in your own `<dependencies>`, or in `<dependencyManagement>`, which sets a version without adding the dependency. That's how Spring Boot works on Day 54: its `<parent>` manages hundreds of versions, so its starters need no `<version>` at all.
+
+**Keeping them up to date and safe.**
+
+```bash
+mvn versions:display-dependency-updates   # newer releases of what you use
+mvn dependency:tree -Dincludes=com.google.guava   # who pulled this in?
+```
+
+A security alert for a library deep in the tree is fixed the same way as a conflict: set the fixed version in `<dependencyManagement>`, then check with `dependency:tree` that it won. GitHub's Dependabot reads `pom.xml` and warns you about known vulnerabilities for free; [OWASP Dependency-Check](https://owasp.org/www-project-dependency-check/) (`mvn org.owasp:dependency-check-maven:check`) does it locally, though its first run downloads the whole vulnerability database and takes a while.
+
+**Gradle**, the other Java build tool (and Android's), keeps the same information in `build.gradle` or `build.gradle.kts`: `implementation` is Maven's `compile`, `testImplementation` is `test`, and `./gradlew dependencies` is `dependency:tree`. One difference catches people out: when versions conflict, Gradle picks the **newest**, not the nearest.
+
+| Task | Maven | Gradle |
+|---|---|---|
+| Run the tests | `mvn test` | `./gradlew test` |
+| Build the jar | `mvn package` | `./gradlew build` |
+| Show the dependency tree | `mvn dependency:tree` | `./gradlew dependencies` |
+| Delete build output | `mvn clean` | `./gradlew clean` |
 
 Install [Maven](https://maven.apache.org/download.cgi) and Google Chrome. Selenium finds the right ChromeDriver by itself the first time it runs.
 
@@ -70,10 +110,11 @@ driver.quit();   // always, or Chrome processes pile up
 1. **Exercise 1: Locators** (`exercise1/`). Write robust CSS selectors, checked with jsoup.
 2. **Exercise 2: How a wait works** (`exercise2/`). Write your own polling wait, tested with a fake clock.
 3. **Project: Tamasha Bot** (`_start/`, a Maven project).
-   1. `EventPicker.pick`: the cheapest event on or after a date, within budget.
-   2. `SearchPage.search`: type, choose, click, **wait**, then read every card.
-   3. `RegisterPage.register`: fill, tick, submit, wait for an error or a code.
-   4. Run it with `--watch` and see Chrome do it.
+   1. Read `pom.xml` with the table above, then run `mvn dependency:tree` and find which of your two dependencies pulled in Guava.
+   2. `EventPicker.pick`: the cheapest event on or after a date, within budget.
+   3. `SearchPage.search`: type, choose, click, **wait**, then read every card.
+   4. `RegisterPage.register`: fill, tick, submit, wait for an error or a code.
+   5. Run it with `--watch` and see Chrome do it.
 
 ## 🧪 Run it and test it
 
@@ -102,6 +143,7 @@ java -cp "day47/exercise1/src:lib/*" org.junit.platform.console.ConsoleLauncher 
 
 ## ✅ Checklist
 - [ ] Built and ran a Maven project
+- [ ] Read a `pom.xml`: coordinates, scopes, plugins, and the dependency tree
 - [ ] Found elements by id and CSS selector, typed, clicked and selected
 - [ ] Used `WebDriverWait`, not `Thread.sleep`
 - [ ] Organised the bot into page objects

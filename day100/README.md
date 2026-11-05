@@ -116,3 +116,9 @@ What next:
 - **Go deeper in one direction**: Spring Security and OAuth, PostgreSQL and query plans, Kubernetes, or Android with Kotlin.
 
 Hongera, and keep building.
+
+## ➡️ Next: Part 2
+
+**[Box Office in 30 Days](https://github.com/sagebeme/box-office-30-days)** picks up at Day 101. Instead of a new project every day, you build one real app for 30 days: an offline-first gate app for a weekend event at Ngong Racecourse. It keeps selling when the Wi-Fi drops, never half-saves a sale when the power goes, checks tickets in with a USB scanner, and later syncs to a server and takes M-Pesa. Every day ships with tests, and the app still runs at the end of each one.
+
+Start on [the course website](https://sagebeme.github.io/box-office-30-days/site/) or straight from the repo.

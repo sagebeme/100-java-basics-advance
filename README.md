@@ -4,7 +4,7 @@ A 100-day learning path from your first Java variable to Spring Boot, databases 
 
 <p align="center">
     <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java">
-    <img src="https://img.shields.io/badge/Progress-0%2F100-blue?style=for-the-badge" alt="Progress">
+    <img src="https://img.shields.io/badge/Course-100%20days-blue?style=for-the-badge" alt="Course: 100 days">
 </p>
 
 ## 📚 Course Structure
@@ -153,6 +153,10 @@ What the course actually uses, and from when:
 - [Day 99](day99): Portfolio Project - Advanced Analytics
 - [Day 100](day100): Portfolio Project - Machine Learning Integration
 
+## ➡️ What's next: Part 2
+
+Finished Day 100? **[Box Office in 30 Days](https://github.com/sagebeme/box-office-30-days)** is Java, Part 2: Days 101–130. Instead of a new project every day, you build one real app for 30 days, an offline-first gate app for a weekend event that keeps selling when the Wi-Fi drops, checks tickets in with a USB scanner, and later syncs to a server and takes M-Pesa. Every day ships with tests. Start on [its course website](https://sagebeme.github.io/box-office-30-days/site/).
+
 ## 🎯 Learning Objectives
 
 By the end of this course, you will:
@@ -190,6 +194,13 @@ Then open http://localhost:3000. `npm run build` exports the whole site to `site
 
 To put it online, import the repo into Netlify (`netlify.toml` is already set up) or Vercel (set the root directory to `site`).
 
+It's also published to GitHub Pages at **https://sagebeme.github.io/100-java-basics-advance/** by `.github/workflows/pages.yml` on every push to `master`. Only the built website goes up, no code from the day folders. For that to work, Pages must be set to **GitHub Actions** (Settings → Pages → Build and deployment → Source). To try the Pages build locally, under the same `/100-java-basics-advance/` path:
+
+```bash
+tools/build-pages.sh /tmp/pages/100-java-basics-advance
+python3 -m http.server -d /tmp/pages 8000   # then open http://localhost:8000/100-java-basics-advance/
+```
+
 ## 📝 How to Use This Repository
 
 1. **Clone the repository**
@@ -225,7 +236,7 @@ To put it online, import the repo into Netlify (`netlify.toml` is already set up
    - **Day 25** (Kenya counties game): `counties.csv` — in `day25/_start/src/` and `day25/_end/src/`. Run from that folder (e.g. `javac CountiesGame.java && java CountiesGame`).
 
 6. **Track your progress**
-   - Update the progress badge in README
+   - Tick off each day's checklist (the course website saves your progress in your browser)
    - Document your learning journey
    - Share your projects
 

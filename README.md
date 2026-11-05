@@ -153,6 +153,10 @@ What the course actually uses, and from when:
 - [Day 99](day99): Portfolio Project - Advanced Analytics
 - [Day 100](day100): Portfolio Project - Machine Learning Integration
 
+## ➡️ What's next: Part 2
+
+Finished Day 100? **[Box Office in 30 Days](https://github.com/sagebeme/box-office-30-days)** is Java, Part 2: Days 101–130. Instead of a new project every day, you build one real app for 30 days, an offline-first gate app for a weekend event that keeps selling when the Wi-Fi drops, checks tickets in with a USB scanner, and later syncs to a server and takes M-Pesa. Every day ships with tests. Start on [its course website](https://sagebeme.github.io/box-office-30-days/site/).
+
 ## 🎯 Learning Objectives
 
 By the end of this course, you will:

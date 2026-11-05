@@ -194,6 +194,13 @@ Then open http://localhost:3000. `npm run build` exports the whole site to `site
 
 To put it online, import the repo into Netlify (`netlify.toml` is already set up) or Vercel (set the root directory to `site`).
 
+It's also published to GitHub Pages at **https://sagebeme.github.io/100-java-basics-advance/** by `.github/workflows/pages.yml` on every push to `master`. Only the built website goes up, no code from the day folders. For that to work, Pages must be set to **GitHub Actions** (Settings → Pages → Build and deployment → Source). To try the Pages build locally, under the same `/100-java-basics-advance/` path:
+
+```bash
+tools/build-pages.sh /tmp/pages/100-java-basics-advance
+python3 -m http.server -d /tmp/pages 8000   # then open http://localhost:8000/100-java-basics-advance/
+```
+
 ## 📝 How to Use This Repository
 
 1. **Clone the repository**

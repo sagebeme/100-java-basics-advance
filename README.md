@@ -4,7 +4,7 @@ A 100-day learning path from your first Java variable to Spring Boot, databases 
 
 <p align="center">
     <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java">
-    <img src="https://img.shields.io/badge/Progress-0%2F100-blue?style=for-the-badge" alt="Progress">
+    <img src="https://img.shields.io/badge/Course-100%20days-blue?style=for-the-badge" alt="Course: 100 days">
 </p>
 
 ## 📚 Course Structure
@@ -229,7 +229,7 @@ To put it online, import the repo into Netlify (`netlify.toml` is already set up
    - **Day 25** (Kenya counties game): `counties.csv` — in `day25/_start/src/` and `day25/_end/src/`. Run from that folder (e.g. `javac CountiesGame.java && java CountiesGame`).
 
 6. **Track your progress**
-   - Update the progress badge in README
+   - Tick off each day's checklist (the course website saves your progress in your browser)
    - Document your learning journey
    - Share your projects
 

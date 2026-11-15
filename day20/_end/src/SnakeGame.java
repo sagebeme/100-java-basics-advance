@@ -43,7 +43,9 @@ public class SnakeGame extends Application {
                 try {
                     Thread.sleep(200);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    // Someone asked this thread to stop: keep that request (the flag) and end the loop.
+                    Thread.currentThread().interrupt();
+                    return;
                 }
             }
         }).start();

@@ -38,8 +38,13 @@ try (PrintWriter writer = new PrintWriter(new FileWriter("passwords.txt"))) {
     for (PasswordEntry entry : entries) {
         writer.println(PasswordManagerLogic.formatEntry(entry.website, entry.username, entry.password));
     }
+    if (writer.checkError()) throw new IOException("the disk refused the write");
+} catch (IOException e) {
+    showError("Could not save passwords.txt: " + e.getMessage());   // an Alert the user can see
 }
 ```
+
+`try (...)` closes the file even if writing fails half way. `PrintWriter` never throws while writing, it only remembers the failure, so ask it with `checkError()`. Show the error in an `Alert`: a stack trace printed to a console nobody is watching tells the user nothing.
 
 **Reading them back.** `|` means "or" in a regular expression, so `split` needs it escaped: `line.split("\\|")`. Check you got exactly three parts before using them.
 

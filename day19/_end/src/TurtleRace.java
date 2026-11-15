@@ -88,7 +88,9 @@ public class TurtleRace extends Application {
                 try {
                     Thread.sleep(50);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    // Someone asked this thread to stop: keep that request (the flag) and end the loop.
+                    Thread.currentThread().interrupt();
+                    return;
                 }
             }
         }).start();

@@ -61,7 +61,7 @@ assertThrows(NoSuchElementException.class, () -> bookService.checkOut(99L));   /
 assertThrows(IllegalStateException.class, () -> bookService.checkOut(1L));     // already out
 ```
 
-**Coverage.** JaCoCo watches the tests run and writes `target/site/jacoco/index.html`: green lines ran, red lines didn't, yellow branches only went one way. A red line is a question nobody has asked yet. But 100% coverage doesn't mean correct: a test that runs a line without checking its result still counts.
+**Coverage.** JaCoCo watches the tests run and writes `target/site/jacoco/index.html`: green lines ran, red lines didn't, yellow branches only went one way. A red line is a question nobody has asked yet. But 100% coverage doesn't mean correct: a test that runs a line without checking its result still counts. That's why every test here ends in an `assert` or a `verify` (rule 9 of [How We Write Code in This Course](../CODING_RULES.md)).
 
 ## 🪜 Steps
 

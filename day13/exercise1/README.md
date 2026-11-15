@@ -8,7 +8,7 @@ Exception in thread "main" java.lang.NullPointerException: Cannot invoke "String
 	at PhoneBook.main(PhoneBook.java:14)
 ```
 
-1. Run `main` and read the stack trace. Which line, and which value, was `null`?
+1. Run the tests and `main`, and read the stack trace. Which line, and which value, was `null`?
 2. Fix `phoneFor` so a farmer who isn't in the book gets `"no number on file"` instead of a crash.
 3. While you're there: the clerk sometimes types names in lower case. `phoneFor(book, "wanjiru")` should still find `Wanjiru`.
 

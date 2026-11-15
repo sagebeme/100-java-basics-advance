@@ -206,6 +206,7 @@ To put it online, import the repo into Netlify (`netlify.toml` is already set up
 3. **Follow the daily structure**
    - Each day has its own folder (day01, day02, etc.)
    - Read the README.md for each day
+   - Write your code the way [CODING_RULES.md](CODING_RULES.md) describes: one page of habits (say what "done" means, write only what's asked, a failing test before a bug fix, no hidden errors) that every day assumes
    - Complete the exercises and projects
    - Commit your progress daily
 
@@ -285,7 +286,9 @@ tools/check-exercises.sh day29/exercise2       # just one
 
 `tools/check-sri.sh` checks that every Bootstrap and Chart.js file a page loads from a CDN carries an `integrity` hash, so a tampered CDN file is refused by the browser.
 
-GitHub Actions runs all three scripts, builds Day 70's Docker image, and builds the course website, on every push and pull request (`.github/workflows/ci.yml`).
+**Look for hidden errors.** `tools/check-style.sh` runs Checkstyle with the short rule list in `tools/checkstyle.xml`: no empty `catch` blocks, no `catch (Throwable t)`, no `printStackTrace()`, plus a few checks for real bugs (like `equals` without `hashCode`). It isn't a style guide, so it never asks you to reformat. It downloads the Checkstyle jar once into `.cache/` and checks its SHA-256. Pass folders or files to check just those (`tools/check-style.sh day29`).
+
+GitHub Actions runs all four scripts, builds Day 70's Docker image, and builds the course website, on every push and pull request (`.github/workflows/ci.yml`).
 
 ## 🚀 Getting Started
 

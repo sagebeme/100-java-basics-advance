@@ -39,7 +39,7 @@ After completing Day 24, you should now:
 
 ### Key Insights
 
-- **File I/O requires exceptions** - Always use try-catch
+- **File I/O throws checked exceptions** - Catch the specific one where you can tell the user something useful; otherwise pass it on with `throws`. Never leave a `catch` empty
 - **String replace()** - Simple placeholder replacement
 - **Multiple files** - Loop through data, create files
 - **File paths** - Relative paths work well
@@ -53,7 +53,7 @@ After completing Day 24, you should now:
 
 ### Best Practices Demonstrated
 
-✅ **Proper exception handling** - Try-catch for all file ops
+✅ **Proper exception handling** - `FileNotFoundException` and `IOException` each get their own clear message
 ✅ **File closing** - Resources properly managed
 ✅ **Template processing** - Clean string replacement
 ✅ **Batch processing** - Efficient file generation

@@ -74,37 +74,39 @@ public class PasswordManager extends Application {
     }
     
     private void loadPasswords() {
-        try {
-            File file = new File(FILE_NAME);
-            if (file.exists()) {
-                BufferedReader reader = new BufferedReader(new FileReader(file));
-                String line;
-                entries.clear();
-                
-                while ((line = reader.readLine()) != null) {
-                    String[] parts = line.split("\\|");
-                    if (parts.length == 3) {
-                        entries.add(new PasswordEntry(parts[0], parts[1], parts[2]));
-                    }
+        File file = new File(FILE_NAME);
+        if (!file.exists()) return; // first run: nothing saved yet
+        
+        // try-with-resources closes the reader even when reading fails half way
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            entries.clear();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = PasswordManagerLogic.parseEntry(line);
+                if (parts != null) {
+                    entries.add(new PasswordEntry(parts[0], parts[1], parts[2]));
                 }
-                reader.close();
-                updateList();
             }
+            updateList();
         } catch (IOException e) {
-            e.printStackTrace();
+            showError("Could not load " + FILE_NAME + ": " + e.getMessage());
         }
     }
     
     private void saveToFile() {
-        try {
-            PrintWriter writer = new PrintWriter(new FileWriter(FILE_NAME));
+        try (PrintWriter writer = new PrintWriter(new FileWriter(FILE_NAME))) {
             for (PasswordEntry entry : entries) {
-                writer.println(entry.website + "|" + entry.username + "|" + entry.password);
+                writer.println(PasswordManagerLogic.formatEntry(entry.website, entry.username, entry.password));
             }
-            writer.close();
+            // PrintWriter never throws while writing; it only remembers that something went wrong
+            if (writer.checkError()) throw new IOException("the disk refused the write");
         } catch (IOException e) {
-            e.printStackTrace();
+            showError("Could not save " + FILE_NAME + ": " + e.getMessage());
         }
+    }
+    
+    private void showError(String message) {
+        new Alert(Alert.AlertType.ERROR, message).showAndWait();
     }
     
     private void updateList() {

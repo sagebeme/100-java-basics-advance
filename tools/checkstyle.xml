@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+    "https://checkstyle.org/dtds/configuration_1_3.dtd">
+<!--
+  A short list on purpose. These rules catch errors that get hidden and a few real bugs. They are
+  not a style guide: layout, naming and imports are left alone, so nothing has to be reformatted.
+  Every file in the course passes them. Run with tools/check-style.sh.
+-->
+<module name="Checker">
+  <property name="severity" value="error"/>
+  <module name="TreeWalker">
+    <!-- Errors must not disappear. -->
+    <!-- catch (...) {} hides the failure (a comment inside, saying why, is allowed). -->
+    <module name="EmptyCatchBlock"/>
+    <!-- catch (Throwable t) also swallows OutOfMemoryError and other errors no program can handle. -->
+    <module name="IllegalCatch">
+      <property name="illegalClassNames" value="Throwable, java.lang.Throwable"/>
+    </module>
+    <!-- A stack trace printed to a console nobody reads, and the program carries on as if it worked. -->
+    <module name="RegexpSinglelineJava">
+      <property name="id" value="noPrintStackTrace"/>
+      <property name="format" value="\.printStackTrace\("/>
+      <property name="ignoreComments" value="true"/>
+      <property name="message" value="Do not print a stack trace and carry on: handle the error, tell the user, or rethrow it."/>
+    </module>
+
+    <!-- Real bugs. -->
+    <!-- equals() without hashCode() breaks HashMap and HashSet. -->
+    <module name="EqualsHashCode"/>
+    <!-- equals(MyType) overloads instead of overriding equals(Object). -->
+    <module name="CovariantEquals"/>
+    <!-- "a" == s compares references, not text. -->
+    <module name="StringLiteralEquality"/>
+    <!-- if (x); runs nothing. -->
+    <module name="EmptyStatement"/>
+    <!-- A switch case without break runs into the next one. -->
+    <module name="FallThrough"/>
+  </module>
+</module>

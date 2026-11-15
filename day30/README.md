@@ -52,7 +52,7 @@ try {
 }
 ```
 
-Avoid `catch (Exception e)`: it hides bugs you'd want to see, and you can't give a useful message for "anything at all".
+Avoid `catch (Exception e)`: it hides bugs you'd want to see, and you can't give a useful message for "anything at all". Rule 8 of [How We Write Code in This Course](../CODING_RULES.md) sums this up, and `tools/check-style.sh day30` catches an empty `catch`.
 
 **JSON with `org.json`.** Its jar is in `lib/`. `JSONObject` is `{ ... }`, and `JSONArray` is `[ ... ]`:
 

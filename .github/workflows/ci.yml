@@ -36,6 +36,23 @@ jobs:
       - uses: actions/checkout@v4
       - run: bash tools/check-sri.sh
 
+  style:
+    name: Checkstyle (no swallowed errors, a few real bugs)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: Cache the Checkstyle jar
+        uses: actions/cache@v4
+        with:
+          path: .cache/checkstyle
+          key: checkstyle-14.3.0
+      - run: bash tools/check-style.sh
+
   projects:
     name: Every day project's tests (Day 54, Days 60-100)
     runs-on: ubuntu-latest

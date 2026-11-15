@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Abril_Fatface, Caveat, Montserrat, Open_Sans, Pacifico, Source_Code_Pro } from "next/font/google";
 import "./globals.css";
 import { ToTop } from "@/components/ToTop";
+import { BASE_PATH } from "@/lib/course";
 
 // Fonts are downloaded at build time and served from the site itself: no request to Google.
 const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "700", "800"], variable: "--font-montserrat" });
@@ -14,7 +15,7 @@ const chalk = Caveat({ subsets: ["latin"], weight: ["500", "700"], variable: "--
 export const metadata: Metadata = {
   title: { default: "100 Days of Java", template: "%s · 100 Days of Java" },
   description: "100 days of Java, from your first variable to Spring Boot web apps and a machine learning capstone. Most days have tests.",
-  icons: { icon: "/favicon.svg" },
+  icons: { icon: `${BASE_PATH}/favicon.svg` }, // Next leaves the base path off metadata icons
 };
 
 export const viewport: Viewport = { themeColor: "#2b1d14" };

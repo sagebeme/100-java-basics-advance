@@ -5,6 +5,9 @@ import path from "node:path";
 
 export const REPO = "https://github.com/sagebeme/100-java-basics-advance";
 export const BRANCH = "master";
+// The path the site is served under: "" on Netlify, Vercel and in dev, "/<repo>" on GitHub Pages
+// (see next.config.ts). Next adds it to <Link>s itself; plain hrefs built here need it added.
+export const BASE_PATH = process.env.PAGES_BASE_PATH?.replace(/\/+$/, "") ?? "";
 const ROOT = path.join(process.cwd(), ".."); // the course repo; the site lives in site/
 
 // The five stages, as the main README describes them.

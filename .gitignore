@@ -54,3 +54,6 @@ passwords.json
 # Charts the Day 72 and 75 demos draw
 sales-chart.png
 dashboard-charts/
+
+# The GitHub Pages build (tools/build-pages.sh)
+_site/

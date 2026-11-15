@@ -56,6 +56,8 @@ Always start with the first line that's in *your* code.
 System.out.println("DEBUG i=" + i + " total=" + total);
 ```
 
+A `println` helps you find a bug; it doesn't prove a fix. That's the tests' job.
+
 **Four classic bugs** worth checking first:
 
 | Bug | Looks like | Fix |
@@ -69,12 +71,14 @@ System.out.println("DEBUG i=" + i + " total=" + total);
 
 1. **Exercise 1: The missing phone number** (`exercise1/`). Read a `NullPointerException` and fix it.
 2. **Exercise 2: Lorry checks** (`exercise2/`). Two quiet bugs that only the tests reveal.
-3. **Project: Fix the Weighbridge** (`_start/src/Weighbridge.java`). For each bug:
-   1. **Reproduce it.** Run the program and type `Othaya` when it asks.
+3. **Project: Fix the Weighbridge** (`_start/src/Weighbridge.java`). First copy the tests next to it (see **Taste test** below) and run them: each bug makes a test fail. Then, for each bug:
+   1. **Reproduce it.** Find the failing test for it, then run the program and type `Othaya` when it asks.
    2. **Write down what you expected**, for example "Average should be 3970.17".
    3. **Find the line.** Use the stack trace for the crash, and the debugger or a `println` for the wrong numbers.
-   4. **Fix the smallest thing you can**, then run the tests again.
+   4. **Fix the smallest thing you can**, then run *all* the tests again: that bug's test should pass now, and none of the others should break.
    5. **Commit each fix on its own**, with a message that says what was wrong.
+
+   This routine, a failing test first and then the smallest fix, is rule 5 of [How We Write Code in This Course](../CODING_RULES.md), and you'll use it on every bug from now on.
 
 ## 🧪 Taste test
 

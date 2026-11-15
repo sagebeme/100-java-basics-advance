@@ -58,6 +58,8 @@ System.out.println(farmer + " picked " + kgPicked + " kg");
 
 ## 🪜 Steps
 
+Before you start, read [How We Write Code in This Course](../CODING_RULES.md). It's one page, and every day from here on follows it.
+
 1. **Exercise 1: Farm profile** (`exercise1/`). Declare a variable for each fact about a farm and print them.
 2. **Exercise 2: Scale readings** (`exercise2/`). Convert between text, `int` and `double`.
 3. **Project: The Harvest Log** (`_start/src/HarvestLog.java`).

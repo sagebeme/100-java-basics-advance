@@ -1,6 +1,6 @@
 # How to Learn With This Course
 
-This is a guide to actually working through the 100 days — the daily rhythm, what's in a day's folder, what tools you'll need and when, how to check your own work, and what to do when a day asks for something you don't have. For the day-by-day topic list, see the main [README](README.md); this file is about *how* to move through it.
+This is a guide to actually working through the 100 days — the daily rhythm, what's in a day's folder, what tools you'll need and when, how to check your own work, and what to do when a day asks for something you don't have. For the day-by-day topic list, see the main [README](README.md); this file is about *how* to move through it. For how to write the code itself, see [CODING_RULES.md](CODING_RULES.md).
 
 ## The daily rhythm
 

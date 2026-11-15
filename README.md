@@ -206,6 +206,7 @@ To put it online, import the repo into Netlify (`netlify.toml` is already set up
 3. **Follow the daily structure**
    - Each day has its own folder (day01, day02, etc.)
    - Read the README.md for each day
+   - Write your code the way [CODING_RULES.md](CODING_RULES.md) describes: one page of habits (say what "done" means, write only what's asked, a failing test before a bug fix, no hidden errors) that every day assumes
    - Complete the exercises and projects
    - Commit your progress daily
 

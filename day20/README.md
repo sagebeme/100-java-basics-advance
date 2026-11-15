@@ -33,10 +33,17 @@ new Thread(() -> {
     while (true) {
         update();                                   // move the snake one square
         Platform.runLater(() -> draw(gc));          // draw on the JavaFX thread
-        try { Thread.sleep(200); } catch (InterruptedException e) { return; }
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();     // keep the "please stop" request
+            return;                                 // and end the loop
+        }
     }
 }).start();
 ```
+
+`sleep` throws `InterruptedException` when something asks the thread to stop. Catching it wipes that request, so put it back with `interrupt()` and leave the loop, rather than printing the error and carrying on.
 
 **Moving a list.** The snake is an `ArrayList<int[]>` of `{x, y}` squares, head first. One step is: add the new head at index 0, then remove the last square. The body seems to slide forward, but only two squares changed.
 
